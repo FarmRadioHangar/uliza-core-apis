@@ -1,0 +1,341 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# Uliza Core APIs
+
+TODO Description
+
+#### Guidelines
+
+For guidelines and examples, see [White House Web API Standards](https://github.com/WhiteHouse/api-standards).
+
+## Participants [/participants]
+
+### View details for a user subscription token [GET /users/tokens/{id}]
+
++ Response 200 (application/json)
+
+        {
+        }
+
+### Subscribe to notifications for a user [POST /users/{id}/tokens]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /users/tokens/2
+
+    + Body
+            
+            {
+            }
+
+### List all participants [GET /participants/{?limit,offset}]
+
++ Parameters
+
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+        {
+            "metadata": {
+                "resultset": {
+                    "count": 227,
+                    "offset": 50,
+                    "limit": 25
+                }
+            },
+            "results": []
+        }
+
+### List participants for a role [GET /participants/{role_id}{?limit,offset}]
+
++ Parameters
+
+    + role_id (number) - the role id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+        {
+            "metadata": {
+                "resultset": {
+                    "count": 227,
+                    "offset": 50,
+                    "limit": 25
+                }
+            },
+            "results": []
+        }
+
+### List all radio stations associated with a participant [GET /participants/{id}/stations/{?limit,offset}]
+
++ Parameters
+
+    + id (number) - The participant id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+## Responses [/responses]
+
+### List responses for a question [GET /responses/questions/{question_id}{?limit,offset}]
+
++ Parameters
+
+    + question_id (number) - The question id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+### List responses for a participant [GET /responses/participants/{participant_id}{?limit,offset}]
+
++ Parameters
+
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+### List responses for a contributor [GET /responses/contributor/{contributor_id}{?limit,offset}]
+
++ Parameters
+
+    + contributor_id (number) - The contributor id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+## Topics [/topics]
+
+### List all advice for a topic [GET /topics/{topic_id}/advice/{?limit,offset}]
+
++ Parameters
+
+    + topic_id (number) - The topic id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+## Advice [/advice]
+
+### Retrieve details for a specific advice [GET /advice/{id}]
+
++ Parameters
+
+    + id (number) - The advice id
+
++ Response 200 (application/json)
+
+### Create a new advice entity [POST /advice]
+
++ Request (application/json)
+
+        {
+        }
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /advice/2
+
+    + Body
+            
+            {
+            }
+
+## Stations [/stations]
+
+### List all stations [GET /stations{?limit,offset}]
+
++ Parameters
+
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+    
+    + Headers
+    
+            Location: /stations
+    
+    + Body
+    
+            {
+                "metadata": {
+                    "resultset": {
+                        "count": 2,
+                        "offset": 0,
+                        "limit": 25
+                    }
+                },
+                "results": [
+                    {
+                        "id": 1,
+                        "city": "Arusha",
+                        "country": "Tanzania",
+                        "name": "Hangar Test Box",
+                        "voxboxes":[
+                            {
+                                "id":1,
+                                "stationId":1,
+                                "sipAddress":"sip:music@iptel.org",
+                                "name":"Music"
+                            },
+                            {
+                                "id":4,
+                                "stationId":1,
+                                "sipAddress":"sip:test.ring@sip5060.net",
+                                "name":"Ring"
+                            },
+                            {
+                                "id":5,
+                                "stationId":1,
+                                "sipAddress":"sip:1038975562837@thehangar.farmradio.org:50602",
+                                "name":"skopje-dev box"
+                            },
+                            {
+                                "id":6,
+                                "stationId":1,
+                                "sipAddress":"sip:1255689514544@thehangar.farmradio.org:50602",
+                                "name":"habarimaalum box"
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "city": "Arusha",
+                        "country": "Tanzania",
+                        "name": "Sunrise FM",
+                        "voxboxes":[{"id":2, "stationId":2, "sipAddress":"sip:760@thehangar.farmradio.org", "name":"Ben SIP"}]
+                    }
+                ]
+            }
+
+
+### Retrieve details for a specific station [GET /stations/{id}]
+
++ Parameters
+
+    + id (number) - The station id
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /stations/1
+
+    + Body
+    
+            {
+                "metadata": {
+                    "resultset": {
+                        "count": 1,
+                        "offset": 0,
+                        "limit": 25
+                    }
+                },
+                "results": [
+                    {
+                        "id": 1,
+                        "city": "Arusha",
+                        "country": "Tanzania",
+                        "name": "Hangar Test Box",
+                        "voxboxes":[
+                            {
+                                "id":1,
+                                "stationId":1,
+                                "sipAddress":"sip:music@iptel.org",
+                                "name":"Music"
+                            },
+                            {
+                                "id":4,
+                                "stationId":1,
+                                "sipAddress":"sip:test.ring@sip5060.net",
+                                "name":"Ring"
+                            },
+                            {
+                                "id":5,
+                                "stationId":1,
+                                "sipAddress":"sip:1038975562837@thehangar.farmradio.org:50602",
+                                "name":"skopje-dev box"
+                            },
+                            {
+                                "id":6,
+                                "stationId":1,
+                                "sipAddress":"sip:1255689514544@thehangar.farmradio.org:50602",
+                                "name":"habarimaalum box"
+                            }
+                        ]
+                    }
+                ]
+            }
+
+### Retrieve the voxboxes for a specific station [GET /stations/{id}/voxboxes{?limit,offset}]
+
++ Parameters
+
+    + id (number) - The station id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+        {
+            "metadata": {
+                "resultset": {
+                    "count": 1,
+                    "offset": 0,
+                    "limit": 25
+                }
+            },
+            "results": [
+                {
+                    "id": 1,
+                    "sipAddress": "760@thehangar.farmradio.org:50602",
+                    "station": "1",
+                    "name": "Ben SIP"
+                }
+            ]
+        }
+        
+## Channels [/channels]
+
+## Schedules [/schedules]
+
+## Programs [/programs]
+
+## Projects [/projects]
+
+## Campaigns [/campaigns]
+
+## Questions [/questions]
+
+## Voxboxes [/voxboxes]
+
+### Publish a SIP address [POST /voxboxes]
+
++ Request (application/json)
+
+        {
+        }
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /voxboxes/2
+
+    + Body
+            
+            {
+            }
