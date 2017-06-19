@@ -216,7 +216,18 @@ For guidelines and examples, see [White House Web API Standards](https://github.
                         "city": "Arusha",
                         "country": "Tanzania",
                         "name": "Sunrise FM",
-                        "voxboxes":[{"id":2, "stationId":2, "sipAddress":"sip:760@thehangar.farmradio.org", "name":"Ben SIP"}]
+                        "voxboxes":[
+                            {
+                                "id":2, "stationId":2,
+                                "sipAddress":"sip:760@thehangar.farmradio.org:50602",
+                                "name":"Ben SIP"
+                            },
+                            {
+                                "id":7, "stationId":2,
+                                "sipAddress":"sip:bfranks@sip.linphone.org",
+                                "name":"Ben Linphone SIP"
+                            }
+                        ]
                     }
                 ]
             }
