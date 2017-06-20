@@ -5,7 +5,7 @@ export class BaseRouter {
   router: Router
 
   /**
-   * Initialize the BaseRouterb
+   * Initialize the BaseRouter
    */
   constructor() {
     this.router = Router();
