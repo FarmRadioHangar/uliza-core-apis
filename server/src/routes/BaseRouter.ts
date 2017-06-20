@@ -14,7 +14,7 @@ export class BaseRouter {
 
   public getBase(req: Request, res: Response, next: NextFunction) {
     res.json({
-      message: 'muliza api'
+      message: 'api.uliza.fm'
     });
   }
 
@@ -24,7 +24,4 @@ export class BaseRouter {
 
 }
 
-let baseRoutes = new BaseRouter();
-baseRoutes.init();
-
-export default baseRoutes.router;
+export default new BaseRouter().router;

@@ -16,9 +16,9 @@ describe('Application base endpoint', () => {
     });
   });
 
-  it('response should have a message prop', () => {
+  it('response should have a message property', () => {
     return chai.request(app).get('/').then(res => {
-      expect(res.body.message).to.eql('muliza api');
+      expect(res.body).to.have.property('message');
     });
   });
 
