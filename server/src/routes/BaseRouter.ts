@@ -18,7 +18,7 @@ export class BaseRouter {
     });
   }
 
-  init(): void {
+  private init(): void {
     this.router.get('/', this.getBase);
   }
 
