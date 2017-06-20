@@ -12,13 +12,13 @@ export class BaseRouter {
     this.init();
   }
 
-  public getBase(req: Request, res: Response, next: NextFunction) {
+  public getBase(req: Request, res: Response, next: NextFunction): void {
     res.json({
       message: 'api.uliza.fm'
     });
   }
 
-  init() {
+  init(): void {
     this.router.get('/', this.getBase);
   }
 
