@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 
 export class BaseRouter {
 
-  router: Router
+  router: Router;
 
   /**
    * Initialize the BaseRouter
