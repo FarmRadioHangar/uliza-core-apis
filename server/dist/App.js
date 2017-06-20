@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+const BaseRouter_1 = require("./routes/BaseRouter");
 class App {
     constructor() {
         this.express = express();
@@ -16,12 +17,7 @@ class App {
     }
     routes() {
         let router = express.Router();
-        router.get('/', (req, res, next) => {
-            res.json({
-                message: 'muliza api'
-            });
-        });
-        this.express.use('/', router);
+        this.express.use('/', BaseRouter_1.default);
     }
 }
 exports.default = new App().express;

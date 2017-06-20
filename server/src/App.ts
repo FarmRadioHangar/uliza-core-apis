@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
+import BaseRouter from './routes/BaseRouter';
 
 class App {
 
@@ -21,12 +22,7 @@ class App {
 
   private routes(): void {
     let router = express.Router();
-    router.get('/', (req, res, next) => {
-      res.json({
-        message: 'muliza api'
-      });
-    });
-    this.express.use('/', router);
+    this.express.use('/', BaseRouter);
   }
 
 }
