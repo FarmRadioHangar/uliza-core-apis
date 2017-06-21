@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const ts = require('gulp-typescript');
+var typedoc = require("gulp-typedoc");
 const JSON_FILES = ['src/*.json', 'src/**/*.json'];
 
 // Pull in TypeScript config
@@ -17,6 +18,18 @@ gulp.task('watch', ['scripts'], () => {
 gulp.task('assets', function() {
   return gulp.src(JSON_FILES)
   .pipe(gulp.dest('dist'));
+});
+
+gulp.task('typedoc', function() {
+    return gulp
+        .src(['src/**/*.ts'])
+        .pipe(typedoc({
+            module: 'commonjs',
+            target: 'es6',
+            out: 'docs/',
+            name: 'Farm Radio APIs'
+        }))
+    ;
 });
 
 gulp.task('default', ['watch', 'assets']);
