@@ -19,8 +19,6 @@ function postVotoResponse(req, res, next) {
     return next();
 }
 api.get({ path: '/v1/', version: '1.0.0' }, getBase);
-/*
- *  Webhooks API
- */
+/* Webhooks API */
 api.post({ path: '/v1/webhooks/voto/response', version: '1.0.0' }, postVotoResponse);
 exports.default = api;
