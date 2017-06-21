@@ -1,24 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("debug");
-const fs = require("fs");
-const restify = require("restify");
+const Server_1 = require("./Server");
 debug('farm-radio-apis:server');
-const server = restify.createServer({
-    certificate: fs.readFileSync('cert.pem'),
-    key: fs.readFileSync('key.pem'),
-    name: 'Farm Radio API Server',
-});
 const port = normalizePort(process.env.PORT || 3000);
-server.pre(restify.pre.sanitizePath());
-server.on('error', onError);
-server.on('listening', onListening);
-function getBase(req, res, next) {
-    res.json(200, 'api.farmradio.fm');
-    return next();
-}
-server.get({ path: '/v1/', version: '1.0.0' }, getBase);
-server.listen(port);
+Server_1.default.on('error', onError);
+Server_1.default.on('listening', onListening);
+Server_1.default.listen(port);
 function normalizePort(val) {
     let port = (typeof val === 'string') ? parseInt(val, 10)
         : val;
@@ -30,7 +18,7 @@ function normalizePort(val) {
         return false;
 }
 function onListening() {
-    let addr = server.address();
+    let addr = Server_1.default.address();
     let bind = (typeof addr === 'string') ? `pipe ${addr}`
         : `port ${addr.port}`;
     debug(`Server listening on ${bind}`);

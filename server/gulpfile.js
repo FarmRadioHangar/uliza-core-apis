@@ -21,12 +21,12 @@ gulp.task('assets', function() {
 
 gulp.task('typedoc', function() {
   return gulp
-  .src(['src/**/*.ts'])
-  .pipe(typedoc({
-    module: 'commonjs',
-    target: 'es6',
-    out: 'docs/',
-    name: 'Farm Radio APIs'
+    .src(['src/**/*.ts'])
+    .pipe(typedoc({
+      module: 'commonjs',
+      target: 'es6',
+      out: 'docs/',
+      name: 'Farm Radio APIs'
   }));
 });
 
