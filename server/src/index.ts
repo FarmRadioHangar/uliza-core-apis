@@ -1,33 +1,43 @@
-import * as fs from 'fs';
-import * as https from 'https';
 import * as debug from 'debug';
+import * as fs from 'fs';
+import * as restify from 'restify';
 
-import App from './App';
+debug('farm-radio-apis:server');
 
-debug('ts-express:server');
+const server = restify.createServer({
+  certificate: fs.readFileSync('cert.pem'),
+  key: fs.readFileSync('key.pem'),
+  name: 'Farm Radio API Server'
+});
 
 const port = normalizePort(process.env.PORT || 3000);
 
-App.set('port', port);
-
-const server = https.createServer({
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
-}, App);
-
-server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+server.listen(port);
+
 function normalizePort(val: number|string): number|string|boolean {
-  let port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
-  if (isNaN(port)) return val;
-  else if (port >= 0) return port;
-  else return false;
+  let port: number = (typeof val === 'string') ? parseInt(val, 10) 
+                                               : val;
+  if (isNaN(port)) 
+    return val;
+  else if (port >= 0) 
+    return port;
+  else 
+    return false;
+}
+
+function onListening(): void {
+  let addr = server.address();
+  let bind: string = (typeof addr === 'string') ? `pipe ${addr}` 
+                                                : `port ${addr.port}`;
+  debug(`Server listening on ${bind}`);
 }
 
 function onError(error: NodeJS.ErrnoException): void {
-  if (error.syscall !== 'listen') throw error;
+  if (error.syscall !== 'listen') 
+    throw error;
   let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
   switch(error.code) {
     case 'EACCES':
@@ -41,10 +51,4 @@ function onError(error: NodeJS.ErrnoException): void {
     default:
       throw error;
   }
-}
-
-function onListening(): void {
-  let addr = server.address();
-  let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
 }

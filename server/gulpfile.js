@@ -16,20 +16,18 @@ gulp.task('watch', ['scripts'], () => {
 });
 
 gulp.task('assets', function() {
-  return gulp.src(JSON_FILES)
-  .pipe(gulp.dest('dist'));
+  return gulp.src(JSON_FILES).pipe(gulp.dest('dist'));
 });
 
 gulp.task('typedoc', function() {
-    return gulp
-        .src(['src/**/*.ts'])
-        .pipe(typedoc({
-            module: 'commonjs',
-            target: 'es6',
-            out: 'docs/',
-            name: 'Farm Radio APIs'
-        }))
-    ;
+  return gulp
+  .src(['src/**/*.ts'])
+  .pipe(typedoc({
+    module: 'commonjs',
+    target: 'es6',
+    out: 'docs/',
+    name: 'Farm Radio APIs'
+  }));
 });
 
 gulp.task('default', ['watch', 'assets']);
