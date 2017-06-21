@@ -7,13 +7,22 @@ debug('farm-radio-apis:server');
 const server = restify.createServer({
   certificate: fs.readFileSync('cert.pem'),
   key: fs.readFileSync('key.pem'),
-  name: 'Farm Radio API Server'
+  name: 'Farm Radio API Server',
 });
 
 const port = normalizePort(process.env.PORT || 3000);
 
+server.pre(restify.pre.sanitizePath());
+
 server.on('error', onError);
 server.on('listening', onListening);
+
+function getBase(req: restify.Request, res: restify.Response, next: restify.Next) {
+  res.json(200, 'api.farmradio.fm');
+  return next();
+}
+
+server.get({path: '/v1/', version: '1.0.0'}, getBase);
 
 server.listen(port);
 
