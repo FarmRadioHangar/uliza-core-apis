@@ -14,7 +14,7 @@ export class BaseRouter {
 
   public getBase(req: Request, res: Response, next: NextFunction): void {
     res.json({
-      message: 'api.uliza.fm'
+      message: 'api.farmradio.fm'
     });
   }
 
