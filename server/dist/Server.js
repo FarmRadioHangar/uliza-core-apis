@@ -1,12 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const restify = require("restify");
+const bunyan = require("bunyan");
+let logger = bunyan.createLogger({
+    name: 'audit',
+    streams: [
+        { path: 'access.log' }
+    ]
+});
 let api = restify.createServer({
     //  certificate: fs.readFileSync('cert.pem'),
     //  key: fs.readFileSync('key.pem'),
-    name: 'Farm Radio API Server'
+    name: 'Farm Radio API Server',
+    log: logger
 });
 api.pre(restify.pre.sanitizePath());
+api.on('after', restify.auditLogger({ log: logger }));
 api.use(restify.fullResponse());
 api.use(restify.bodyParser());
 function getBase(req, res, next) {

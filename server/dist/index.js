@@ -1,11 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require('dotenv').config();
 const debug = require("debug");
-const dotenv = require("dotenv");
 const Server_1 = require("./Server");
-dotenv.config();
-debug('farm-radio-apis:server');
-const port = normalizePort(process.env.PORT || 3000);
+const log = debug('farm-radio-api:server'), port = normalizePort(process.env.PORT || 3000);
 Server_1.default.on('error', onError);
 Server_1.default.on('listening', onListening);
 Server_1.default.listen(port);
@@ -23,7 +21,7 @@ function onListening() {
     const addr = Server_1.default.address();
     const bind = (typeof addr === 'string') ? `pipe ${addr}`
         : `port ${addr.port}`;
-    debug(`Server listening on ${bind}`);
+    log(`Listening on ${bind}`);
 }
 function onError(error) {
     if (error.syscall !== 'listen')
