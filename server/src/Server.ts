@@ -4,7 +4,7 @@ import * as bunyan from 'bunyan';
 import { BaseController } from './controllers/BaseController';
 import { VotoResponseController } from './controllers/VotoResponseController';
 
-let logger = bunyan.createLogger({
+let logger: bunyan = bunyan.createLogger({
   name: 'audit',
   streams: [{
     path: 'access.log'
