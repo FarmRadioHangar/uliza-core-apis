@@ -10,14 +10,14 @@ let api: Server = restify.createServer({
 
 api.pre(restify.pre.sanitizePath());
 
-function getBase(req: Request, res: Response, next: Next) {
+function getBase(req: Request, res: Response, next: Next): void {
   res.json(200, {
     message: 'api.farmradio.fm'
   });
   return next();
 }
 
-function postVotoResponse(req: Request, res: Response, next: Next) {
+function postVotoResponse(req: Request, res: Response, next: Next): void {
   console.log(req);
   res.json(200);
   return next();
