@@ -3,8 +3,8 @@ import * as restify from 'restify';
 import { Server, Request, Response, Next } from 'restify';
 
 let api: Server = restify.createServer({
-  certificate: fs.readFileSync('cert.pem'),
-  key: fs.readFileSync('key.pem'),
+  //  certificate: fs.readFileSync('cert.pem'),
+  //  key: fs.readFileSync('key.pem'),
   name: 'Farm Radio API Server'
 });
 

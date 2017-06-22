@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require("fs");
 const restify = require("restify");
 let api = restify.createServer({
-    certificate: fs.readFileSync('cert.pem'),
-    key: fs.readFileSync('key.pem'),
+    //  certificate: fs.readFileSync('cert.pem'),
+    //  key: fs.readFileSync('key.pem'),
     name: 'Farm Radio API Server'
 });
 api.pre(restify.pre.sanitizePath());
