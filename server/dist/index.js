@@ -18,15 +18,15 @@ function normalizePort(val) {
         return false;
 }
 function onListening() {
-    let addr = Server_1.default.address();
-    let bind = (typeof addr === 'string') ? `pipe ${addr}`
+    const addr = Server_1.default.address();
+    const bind = (typeof addr === 'string') ? `pipe ${addr}`
         : `port ${addr.port}`;
     debug(`Server listening on ${bind}`);
 }
 function onError(error) {
     if (error.syscall !== 'listen')
         throw error;
-    let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+    const bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
     switch (error.code) {
         case 'EACCES':
             console.error(`${bind} requires elevated privileges`);

@@ -22,16 +22,16 @@ function normalizePort(val: number|string): number|string|boolean {
 }
 
 function onListening(): void {
-  let addr = server.address();
-  let bind: string = (typeof addr === 'string') ? `pipe ${addr}` 
-                                                : `port ${addr.port}`;
+  const addr = server.address();
+  const bind: string = (typeof addr === 'string') ? `pipe ${addr}` 
+                                                  : `port ${addr.port}`;
   debug(`Server listening on ${bind}`);
 }
 
 function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== 'listen') 
     throw error;
-  let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+  const bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
   switch(error.code) {
     case 'EACCES':
       console.error(`${bind} requires elevated privileges`);
