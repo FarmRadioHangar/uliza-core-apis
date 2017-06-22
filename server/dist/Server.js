@@ -4,9 +4,9 @@ const restify = require("restify");
 const bunyan = require("bunyan");
 let logger = bunyan.createLogger({
     name: 'audit',
-    streams: [
-        { path: 'access.log' }
-    ]
+    streams: [{
+            path: 'access.log'
+        }]
 });
 let api = restify.createServer({
     //  certificate: fs.readFileSync('cert.pem'),

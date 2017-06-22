@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config();
 const debug = require("debug");
 const Server_1 = require("./Server");
-const log = debug('farm-radio-api:server'), port = normalizePort(process.env.PORT || 3000);
+const log = debug('farm-radio-api:server');
+const port = normalizePort(process.env.PORT || 3000);
 Server_1.default.on('error', onError);
 Server_1.default.on('listening', onListening);
 Server_1.default.listen(port);
 function normalizePort(val) {
-    let port = (typeof val === 'string') ? parseInt(val, 10)
-        : val;
+    const port = typeof val === 'string' ? parseInt(val, 10) : val;
     if (isNaN(port))
         return val;
     else if (port >= 0)
