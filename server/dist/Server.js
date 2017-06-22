@@ -7,6 +7,8 @@ let api = restify.createServer({
     name: 'Farm Radio API Server'
 });
 api.pre(restify.pre.sanitizePath());
+api.use(restify.fullResponse());
+api.use(restify.bodyParser());
 function getBase(req, res, next) {
     res.json(200, {
         message: 'api.farmradio.fm'
@@ -14,7 +16,7 @@ function getBase(req, res, next) {
     return next();
 }
 function postVotoResponse(req, res, next) {
-    console.log(req);
+    console.log(req.body);
     res.json(200);
     return next();
 }
