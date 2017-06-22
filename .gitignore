@@ -3,3 +3,4 @@ server/key.pem
 server/cert.pem
 server/tmp
 server/.env
+server/*.log
