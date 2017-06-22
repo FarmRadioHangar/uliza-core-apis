@@ -1,21 +1,17 @@
+require('dotenv').config();
+
 import * as debug from 'debug';
-import * as dotenv from 'dotenv';
 import server from './Server';
 
-dotenv.config();
-
-debug('farm-radio-apis:server');
-
-const port = normalizePort(process.env.PORT || 3000);
+const log = debug('farm-radio-api:server');
 
 server.on('error', onError);
 server.on('listening', onListening);
 
-server.listen(port);
+server.listen(normalizePort(process.env.PORT || 3000));
 
 function normalizePort(val: number|string): number|string|boolean {
-  let port: number = (typeof val === 'string') ? parseInt(val, 10) 
-                                               : val;
+  const port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
   if (isNaN(port)) 
     return val;
   else if (port >= 0) 
@@ -28,7 +24,7 @@ function onListening(): void {
   const addr = server.address();
   const bind: string = (typeof addr === 'string') ? `pipe ${addr}` 
                                                   : `port ${addr.port}`;
-  debug(`Server listening on ${bind}`);
+  log(`Listening on ${bind}`);
 }
 
 function onError(error: NodeJS.ErrnoException): void {
