@@ -1,14 +1,25 @@
 import * as fs from 'fs';
 import * as restify from 'restify';
+import * as bunyan from 'bunyan';
 import { Server, Request, Response, Next } from 'restify';
+
+let logger = bunyan.createLogger({
+  name: 'audit',
+  streams: [{
+    path: 'access.log'
+  }]
+});
 
 let api: Server = restify.createServer({
   //  certificate: fs.readFileSync('cert.pem'),
   //  key: fs.readFileSync('key.pem'),
-  name: 'Farm Radio API Server'
+  name: 'Farm Radio API Server',
+  log: logger
 });
 
 api.pre(restify.pre.sanitizePath());
+
+api.on('after', restify.auditLogger({ log: logger }));
 
 api.use(restify.fullResponse());
 api.use(restify.bodyParser());
