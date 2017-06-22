@@ -18,6 +18,7 @@ function getBase(req: Request, res: Response, next: Next) {
 }
 
 function postVotoResponse(req: Request, res: Response, next: Next) {
+  console.log(req);
   res.json(200);
   return next();
 }
