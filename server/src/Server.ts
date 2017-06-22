@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as restify from 'restify';
 import * as bunyan from 'bunyan';
-import { Server, Request, Response, Next } from 'restify';
+import { BaseController } from './controllers/BaseController';
+import { VotoResponseController } from './controllers/VotoResponseController';
 
 let logger = bunyan.createLogger({
   name: 'audit',
@@ -10,7 +11,7 @@ let logger = bunyan.createLogger({
   }]
 });
 
-let api: Server = restify.createServer({
+let api: restify.Server = restify.createServer({
   //  certificate: fs.readFileSync('cert.pem'),
   //  key: fs.readFileSync('key.pem'),
   name: 'Farm Radio API Server',
@@ -24,26 +25,13 @@ api.on('after', restify.auditLogger({ log: logger }));
 api.use(restify.fullResponse());
 api.use(restify.bodyParser());
 
-function getBase(req: Request, res: Response, next: Next): void {
-  res.json(200, {
-    message: 'api.farmradio.fm'
-  });
-  return next();
-}
+const baseController = new BaseController();
+const votoResponseController = new VotoResponseController();
 
-function postVotoResponse(req: Request, res: Response, next: Next): void {
-  const body = req.params;
-  const questionId: number = Number(body.question_id);
-  const surveyId: number = Number(body.survey_id);
-
-  res.json(200);
-  return next();
-}
-
-api.get({path: '/v1/', version: '1.0.0'}, getBase);
+api.get({path: '/v1/', version: '1.0.0'}, baseController.get);
 
 /* Webhooks API */
 
-api.post({path: '/v1/webhooks/voto/response', version: '1.0.0'}, postVotoResponse);
+api.post({path: '/v1/webhooks/voto/response', version: '1.0.0'}, votoResponseController.hook);
 
 export default api;

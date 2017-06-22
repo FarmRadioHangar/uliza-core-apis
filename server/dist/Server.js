@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const restify = require("restify");
 const bunyan = require("bunyan");
+const BaseController_1 = require("./controllers/BaseController");
+const VotoResponseController_1 = require("./controllers/VotoResponseController");
 let logger = bunyan.createLogger({
     name: 'audit',
     streams: [{
@@ -18,20 +20,9 @@ api.pre(restify.pre.sanitizePath());
 api.on('after', restify.auditLogger({ log: logger }));
 api.use(restify.fullResponse());
 api.use(restify.bodyParser());
-function getBase(req, res, next) {
-    res.json(200, {
-        message: 'api.farmradio.fm'
-    });
-    return next();
-}
-function postVotoResponse(req, res, next) {
-    const body = req.params;
-    const questionId = Number(body.question_id);
-    const surveyId = Number(body.survey_id);
-    res.json(200);
-    return next();
-}
-api.get({ path: '/v1/', version: '1.0.0' }, getBase);
+const baseController = new BaseController_1.BaseController();
+const votoResponseController = new VotoResponseController_1.VotoResponseController();
+api.get({ path: '/v1/', version: '1.0.0' }, baseController.get);
 /* Webhooks API */
-api.post({ path: '/v1/webhooks/voto/response', version: '1.0.0' }, postVotoResponse);
+api.post({ path: '/v1/webhooks/voto/response', version: '1.0.0' }, votoResponseController.hook);
 exports.default = api;
