@@ -16,7 +16,9 @@ function getBase(req, res, next) {
     return next();
 }
 function postVotoResponse(req, res, next) {
-    console.log(req.body);
+    const body = req.params;
+    const questionId = Number(body.question_id);
+    const surveyId = Number(body.survey_id);
     res.json(200);
     return next();
 }

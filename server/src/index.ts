@@ -1,5 +1,8 @@
 import * as debug from 'debug';
+import * as dotenv from 'dotenv';
 import server from './Server';
+
+dotenv.config();
 
 debug('farm-radio-apis:server');
 

@@ -21,7 +21,10 @@ function getBase(req: Request, res: Response, next: Next): void {
 }
 
 function postVotoResponse(req: Request, res: Response, next: Next): void {
-  console.log(req.body);
+  const body = req.params;
+  const questionId: number = Number(body.question_id);
+  const surveyId: number = Number(body.survey_id);
+
   res.json(200);
   return next();
 }

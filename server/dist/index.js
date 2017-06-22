@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("debug");
+const dotenv = require("dotenv");
 const Server_1 = require("./Server");
+dotenv.config();
 debug('farm-radio-apis:server');
 const port = normalizePort(process.env.PORT || 3000);
 Server_1.default.on('error', onError);
