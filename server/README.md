@@ -25,7 +25,7 @@ gulp scripts
 npm start
 ```
 
-### Environment
+### Environment variables
 
 * `PORT`
 * `DEBUG`
