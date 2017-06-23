@@ -31,6 +31,7 @@
     "debug": "^2.6.8",
     "debug-stream": "^3.0.1",
     "dotenv": "^4.0.0",
+    "node-config": "^0.0.2",
     "restify": "^4.3.0"
   }
 }
