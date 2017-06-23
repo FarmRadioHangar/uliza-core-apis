@@ -5,7 +5,21 @@ const debug = require("debug");
 const debugStream = require("debug-stream");
 const format = require("bunyan-format");
 const restify = require("restify");
+/**
+ * The main API Server class
+ *
+ * ```
+ * let server: Server = new Server('cert.pem', 'key.pem');
+ * server.listen(3000);
+ * ```
+ */
 class Server {
+    /**
+     * Creates and initializes the API server.
+     *
+     * @param certificate Path to a PEM-encoded certificate.
+     * @param key Path to a PEM-encoded key.
+     */
     constructor(certificate, key) {
         this.certificate = certificate;
         this.key = key;
@@ -18,9 +32,21 @@ class Server {
         this.api.on('error', this.onError.bind(this));
         this.api.on('listening', this.onListening.bind(this));
     }
+    /**
+     * Use this method to get direct access the restify server.
+     *
+     * @see http://restify.com/#server-api
+     *
+     * @returns A restify server instance.
+     */
     restify() {
         return this.api;
     }
+    /**
+     * Begin accepting connections.
+     *
+     * @see https://nodejs.org/docs/latest/api/http.html#http_server_listen_port_hostname_backlog_callback
+     */
     listen(...args) {
         this.api.listen(...args);
     }

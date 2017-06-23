@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config();
-const Server_1 = require("./Server");
-const server = new Server_1.default('cert.pem', 'key.pem');
-server.listen(normalized(process.env.PORT || 3000));
+const app_1 = require("./app");
+app_1.default.listen(normalized(process.env.PORT || 3000));
 function normalized(val) {
     const port = typeof val === 'string' ? parseInt(val, 10) : val;
     if (isNaN(port))
@@ -13,12 +12,3 @@ function normalized(val) {
     console.error('Bad port');
     process.exit(1);
 }
-const BaseController_1 = require("./controllers/BaseController");
-const VotoResponseController_1 = require("./controllers/VotoResponseController");
-/* ••• Routes ••• */
-const api = server.restify();
-const baseController = new BaseController_1.BaseController();
-const votoResponseController = new VotoResponseController_1.VotoResponseController();
-api.get({ path: '/v1/', version: '1.0.0' }, baseController.get);
-/* Webhooks API */
-api.post({ path: '/v1/webhooks/voto/response', version: '1.0.0' }, votoResponseController.hook);
