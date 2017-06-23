@@ -46,3 +46,5 @@ gulp typedoc
 ### Typedoc conventions
 
 ## API documentation
+
+## Style conventions
