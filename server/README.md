@@ -27,6 +27,10 @@ npm start
 
 ### Environment
 
+* `PORT`
+* `DEBUG`
+* `NODE_CONFIG_DIR`
+
 ### Configuration
 
 ## Tests
