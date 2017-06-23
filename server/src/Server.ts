@@ -4,6 +4,7 @@ import * as debugStream from 'debug-stream';
 import * as format      from 'bunyan-format';
 import * as fs          from 'fs';
 import * as restify     from 'restify';
+import * as config      from 'config';
 
 /**
  * ## API Server 
@@ -44,6 +45,11 @@ export default class Server {
   private key: string;
 
   /**
+   * Server name.
+   */
+  private name: string;
+
+  /**
    * Creates and initializes the API server.
    *
    * @param certificate Path to a PEM-encoded certificate.
@@ -52,6 +58,7 @@ export default class Server {
   constructor(certificate: string, key: string) {
     this.certificate = certificate;
     this.key = key;
+    this.readConfig();
     this.createLogger();
     this.createRestifyServer();
     this.api.pre(restify.pre.sanitizePath());
@@ -114,9 +121,13 @@ export default class Server {
     this.api = restify.createServer({
       //certificate: fs.readFileSync(this.certificate),
       //key: fs.readFileSync(this.key),
-      name: 'Farm Radio API Server',
+      name: this.name,
       log: this.logger
     });
+  }
+
+  private readConfig(): void {
+    this.name = config.has('server.name') ? config.get<string>('server.name') : 'Farm Radio API Server';
   }
 
   private onError(error: NodeJS.ErrnoException): void {

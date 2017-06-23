@@ -5,6 +5,8 @@ const debug = require("debug");
 const debugStream = require("debug-stream");
 const format = require("bunyan-format");
 const restify = require("restify");
+const config = require("config");
+//const config = require('config');
 /**
  * ## API Server
  *
@@ -26,6 +28,7 @@ class Server {
     constructor(certificate, key) {
         this.certificate = certificate;
         this.key = key;
+        this.readConfig();
         this.createLogger();
         this.createRestifyServer();
         this.api.pre(restify.pre.sanitizePath());
@@ -81,9 +84,12 @@ class Server {
         this.api = restify.createServer({
             //certificate: fs.readFileSync(this.certificate),
             //key: fs.readFileSync(this.key),
-            name: 'Farm Radio API Server',
+            name: this.name,
             log: this.logger
         });
+    }
+    readConfig() {
+        this.name = config.has('server.name') ? config.get('server.name') : 'Farm Radio API Server';
     }
     onError(error) {
         if (error.syscall !== 'listen')
