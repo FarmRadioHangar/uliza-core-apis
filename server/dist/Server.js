@@ -6,7 +6,6 @@ const debugStream = require("debug-stream");
 const format = require("bunyan-format");
 const restify = require("restify");
 const stream = require("stream");
-const log = debug('farm-radio-api:server');
 class Server {
     constructor(certificate, key) {
         this.certificate = certificate;
@@ -27,12 +26,13 @@ class Server {
         this.api.listen(...args);
     }
     createLogger() {
-        this.transformer = new stream.Transform({ objectMode: true });
-        this.transformer._transform = (chunk, encoding, next) => {
-            this.transformer.push(chunk);
+        this.debug = debug('farm-radio-api:server');
+        const transformer = new stream.Transform({ objectMode: true });
+        transformer._transform = (chunk, encoding, next) => {
+            transformer.push(chunk);
             next();
         };
-        this.transformer.pipe(debugStream(log)());
+        transformer.pipe(debugStream(this.debug)());
         this.logger = bunyan.createLogger({
             name: 'access',
             streams: [
@@ -41,7 +41,7 @@ class Server {
                     path: 'access.log'
                 },
                 {
-                    stream: format({ outputMode: 'short' }, this.transformer)
+                    stream: format({ outputMode: 'short' }, transformer)
                 }
             ]
         });
@@ -73,7 +73,7 @@ class Server {
     onListening() {
         const addr = this.api.address();
         const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-        log(`Listening on ${bind}`);
+        this.debug(`Listening on ${bind}`);
     }
 }
 exports.default = Server;

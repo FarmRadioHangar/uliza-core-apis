@@ -1,20 +1,18 @@
 import * as bunyan      from 'bunyan';
-import * as debug from 'debug';
+import * as debug       from 'debug';
 import * as debugStream from 'debug-stream';
 import * as format      from 'bunyan-format';
 import * as fs          from 'fs';
 import * as restify     from 'restify';
 import * as stream      from 'stream';
 
-const log = debug('farm-radio-api:server');
-
 export default class Server {
 
   private api: restify.Server;
 
-  private logger: bunyan;
+  private debug: debug.IDebugger;
 
-  private transformer: stream.Transform;
+  private logger: bunyan;
 
   private certificate: string;
 
@@ -42,12 +40,13 @@ export default class Server {
   }
 
   private createLogger(): void {
-    this.transformer = new stream.Transform({ objectMode: true });
-    this.transformer._transform = (chunk: any, encoding: string, next: () => void): void => {
-      this.transformer.push(chunk); 
+    this.debug = debug('farm-radio-api:server');
+    let transformer: stream.Transform = new stream.Transform({ objectMode: true });
+    transformer._transform = (chunk: any, encoding: string, next: () => void): void => {
+      transformer.push(chunk); 
       next();
     }; 
-    this.transformer.pipe(debugStream(log)());
+    transformer.pipe(debugStream(this.debug)());
     this.logger = bunyan.createLogger({
       name: 'access',
       streams: [
@@ -56,7 +55,7 @@ export default class Server {
           path: 'access.log' 
         }, 
         { 
-          stream: format({ outputMode: 'short' }, this.transformer)
+          stream: format({ outputMode: 'short' }, transformer)
         }
       ]
     });
@@ -91,7 +90,7 @@ export default class Server {
   private onListening(): void {
     const addr = this.api.address();
     const bind: string = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-    log(`Listening on ${bind}`);
+    this.debug(`Listening on ${bind}`);
   }
 
 }

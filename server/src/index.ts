@@ -2,9 +2,6 @@ require('dotenv').config();
 
 import Server from './Server';
 
-import { BaseController }         from './controllers/BaseController';
-import { VotoResponseController } from './controllers/VotoResponseController';
-
 const server: Server = new Server('cert.pem', 'key.pem');
 
 server.listen(normalized(process.env.PORT || 3000));
@@ -18,6 +15,9 @@ function normalized(val: number|string): number|string {
   console.error('Bad port');
   process.exit(1);
 }
+
+import { BaseController }         from './controllers/BaseController';
+import { VotoResponseController } from './controllers/VotoResponseController';
 
 /* ••• Routes ••• */
 

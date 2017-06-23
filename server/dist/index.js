@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require('dotenv').config();
 const Server_1 = require("./Server");
-const BaseController_1 = require("./controllers/BaseController");
-const VotoResponseController_1 = require("./controllers/VotoResponseController");
 const server = new Server_1.default('cert.pem', 'key.pem');
 server.listen(normalized(process.env.PORT || 3000));
 function normalized(val) {
@@ -15,6 +13,8 @@ function normalized(val) {
     console.error('Bad port');
     process.exit(1);
 }
+const BaseController_1 = require("./controllers/BaseController");
+const VotoResponseController_1 = require("./controllers/VotoResponseController");
 /* ••• Routes ••• */
 const api = server.restify();
 const baseController = new BaseController_1.BaseController();
