@@ -6,7 +6,10 @@ import * as fs          from 'fs';
 import * as restify     from 'restify';
 
 /**
- * The main API Server class 
+ * ## API Server 
+ *
+ *
+ * ### Typical use
  *
  * ```
  * let server: Server = new Server('cert.pem', 'key.pem');
@@ -77,6 +80,18 @@ export default class Server {
    */
   public listen(...args: any[]): void {
     this.api.listen(...args);
+  }
+
+  public get(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
+    return this.api.get(route, routeCallBack, ...routeCallBacks);
+  }
+
+  public post(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
+    return this.api.post(route, routeCallBack, ...routeCallBacks);
+  }
+
+  public put(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
+    return this.api.put(route, routeCallBack, ...routeCallBacks);
   }
 
   private createLogger(): void {
