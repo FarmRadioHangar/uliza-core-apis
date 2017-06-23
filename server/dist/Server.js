@@ -58,6 +58,10 @@ class Server {
         if (error.syscall !== 'listen')
             throw error;
         switch (error.code) {
+            case 'EACCES':
+                console.error('Operation requires elevated privileges');
+                process.exit(1);
+                break;
             case 'EADDRINUSE':
                 console.error('Address already in use');
                 process.exit(1);
@@ -68,8 +72,7 @@ class Server {
     }
     onListening() {
         const addr = this.api.address();
-        const bind = typeof addr === 'string' ? `pipe ${addr}`
-            : `port ${addr.port}`;
+        const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
         log(`Listening on ${bind}`);
     }
 }

@@ -4,10 +4,9 @@ require('dotenv').config();
 const Server_1 = require("./Server");
 const BaseController_1 = require("./controllers/BaseController");
 const VotoResponseController_1 = require("./controllers/VotoResponseController");
-const port = normalizePort(process.env.PORT || 3000);
 const server = new Server_1.default('cert.pem', 'key.pem');
-server.listen(port);
-function normalizePort(val) {
+server.listen(normalized(process.env.PORT || 3000));
+function normalized(val) {
     const port = typeof val === 'string' ? parseInt(val, 10) : val;
     if (isNaN(port))
         return val;
@@ -16,7 +15,7 @@ function normalizePort(val) {
     console.error('Bad port');
     process.exit(1);
 }
-/* Routes */
+/* ••• Routes ••• */
 const api = server.restify();
 const baseController = new BaseController_1.BaseController();
 const votoResponseController = new VotoResponseController_1.VotoResponseController();
