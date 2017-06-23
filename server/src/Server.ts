@@ -5,18 +5,47 @@ import * as format      from 'bunyan-format';
 import * as fs          from 'fs';
 import * as restify     from 'restify';
 
+/**
+ * The main API Server class 
+ *
+ * ```
+ * let server: Server = new Server('cert.pem', 'key.pem');
+ * server.listen(3000);
+ * ```
+ */
 export default class Server {
 
+  /**
+   * @see http://restify.com/#server-api
+   */
   private api: restify.Server;
 
+  /**
+   * @see https://github.com/visionmedia/debug#debug 
+   */
   private debug: debug.IDebugger;
 
+  /**
+   * @see https://github.com/trentm/node-bunyan
+   */
   private logger: bunyan;
 
+  /**
+   * Path to a PEM-encoded certificate.
+   */
   private certificate: string;
 
+  /**
+   * Path to a PEM-encoded key.
+   */
   private key: string;
 
+  /**
+   * Creates and initializes the API server.
+   *
+   * @param certificate Path to a PEM-encoded certificate.
+   * @param key Path to a PEM-encoded key.
+   */
   constructor(certificate: string, key: string) {
     this.certificate = certificate;
     this.key = key;
@@ -30,10 +59,22 @@ export default class Server {
     this.api.on('listening', this.onListening.bind(this));
   }
 
+  /**
+   * Use this method to directly access the restify server.
+   *
+   * @see http://restify.com/#server-api
+   *
+   * @returns A restify server instance.
+   */
   public restify(): restify.Server {
     return this.api;
   }
 
+  /**
+   * Begin accepting connections.
+   * 
+   * @see https://nodejs.org/docs/latest/api/http.html#http_server_listen_port_hostname_backlog_callback
+   */
   public listen(...args: any[]): void {
     this.api.listen(...args);
   }

@@ -1,8 +1,6 @@
 require('dotenv').config();
 
-import Server from './Server';
-
-const server: Server = new Server('cert.pem', 'key.pem');
+import server from './app';
 
 server.listen(normalized(process.env.PORT || 3000));
 
@@ -15,19 +13,3 @@ function normalized(val: number|string): number|string {
   console.error('Bad port');
   process.exit(1);
 }
-
-import { BaseController }         from './controllers/BaseController';
-import { VotoResponseController } from './controllers/VotoResponseController';
-
-/* ••• Routes ••• */
-
-const api = server.restify();
-
-const baseController = new BaseController();
-const votoResponseController = new VotoResponseController();
-
-api.get({path: '/v1/', version: '1.0.0'}, baseController.get);
-
-/* Webhooks API */
-
-api.post({path: '/v1/webhooks/voto/response', version: '1.0.0'}, votoResponseController.hook);
