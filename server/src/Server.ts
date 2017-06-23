@@ -1,19 +1,41 @@
-import * as fs from 'fs';
-import * as restify from 'restify';
-import * as bunyan from 'bunyan';
+import * as bunyan      from 'bunyan';
+import * as debug       from 'debug';
+import * as debugStream from 'debug-stream';
+import * as format      from 'bunyan-format';
+import * as fs          from 'fs';
+import * as restify     from 'restify';
+import * as stream      from 'stream';
+
 import { BaseController } from './controllers/BaseController';
 import { VotoResponseController } from './controllers/VotoResponseController';
 
+const transformer: stream.Transform = new stream.Transform({ 
+  objectMode: true 
+});
+
+transformer._transform = function(chunk: any, encoding: string, next: Function): void {
+  this.push(chunk); 
+  next();
+}
+
+transformer.pipe(debugStream('farm-radio-api:server')());
+
 let logger: bunyan = bunyan.createLogger({
   name: 'audit',
-  streams: [{
-    path: 'access.log'
-  }]
+  streams: [
+    { 
+      level: 'debug',
+      path: 'access.log' 
+    }, 
+    { 
+      stream: format({ outputMode: 'short' }, transformer)
+    }
+  ]
 });
 
 let api: restify.Server = restify.createServer({
-  //  certificate: fs.readFileSync('cert.pem'),
-  //  key: fs.readFileSync('key.pem'),
+  //certificate: fs.readFileSync('cert.pem'),
+  //key: fs.readFileSync('key.pem'),
   name: 'Farm Radio API Server',
   log: logger
 });

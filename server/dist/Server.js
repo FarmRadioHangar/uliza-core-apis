@@ -1,18 +1,63 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const restify = require("restify");
 const bunyan = require("bunyan");
+const debugStream = require("debug-stream");
+const format = require("bunyan-format");
+const restify = require("restify");
+const stream = require("stream");
 const BaseController_1 = require("./controllers/BaseController");
 const VotoResponseController_1 = require("./controllers/VotoResponseController");
+const transformer = new stream.Transform({ objectMode: true });
+transformer._transform = function (chunk, encoding, next) {
+    this.push(chunk);
+    next();
+};
+transformer.pipe(debugStream('farm-radio-api:server')());
 let logger = bunyan.createLogger({
     name: 'audit',
-    streams: [{
+    streams: [
+        {
+            level: 'debug',
             path: 'access.log'
-        }]
+        },
+        {
+            stream: format({ outputMode: 'short' }, transformer)
+        }
+    ]
 });
+// var Trans = require('stream').Transform;
+// 
+// import { BaseController } from './controllers/BaseController';
+// import { VotoResponseController } from './controllers/VotoResponseController';
+// 
+// var debugStream = require('debug-stream')('farm-radio-api:server');
+// 
+// //const transformer = new stream.Transform({ objectMode: true });
+// const transformer = new Trans({ objectMode: true });
+// 
+// transformer._transform = (chunk: any, encoding: string, next: Function): void => {
+//   this.push(chunk); 
+//   next();
+// }
+// 
+// transformer.pipe(debugStream());
+// 
+// let logger: bunyan = bunyan.createLogger({
+//   name: 'audit',
+//   streams: [
+//     { 
+//       level: 'debug',
+//       path: 'access.log' 
+//     }, 
+//     { 
+//       level: 'debug',
+//       stream: format({ outputMode: 'short' }, transformer)
+//     }
+//   ]
+// });
 let api = restify.createServer({
-    //  certificate: fs.readFileSync('cert.pem'),
-    //  key: fs.readFileSync('key.pem'),
+    //certificate: fs.readFileSync('cert.pem'),
+    //key: fs.readFileSync('key.pem'),
     name: 'Farm Radio API Server',
     log: logger
 });

@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 import * as debug from 'debug';
-import server from './Server';
+import server     from './Server';
 
 const log = debug('farm-radio-api:server');
 const port = normalizePort(process.env.PORT || 3000);
