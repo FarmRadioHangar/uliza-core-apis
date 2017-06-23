@@ -6,7 +6,10 @@ const debugStream = require("debug-stream");
 const format = require("bunyan-format");
 const restify = require("restify");
 /**
- * The main API Server class
+ * ## API Server
+ *
+ *
+ * ### Typical use
  *
  * ```
  * let server: Server = new Server('cert.pem', 'key.pem');
@@ -33,7 +36,7 @@ class Server {
         this.api.on('listening', this.onListening.bind(this));
     }
     /**
-     * Use this method to get direct access the restify server.
+     * Use this method to directly access the restify server.
      *
      * @see http://restify.com/#server-api
      *
@@ -49,6 +52,15 @@ class Server {
      */
     listen(...args) {
         this.api.listen(...args);
+    }
+    get(route, routeCallBack, ...routeCallBacks) {
+        return this.api.get(route, routeCallBack, ...routeCallBacks);
+    }
+    post(route, routeCallBack, ...routeCallBacks) {
+        return this.api.post(route, routeCallBack, ...routeCallBacks);
+    }
+    put(route, routeCallBack, ...routeCallBacks) {
+        return this.api.put(route, routeCallBack, ...routeCallBacks);
     }
     createLogger() {
         this.debug = debug('farm-radio-api:server');

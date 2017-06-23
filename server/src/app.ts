@@ -4,8 +4,7 @@ import Server from './Server';
 import { BaseController }         from './controllers/BaseController';
 import { VotoResponseController } from './controllers/VotoResponseController';
 
-const server: Server = new Server('cert.pem', 'key.pem');
-const api: restify.Server = server.restify();
+const api: Server = new Server('cert.pem', 'key.pem');
 
 /* ••• Routes ••• */
 
@@ -18,4 +17,4 @@ api.get({path: '/v1/', version: '1.0.0'}, baseController.get);
 
 api.post({path: '/v1/webhooks/voto/response', version: '1.0.0'}, votoResponseController.hook);
 
-export default server;
+export default api;
