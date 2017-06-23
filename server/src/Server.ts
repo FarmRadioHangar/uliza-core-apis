@@ -4,7 +4,6 @@ import * as debugStream from 'debug-stream';
 import * as format      from 'bunyan-format';
 import * as fs          from 'fs';
 import * as restify     from 'restify';
-import * as stream      from 'stream';
 
 export default class Server {
 
@@ -41,12 +40,6 @@ export default class Server {
 
   private createLogger(): void {
     this.debug = debug('farm-radio-api:server');
-    let transformer: stream.Transform = new stream.Transform({ objectMode: true });
-    transformer._transform = (chunk: any, encoding: string, next: () => void): void => {
-      transformer.push(chunk); 
-      next();
-    }; 
-    transformer.pipe(debugStream(this.debug)());
     this.logger = bunyan.createLogger({
       name: 'access',
       streams: [
@@ -55,7 +48,7 @@ export default class Server {
           path: 'access.log' 
         }, 
         { 
-          stream: format({ outputMode: 'short' }, transformer)
+          stream: format({ outputMode: 'short' }, debugStream(this.debug)())
         }
       ]
     });
