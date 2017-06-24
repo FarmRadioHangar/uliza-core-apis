@@ -50,7 +50,7 @@ export default class Server {
   private name: string;
 
   /**
-   * Creates and initializes the API server.
+   * Create and initialize the API server.
    *
    * @param certificate Path to a PEM-encoded certificate.
    * @param key Path to a PEM-encoded key.
@@ -70,7 +70,8 @@ export default class Server {
   }
 
   /**
-   * Use this method to directly access the restify server.
+   * Return the restify server. Use this method to directly access the restify 
+   * server API.
    *
    * @see http://restify.com/#server-api
    *
@@ -101,6 +102,9 @@ export default class Server {
     return this.api.put(route, routeCallBack, ...routeCallBacks);
   }
 
+  /**
+   * @private
+   */
   private createLogger(): void {
     this.debug = debug('farm-radio-api:server');
     this.logger = bunyan.createLogger({
@@ -117,6 +121,9 @@ export default class Server {
     });
   }
 
+  /**
+   * @private
+   */
   private createRestifyServer(): void {
     this.api = restify.createServer({
       //certificate: fs.readFileSync(this.certificate),
@@ -126,10 +133,16 @@ export default class Server {
     });
   }
 
+  /**
+   * @private
+   */
   private readConfig(): void {
     this.name = config.has('server.name') ? config.get<string>('server.name') : 'Farm Radio API Server';
   }
 
+  /**
+   * @private
+   */
   private onError(error: NodeJS.ErrnoException): void {
     if (error.syscall !== 'listen') 
       throw error;
@@ -147,6 +160,9 @@ export default class Server {
     }
   }
 
+  /**
+   * @private
+   */
   private onListening(): void {
     const addr = this.api.address();
     const bind: string = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
