@@ -5,7 +5,6 @@
 * [Node.js](https://nodejs.org/)
 * [restify](http://restify.com/)
 * [TypeScript](http://www.typescriptlang.org/)
-* [TypeDoc](http://typedoc.org/)
 
 ## Install
 
@@ -54,6 +53,8 @@ npm test
 
 ### Access logs
 
+### Debug logging
+
 ```
 DEBUG=farm-radio-api*
 ```
@@ -97,6 +98,8 @@ gulp typedoc
 ```
 
 ### Typedoc conventions
+
+* [TypeDoc](http://typedoc.org/)
 
 ## API design standards, tools and documentation 
 
