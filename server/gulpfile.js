@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const ts = require('gulp-typescript');
-var typedoc = require("gulp-typedoc");
+const typedoc = require("gulp-typedoc");
 const JSON_FILES = ['src/*.json', 'src/**/*.json'];
 
 // Pull in TypeScript config
