@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/index.js",
-    "test": "mocha --reporter spec --compilers ts:ts-node/register 'test/**/*.test.ts'"
+    "test": "mocha --reporter spec --compilers ts:ts-node/register 'test/**/*.test.ts'",
+    "build": "gulp scripts",
+    "docs": "gulp typedoc"
   },
   "devDependencies": {
     "@types/bunyan": "^1.8.0",
