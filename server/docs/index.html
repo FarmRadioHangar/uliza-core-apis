@@ -64,7 +64,80 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="uliza-core-apis">uliza-core-apis</h1>
+				<h1 id="farm-radio-apis">farm-radio-apis</h1>
+				<h2 id="technologies">Technologies</h2>
+				<ul>
+					<li><a href="https://nodejs.org/">Node.js</a></li>
+					<li><a href="http://restify.com/">restify</a></li>
+					<li><a href="http://www.typescriptlang.org/">TypeScript</a></li>
+				</ul>
+				<h2 id="install">Install</h2>
+				<pre><code>npm <span class="hljs-keyword">install</span>
+</code></pre><h2 id="build">Build</h2>
+				<pre><code><span class="hljs-attribute">gulp scripts</span>
+</code></pre><h2 id="run">Run</h2>
+				<pre><code><span class="hljs-built_in">npm</span> start
+</code></pre><h3 id="environment-variables">Environment variables</h3>
+				<ul>
+					<li><code>PORT</code></li>
+					<li><code>DEBUG</code></li>
+					<li><code>NODE_CONFIG_DIR</code></li>
+				</ul>
+				<h3 id="configuration">Configuration</h3>
+				<h4 id="sample-configuration-file">Sample configuration file</h4>
+				<pre><code><span class="hljs-comment"># config/default.toml</span>
+<span class="hljs-section">
+[server]</span>
+<span class="hljs-attr">name</span> = <span class="hljs-string">"Farm Radio API Server"</span>
+</code></pre><p>The configuration file follows the <a href="https://github.com/toml-lang/toml">TOML language format</a>.</p>
+				<h2 id="tests">Tests</h2>
+				<pre><code>npm <span class="hljs-built_in">test</span>
+</code></pre><h2 id="logging">Logging</h2>
+				<h3 id="access-logs">Access logs</h3>
+				<h3 id="debug-logging">Debug logging</h3>
+				<pre><code><span class="hljs-attr">DEBUG</span>=farm-radio-api*
+</code></pre><pre><code>  farm-radio-api:<span class="hljs-built_in">server</span> Listening <span class="hljs-keyword">on</span> port <span class="hljs-number">3000</span> +<span class="hljs-number">0</span>ms
+  farm-radio-api:<span class="hljs-built_in">server</span> <span class="hljs-number">19</span>:<span class="hljs-number">20</span>:<span class="hljs-number">04.667</span>Z  INFO access: handled: <span class="hljs-number">200</span> (req_id=bec6e57a<span class="hljs-number">-5</span>d7d<span class="hljs-number">-4</span>b08<span class="hljs-number">-96</span>b6<span class="hljs-number">-0</span>a494785eeca, audit=<span class="hljs-literal">true</span>, remoteAddress=::ffff:<span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>, remotePort=<span class="hljs-number">34456</span>, latency=<span class="hljs-number">15</span>, _audit=<span class="hljs-literal">true</span>, req.query=<span class="hljs-string">""</span>, req.version=*)
+  farm-radio-api:<span class="hljs-built_in">server</span>   <span class="hljs-keyword">GET</span> /v1 HTTP/<span class="hljs-number">1.1</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   host: localhost:<span class="hljs-number">3000</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   user-agent: curl/<span class="hljs-number">7.47</span><span class="hljs-number">.0</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   accept: */*
+  farm-radio-api:<span class="hljs-built_in">server</span>   --
+  farm-radio-api:<span class="hljs-built_in">server</span>   HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span> OK
+  farm-radio-api:<span class="hljs-built_in">server</span>   content-type: application/json
+  farm-radio-api:<span class="hljs-built_in">server</span>   content-length: <span class="hljs-number">30</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   access-control-allow-origin: *
+  farm-radio-api:<span class="hljs-built_in">server</span>   access-control-allow-headers: Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, <span class="hljs-built_in">Date</span>, Api-Version, <span class="hljs-built_in">Response</span>-<span class="hljs-built_in">Time</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   access-control-allow-methods: <span class="hljs-keyword">GET</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   access-control-expose-headers: Api-Version, <span class="hljs-built_in">Request</span>-Id, <span class="hljs-built_in">Response</span>-<span class="hljs-built_in">Time</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   connection: Keep-Alive
+  farm-radio-api:<span class="hljs-built_in">server</span>   content-md5: <span class="hljs-number">8</span>WSaLe+pZBG3qEISB4dMVA==
+  farm-radio-api:<span class="hljs-built_in">server</span>   <span class="hljs-built_in">date</span>: Sat, <span class="hljs-number">24</span> Jun <span class="hljs-number">2017</span> <span class="hljs-number">19</span>:<span class="hljs-number">20</span>:<span class="hljs-number">04</span> GMT
+  farm-radio-api:<span class="hljs-built_in">server</span>   <span class="hljs-built_in">server</span>: Farm Radio API <span class="hljs-built_in">Server</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   <span class="hljs-built_in">request</span>-id: bec6e57a<span class="hljs-number">-5</span>d7d<span class="hljs-number">-4</span>b08<span class="hljs-number">-96</span>b6<span class="hljs-number">-0</span>a494785eeca
+  farm-radio-api:<span class="hljs-built_in">server</span>   <span class="hljs-built_in">response</span>-<span class="hljs-built_in">time</span>: <span class="hljs-number">15</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   --
+  farm-radio-api:<span class="hljs-built_in">server</span>   req.timers: {
+  farm-radio-api:<span class="hljs-built_in">server</span>     <span class="hljs-string">"_sanitizePath"</span>: <span class="hljs-number">472</span>,
+  farm-radio-api:<span class="hljs-built_in">server</span>     <span class="hljs-string">"restifyResponseHeaders"</span>: <span class="hljs-number">143</span>,
+  farm-radio-api:<span class="hljs-built_in">server</span>     <span class="hljs-string">"readBody"</span>: <span class="hljs-number">507</span>,
+  farm-radio-api:<span class="hljs-built_in">server</span>     <span class="hljs-string">"parseBody"</span>: <span class="hljs-number">145</span>,
+  farm-radio-api:<span class="hljs-built_in">server</span>     <span class="hljs-string">"get"</span>: <span class="hljs-number">5731</span>
+  farm-radio-api:<span class="hljs-built_in">server</span>   }
+  farm-radio-api:<span class="hljs-built_in">server</span>  +<span class="hljs-number">2</span>s
+</code></pre><h2 id="documentation">Documentation</h2>
+				<pre><code><span class="hljs-attribute">gulp typedoc</span>
+</code></pre><h3 id="typedoc-conventions">Typedoc conventions</h3>
+				<ul>
+					<li><a href="http://typedoc.org/">TypeDoc</a></li>
+				</ul>
+				<h2 id="api-design-standards-tools-and-documentation">API design standards, tools and documentation</h2>
+				<ul>
+					<li><a href="http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api">http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api</a></li>
+					<li><a href="https://github.com/WhiteHouse/api-standards">https://github.com/WhiteHouse/api-standards</a></li>
+					<li><a href="http://dredd.readthedocs.io/en/latest/">http://dredd.readthedocs.io/en/latest/</a></li>
+				</ul>
+				<h2 id="coding-style-conventions">Coding style conventions</h2>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

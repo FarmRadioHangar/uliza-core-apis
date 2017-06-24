@@ -15,7 +15,7 @@ npm install
 ## Build
 
 ```
-gulp scripts
+npm run build
 ```
 
 ## Run
@@ -94,7 +94,7 @@ DEBUG=farm-radio-api*
 ## Documentation
 
 ```
-gulp typedoc
+npm run docs
 ```
 
 ### Typedoc conventions
