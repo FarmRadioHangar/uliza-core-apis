@@ -6,7 +6,6 @@ const debugStream = require("debug-stream");
 const format = require("bunyan-format");
 const restify = require("restify");
 const config = require("config");
-//const config = require('config');
 /**
  * ## API Server
  *
