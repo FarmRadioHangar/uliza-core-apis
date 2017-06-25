@@ -41,7 +41,7 @@ npm start
 name = "Farm Radio API Server"
 ```
 
-The configuration file follows the [TOML language format](https://github.com/toml-lang/toml).
+The configuration file uses the [TOML language format](https://github.com/toml-lang/toml).
 
 ## Tests
 
