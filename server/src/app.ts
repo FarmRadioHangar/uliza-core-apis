@@ -1,10 +1,12 @@
 import * as restify from 'restify';
 import Server from './Server';
+import { Voto } from './voto/Api';
 
 import { BaseController }         from './controllers/BaseController';
 import { VotoResponseController } from './controllers/VotoResponseController';
 
 const api: Server = new Server('cert.pem', 'key.pem');
+const voto: Voto.Api = new Voto.Api();
 
 /* ••• Routes ••• */
 
