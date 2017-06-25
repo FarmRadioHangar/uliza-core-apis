@@ -8,6 +8,8 @@ import { VotoResponseController } from './controllers/VotoResponseController';
 const api: Server = new Server('cert.pem', 'key.pem');
 const voto: Voto.Api = new Voto.Api();
 
+console.log(voto.buildUrl('trees', { limit: 10 }));
+
 /* ••• Routes ••• */
 
 const baseController = new BaseController();

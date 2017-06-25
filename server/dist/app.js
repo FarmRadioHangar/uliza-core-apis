@@ -6,6 +6,7 @@ const BaseController_1 = require("./controllers/BaseController");
 const VotoResponseController_1 = require("./controllers/VotoResponseController");
 const api = new Server_1.default('cert.pem', 'key.pem');
 const voto = new Api_1.Voto.Api();
+console.log(voto.buildUrl('trees', { limit: 10 }));
 /* ••• Routes ••• */
 const baseController = new BaseController_1.BaseController();
 const votoResponseController = new VotoResponseController_1.VotoResponseController();
