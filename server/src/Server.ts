@@ -20,17 +20,17 @@ import * as config      from 'config';
 export default class Server {
 
   /**
-   * @see http://restify.com/#server-api
+   * @see {@link http://restify.com/#server-api}
    */
   private api: restify.Server;
 
   /**
-   * @see https://github.com/visionmedia/debug#debug 
+   * @see {@link https://github.com/visionmedia/debug#debug}
    */
   private debug: debug.IDebugger;
 
   /**
-   * @see https://github.com/trentm/node-bunyan
+   * @see {@link https://github.com/trentm/node-bunyan}
    */
   private logger: bunyan;
 
@@ -73,7 +73,7 @@ export default class Server {
    * Return the restify server. Use this method to directly access the restify 
    * server API.
    *
-   * @see http://restify.com/#server-api
+   * @see {@link http://restify.com/#server-api}
    *
    * @returns A restify server instance.
    */
@@ -84,7 +84,7 @@ export default class Server {
   /**
    * Begin accepting connections.
    * 
-   * @see https://nodejs.org/docs/latest/api/http.html#http_server_listen_port_hostname_backlog_callback
+   * @see {@link https://nodejs.org/docs/latest/api/http.html#http_server_listen_port_hostname_backlog_callback}
    */
   public listen(...args: any[]): void {
     this.api.listen(...args);
