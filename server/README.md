@@ -107,4 +107,4 @@ npm run docs
 * https://github.com/WhiteHouse/api-standards
 * http://dredd.readthedocs.io/en/latest/
 
-## Coding style conventions
+## Coding style 
