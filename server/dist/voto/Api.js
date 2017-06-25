@@ -5,7 +5,7 @@ var Voto;
     class Api {
         constructor(baseUrl = 'https://go.votomobile.org/api/v1/') {
             this.url = baseUrl.replace(/\/$/g, '');
-            this.key = '';
+            this.key = process.env.VOTO_KEY; // @TODO
         }
         buildUrl(endpoint, params) {
             const { limit, pageAfter, pageBefore } = params;

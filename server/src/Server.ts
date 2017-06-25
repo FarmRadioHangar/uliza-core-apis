@@ -108,7 +108,9 @@ export default class Server {
    * @private
    */
   private createLogger(): void {
-    const logPath: string = config.has('logs.access.path') ? config.get<string>('logs.access.path') : '';
+    const logPath: string = config.has('logs.access.path') 
+      ? config.get<string>('logs.access.path') 
+      : '';
     this.debug = debug('farm-radio-api:server');
     this.logger = bunyan.createLogger({
       name: 'access',
@@ -140,7 +142,9 @@ export default class Server {
    * @private
    */
   private readConfig(): void {
-    this.name = config.has('server.name') ? config.get<string>('server.name') : 'Farm Radio API Server';
+    this.name = config.has('server.name') 
+      ? config.get<string>('server.name') 
+      : 'Farm Radio API Server';
   }
 
   /**
@@ -168,7 +172,9 @@ export default class Server {
    */
   private onListening(): void {
     const addr = this.api.address();
-    const bind: string = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+    const bind: string = typeof addr === 'string' 
+      ? `pipe ${addr}` 
+      : `port ${addr.port}`;
     this.debug(`Listening on ${bind}`);
   }
 

@@ -30,7 +30,7 @@ export namespace Voto {
 
     constructor(baseUrl: string = 'https://go.votomobile.org/api/v1/') {
       this.url = baseUrl.replace(/\/$/g, '');
-      this.key = '';
+      this.key = process.env.VOTO_KEY;  // @TODO
     }
 
     public buildUrl(endpoint: string, params: RequestParams): string {
