@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const bunyan = require("bunyan");
+const config = require("config");
 const debug = require("debug");
 const debugStream = require("debug-stream");
 const format = require("bunyan-format");
+const normalize = require("normalize-path");
+const path = require("path");
 const restify = require("restify");
-const config = require("config");
 /**
  * ## API Server
  *
@@ -41,7 +43,7 @@ class Server {
      * Return the restify server. Use this method to directly access the restify
      * server API.
      *
-     * @see http://restify.com/#server-api
+     * @see {@link http://restify.com/#server-api}
      *
      * @returns A restify server instance.
      */
@@ -51,7 +53,7 @@ class Server {
     /**
      * Begin accepting connections.
      *
-     * @see https://nodejs.org/docs/latest/api/http.html#http_server_listen_port_hostname_backlog_callback
+     * @see {@link https://nodejs.org/docs/latest/api/http.html#http_server_listen_port_hostname_backlog_callback}
      */
     listen(...args) {
         this.api.listen(...args);
@@ -69,13 +71,16 @@ class Server {
      * @private
      */
     createLogger() {
+        const p = config.has('logs.access.path')
+            ? config.get('logs.access.path') : '';
         this.debug = debug('farm-radio-api:server');
+        console.log(`${normalize(path.normalize(p))}/access.log`);
         this.logger = bunyan.createLogger({
             name: 'access',
             streams: [
                 {
                     level: 'debug',
-                    path: 'access.log'
+                    path: `${normalize(path.normalize(p))}/access.log`
                 },
                 {
                     stream: format({ outputMode: 'short' }, debugStream(this.debug)())

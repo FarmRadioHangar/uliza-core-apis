@@ -35,6 +35,7 @@
     "debug": "^2.6.8",
     "debug-stream": "^3.0.1",
     "dotenv": "^4.0.0",
+    "normalize-path": "^2.1.1",
     "restify": "^4.3.0",
     "toml": "^2.3.2"
   }

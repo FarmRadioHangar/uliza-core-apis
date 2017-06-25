@@ -1,10 +1,12 @@
 import * as bunyan      from 'bunyan';
+import * as config      from 'config';
 import * as debug       from 'debug';
 import * as debugStream from 'debug-stream';
 import * as format      from 'bunyan-format';
 import * as fs          from 'fs';
+import * as normalize   from 'normalize-path';
+import * as path        from 'path';
 import * as restify     from 'restify';
-import * as config      from 'config';
 
 /**
  * ## API Server 
@@ -106,13 +108,15 @@ export default class Server {
    * @private
    */
   private createLogger(): void {
+    const p = config.has('logs.access.path') 
+        ? config.get<string>('logs.access.path') : '';
     this.debug = debug('farm-radio-api:server');
     this.logger = bunyan.createLogger({
       name: 'access',
       streams: [
         { 
           level: 'debug',
-          path: 'access.log' 
+          path: `${normalize(path.normalize(p))}/access.log`
         }, 
         { 
           stream: format({ outputMode: 'short' }, debugStream(this.debug)())
