@@ -39,6 +39,10 @@ npm start
 
 [server]
 name = "Farm Radio API Server"
+
+[logs]
+  [logs.access]
+    path = "./tmp/logs/"
 ```
 
 The configuration file uses the [TOML language format](https://github.com/toml-lang/toml).
