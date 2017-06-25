@@ -71,16 +71,15 @@ class Server {
      * @private
      */
     createLogger() {
-        const p = config.has('logs.access.path')
+        const logPath = config.has('logs.access.path')
             ? config.get('logs.access.path') : '';
         this.debug = debug('farm-radio-api:server');
-        console.log(`${normalize(path.normalize(p))}/access.log`);
         this.logger = bunyan.createLogger({
             name: 'access',
             streams: [
                 {
                     level: 'debug',
-                    path: `${normalize(path.normalize(p))}/access.log`
+                    path: `${normalize(path.normalize(logPath))}/access.log`
                 },
                 {
                     stream: format({ outputMode: 'short' }, debugStream(this.debug)())
