@@ -97,7 +97,7 @@ DEBUG=farm-radio-api*
 npm run docs
 ```
 
-### Typedoc conventions
+### TypeDoc conventions
 
 * [TypeDoc](http://typedoc.org/)
 
