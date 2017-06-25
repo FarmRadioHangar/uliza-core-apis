@@ -24,8 +24,14 @@ export namespace Voto {
 
   export class Api {
 
+    /**
+     * VOTO API base url
+     */
     private url: string;
 
+    /**
+     * VOTO API key
+     */ 
     private key: string;
 
     constructor(baseUrl: string = 'https://go.votomobile.org/api/v1/') {
