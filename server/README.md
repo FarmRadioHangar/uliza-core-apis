@@ -1,45 +1,43 @@
 # farm-radio-apis
 
 The purpose of the Farm Radio APIs is to provide a single point of access to 
-digital resources within the organization's application infrastructure, and a 
-unified interface for external applications to interact with the FRI service 
+all digital resources within the organization's application infrastructure, and 
+a unified interface for external applications to interact with the FRI service 
 platform.
 
-## Technologies
+## Project setup
 
-* [Node.js](https://nodejs.org/)
-* [restify](http://restify.com/)
-* [TypeScript](http://www.typescriptlang.org/)
-
-## Install
+### Install
 
 ```
 npm install
 ```
 
-## Build
+### Build
 
 ```
 npm run build
 ```
 
-## Migrations
+### Database migrations
 
-## Run
+### Configuration
 
-```
-npm start
-```
-
-### Environment variables
+#### Environment variables
 
 * `PORT`
 * `DEBUG`
 * `NODE_CONFIG_DIR`
 
-### Configuration
+##### Sample .env file
 
-#### Sample configuration file
+```
+DEBUG=farm-radio-api*
+```
+
+#### Config file
+
+##### Sample configuration file
 
 ```
 # config/default.toml
@@ -52,12 +50,20 @@ name = "Farm Radio API Server"
     path = "./tmp/logs/"
 ```
 
+##### Format
+
 The configuration file uses the [TOML language format](https://github.com/toml-lang/toml).
 
-## Tests
+### Tests
 
 ```
 npm test
+```
+
+### Run
+
+```
+npm start
 ```
 
 ## Logging
@@ -114,14 +120,28 @@ npm run docs
 
 * [GitHub hosted documentation](https://farmradiohangar.github.io/uliza-core-apis/server/docs/index.html)
 
+## Contribute
+
+### Technologies
+
+* [Node.js](https://nodejs.org/)
+* [restify](http://restify.com/)
+* [TypeScript](http://www.typescriptlang.org/)
+
+### Architecture, data formats, and protocols
+
+* [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
+
+### Coding style 
+
+* See [TypeScript StyleGuide and Coding Conventions](https://github.com/basarat/typescript-book/blob/master/docs/styleguide/styleguide.md#typescript-styleguide-and-coding-conventions)
+
 ### TypeDoc conventions
 
 * [TypeDoc](http://typedoc.org/)
 
-## API design standards, tools and documentation 
+### API design standards and tools 
 
 * http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
 * https://github.com/WhiteHouse/api-standards
 * http://dredd.readthedocs.io/en/latest/
-
-## Coding style 

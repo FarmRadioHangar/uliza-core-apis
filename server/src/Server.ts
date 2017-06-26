@@ -9,7 +9,7 @@ import * as path        from 'path';
 import * as restify     from 'restify';
 
 /**
- * ## API Server 
+ * ## RESTful API Server 
  *
  *
  * ### Typical use
