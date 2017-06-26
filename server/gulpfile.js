@@ -26,7 +26,8 @@ gulp.task('typedoc', function() {
       module: 'commonjs',
       target: 'es6',
       out: 'docs/',
-      name: 'Farm Radio APIs'
+      name: 'Farm Radio APIs',
+      readme: 'none'
   }));
 });
 
