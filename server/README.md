@@ -63,6 +63,8 @@ npm test
 DEBUG=farm-radio-api*
 ```
 
+Here is an example of what the log output may look like.
+
 ```
   farm-radio-api:server Listening on port 3000 +0ms
   farm-radio-api:server 19:20:04.667Z  INFO access: handled: 200 (req_id=bec6e57a-5d7d-4b08-96b6-0a494785eeca, audit=true, remoteAddress=::ffff:127.0.0.1, remotePort=34456, latency=15, _audit=true, req.query="", req.version=*)
