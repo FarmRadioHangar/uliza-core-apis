@@ -103,7 +103,7 @@ npm run docs
 
 ### Online docs
 
-* [GitHub hosted documentation](https://farmradiohangar.github.io/{{ site.github.project_title }}/server/docs/index.html)
+* [GitHub hosted documentation](https://farmradiohangar.github.io/uliza-core-apis/server/docs/index.html)
 
 ### TypeDoc conventions
 
