@@ -1,5 +1,10 @@
 # farm-radio-apis
 
+The purpose of the Farm Radio APIs is to provide a single point of access to 
+digital resources within the organization's application infrastructure, and a 
+unified interface for external applications to interact with the FRI service 
+platform.
+
 ## Technologies
 
 * [Node.js](https://nodejs.org/)
