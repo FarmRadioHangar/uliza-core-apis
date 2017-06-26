@@ -14,7 +14,7 @@ describe('Application base endpoint', () => {
 
   it('should return json', () => {
     return chai.request(app.restify().server).get('/api/v1').then(res => {
-        expect(res.type).to.eql('application/json');
+      expect(res.type).to.eql('application/json');
     });
   });
 

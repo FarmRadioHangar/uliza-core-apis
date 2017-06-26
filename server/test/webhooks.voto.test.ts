@@ -14,7 +14,7 @@ describe('VOTO response webhook', () => {
 
   it('should respond with 200 OK', () => {
     return chai.request(app.restify().server).post('/api/v1/webhooks/voto/response').then(res => {
-        expect(res.status).to.eql(200);
+      expect(res.status).to.eql(200);
     });
   });
 
