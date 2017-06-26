@@ -128,6 +128,8 @@ export default class Server {
 
   /**
    * @private
+   *
+   * @see {@link http://restify.com/#creating-a-server}
    */
   private createRestifyServer(): void {
     this.api = restify.createServer({
