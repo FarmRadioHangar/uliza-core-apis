@@ -22,6 +22,9 @@ export namespace Voto {
 
   }
 
+  /**
+   * VOTO API client base class
+   */
   export class Api {
 
     /**
