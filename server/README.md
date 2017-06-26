@@ -101,6 +101,10 @@ DEBUG=farm-radio-api*
 npm run docs
 ```
 
+### Online docs
+
+* [GitHub hosted documentation](https://farmradiohangar.github.io/{{ site.github.project_title }}/server/docs/index.html)
+
 ### TypeDoc conventions
 
 * [TypeDoc](http://typedoc.org/)
