@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>VotoResponseController | Farm Radio APIs</title>
+	<title>Api | Farm Radio APIs</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,16 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_controllers_votoresponsecontroller_.html">&quot;controllers/VotoResponseController&quot;</a>
+					<a href="../modules/_voto_api_.html">&quot;voto/Api&quot;</a>
 				</li>
 				<li>
-					<a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html">VotoResponseController</a>
+					<a href="../modules/_voto_api_.voto.html">Voto</a>
+				</li>
+				<li>
+					<a href="_voto_api_.voto.api.html">Api</a>
 				</li>
 			</ul>
-			<h1>Class VotoResponseController</h1>
+			<h1>Class Api</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +76,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">VotoResponseController</span>
+						<span class="target">Api</span>
 					</li>
 				</ul>
 			</section>
@@ -84,13 +87,20 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_voto_api_.voto.api.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_voto_api_.voto.api.html#key" class="tsd-kind-icon">key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_voto_api_.voto.api.html#url" class="tsd-kind-icon">url</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html#hook" class="tsd-kind-icon">hook</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_voto_api_.voto.api.html#buildurl" class="tsd-kind-icon">build<wbr>Url</a></li>
 							</ul>
 						</section>
 					</div>
@@ -102,48 +112,97 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Voto<wbr>Response<wbr>Controller<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html" class="tsd-signature-type">VotoResponseController</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Api<span class="tsd-signature-symbol">(</span>baseUrl<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_voto_api_.voto.api.html" class="tsd-signature-type">Api</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/FarmRadioHangar/uliza-core-apis/blob/054ad38/server/src/controllers/VotoResponseController.ts#L3">controllers/VotoResponseController.ts:3</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html" class="tsd-signature-type">VotoResponseController</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="hook" class="tsd-anchor"></a>
-					<h3>hook</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">hook<span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Request</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Next</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/FarmRadioHangar/uliza-core-apis/blob/054ad38/server/src/controllers/VotoResponseController.ts#L7">controllers/VotoResponseController.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/FarmRadioHangar/uliza-core-apis/blob/054ad38/server/src/voto/Api.ts#L35">voto/Api.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>req: <span class="tsd-signature-type">Request</span></h5>
-								</li>
-								<li>
-									<h5>res: <span class="tsd-signature-type">Response</span></h5>
-								</li>
-								<li>
-									<h5>next: <span class="tsd-signature-type">Next</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> baseUrl: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://go.votomobile.org/api/v1/&quot;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_voto_api_.voto.api.html" class="tsd-signature-type">Api</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="key" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> key</h3>
+					<div class="tsd-signature tsd-kind-icon">key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/FarmRadioHangar/uliza-core-apis/blob/054ad38/server/src/voto/Api.ts#L35">voto/Api.ts:35</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>VOTO API key</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="url" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> url</h3>
+					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/FarmRadioHangar/uliza-core-apis/blob/054ad38/server/src/voto/Api.ts#L30">voto/Api.ts:30</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>VOTO API base url</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="buildurl" class="tsd-anchor"></a>
+					<h3>build<wbr>Url</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Url<span class="tsd-signature-symbol">(</span>endpoint<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, params<span class="tsd-signature-symbol">: </span><a href="../interfaces/_voto_api_.voto.requestparams.html" class="tsd-signature-type">RequestParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/FarmRadioHangar/uliza-core-apis/blob/054ad38/server/src/voto/Api.ts#L51">voto/Api.ts:51</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return a well-formed url for to the provided VOTO API endpoint uri and
+									request parameters.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>endpoint: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A VOTO endpoint uri</p>
+									</div>
+								</li>
+								<li>
+									<h5>params: <a href="../interfaces/_voto_api_.voto.requestparams.html" class="tsd-signature-type">RequestParams</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>GET request parameters</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>A url which is valid for interacting with the VOTO API</p>
 						</li>
 					</ul>
 				</section>
@@ -155,43 +214,34 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_server_.html">"<wbr>Server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_app_.html">"app"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_controllers_basecontroller_.html">"controllers/<wbr>Base<wbr>Controller"</a>
-					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="../modules/_controllers_votoresponsecontroller_.html">"controllers/<wbr>Voto<wbr>Response<wbr>Controller"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_index_.html">"index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_voto_api_.html">"voto/<wbr>Api"</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html" class="tsd-kind-icon">Voto<wbr>Response<wbr>Controller</a>
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="_voto_api_.voto.api.html" class="tsd-kind-icon">Api</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_voto_api_.voto.api.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_voto_api_.voto.api.html#key" class="tsd-kind-icon">key</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_voto_api_.voto.api.html#url" class="tsd-kind-icon">url</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_controllers_votoresponsecontroller_.votoresponsecontroller.html#hook" class="tsd-kind-icon">hook</a>
+								<a href="_voto_api_.voto.api.html#buildurl" class="tsd-kind-icon">build<wbr>Url</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../interfaces/_voto_api_.voto.requestparams.html" class="tsd-kind-icon">Request<wbr>Params</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

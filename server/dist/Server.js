@@ -71,7 +71,9 @@ class Server {
      * @private
      */
     createLogger() {
-        const logPath = config.has('logs.access.path') ? config.get('logs.access.path') : '';
+        const logPath = config.has('logs.access.path')
+            ? config.get('logs.access.path')
+            : '';
         this.debug = debug('farm-radio-api:server');
         this.logger = bunyan.createLogger({
             name: 'access',
@@ -101,7 +103,9 @@ class Server {
      * @private
      */
     readConfig() {
-        this.name = config.has('server.name') ? config.get('server.name') : 'Farm Radio API Server';
+        this.name = config.has('server.name')
+            ? config.get('server.name')
+            : 'Farm Radio API Server';
     }
     /**
      * @private
@@ -127,7 +131,9 @@ class Server {
      */
     onListening() {
         const addr = this.api.address();
-        const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+        const bind = typeof addr === 'string'
+            ? `pipe ${addr}`
+            : `port ${addr.port}`;
         this.debug(`Listening on ${bind}`);
     }
 }

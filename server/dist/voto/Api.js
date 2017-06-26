@@ -7,6 +7,15 @@ var Voto;
             this.url = baseUrl.replace(/\/$/g, '');
             this.key = process.env.VOTO_KEY; // @TODO
         }
+        /**
+         * Return a well-formed url for to the provided VOTO API endpoint uri and
+         * request parameters.
+         *
+         * @param endpoint A VOTO endpoint uri
+         * @param params   GET request parameters
+         *
+         * @return A url which is valid for interacting with the VOTO API
+         */
         buildUrl(endpoint, params) {
             const { limit, pageAfter, pageBefore } = params;
             let url = `${this.url}/${endpoint.replace(/^\//g, '')}?api_key=${this.key}&limit=${limit}`;
