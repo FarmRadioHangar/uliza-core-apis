@@ -72,8 +72,8 @@ export default class Server {
   }
 
   /**
-   * Return the restify server. Use this method to directly access the restify 
-   * server API.
+   * Obtain the restify server. Use the returned object to directly access the 
+   * restify server API.
    *
    * @see {@link http://restify.com/#server-api}
    *
