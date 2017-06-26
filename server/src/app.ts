@@ -15,10 +15,10 @@ console.log(voto.buildUrl('trees', { limit: 10 }));
 const baseController = new BaseController();
 const votoResponseController = new VotoResponseController();
 
-api.get({path: '/v1/', version: '1.0.0'}, baseController.get);
+api.get({path: '/api/v1/', version: '1.0.0'}, baseController.get);
 
 /* Webhooks API */
 
-api.post({path: '/v1/webhooks/voto/response', version: '1.0.0'}, votoResponseController.hook);
+api.post({path: '/api/v1/webhooks/voto/response', version: '1.0.0'}, votoResponseController.hook);
 
 export default api;
