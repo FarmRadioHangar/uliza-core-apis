@@ -24,9 +24,12 @@ class Server {
      * Create and initialize the API server.
      *
      * @param certificate Path to a PEM-encoded certificate.
-     * @param key Path to a PEM-encoded key.
+     * @param key         Path to a PEM-encoded key.
      */
     constructor(certificate, key) {
+        this.get = this.api.get;
+        this.post = this.api.post;
+        this.put = this.api.put;
         this.certificate = certificate;
         this.key = key;
         this.readConfig();
@@ -58,15 +61,17 @@ class Server {
     listen(...args) {
         this.api.listen(...args);
     }
-    get(route, routeCallBack, ...routeCallBacks) {
-        return this.api.get(route, routeCallBack, ...routeCallBacks);
-    }
-    post(route, routeCallBack, ...routeCallBacks) {
-        return this.api.post(route, routeCallBack, ...routeCallBacks);
-    }
-    put(route, routeCallBack, ...routeCallBacks) {
-        return this.api.put(route, routeCallBack, ...routeCallBacks);
-    }
+    //  public get(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
+    //    return this.api.get(route, routeCallBack, ...routeCallBacks);
+    //  }
+    //
+    //  public post(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
+    //    return this.api.post(route, routeCallBack, ...routeCallBacks);
+    //  }
+    //
+    //  public put(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
+    //    return this.api.put(route, routeCallBack, ...routeCallBacks);
+    //  }
     /**
      * @private
      */

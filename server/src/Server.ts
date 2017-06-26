@@ -55,7 +55,7 @@ export default class Server {
    * Create and initialize the API server.
    *
    * @param certificate Path to a PEM-encoded certificate.
-   * @param key Path to a PEM-encoded key.
+   * @param key         Path to a PEM-encoded key.
    */
   constructor(certificate: string, key: string) {
     this.certificate = certificate;
