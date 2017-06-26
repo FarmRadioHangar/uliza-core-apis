@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Voto;
 (function (Voto) {
+    /**
+     * VOTO API client base class
+     */
     class Api {
         constructor(baseUrl = 'https://go.votomobile.org/api/v1/') {
             this.url = baseUrl.replace(/\/$/g, '');

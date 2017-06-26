@@ -3,7 +3,7 @@ export namespace Voto {
   /**
    * Generic GET request parameters for interacting with the VOTO API.
    */
-  interface RequestParams {
+  export interface RequestParams {
 
     /**
      * The maximum number of data objects that are returned in a request.

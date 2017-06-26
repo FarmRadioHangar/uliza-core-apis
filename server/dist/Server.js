@@ -27,9 +27,6 @@ class Server {
      * @param key         Path to a PEM-encoded key.
      */
     constructor(certificate, key) {
-        this.get = this.api.get;
-        this.post = this.api.post;
-        this.put = this.api.put;
         this.certificate = certificate;
         this.key = key;
         this.readConfig();
@@ -43,8 +40,8 @@ class Server {
         this.api.on('listening', this.onListening.bind(this));
     }
     /**
-     * Return the restify server. Use this method to directly access the restify
-     * server API.
+     * Obtain the restify server. Use the returned object to directly access the
+     * restify server API.
      *
      * @see {@link http://restify.com/#server-api}
      *
@@ -61,17 +58,15 @@ class Server {
     listen(...args) {
         this.api.listen(...args);
     }
-    //  public get(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
-    //    return this.api.get(route, routeCallBack, ...routeCallBacks);
-    //  }
-    //
-    //  public post(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
-    //    return this.api.post(route, routeCallBack, ...routeCallBacks);
-    //  }
-    //
-    //  public put(route: any, routeCallBack: restify.RequestHandler | restify.RequestHandler[], ...routeCallBacks: restify.RequestHandler[][]): string {
-    //    return this.api.put(route, routeCallBack, ...routeCallBacks);
-    //  }
+    get(route, routeCallBack, ...routeCallBacks) {
+        return this.api.get(route, routeCallBack, ...routeCallBacks);
+    }
+    post(route, routeCallBack, ...routeCallBacks) {
+        return this.api.post(route, routeCallBack, ...routeCallBacks);
+    }
+    put(route, routeCallBack, ...routeCallBacks) {
+        return this.api.put(route, routeCallBack, ...routeCallBacks);
+    }
     /**
      * @private
      */
