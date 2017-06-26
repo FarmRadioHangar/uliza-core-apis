@@ -18,6 +18,8 @@ npm install
 npm run build
 ```
 
+## Migrations
+
 ## Run
 
 ```
@@ -46,8 +48,6 @@ name = "Farm Radio API Server"
 ```
 
 The configuration file uses the [TOML language format](https://github.com/toml-lang/toml).
-
-## Migrations
 
 ## Tests
 
