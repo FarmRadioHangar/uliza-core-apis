@@ -81,7 +81,7 @@ Here is an example of what the log output may look like.
 ```
   farm-radio-api:server Listening on port 3000 +0ms
   farm-radio-api:server 19:20:04.667Z  INFO access: handled: 200 (req_id=bec6e57a-5d7d-4b08-96b6-0a494785eeca, audit=true, remoteAddress=::ffff:127.0.0.1, remotePort=34456, latency=15, _audit=true, req.query="", req.version=*)
-  farm-radio-api:server   GET /v1 HTTP/1.1
+  farm-radio-api:server   GET /api/v1 HTTP/1.1
   farm-radio-api:server   host: localhost:3000
   farm-radio-api:server   user-agent: curl/7.47.0
   farm-radio-api:server   accept: */*
@@ -134,7 +134,7 @@ npm run docs
 
 ### Coding style 
 
-* See [TypeScript StyleGuide and Coding Conventions](https://github.com/basarat/typescript-book/blob/master/docs/styleguide/styleguide.md#typescript-styleguide-and-coding-conventions)
+* See [TypeScript style guide and coding conventions](https://github.com/basarat/typescript-book/blob/master/docs/styleguide/styleguide.md#typescript-styleguide-and-coding-conventions)
 
 ### TypeDoc conventions
 
