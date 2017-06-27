@@ -4,3 +4,5 @@ server/cert.pem
 server/tmp
 server/.env
 server/*.log
+server/*.sqlite
+server/*.sqlite3
