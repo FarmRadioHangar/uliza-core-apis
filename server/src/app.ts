@@ -2,13 +2,11 @@ import * as restify from 'restify';
 import Server from './Server';
 import { Voto } from './voto/Api';
 
-import { BaseController }         from './controllers/BaseController';
-import { VotoResponseController } from './controllers/VotoResponseController';
+import { BaseController }         from './controller/BaseController';
+import { VotoResponseController } from './controller/VotoResponseController';
 
 const api: Server = new Server('cert.pem', 'key.pem');
 const voto: Voto.Api = new Voto.Api();
-
-console.log(voto.buildUrl('trees', { limit: 10 }));
 
 /* ••• Routes ••• */
 
