@@ -6,3 +6,4 @@ server/.env
 server/*.log
 server/*.sqlite
 server/*.sqlite3
+koa/
