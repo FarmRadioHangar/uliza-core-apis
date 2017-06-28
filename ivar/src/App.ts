@@ -23,6 +23,7 @@ export default class App {
 
   public async start(): Promise<Server> {
     const app: Koa = await this.init();
+    console.log('Listening on port 3000');
     return Promise.resolve(app.listen(3000));
   }
 
