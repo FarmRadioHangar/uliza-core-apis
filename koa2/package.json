@@ -9,6 +9,7 @@
     "@types/koa-bodyparser": "^3.0.23",
     "@types/koa-logger": "^2.0.2",
     "@types/koa-router": "^7.0.22",
+    "@types/node": "^8.0.4",
     "typedoc": "^0.7.1",
     "typescript": "^2.4.1"
   },
