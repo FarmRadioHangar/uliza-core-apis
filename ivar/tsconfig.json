@@ -2,11 +2,17 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
+    "rootDir": ".",
+    "sourceRoot": "./src/",
+    "outDir": "./dist/",
+    "removeComments": true,
+    "strict": true,
     "noImplicitAny": true,
-    "outDir": "built",
-    "rootDir": "."
+    "experimentalDecorators": true, 
+    "emitDecoratorMetadata": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "bin"
   ]
 }
