@@ -13,4 +13,9 @@ app.use(cors())
    .use(Api.router.allowedMethods())
    .use(bodyparser());
 
-app.listen(3000);
+const port: number|string = process.env.PORT || 3000;
+const env: string = process.env.NODE_ENV || 'development';
+
+console.log(env);
+
+app.listen(port);
