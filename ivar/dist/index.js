@@ -1,0 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
+const typescript_ioc_1 = require("typescript-ioc");
+const App_1 = require("./App");
+const app = typescript_ioc_1.Container.get(App_1.default);
+app.start();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiL2hvbWUvam9oYW5uZXMvd29yay91bGl6YS1jb3JlLWFwaXMvaXZhci9zcmMvIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLDRCQUEwQjtBQUUxQixtREFBMkM7QUFFM0MsK0JBQXdCO0FBRXhCLE1BQU0sR0FBRyxHQUFRLDBCQUFTLENBQUMsR0FBRyxDQUFDLGFBQUcsQ0FBQyxDQUFDO0FBRXBDLEdBQUcsQ0FBQyxLQUFLLEVBQUUsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCAncmVmbGVjdC1tZXRhZGF0YSc7XG5cbmltcG9ydCB7IENvbnRhaW5lciB9IGZyb20gJ3R5cGVzY3JpcHQtaW9jJztcblxuaW1wb3J0IEFwcCBmcm9tICcuL0FwcCc7XG5cbmNvbnN0IGFwcDogQXBwID0gQ29udGFpbmVyLmdldChBcHApO1xuXG5hcHAuc3RhcnQoKTtcbiJdfQ==
