@@ -1,5 +1,7 @@
 import * as Router from 'koa-router';
 
-const api: Router = new Router();
+export module Api {
 
-export default api;
+  export let router: Router = new Router();
+
+}
