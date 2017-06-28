@@ -10,6 +10,7 @@
     "@types/koa-logger": "^2.0.2",
     "@types/koa-router": "^7.0.22",
     "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.4",
     "@types/reflect-metadata": "^0.0.5",
     "@types/sinon": "^2.3.2",
     "@types/sinon-chai": "^2.7.28",
