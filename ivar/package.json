@@ -4,6 +4,32 @@
   "license": "MIT",
   "scripts": {},
   "devDependencies": {
+    "@types/chai": "^4.0.1",
+    "@types/koa": "^2.0.39",
+    "@types/koa-bodyparser": "^3.0.23",
+    "@types/koa-logger": "^2.0.2",
+    "@types/koa-router": "^7.0.22",
+    "@types/mocha": "^2.2.41",
+    "@types/reflect-metadata": "^0.0.5",
+    "@types/sinon": "^2.3.2",
+    "@types/sinon-chai": "^2.7.28",
+    "@types/supertest": "^2.0.1",
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "sinon": "^2.3.5",
+    "sinon-chai": "^2.11.0",
+    "supertest": "^3.0.0",
+    "ts-mockito": "^2.0.1",
+    "ts-node": "^3.1.0",
     "typescript": "^2.4.1"
+  },
+  "dependencies": {
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-logger": "^3.0.0",
+    "koa-router": "^7.2.1",
+    "reflect-metadata": "^0.1.10",
+    "typeorm": "^0.1.0-alpha.22",
+    "typescript-ioc": "^0.4.2"
   }
 }
