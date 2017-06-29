@@ -1,6 +1,6 @@
 # farm-radio-apis
 
-The Farm Radio API provides a single point of access to all application resources within the organization's web infrastructure, and a unified interface for external applications to interact with the FRI service platform.
+Server application to power the Farm Radio API.
 
 ## Project setup
 
