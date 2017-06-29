@@ -24,4 +24,4 @@ AUTH0_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 npm start
 ```
 
-The app will be served at [http://localhost:3001/](http://localhost:3001/)
+The app will be served at [http://localhost:3001/](http://localhost:3001/).
