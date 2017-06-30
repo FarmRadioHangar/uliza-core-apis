@@ -19,12 +19,20 @@ var jwtCheck = jwt({
 
 app.use(jwtCheck);
 
+app.use(function(err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send('Invalid token.');
+  } else {
+    next(err);
+  }
+});
+
 app.get('/protected', function(req, res) {
   res.json({
     message: 'This API is a teapot.'
   });
 });
 
-console.log('Listening on port ' + port);
-
-app.listen(port);
+app.listen(port, null, function() {
+  console.log('Listening on port ' + port);
+});
