@@ -1,10 +1,13 @@
 {
   "name": "farm-radio-koa2-api-server",
   "author": "Farm Radio International",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.2.1",
+    "reflect-metadata": "^0.1.10",
+    "typeorm": "0.1.0-alpha.25"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
