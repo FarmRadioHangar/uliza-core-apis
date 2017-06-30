@@ -1,5 +1,7 @@
 {
-  "scripts": {},
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "body-parser": "^1.17.2",
     "connect-ensure-login": "^0.1.1",
