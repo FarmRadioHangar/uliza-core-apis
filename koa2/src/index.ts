@@ -6,6 +6,9 @@ import * as bodyparser from 'koa-bodyparser';
 
 import { createConnection } from 'typeorm';
 
+import { getEntityManager } from 'typeorm';
+import { Organizations } from './entity/Organizations';
+
 createConnection().then(async connection => {
 
   let app: Koa = new Koa();
@@ -13,9 +16,11 @@ createConnection().then(async connection => {
 
   router.get('/organizations', async (ctx, next) => {
     await next();
-    ctx.body = {
-      collection: [{ id: 1 }, { id: 2 }]
-    };
+
+    const repository = getEntityManager().getRepository(Organizations);
+    const organizations = await repository.find();
+
+    ctx.body = { collection: organizations };
   });
 
   app.use(bodyparser())
