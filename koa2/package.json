@@ -3,7 +3,7 @@
   "author": "Farm Radio International",
   "scripts": {
     "build": "$(npm bin)/tsc",
-    "start": "node dist/index.js"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "koa": "^2.3.0",
