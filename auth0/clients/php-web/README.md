@@ -32,4 +32,4 @@ The app will be served at [http://localhost:3000/](http://localhost:3000/).
 
 ## Credits
 
-This example uses code from [Auht0's quickstart](https://auth0.com/docs/quickstarts) example projects.
+This example uses code from [Auht0's quickstarts](https://auth0.com/docs/quickstarts) example projects.
