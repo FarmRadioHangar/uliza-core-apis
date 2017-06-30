@@ -55,7 +55,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('index', {
+    loggedIn: !!req.user
+  });
 });
 
 app.get('/login', function(req, res) {
@@ -66,6 +68,15 @@ app.get('/login', function(req, res) {
       AUTH0_CALLBACK_URL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3001/callback'
     }
   });
+});
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/error', function(req, res) {
+  res.send('There was an error.');
 });
 
 app.get('/callback', 
@@ -99,7 +110,7 @@ app.get('/secret', function(req, res) {
           return res.render('unauthorized');
         }
       } 
-      res.send('Something went wrong');
+      res.send('Something went wrong.');
       throw err;
     });
 });
@@ -131,7 +142,5 @@ server.on('listening', function() {
   debug('Listening on ' + bind);
   console.log('Listening on ' + bind);
 });
-
-app.set('port', 3001);
 
 server.listen(3001);
