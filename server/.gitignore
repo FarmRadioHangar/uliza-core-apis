@@ -1,0 +1,8 @@
+node_modules
+key.pem
+cert.pem
+tmp
+.env
+*.log
+*.sqlite
+*.sqlite3
