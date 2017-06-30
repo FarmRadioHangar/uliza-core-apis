@@ -17,3 +17,7 @@ npm start
 ```
 
 The application will be served at [http://localhost:5000/](http://localhost:5000/).
+
+## Credits
+
+This example uses code from [Auht0's quickstart](https://auth0.com/docs/quickstarts) example projects.
