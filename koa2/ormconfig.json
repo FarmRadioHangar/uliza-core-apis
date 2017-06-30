@@ -1,0 +1,24 @@
+[
+  {
+    "name": "default",
+    "driver": {
+      "type": "sqlite",
+      "database": "db.sqlite"
+    },
+    "autoSchemaSync": true,
+    "entities": [
+      "src/entity/*.js"
+    ],
+    "subscribers": [
+      "src/subscriber/*.js,"
+    ],
+    "migrations": [
+      "src/migration/*.js"
+    ],
+    "cli": {
+      "entitiesDir": "src/entity",
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+    }
+  }
+]
