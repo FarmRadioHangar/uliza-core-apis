@@ -2,7 +2,8 @@
   "name": "farm-radio-koa2-api-server",
   "author": "Farm Radio International",
   "scripts": {
-    "build": "$(npm bin)/tsc"
+    "build": "$(npm bin)/tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "koa": "^2.3.0",
