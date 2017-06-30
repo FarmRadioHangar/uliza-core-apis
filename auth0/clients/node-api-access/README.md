@@ -31,3 +31,7 @@ npm start
 ```
 
 The app will be served at [http://localhost:3001/](http://localhost:3001/).
+
+## API access
+
+For this demo to work, the `api-server` example must be running. 
