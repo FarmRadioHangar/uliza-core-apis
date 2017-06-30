@@ -18,7 +18,12 @@ var strategy = new Auth0Strategy({
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
   callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3001/callback'
 }, function(accessToken, refreshToken, extraParams, profile, done) {
-  return done(null, profile);
+  return done(null, {
+    profile: profile,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    extraParams: extraParams
+  });
 });
 
 passport.use(strategy);
@@ -63,26 +68,34 @@ app.get('/login', function(req, res) {
   });
 });
 
-app.get('/callback', function(req, res) {
-  res.redirect('/');
-});
+app.get('/callback', 
+  passport.authenticate('auth0', { 
+    audience: 'https://dev.farmradio.fm/api/',
+    failureRedirect: '/error' 
+  }), function(req, res) {
+    res.redirect('/');
+  }
+);
 
-app.get('/test', function(req, res) {
+app.get('/secret', function(req, res) {
   var options = {
-    method: 'GET',
-    uri: 'http://localhost:8080',
-    //headers: {
-    //  authorization: 'Bearer ' + ''
-    //}
+    uri: 'http://localhost:8080/protected',
+    json: true
   };
+  if (req.user) {
+    options.headers = { authorization: 'Bearer ' + req.user.extraParams.access_token };
+  }
   request.get(options)
-    .then(function(html) {
-      console.log('Ok');
+    .then(function(json) {
+      res.render('secret', {
+        message: json.message
+      });
     })
     .catch(function(err) {
       if (401 === err.response.statusCode) {
         res.render('unauthorized');
       } else {
+        res.send('error');
         throw err;
       }
     });
