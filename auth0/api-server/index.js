@@ -3,7 +3,7 @@ var jwt = require('express-jwt');
 var jwks = require('jwks-rsa');
 
 var app = express();
-var port = process.env.PORT || 8080;
+var port = 8080;
 
 var jwtCheck = jwt({
   secret: jwks.expressJwtSecret({
