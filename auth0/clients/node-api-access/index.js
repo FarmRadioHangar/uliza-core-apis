@@ -6,6 +6,7 @@ var dotenv        = require('dotenv');
 var express       = require('express');
 var http          = require('http');
 var passport      = require('passport');
+var path          = require('path');
 var session       = require('express-session');
 
 dotenv.load();
