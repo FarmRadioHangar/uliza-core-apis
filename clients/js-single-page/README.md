@@ -1,6 +1,6 @@
 # JavaScript app login demo 
 
-This sample demonstrates how to add authentication to a JavaScript application. 
+This sample demonstrates how to implement Auth0 authentication in a client-side JavaScript application. 
 
 ## Installation
 

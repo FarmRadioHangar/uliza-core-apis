@@ -1,4 +1,6 @@
-# Node.js web app login and API access
+# Node.js web app login 
+
+This sample demonstrates how to implement Auth0 authentication in a Node.js application.
 
 ## Prerequisites
 

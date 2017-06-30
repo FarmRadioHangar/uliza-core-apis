@@ -1,9 +1,16 @@
 # PHP web app login 
 
+This sample demonstrates how to implement Auth0 authentication in a PHP application.
+
 ## Prerequisites
 
 Before starting, make sure you have `composer` and `php` installed.
 
+Install the dependencies.
+
+```bash
+composer install
+```
 ## Configuration
 
 Create and populate the `.env` file with the application's `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET`, `AUTH0_DOMAIN`, and `AUTH0_CALLBACK_URL`. The client secret must be retrieved from the [Auth0 dashboard](https://manage.auth0.com/#/clients/vVSuj46PpkRF1m5FGxAmr1JuarNcwI0i/settings). 
@@ -18,7 +25,6 @@ AUTH0_CALLBACK_URL=http://localhost:3000/
 ## Running the app
 
 ```bash
-composer install
 php -S localhost:3000
 ```
 
