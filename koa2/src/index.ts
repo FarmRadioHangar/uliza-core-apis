@@ -8,14 +8,22 @@ import { createConnection } from 'typeorm';
 
 createConnection().then(async connection => {
 
- let app: Koa = new Koa();
- const port: number = 3030;
+  let app: Koa = new Koa();
+  let router: Router = new Router();
 
- app.use(bodyparser());
+  router.get('/organizations', async (ctx, next) => {
+    await next();
+    ctx.body = 'You asked for organizations';
+  });
 
- app.listen(port);
+  app.use(bodyparser())
+     .use(router.routes())
+     .use(router.allowedMethods());
 
- console.log(`Koa application is up and running on port ${port}`);
+  const port: number = 3030;
+  app.listen(port);
+
+  console.log(`Koa application is up and running on port ${port}`);
 
 }).catch(error => {
   console.log(console.log('Connection error'));
