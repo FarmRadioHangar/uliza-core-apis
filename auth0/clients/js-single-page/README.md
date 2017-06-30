@@ -1,6 +1,6 @@
 # JavaScript app login demo 
 
-This sample demonstrates how to implement Auth0 authentication in a client-side JavaScript application. 
+This sample demonstrates how to implement Auth0 authentication in a client-side JavaScript application, using the [OAuth 2.0 Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2) flow.
 
 ## Installation
 
