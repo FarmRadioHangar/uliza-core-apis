@@ -19,8 +19,10 @@ var jwtCheck = jwt({
 
 app.use(jwtCheck);
 
-app.get('/authorized', function(req, res) {
-  res.send('Secured Resource');
+app.get('/protected', function(req, res) {
+  res.json({
+    message: 'This API is a teapot.'
+  });
 });
 
 console.log('Listening on port ' + port);
