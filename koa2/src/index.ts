@@ -13,7 +13,9 @@ createConnection().then(async connection => {
 
   router.get('/organizations', async (ctx, next) => {
     await next();
-    ctx.body = 'You asked for organizations';
+    ctx.body = {
+      collection: [{ id: 1 }, { id: 2 }]
+    };
   });
 
   app.use(bodyparser())
