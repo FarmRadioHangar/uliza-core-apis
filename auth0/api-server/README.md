@@ -12,6 +12,8 @@ Make sure you have `node` and `npm` installed. Then install the dependencies.
 npm install
 ```
 
-## Configuration
-
 ## Running the app
+
+```bash
+node index.js
+```
