@@ -2,7 +2,7 @@
 
 This sample demonstrates how to use Auth0 to implement the [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1) in a Node.js application. In this authentication flow, the browser receives an Authorization Code from Auth0 (the Authorization Server). After receiving this code, the application will interact with Auth0 and exchange it for an `access_token`. The application then uses this token to call the API on behalf of the user (the Resource Owner).
 
-This application can be used together with the [api-server example](auth0/api-server) to show a complete implementation of the [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1) flow. 
+This application can be used together with the [api-server example](../../api-server) to show a complete implementation of the [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1) flow. 
 
 ## Prerequisites
 
@@ -34,4 +34,4 @@ The app will be served at [http://localhost:3001/](http://localhost:3001/).
 
 ## API access
 
-For this demo to work, the [api-server example](auth0/api-server) must be running and listening on port 8080. 
+For this demo to work, the [api-server example](../../api-server) must be running and listening on port 8080. 
