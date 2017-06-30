@@ -4,9 +4,7 @@ This sample demonstrates how to implement Auth0 authentication in a PHP applicat
 
 ## Prerequisites
 
-Before starting, make sure you have `composer` and `php` installed.
-
-Install the dependencies.
+Before starting, make sure you have `composer` and `php` installed. Next, install the dependencies.
 
 ```bash
 composer install
