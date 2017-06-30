@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  p Redirecting you to login widget&hellip;
   script.
     const webAuth = new auth0.WebAuth({
       clientID: '#{env.AUTH0_CLIENT_ID}',
