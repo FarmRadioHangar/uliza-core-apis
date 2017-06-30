@@ -13,7 +13,7 @@ composer install
 ```
 ## Configuration
 
-Create and populate the `.env` file with the application's `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET`, `AUTH0_DOMAIN`, and `AUTH0_CALLBACK_URL`. The client secret must be retrieved from the [Auth0 dashboard](https://manage.auth0.com/#/clients/vVSuj46PpkRF1m5FGxAmr1JuarNcwI0i/settings). 
+In the project's root directory, create and populate the `.env` file with the application's `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET`, `AUTH0_DOMAIN`, and `AUTH0_CALLBACK_URL`. The client secret must be retrieved from the [Auth0 dashboard](https://manage.auth0.com/#/clients/vVSuj46PpkRF1m5FGxAmr1JuarNcwI0i/settings). 
 
 ```
 AUTH0_CLIENT_ID=vVSuj46PpkRF1m5FGxAmr1JuarNcwI0i 
