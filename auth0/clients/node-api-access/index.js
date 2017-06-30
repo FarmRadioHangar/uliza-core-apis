@@ -7,15 +7,16 @@ var express       = require('express');
 var http          = require('http');
 var passport      = require('passport');
 var path          = require('path');
+var request       = require('request-promise');
 var session       = require('express-session');
 
 dotenv.load();
 
 var strategy = new Auth0Strategy({
-  domain:       process.env.AUTH0_DOMAIN,
-  clientID:     process.env.AUTH0_CLIENT_ID,
+  domain: process.env.AUTH0_DOMAIN,
+  clientID: process.env.AUTH0_CLIENT_ID,
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
-  callbackURL:  process.env.AUTH0_CALLBACK_URL || 'http://localhost:3001/callback'
+  callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3001/callback'
 }, function(accessToken, refreshToken, extraParams, profile, done) {
   return done(null, profile);
 });
@@ -48,8 +49,43 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', function(req, res) {
-  res.send('200 OK');
+app.get('/', function(req, res) {
+  res.render('index');
+});
+
+app.get('/login', function(req, res) {
+  res.render('login', { 
+    env: {
+      AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+      AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
+      AUTH0_CALLBACK_URL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3001/callback'
+    }
+  });
+});
+
+app.get('/callback', function(req, res) {
+  res.redirect('/');
+});
+
+app.get('/test', function(req, res) {
+  var options = {
+    method: 'GET',
+    uri: 'http://localhost:8080',
+    //headers: {
+    //  authorization: 'Bearer ' + ''
+    //}
+  };
+  request.get(options)
+    .then(function(html) {
+      console.log('Ok');
+    })
+    .catch(function(err) {
+      if (401 === err.response.statusCode) {
+        res.render('unauthorized');
+      } else {
+        throw err;
+      }
+    });
 });
 
 var server = http.createServer(app);
