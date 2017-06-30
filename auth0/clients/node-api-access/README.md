@@ -4,6 +4,8 @@ This sample demonstrates how to use Auth0 to implement the [Authorization Code G
 
 This application can be used together with the `api-server` example to show a complete implementation of the [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1) flow. 
 
+### Sample `.env` file
+
 ```
 AUTH0_CLIENT_ID=Kyn4B2Ce460JAW9QvrXc0Q3B04U98N0e
 AUTH0_DOMAIN=farmradio.eu.auth0.com
