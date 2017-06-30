@@ -92,12 +92,15 @@ app.get('/secret', function(req, res) {
       });
     })
     .catch(function(err) {
-      if (401 === err.response.statusCode) {
-        res.render('unauthorized');
-      } else {
-        res.send('error');
-        throw err;
-      }
+      if ('RequestError' === err.name) {
+        return res.send('Something went wrong. Make sure that the API server is running and listening on port 8080.');
+      } else if (err.response) {
+        if (401 === err.response.statusCode) {
+          return res.render('unauthorized');
+        }
+      } 
+      res.send('Something went wrong');
+      throw err;
     });
 });
 
