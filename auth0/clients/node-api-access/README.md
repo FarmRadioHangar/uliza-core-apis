@@ -23,3 +23,11 @@ AUTH0_CLIENT_ID=Kyn4B2Ce460JAW9QvrXc0Q3B04U98N0e
 AUTH0_DOMAIN=farmradio.eu.auth0.com
 AUTH0_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
+
+## Running the app
+
+```bash
+npm start
+```
+
+The app will be served at [http://localhost:3001/](http://localhost:3001/).
