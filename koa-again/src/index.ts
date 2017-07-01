@@ -16,3 +16,5 @@ app.use(bodyparser())
 app.listen(3030);
 
 console.log('Koa application is up and running');
+
+export default app;
