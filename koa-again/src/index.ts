@@ -1,7 +1,6 @@
 import * as Koa        from 'koa';
 import * as Router     from 'koa-router';
 import * as bodyparser from 'koa-bodyparser';
-import * as http       from 'http';
 
 let app    = new Koa(),
     router = new Router();
@@ -14,8 +13,8 @@ app.use(bodyparser())
    .use(router.routes())
    .use(router.allowedMethods());
 
-const server: http.Server = app.listen(3030);
+app.listen(3030);
 
 console.log('Koa application is up and running');
 
-export default server;
+export default app;

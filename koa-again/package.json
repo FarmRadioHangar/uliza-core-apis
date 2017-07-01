@@ -12,7 +12,8 @@
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.1",
     "mocha": "^3.4.2",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "supertest-koa-agent": "^0.3.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
