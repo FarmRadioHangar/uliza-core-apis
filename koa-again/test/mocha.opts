@@ -1,2 +1,2 @@
 --require=env-test
-src/test
+src/tests
