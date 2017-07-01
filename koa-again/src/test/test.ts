@@ -1,5 +1,4 @@
 import { expect }     from 'chai';
-import * as supertest from 'supertest';
 import * as agent     from 'supertest-koa-agent';
 import app            from '../index';
 
