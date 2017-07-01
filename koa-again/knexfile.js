@@ -1,4 +1,13 @@
 module.exports = {
+  test: {
+    client: 'sqlite3',
+    connection: {
+      filename: './db.sqlite'
+    },
+    migrations: {
+      tableName: 'migrations'
+    }
+  },
   development: {
     client: 'sqlite3',
     connection: {
