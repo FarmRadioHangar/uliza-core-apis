@@ -94,7 +94,7 @@ app.get('/secret', function(req, res) {
     json: true
   };
   if (req.user) {
-    options.headers = { authorization: 'Bearer ' + req.user.extraParams.access_token };
+    options.headers = { 'Authorization': 'Bearer ' + req.user.extraParams.access_token };
   }
   request.get(options)
     .then(function(json) {
