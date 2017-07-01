@@ -1,13 +1,13 @@
 'use strict';
 
 exports.up = function(knex, Promise) {
-  knex.schema.createTable('organizations', function(table) {
+  return knex.schema.createTable('organizations', function(table) {
     table.increments();
-    table.string('name');
+    table.string('name').notNullable();
     table.timestamps();
   });
 };
 
 exports.down = function(knex, Promise) {
-  knex.schema.dropTable('organizations');
+  return knex.schema.dropTable('organizations');
 };
