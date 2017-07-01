@@ -1,8 +1,8 @@
 import * as Koa        from 'koa';
 import * as Router     from 'koa-router';
 import * as bodyparser from 'koa-bodyparser';
-import * as jwt        from 'koa-jwt';
 import * as knex       from 'knex';
+import { Auth0 }       from './auth0';
 
 const env  = process.env.NODE_ENV || 'development';
 
@@ -24,27 +24,7 @@ router.get('/protected', async ctx => {
 });
 
 if ('test' !== env) {
-
-  interface Auth0JwtOptions extends jwt.Options {
-    audience?: string,
-    issuer?: string,
-    algorithms?: Array<string>
-  }
-
-  const options: Auth0JwtOptions = { 
-    secret: require('jwks-rsa').koaJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: 'https://farmradio.eu.auth0.com/.well-known/jwks.json'
-    }),
-    audience: 'https://dev.farmradio.fm/api/',
-    issuer: 'https://farmradio.eu.auth0.com/',
-    algorithms: ['RS256']
-  };
-
-  app.use(jwt(options));
-
+  app.use(Auth0.jwtCheck());
 }
 
 app.use(bodyparser())
@@ -52,6 +32,6 @@ app.use(bodyparser())
    .use(router.allowedMethods())
    .listen(8080);
 
-console.log('Koa application is up and running');
+console.log('Server is up and running');
 
 export default app;
