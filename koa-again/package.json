@@ -4,7 +4,7 @@
   "scripts": {
     "build": "$(npm bin)/tsc",
     "start": "node src/index.js",
-    "test": "mocha src/test"
+    "test": "$(npm bin)/mocha"
   },
   "dependencies": {
     "chai": "^4.0.2",
@@ -26,6 +26,7 @@
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.6",
     "@types/supertest": "^2.0.1",
+    "env-test": "^1.0.0",
     "typescript": "^2.4.1"
   }
 }
