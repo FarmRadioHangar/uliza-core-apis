@@ -3,7 +3,8 @@
   "author": "Farm Radio International",
   "scripts": {
     "build": "$(npm bin)/tsc",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "mocha src/test"
   },
   "dependencies": {
     "chai": "^4.0.2",
