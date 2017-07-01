@@ -2,20 +2,20 @@ import * as Koa        from 'koa';
 import * as Router     from 'koa-router';
 import * as bodyparser from 'koa-bodyparser';
 import * as jwt        from 'koa-jwt';
-import * as Knex       from 'knex';
+import * as knex       from 'knex';
 
 const env  = process.env.NODE_ENV || 'development';
 
 let app    = new Koa(),
     router = new Router();
 
-const knex = Knex({
+const db = knex({
   client: 'sqlite3',
   connection: { filename: './db.sqlite' }
 });
 
 router.get('/organizations', async ctx => {
-  const collection = await knex('organizations');
+  const collection = await db('organizations');
   ctx.body = { collection };
 });
 
@@ -25,13 +25,13 @@ router.get('/protected', async ctx => {
 
 if ('test' !== env) {
 
-  interface JwtOptions extends jwt.Options {
+  interface Auth0JwtOptions extends jwt.Options {
     audience?: string,
     issuer?: string,
     algorithms?: Array<string>
   }
 
-  const options: JwtOptions = { 
+  const options: Auth0JwtOptions = { 
     secret: require('jwks-rsa').koaJwtSecret({
       cache: true,
       rateLimit: true,
