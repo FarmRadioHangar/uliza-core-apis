@@ -3,6 +3,8 @@ import * as Router     from 'koa-router';
 import * as bodyparser from 'koa-bodyparser';
 import * as jwt        from 'koa-jwt';
 
+const env  = process.env.NODE_ENV || 'development';
+
 let app    = new Koa(),
     router = new Router();
 
@@ -32,8 +34,11 @@ const options: JwtOptions = {
   algorithms: ['RS256']
 };
 
-app.use(jwt(options))
-   .use(bodyparser())
+if ('test' !== env) {
+  app.use(jwt(options));
+}
+
+app.use(bodyparser())
    .use(router.routes())
    .use(router.allowedMethods());
 
