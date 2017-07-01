@@ -5,7 +5,7 @@ import * as bodyparser from 'koa-bodyparser';
 let app    = new Koa(),
     router = new Router();
 
-router.get('/organizations', async ctx => {
+router.get('/organizations', async (ctx: Koa.Context) => {
   ctx.body = { collection: [] };
 });
 
