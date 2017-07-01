@@ -11,9 +11,7 @@ let app    = new Koa(),
 
 const knex = Knex({
   client: 'sqlite3',
-  connection: { 
-    filename: './db.sqlite' 
-  }
+  connection: { filename: './db.sqlite' }
 });
 
 router.get('/organizations', async ctx => {
