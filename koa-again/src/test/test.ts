@@ -1,12 +1,17 @@
-import { expect } from 'chai';
+import { expect }     from 'chai';
+import * as supertest from 'supertest';
+import server         from '../index';
 
-function hello() {
-  return 'Hello World!';
-}
-
-describe('Hello function', () => {
-  it('should return hello world', () => {
-    const result = hello();
-    expect(result).to.equal('Hello World!');
+describe('GET /organizations', () => {
+  it('should return JSON', (done) => {
+    supertest(server)
+      .get('/organizations')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/, done);
+  });
+  it('should return 200 OK', (done) => {
+    supertest(server)
+      .get('/organizations')
+      .expect(200, done);
   });
 });
