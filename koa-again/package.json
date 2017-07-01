@@ -1,5 +1,5 @@
 {
-  "name": "farm-radio-koa2-api-server",
+  "name": "farm-radio-api-server",
   "author": "Farm Radio International",
   "scripts": {
     "build": "$(npm bin)/tsc",
