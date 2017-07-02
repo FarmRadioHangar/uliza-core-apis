@@ -35,7 +35,7 @@ describe('GET /organizations', () => {
   it('should return a collection of 11 items', async () => {
     const response = await agent(app).get('/organizations');
     response.body.should.have.property('collection');
-    response.body.collection.length.should.equal(3);
+    response.body.collection.length.should.equal(11);
   });
 
 });
