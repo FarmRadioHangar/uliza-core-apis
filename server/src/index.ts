@@ -1,15 +1,34 @@
-require('dotenv').config();
+import * as Koa        from 'koa';
+import * as Router     from 'koa-router';
+import * as bodyparser from 'koa-bodyparser';
+import * as knex       from 'knex';
+import * as path       from 'path';
 
-import server from './app';
+import { Auth0 } from './auth0';
 
-server.listen(normalized(process.env.PORT || 3000));
+const env    = process.env.NODE_ENV || 'development',
+      db     = knex(require(path.join(__dirname, '../knexfile.js'))[env]),
+      app    = new Koa(),
+      router = new Router();
 
-function normalized(val: number|string): number|string {
-  const port: number = typeof val === 'string' ? parseInt(val, 10) : val;
-  if (isNaN(port)) 
-    return val;
-  else if (port >= 0) 
-    return port;
-  console.error('Bad port');
-  process.exit(1);
+router.get('/organizations', async ctx => {
+  const collection = await db('organizations');
+  ctx.body = { collection };
+});
+
+router.get('/protected', async ctx => {
+  ctx.body = { message: 'This API is a teapot.' };
+});
+
+if ('test' !== env) {
+  app.use(Auth0.jwtCheck());
 }
+
+app.use(bodyparser())
+   .use(router.routes())
+   .use(router.allowedMethods())
+   .listen(8080);
+
+console.log('Server is up and running');
+
+export default app;

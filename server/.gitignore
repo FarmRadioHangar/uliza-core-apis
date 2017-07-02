@@ -1,8 +1,6 @@
-node_modules
-key.pem
-cert.pem
-tmp
+node_modules/
 .env
-*.log
+npm-debug.log
 *.sqlite
-*.sqlite3
+src/**/*.js
+src/**/*.js.map
