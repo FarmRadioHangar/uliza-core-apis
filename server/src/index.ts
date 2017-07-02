@@ -11,11 +11,8 @@ const env  = process.env.NODE_ENV || 'development',
       app  = new Koa(),
       port = process.env.PORT || 8080;
 
-if ('test' !== env) {
-  app.use(Auth0.jwtCheck());
-}
-
-app.use(knex())
+app.use(Auth0.jwtCheck().unless(() => 'test' === env))
+   .use(knex())
    .use(bodyparser())
    .use(router.routes())
    .use(router.allowedMethods())
