@@ -16,8 +16,7 @@ app.use(Auth0.jwtCheck().unless(() => 'test' === env))
    .use(bodyparser())
    .use(router.routes())
    .use(router.allowedMethods())
-   .listen(port);
-
-console.log(`Server is up and running on port ${port}`);
+   .listen(port)
+   .on('listening', () => console.log(`Server is up and running on port ${port}`));
 
 export default app;
