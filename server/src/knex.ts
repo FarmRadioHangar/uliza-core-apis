@@ -1,9 +1,8 @@
-import * as knex from 'knex';
-import * as path from 'path';
+import { Db } from './db';
 
-export default (env: string) => {
+export default () => {
   return async (ctx, next) => { 
-    ctx.state.db = knex(require(path.join(__dirname, '../knexfile.js'))[env]); 
+    ctx.state.db = Db.connection(); 
     await next(); 
   };
 }

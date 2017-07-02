@@ -12,7 +12,7 @@ if ('test' !== env) {
   app.use(Auth0.jwtCheck());
 }
 
-app.use(knex(env))
+app.use(knex())
    .use(bodyparser())
    .use(router.routes())
    .use(router.allowedMethods())
