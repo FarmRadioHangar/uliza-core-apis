@@ -8,20 +8,20 @@ module.exports = {
       tableName: 'migrations'
     },
     seeds: {
-      directory: './seeds/test'
+      directory: __dirname + '/seeds/test'
     },
     useNullAsDefault: true
   },
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './db.sqlite'
+      filename: __dirname + '/db.sqlite'
     },
     migrations: {
       tableName: 'migrations'
     },
     seeds: {
-      directory: './seeds/dev'
+      directory: __dirname + '/seeds/dev'
     },
     useNullAsDefault: true
   },
