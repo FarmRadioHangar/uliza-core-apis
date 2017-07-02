@@ -7,6 +7,9 @@ module.exports = {
     migrations: {
       tableName: 'migrations'
     },
+    seeds: {
+      directory: './seeds/test'
+    },
     useNullAsDefault: true
   },
   development: {
@@ -16,6 +19,9 @@ module.exports = {
     },
     migrations: {
       tableName: 'migrations'
+    },
+    seeds: {
+      directory: './seeds/dev'
     },
     useNullAsDefault: true
   },
