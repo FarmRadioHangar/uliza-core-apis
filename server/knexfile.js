@@ -6,7 +6,8 @@ module.exports = {
     },
     migrations: {
       tableName: 'migrations'
-    }
+    },
+    useNullAsDefault: true
   },
   development: {
     client: 'sqlite3',
@@ -15,7 +16,8 @@ module.exports = {
     },
     migrations: {
       tableName: 'migrations'
-    }
+    },
+    useNullAsDefault: true
   },
   staging: {
     client: 'postgresql',
