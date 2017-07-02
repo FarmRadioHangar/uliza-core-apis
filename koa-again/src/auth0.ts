@@ -3,9 +3,9 @@ import * as jwt from 'koa-jwt';
 export namespace Auth0 {
 
   interface JwtOptions extends jwt.Options {
-    audience?: string,
-    issuer?: string,
-    algorithms?: Array<string>
+    audience?: string;
+    issuer?: string;
+    algorithms?: Array<string>;
   }
 
   export function jwtCheck() {
