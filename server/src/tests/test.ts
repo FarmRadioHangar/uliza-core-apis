@@ -9,9 +9,14 @@ const should = chai.should(),
 
 describe('GET /organizations', () => {
 
-  before(async () => {
+  beforeEach(async () => {
+    await db.migrate.rollback();
     await db.migrate.latest();
     await db.seed.run();
+  });
+
+  afterEach(async () => {
+    await db.migrate.rollback();
   });
 
   it('should return JSON', async () => {
