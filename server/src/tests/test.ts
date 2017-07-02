@@ -1,15 +1,14 @@
 import { expect } from 'chai';
 import * as agent from 'supertest-koa-agent';
-import * as knex  from 'knex';
-import * as path  from 'path';
+import { Db }     from '../db';
 import app        from '../index';
 
-const db = knex(require(path.join(__dirname, '../../knexfile.js')).test);
+const db = Db.connection();
 
 describe('GET /organizations', () => {
 
-  before(() => {
-    db.migrate.latest();
+  before(async () => {
+    await db.migrate.latest();
   });
 
   it('should return JSON', (done) => {
