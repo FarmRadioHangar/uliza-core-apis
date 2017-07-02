@@ -9,19 +9,20 @@ describe('GET /organizations', () => {
 
   before(async () => {
     await db.migrate.latest();
+    await db.seed.run();
   });
 
-  it('should return JSON', (done) => {
-    agent(app)
+  it('should return JSON', async () => {
+    await agent(app)
       .get('/organizations')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/, done);
+      .expect('Content-Type', /json/);
   });
 
-  it('should return 200 OK', (done) => {
+  it('should return 200 OK', async () => {
     agent(app)
       .get('/organizations')
-      .expect(200, done);
+      .expect(200);
   });
 
 });
