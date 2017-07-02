@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "chai": "^4.0.2",
+    "dotenv": "^4.0.0",
     "jwks-rsa": "^1.2.0",
     "knex": "^0.13.0",
     "koa": "^2.3.0",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
+    "@types/dotenv": "^4.0.0",
     "@types/knex": "0.0.56",
     "@types/koa": "^2.0.39",
     "@types/koa-bodyparser": "^3.0.23",
