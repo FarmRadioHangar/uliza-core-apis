@@ -5,7 +5,8 @@
   "scripts": {
     "build": "$(npm bin)/tsc",
     "start": "node src/index.js",
-    "test": "$(npm bin)/mocha"
+    "test": "$(npm bin)/mocha",
+    "migrations": "$(npm bin)/knex migrate:latest"
   },
   "dependencies": {
     "chai": "^4.0.2",
