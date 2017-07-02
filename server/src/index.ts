@@ -3,7 +3,7 @@ import * as bodyparser from 'koa-bodyparser';
 
 import { Auth0 } from './auth0';
 import router    from './router';
-import db        from './db';
+import knex      from './knex';
 
 const env = process.env.NODE_ENV || 'development',
       app = new Koa();
@@ -12,7 +12,7 @@ if ('test' !== env) {
   app.use(Auth0.jwtCheck());
 }
 
-app.use(db(env))
+app.use(knex(env))
    .use(bodyparser())
    .use(router.routes())
    .use(router.allowedMethods())
