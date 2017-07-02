@@ -2,8 +2,10 @@ import { Db } from '../db';
 
 export namespace Organization {
 
+  const db = Db.connection();
+
   export async function all() {
-    return ctx.state.db('organizations');
+    return db('organizations');
   }
 
 }
