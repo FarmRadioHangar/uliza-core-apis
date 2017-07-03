@@ -32,10 +32,10 @@ describe('GET /organizations', () => {
       .expect(200);
   });
 
-  it('should return a collection of 11 items', async () => {
+  it('should return a collection of 21 items', async () => {
     const response = await agent(app).get('/organizations');
     response.body.should.have.property('collection');
-    response.body.collection.length.should.equal(11);
+    response.body.collection.length.should.equal(21);
   });
 
 });
