@@ -1,11 +1,11 @@
 import * as Router from 'koa-router';
 
-import { Organization } from './models/organization';
+import Organization from './models/organization';
 
 let router = new Router();
 
 router.get('/organizations', async ctx => {
-  const collection = await Organization.all();
+  const collection = await Organization.query();
   ctx.body = { collection };
 });
 

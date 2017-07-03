@@ -1,11 +1,9 @@
-import { Db } from '../db';
+import * as objection from 'objection';
 
-export namespace Organization {
+export default class Organization extends objection.Model {
 
-  const db = Db.connection();
-
-  export async function all() {
-    return db('organizations');
+  static get tableName() {
+    return 'organizations';
   }
 
 }
