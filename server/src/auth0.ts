@@ -1,6 +1,6 @@
 import * as jwt from 'koa-jwt';
 
-export namespace Auth0 {
+export module Auth0 {
 
   interface JwtOptions extends jwt.Options {
     audience?: string;
