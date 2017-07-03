@@ -1,15 +1,22 @@
 require('dotenv').config();
 
-import server from './app';
+import * as Koa        from 'koa';
+import * as bodyparser from 'koa-bodyparser';
 
-server.listen(normalized(process.env.PORT || 3000));
+import { Auth0 } from './auth0';
+import router    from './router';
 
-function normalized(val: number|string): number|string {
-  const port: number = typeof val === 'string' ? parseInt(val, 10) : val;
-  if (isNaN(port)) 
-    return val;
-  else if (port >= 0) 
-    return port;
-  console.error('Bad port');
-  process.exit(1);
-}
+const env  = process.env.NODE_ENV || 'development',
+      app  = new Koa(),
+      port = process.env.PORT || 8080;
+
+app.use(Auth0.jwtCheck().unless(() => 'test' === env))
+   .use(bodyparser())
+   .use(router.routes())
+   .use(router.allowedMethods())
+   .listen(port)
+   .on('listening', () => { 
+     console.log(`Server is up and running on port ${port}`);
+   });
+
+export default app;

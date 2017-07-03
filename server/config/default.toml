@@ -1,6 +1,0 @@
-[server]
-name = "Farm Radio API Server"
-
-[logs]
-  [logs.access]
-    path = "tmp/logs/"
