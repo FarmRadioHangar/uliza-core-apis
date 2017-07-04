@@ -7,9 +7,9 @@ const db = Db.connection();
 
 export module Helpers {
 
-  export const { describeWithSeeds } = {
+  export const { withSeeds } = {
 
-    describeWithSeeds(what, callback) {
+    withSeeds(what, callback) {
 
       beforeEach(async () => {
         await db.migrate.rollback();

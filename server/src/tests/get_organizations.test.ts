@@ -1,6 +1,6 @@
 import { Helpers } from './helpers';
 
-Helpers.describeWithSeeds('GET /organizations', (should, expect, api) => {
+Helpers.withSeeds('GET /organizations', (should, expect, api) => {
 
   it('should return JSON', async () => {
     await api 
@@ -23,7 +23,7 @@ Helpers.describeWithSeeds('GET /organizations', (should, expect, api) => {
 
 });
 
-Helpers.describeWithSeeds('GET /organizations/count', (should, expect, api) => {
+Helpers.withSeeds('GET /organizations/count', (should, expect, api) => {
 
   it('should return a count of 21', async () => {
     const response = await api.get('/organizations/count');
