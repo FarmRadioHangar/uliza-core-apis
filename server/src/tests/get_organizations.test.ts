@@ -25,6 +25,12 @@ Helpers.withSeeds('GET /organizations', (should, expect, api) => {
 
 Helpers.withSeeds('GET /organizations/count', (should, expect, api) => {
 
+  it('should respond with 200 OK', async () => {
+    await api
+      .get('/organizations/count')
+      .expect(200);
+  });
+
   it('should return a count of 21', async () => {
     const response = await api.get('/organizations/count');
     response.body.should.have.property('count');
