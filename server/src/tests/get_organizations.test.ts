@@ -1,24 +1,6 @@
-import * as chai  from 'chai';
-import * as agent from 'supertest-koa-agent';
-import { Db }     from '../db';
-import app        from '../index';
+import { Helpers } from './helpers';
 
-const should = chai.should(),
-      expect = chai.expect,
-      db  = Db.connection(),
-      api = agent(app);
-
-describe('GET /organizations', () => {
-
-  beforeEach(async () => {
-    await db.migrate.rollback();
-    await db.migrate.latest();
-    await db.seed.run();
-  });
-
-  afterEach(async () => {
-    await db.migrate.rollback();
-  });
+Helpers.describeWithSeeds('GET /organizations', (should, expect, api) => {
 
   it('should return JSON', async () => {
     await api 
@@ -37,6 +19,16 @@ describe('GET /organizations', () => {
     const response = await api.get('/organizations');
     response.body.should.have.property('collection');
     response.body.collection.length.should.equal(21);
+  });
+
+});
+
+Helpers.describeWithSeeds('GET /organizations/count', (should, expect, api) => {
+
+  it('should return a count of 21', async () => {
+    const response = await api.get('/organizations/count');
+    response.body.should.have.property('count');
+    response.body.count.should.equal(21);
   });
 
 });
