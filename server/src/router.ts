@@ -9,6 +9,11 @@ router.get('/organizations', async ctx => {
   ctx.body = { collection };
 });
 
+router.get('/organizations/count', async ctx => {
+  const result = await Organization.query().count();
+  ctx.body = { count: result[0]['count(*)'] };
+});
+
 router.get('/protected', async ctx => {
   ctx.body = { message: 'This API is a teapot.' };
 });
