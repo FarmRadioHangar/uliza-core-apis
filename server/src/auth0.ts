@@ -8,19 +8,24 @@ export module Auth0 {
     algorithms?: Array<string>;
   }
 
-  export function jwtCheck() {
-    const options: JwtOptions = { 
-      secret: require('jwks-rsa').koaJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: 'https://farmradio.eu.auth0.com/.well-known/jwks.json'
-      }),
-      audience: 'https://dev.farmradio.fm/api/',
-      issuer: 'https://farmradio.eu.auth0.com/',
-      algorithms: ['RS256']
-    };
-    return jwt(options);
-  }
+  const options: JwtOptions = {
+    secret: require('jwks-rsa').koaJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: 'https://farmradio.eu.auth0.com/.well-known/jwks.json'
+    }),
+    audience: 'https://dev.farmradio.fm/api/',
+    issuer: 'https://farmradio.eu.auth0.com/',
+    algorithms: ['RS256']
+  };
+
+  export const { jwtCheck } = {
+
+    jwtCheck() {
+      return jwt(options);
+    }
+
+  };
 
 }

@@ -9,8 +9,12 @@ export module Db {
 
   Model.knex(db);
 
-  export function connection() {
-    return db;
+  export const { connection } = {
+
+    connection() { 
+      return db; 
+    }
+
   };
 
 }
