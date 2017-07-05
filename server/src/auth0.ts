@@ -20,12 +20,8 @@ export module Auth0 {
     algorithms: ['RS256']
   };
 
-  export const { jwtCheck } = {
-
-    jwtCheck() {
-      return jwt(options);
-    }
-
-  };
+  export function jwtCheck() {
+    return jwt(options);
+  }
 
 }

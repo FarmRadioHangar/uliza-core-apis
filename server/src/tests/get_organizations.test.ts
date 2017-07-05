@@ -32,6 +32,15 @@ Helpers.withSeeds('GET /organizations?id:in=3,7,11,14', (should, expect, api) =>
 
 });
 
+Helpers.withSeeds('GET /organizations?id:gt=15', (should, expect, api) => {
+
+  it('should return a collection of 6 items', async () => {
+    const response = await api.get('/organizations?id:gt=15');
+    response.body.collection.length.should.equal(6);
+  });
+
+});
+
 Helpers.withSeeds('GET /organizations/count', (should, expect, api) => {
 
   it('should respond with 200 OK', async () => {

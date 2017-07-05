@@ -1,30 +1,24 @@
 import * as agent from 'supertest-koa-agent';
 import * as chai  from 'chai';
-import { Db }     from '../db';
+import db         from '../db';
 import app        from '../index';
-
-const db = Db.connection();
 
 export module Helpers {
 
-  export const { withSeeds } = {
+  export function withSeeds(what, callback) {
 
-    withSeeds(what, callback) {
+    beforeEach(async () => {
+      await db.migrate.rollback();
+      await db.migrate.latest();
+      await db.seed.run();
+    });
 
-      beforeEach(async () => {
-        await db.migrate.rollback();
-        await db.migrate.latest();
-        await db.seed.run();
-      });
+    afterEach(async () => {
+      await db.migrate.rollback();
+    });
 
-      afterEach(async () => {
-        await db.migrate.rollback();
-      });
+    describe(what, callback.bind(null, chai.should(), chai.expect, agent(app)));
 
-      describe(what, callback.bind(null, chai.should(), chai.expect, agent(app)));
-
-    }
-
-  };
+  }
 
 }
