@@ -1,16 +1,11 @@
 import * as Router from 'koa-router';
+import * as find   from 'objection-find';
 
 import Organization from './models/organization';
-import find from 'objection-find';
 
 let router = new Router();
 
 router.get('/organizations', async ctx => {
-  const collection = await Organization.query();
-  ctx.body = { collection };
-});
-
-router.get('/organizations/find', async ctx => {
   const collection = await find(Organization).build(ctx.query);
   ctx.body = { collection };
 });

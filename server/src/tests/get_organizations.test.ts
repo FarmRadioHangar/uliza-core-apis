@@ -21,8 +21,13 @@ Helpers.withSeeds('GET /organizations', (should, expect, api) => {
     response.body.collection.length.should.equal(21);
   });
 
-  it('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', async () => {
-    const response = await api.get('/organizations?where={id:in=4,7,12}');
+});
+
+Helpers.withSeeds('GET /organizations?id:in=3,7,11,14', (should, expect, api) => {
+
+  it('should return a collection of 4 items', async () => {
+    const response = await api.get('/organizations?id:in=3,7,11,14');
+    response.body.collection.length.should.equal(4);
   });
 
 });
