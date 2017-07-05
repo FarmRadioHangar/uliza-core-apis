@@ -21,6 +21,10 @@ Helpers.withSeeds('GET /organizations', (should, expect, api) => {
     response.body.collection.length.should.equal(21);
   });
 
+  it('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', async () => {
+    const response = await api.get('/organizations?where={id:in=4,7,12}');
+  });
+
 });
 
 Helpers.withSeeds('GET /organizations/count', (should, expect, api) => {
