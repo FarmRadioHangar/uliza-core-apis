@@ -3,20 +3,24 @@ import * as find   from 'objection-find';
 
 import Organization from './models/organization';
 
-let router = new Router();
+export const { setup } = {
 
-router.get('/organizations', async ctx => {
-  const collection = await find(Organization).build(ctx.query);
-  ctx.body = { collection };
-});
+  setup(api: Router) {
 
-router.get('/organizations/count', async ctx => {
-  const result = await Organization.query().count();
-  ctx.body = { count: result[0]['count(*)'] };
-});
+    api.get('/organizations', async ctx => {
+      const collection = await find(Organization).build(ctx.query);
+      ctx.body = { collection };
+    });
 
-router.get('/protected', async ctx => {
-  ctx.body = { message: 'This API is a teapot.' };
-});
+    api.get('/organizations/count', async ctx => {
+      const result = await Organization.query().count();
+      ctx.body = { count: result[0]['count(*)'] };
+    });
 
-export default router;
+    api.get('/protected', async ctx => {
+      ctx.body = { message: 'This API is a teapot.' };
+    });
+
+  }
+
+};
