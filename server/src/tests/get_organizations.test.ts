@@ -47,12 +47,10 @@ Api.test.endpoint('/organizations?select=id,name').get(result => {
     const response = await result;
     response.body.should.have.property('collection');
     response.body.collection.length.should.equal(21);
-    response.body.collection.forEach(item => {
-      const keys: Array<string> = Object.keys(item);
-      keys.length.should.equal(2);
-      keys[0].should.equal('id');
-      keys[1].should.equal('name');
-    });
+    response.body.collection.should.all.have.property('id');
+    response.body.collection.should.all.have.property('name');
+    response.body.collection.should.all.not.have.property('created_at');
+    response.body.collection.should.all.not.have.property('updated_at');
   });
 
 });
