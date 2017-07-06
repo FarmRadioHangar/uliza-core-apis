@@ -6,6 +6,7 @@
     "build": "$(npm bin)/tsc",
     "start": "node src/index.js",
     "test": "$(npm bin)/mocha",
+    "nyan": "$(npm bin)/mocha --reporter=nyan",
     "migrations": "$(npm bin)/knex migrate:latest"
   },
   "dependencies": {
