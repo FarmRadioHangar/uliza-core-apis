@@ -21,6 +21,7 @@ export module Api {
 
   chai.should();
   chai.use(require('chai-things'));
+  chai.use(require('chai-also'));
 
   export function endpoint(url) {
 
