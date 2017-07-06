@@ -3,21 +3,66 @@ import * as chai  from 'chai';
 import db         from '../db';
 import app        from '../index';
 
-export module Helpers {
+export module Api {
 
-  export function withSeeds(what, callback) {
+  chai.should();
+  chai.use(require('chai-things'));
 
-    beforeEach(async () => {
-      await db.migrate.rollback();
-      await db.migrate.latest();
-      await db.seed.run();
-    });
+  export const test = {
 
-    afterEach(async () => {
-      await db.migrate.rollback();
-    });
+    endpoint(url) {
 
-    describe(what, callback.bind(null, chai.should(), chai.expect, agent(app)));
+      beforeEach(async () => {
+        await db.migrate.rollback();
+        await db.migrate.latest();
+        await db.seed.run();
+      });
+
+      afterEach(async () => {
+        await db.migrate.rollback();
+      });
+
+      return {
+
+        get(f) { 
+          describe(`GET ${url}`, f.bind(null, agent(app)
+            .get(url)
+            .set('Accept', 'application/json'))); 
+        },
+
+        post(f) { 
+          describe(`POST ${url}`, f.bind(null, agent(app)
+            .post(url)
+            .set('Accept', 'application/json'))); 
+        },
+
+        put(f) { 
+          describe(`PUT ${url}`, f.bind(null, agent(app)
+            .put(url)
+            .set('Accept', 'application/json'))); 
+        },
+
+        head(f) { 
+          describe(`HEAD ${url}`, f.bind(null, agent(app)
+            .head(url)
+            .set('Accept', 'application/json'))); 
+        },
+
+        patch(f) { 
+          describe(`PATCH ${url}`, f.bind(null, agent(app)
+            .patch(url)
+            .set('Accept', 'application/json'))); 
+        },
+
+        delete(f) { 
+          describe(`DELETE ${url}`, f.bind(null, agent(app)
+            .delete(url)
+            .set('Accept', 'application/json'))); 
+        }
+
+      };
+
+    }
 
   }
 
