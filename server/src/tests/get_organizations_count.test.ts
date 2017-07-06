@@ -1,14 +1,12 @@
-import { Api } from './helpers';
+import { Api, the, json } from './helpers';
 
-Api.test.endpoint('/organizations/count').get(result => {
+Api.endpoint('/organizations/count').get(test => {
 
-  it('should respond with 200 OK', async () => {
-    await result.expect(200);
-  });
+  json(test);
 
-  it('should return a count of 21', async () => {
-    const response = await result;
+  the(test, 'should return a count of 21', response => {
     response.body.should.have.property('count');
+    response.body.count.should.be.a('number');
     response.body.count.should.equal(21);
   });
 

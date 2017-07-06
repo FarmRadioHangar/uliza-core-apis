@@ -1,37 +1,34 @@
 import * as chai from 'chai';
-import { Api }   from './helpers';
+import { Api, the, json } from './helpers';
 
-Api.test.endpoint('/organizations').get(result => {
+Api.endpoint('/organizations').get(test => {
 
-  it('should return JSON', async () => {
-    await result.expect('Content-Type', /json/);
-  });
+  json(test);
 
-  it('should respond with 200 OK', async () => {
-    await result.expect(200);
-  });
-
-  it('should return a collection of 21 items', async () => {
-    const response = await result;
+  the(test, 'should return a collection of 21 items', response => {
     response.body.should.have.property('collection');
+    response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(21);
   });
 
 });
 
-Api.test.endpoint('/organizations?id:in=3,7,11,14').get(result => {
+Api.endpoint('/organizations?id:in=3,7,11,14').get(test => {
 
-  it('should return a collection of 4 items', async () => {
-    const response = await result;
+  json(test);
+
+  the(test, 'should return a collection of 4 items', response => {
+    response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(4);
   });
 
 });
 
-Api.test.endpoint('/organizations?select=name').get(result => {
+Api.endpoint('/organizations?select=name').get(test => {
 
-  it('should return a collection of items with only a \'name\' property', async () => {
-    const response = await result;
+  json(test);
+
+  the(test, 'should return a collection of items with only a \'name\' property', response => {
     response.body.should.have.property('collection');
     response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(21);
@@ -41,11 +38,13 @@ Api.test.endpoint('/organizations?select=name').get(result => {
 
 });
 
-Api.test.endpoint('/organizations?select=id,name').get(result => {
+Api.endpoint('/organizations?select=id,name').get(test => {
 
-  it('should return a collection of items with both \'id\' and \'name\' properties', async () => {
-    const response = await result;
+  json(test);
+
+  the(test, 'should return a collection of items with both \'id\' and \'name\' properties', response => {
     response.body.should.have.property('collection');
+    response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(21);
     response.body.collection.should.all.have.property('id');
     response.body.collection.should.all.have.property('name');
@@ -55,10 +54,12 @@ Api.test.endpoint('/organizations?select=id,name').get(result => {
 
 });
 
-Api.test.endpoint('/organizations?id:gt=15').get(result => {
+Api.endpoint('/organizations?id:gt=15').get(test => {
 
-  it('should return a collection of 6 items', async () => {
-    const response = await result;
+  json(test);
+
+  the(test, 'should return a collection of 6 items', response => {
+    response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(6);
   });
 
