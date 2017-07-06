@@ -6,7 +6,7 @@ Api.endpoint('/organizations').get(test => {
   json(test);
 
   the(test, 'should return a collection of 21 items', response => {
-    response.body.should.have.property('collection');
+    response.body.should.have.a.property('collection');
     response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(21);
   });
@@ -29,7 +29,7 @@ Api.endpoint('/organizations?select=name').get(test => {
   json(test);
 
   the(test, 'should return a collection of items with only a \'name\' property', response => {
-    response.body.should.have.property('collection');
+    response.body.should.have.a.property('collection');
     response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(21);
     response.body.collection.should.all.not.have.property('id');
@@ -43,13 +43,13 @@ Api.endpoint('/organizations?select=id,name').get(test => {
   json(test);
 
   the(test, 'should return a collection of items with both \'id\' and \'name\' properties', response => {
-    response.body.should.have.property('collection');
+    response.body.should.have.a.property('collection');
     response.body.collection.should.be.an('array');
     response.body.collection.length.should.equal(21);
-    response.body.collection.should.all.have.property('id');
-    response.body.collection.should.all.have.property('name');
-    response.body.collection.should.all.not.have.property('created_at');
-    response.body.collection.should.all.not.have.property('updated_at');
+    response.body.collection.should.all.have.a.property('id');
+    response.body.collection.should.all.have.a.property('name');
+    response.body.collection.should.all.not.have.a.property('created_at');
+    response.body.collection.should.all.not.have.a.property('updated_at');
   });
 
 });
