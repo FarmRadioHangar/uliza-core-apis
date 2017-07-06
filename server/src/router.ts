@@ -13,7 +13,7 @@ function fields(select: string|undefined): Array<string>|undefined {
 export default (api: Router) => {
 
   /**
-   * GET /organizations
+   * List organizations.
    */
   api.get('/organizations', async ctx => {
     const { select, offset, limit, ...params } = ctx.query;
@@ -27,7 +27,7 @@ export default (api: Router) => {
   });
 
   /**
-   * GET /organizations/count
+   * Count the number of organizations matching certain criteria.
    */
   api.get('/organizations/count', async ctx => {
     const { select, offset, limit, ...params } = ctx.query;
@@ -42,7 +42,7 @@ export default (api: Router) => {
   });
 
   /**
-   * GET /organizations/:id
+   * Show detailed information about an organization.
    */
   api.get('/organizations/:id', async ctx => {
     const { select } = ctx.query;
