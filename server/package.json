@@ -7,7 +7,8 @@
     "start": "node src/index.js",
     "test": "$(npm bin)/mocha",
     "nyan": "$(npm bin)/mocha --reporter=nyan",
-    "migrations": "$(npm bin)/knex migrate:latest"
+    "migrations": "$(npm bin)/knex migrate:latest",
+    "seeds": "$(npm bin)/knex seed:run"
   },
   "dependencies": {
     "chai": "^4.0.2",
