@@ -78,3 +78,58 @@ Api.endpoint('/organizations?id:gt=15').get(test => {
   });
 
 });
+
+Api.endpoint('/organizations?offset=0&limit=4').get(test => {
+
+  the(test, 'should return a collection of 4 items, starting from id 1', response => {
+    response.body.should.have.a.property('collection').that.is.an('array').and.has.a.lengthOf(4);
+    response.body.collection[0].id.should.equal(1);
+  });
+
+});
+
+Api.endpoint('/organizations?offset=4&limit=4').get(test => {
+
+  the(test, 'should return a collection of 4 items, starting from id 5', response => {
+    response.body.should.have.a.property('collection').that.is.an('array').and.has.a.lengthOf(4);
+    response.body.collection[0].id.should.equal(5);
+  });
+
+});
+
+Api.endpoint('/organizations?offset=8&limit=4').get(test => {
+
+  the(test, 'should return a collection of 4 items, starting from id 9', response => {
+    response.body.should.have.a.property('collection').that.is.an('array').and.has.a.lengthOf(4);
+    response.body.collection[0].id.should.equal(9);
+  });
+
+});
+
+Api.endpoint('/organizations?offset=12&limit=4').get(test => {
+
+  the(test, 'should return a collection of 4 items, starting from id 13', response => {
+    response.body.should.have.a.property('collection').that.is.an('array').and.has.a.lengthOf(4);
+    response.body.collection[0].id.should.equal(13);
+  });
+
+});
+
+Api.endpoint('/organizations?offset=16&limit=4').get(test => {
+
+  the(test, 'should return a collection of 4 items, starting from id 17', response => {
+    response.body.should.have.a.property('collection').that.is.an('array').and.has.a.lengthOf(4);
+    response.body.collection[0].id.should.equal(17);
+  });
+
+});
+
+Api.endpoint('/organizations?offset=20&limit=4').get(test => {
+
+  the(test, 'should return a collection of 1 item, with id 21', response => {
+    response.body.should.have.a.property('collection').that.is.an('array').and.has.a.lengthOf(1);
+    response.body.collection[0].id.should.equal(21);
+  });
+
+});
+
