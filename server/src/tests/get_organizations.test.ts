@@ -1,58 +1,67 @@
-import { Helpers } from './helpers';
+import * as chai from 'chai';
+import { Api }   from './helpers';
 
-Helpers.withSeeds('GET /organizations', (should, expect, api) => {
+Api.test.endpoint('/organizations').get(result => {
 
   it('should return JSON', async () => {
-    await api 
-      .get('/organizations')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/);
+    await result.expect('Content-Type', /json/);
   });
 
   it('should respond with 200 OK', async () => {
-    await api
-      .get('/organizations')
-      .expect(200);
+    await result.expect(200);
   });
 
   it('should return a collection of 21 items', async () => {
-    const response = await api.get('/organizations');
+    const response = await result;
     response.body.should.have.property('collection');
     response.body.collection.length.should.equal(21);
   });
 
 });
 
-Helpers.withSeeds('GET /organizations?id:in=3,7,11,14', (should, expect, api) => {
+Api.test.endpoint('/organizations?id:in=3,7,11,14').get(result => {
 
   it('should return a collection of 4 items', async () => {
-    const response = await api.get('/organizations?id:in=3,7,11,14');
+    const response = await result;
     response.body.collection.length.should.equal(4);
   });
 
 });
 
-Helpers.withSeeds('GET /organizations?id:gt=15', (should, expect, api) => {
+Api.test.endpoint('/organizations?select=name').get(result => {
 
-  it('should return a collection of 6 items', async () => {
-    const response = await api.get('/organizations?id:gt=15');
-    response.body.collection.length.should.equal(6);
+  it('should return a collection of items with only a \'name\' property', async () => {
+    const response = await result;
+    response.body.should.have.property('collection');
+    response.body.collection.should.be.an('array');
+    response.body.collection.length.should.equal(21);
+    response.body.collection.should.all.not.have.property('id');
+    response.body.collection.should.all.have.property('name');
   });
 
 });
 
-Helpers.withSeeds('GET /organizations/count', (should, expect, api) => {
+Api.test.endpoint('/organizations?select=id,name').get(result => {
 
-  it('should respond with 200 OK', async () => {
-    await api
-      .get('/organizations/count')
-      .expect(200);
+  it('should return a collection of items with both \'id\' and \'name\' properties', async () => {
+    const response = await result;
+    response.body.should.have.property('collection');
+    response.body.collection.length.should.equal(21);
+    response.body.collection.forEach(item => {
+      const keys: Array<string> = Object.keys(item);
+      keys.length.should.equal(2);
+      keys[0].should.equal('id');
+      keys[1].should.equal('name');
+    });
   });
 
-  it('should return a count of 21', async () => {
-    const response = await api.get('/organizations/count');
-    response.body.should.have.property('count');
-    response.body.count.should.equal(21);
+});
+
+Api.test.endpoint('/organizations?id:gt=15').get(result => {
+
+  it('should return a collection of 6 items', async () => {
+    const response = await result;
+    response.body.collection.length.should.equal(6);
   });
 
 });
