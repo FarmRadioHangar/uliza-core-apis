@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "chai": "^4.0.2",
+    "chai-also": "^0.1.0",
     "chai-things": "^0.2.0",
     "dotenv": "^4.0.0",
     "jwks-rsa": "^1.2.0",
