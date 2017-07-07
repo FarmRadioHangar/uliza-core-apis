@@ -1,9 +1,9 @@
 import * as chai from 'chai';
-import { Api, the, json } from './helpers';
+import { Api, the, assertJson200 } from './helpers';
 
 Api.endpoint('/organizations').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a collection of 21 items', response => {
     response.body
@@ -16,7 +16,7 @@ Api.endpoint('/organizations').get(test => {
 
 Api.endpoint('/organizations?id:in=3,7,11,14').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a collection of 4 items', response => {
     response.body.collection
@@ -28,7 +28,7 @@ Api.endpoint('/organizations?id:in=3,7,11,14').get(test => {
 
 Api.endpoint('/organizations?select=name').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a collection of items with only a \'name\' property', response => {
     response.body
@@ -48,7 +48,7 @@ Api.endpoint('/organizations?select=name').get(test => {
 
 Api.endpoint('/organizations?select=id,name').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a collection of items with both \'id\' and \'name\' properties', response => {
     response.body
@@ -70,7 +70,7 @@ Api.endpoint('/organizations?select=id,name').get(test => {
 
 Api.endpoint('/organizations?id:gt=15').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a collection of 6 items', response => {
     response.body.collection

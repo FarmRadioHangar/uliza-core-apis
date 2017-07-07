@@ -1,8 +1,8 @@
 import * as chai from 'chai';
-import { Api, the, json } from './helpers';
+import { Api, the, assertJson200 } from './helpers';
 
 Api.endpoint('/programs').get(test => {
 
-  json(test);
+  assertJson200(test);
 
 });

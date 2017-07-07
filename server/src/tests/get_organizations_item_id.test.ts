@@ -1,9 +1,9 @@
 import * as chai from 'chai';
-import { Api, the, json } from './helpers';
+import { Api, the, assertJson200 } from './helpers';
 
 Api.endpoint('/organizations/3').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a single organization', response => {
     response.body
@@ -28,7 +28,7 @@ Api.endpoint('/organizations/3').get(test => {
 
 Api.endpoint('/organizations/3?select=name').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a single organization with a name property', response => {
     response.body

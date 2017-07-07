@@ -3,7 +3,7 @@ import * as chai  from 'chai';
 import db         from '../db';
 import app        from '../index';
 
-export function json(test) {
+export function assertJson200(test) {
 
   it('should return JSON', async () => {
     const response = await test;

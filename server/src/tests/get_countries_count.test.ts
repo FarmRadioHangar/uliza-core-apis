@@ -1,8 +1,8 @@
-import { Api, the, json } from './helpers';
+import { Api, the, assertJson200 } from './helpers';
 
 Api.endpoint('/countries/count').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a count of 6', response => {
     response.body

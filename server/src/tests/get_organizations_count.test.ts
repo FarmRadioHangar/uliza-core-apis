@@ -1,8 +1,8 @@
-import { Api, the, json } from './helpers';
+import { Api, the, assertJson200 } from './helpers';
 
 Api.endpoint('/organizations/count').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a count of 21', response => {
     response.body
@@ -15,7 +15,7 @@ Api.endpoint('/organizations/count').get(test => {
 
 Api.endpoint('/organizations/count?id:gt=15').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a count of 6', response => {
     response.body
@@ -28,7 +28,7 @@ Api.endpoint('/organizations/count?id:gt=15').get(test => {
 
 Api.endpoint('/organizations/count?id=3').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a count of 1', response => {
     response.body
@@ -41,7 +41,7 @@ Api.endpoint('/organizations/count?id=3').get(test => {
 
 Api.endpoint('/organizations/count?id:ne=3').get(test => {
 
-  json(test);
+  assertJson200(test);
 
   the(test, 'should return a count of 20', response => {
     response.body
