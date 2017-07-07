@@ -6,11 +6,13 @@ import app        from '../index';
 export function json(test) {
 
   it('should return JSON', async () => {
-    await test.expect('Content-Type', /json/);
+    const response = await test;
+    response.should.have.header('Content-Type', /json/);
   });
 
   it('should respond with 200 OK', async () => {
-    await test.expect(200);
+    const response = await test;
+    response.status.should.equal(200);
   });
 
 }
@@ -22,6 +24,7 @@ export module Api {
   chai.should();
   chai.use(require('chai-things'));
   chai.use(require('chai-also'));
+  chai.use(require('chai-http'));
 
   export function endpoint(url) {
 
