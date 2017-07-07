@@ -126,9 +126,37 @@ Api.endpoint('/organizations?offset=16&limit=4').get(test => {
 
 Api.endpoint('/organizations?offset=20&limit=4').get(test => {
 
-  the(test, 'should return a collection of 1 item, with id 21', response => {
+  the(test, 'should return a collection of 1 item, with id = 21', response => {
     response.body.should.have.a.property('collection').that.is.an('array').and.has.a.lengthOf(1);
     response.body.collection[0].id.should.equal(21);
+  });
+
+});
+
+Api.endpoint('/organizations?id:ne=3').get(test => {
+
+  the(test, 'should return a collection of 20 organizations, not containing id = 3', response => {
+    response.body
+      .should.have.a.property('collection')
+      .that.is.an('array')
+      .and.has.a.lengthOf(20);
+    response.body.collection.should.contain.a.thing.with.property('id', 1)
+      .and.contain.a.thing.with.property('id', 2)
+      .and.contain.a.thing.with.property('id', 4);
+    response.body.collection.should.not.contain.a.thing.with.property('id', 3);
+  });
+
+});
+
+Api.endpoint('/organizations?id:ne=3&limit=4').get(test => {
+
+  the(test, 'should return a collection of 4 organizations, not containing id = 3', response => {
+    response.body.collection.length.should.equal(4);
+    response.body.collection.should.contain.a.thing.with.property('id', 1)
+      .and.contain.a.thing.with.property('id', 2)
+      .and.contain.a.thing.with.property('id', 4)
+      .and.contain.a.thing.with.property('id', 5);
+    response.body.collection.should.not.contain.a.thing.with.property('id', 3);
   });
 
 });
