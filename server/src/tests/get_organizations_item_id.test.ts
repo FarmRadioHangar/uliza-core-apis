@@ -41,3 +41,17 @@ Api.endpoint('/organizations/3?select=name').get(test => {
   });
 
 });
+
+Api.endpoint('/organizations/103').get(test => {
+
+  json(test);
+
+  //the(test, 'should return JSON', response => {
+  //  response.should.include.something.that.deep.equals({ 'content-type': 'application/json' })
+  //});
+
+  //the(test, 'should respond with a 404 NOT FOUND response code', response => {
+  //  response.status.should.equal(404);
+  //});
+
+});
