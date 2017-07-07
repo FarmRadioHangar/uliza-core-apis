@@ -160,4 +160,3 @@ Api.endpoint('/organizations?id:ne=3&limit=4').get(test => {
   });
 
 });
-
