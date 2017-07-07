@@ -38,3 +38,16 @@ Api.endpoint('/organizations/count?id=3').get(test => {
   });
 
 });
+
+Api.endpoint('/organizations/count?id:ne=3').get(test => {
+
+  json(test);
+
+  the(test, 'should return a count of 20', response => {
+    response.body
+      .should.have.a.property('count')
+      .that.is.a('number')
+      .and.equals(20);
+  });
+
+});
