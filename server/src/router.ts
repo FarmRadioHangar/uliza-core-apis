@@ -2,8 +2,15 @@ import * as Router  from 'koa-router';
 import * as find    from 'objection-find';
 import { registerFilter } from 'objection-find';
 
+import Campaign     from './models/campaign';
 import Country      from './models/country';
+import Episode      from './models/episode';
 import Organization from './models/organization';
+import Program      from './models/program';
+import Project      from './models/project';
+import Schedule     from './models/schedule';
+import Survey       from './models/survey';
+import Topic        from './models/topic';
 
 function fields(select: string|undefined): Array<string>|undefined {
   if ('string' !== typeof select) {
