@@ -1,93 +1,39 @@
-import * as Router  from 'koa-router';
-import * as find    from 'objection-find';
-import { registerFilter } from 'objection-find';
+import * as Router from 'koa-router';
 
-import Campaign     from './models/campaign';
-import Country      from './models/country';
-import Episode      from './models/episode';
-import Organization from './models/organization';
-import Program      from './models/program';
-import Project      from './models/project';
-import Schedule     from './models/schedule';
-import Survey       from './models/survey';
-import Topic        from './models/topic';
-
-function fields(select: string|undefined): Array<string>|undefined {
-  if ('string' !== typeof select) {
-    return undefined;
-  }
-  return select.split(',');
-}
-
-function ne(propertyRef, value) {
-  return {
-    method: 'where',
-    args: [propertyRef.fullColumnName(), '<>', value]
-  };
-}
+import CountriesController     from './controllers/CountriesController';
+import OrganizationsController from './controllers/OrganizationsController';
 
 export default (api: Router) => {
 
   /**
+   * CountriesController
+   */
+  const countriesController = new CountriesController();
+
+  /**
+   * OrganizationsController
+   */
+  const organizationsController = new OrganizationsController();
+
+  /**
    * List countries.
    */
-  api.get('/countries', async ctx => {
-    const { select, offset, limit, ...params } = ctx.query;
-    const collection = await find(Country)
-      .registerFilter('ne', ne)
-      .build(params)
-      .skipUndefined()
-      .select(fields(select))
-      .offset(offset)
-      .limit(limit);
-    ctx.body = { collection };
-  });
+  api.get('/countries', countriesController.collection);
 
   /**
    * List organizations.
    */
-  api.get('/organizations', async ctx => {
-    const { select, offset, limit, ...params } = ctx.query;
-    const collection = await find(Organization)
-      .registerFilter('ne', ne)
-      .build(params)
-      .skipUndefined()
-      .select(fields(select))
-      .offset(offset)
-      .limit(limit);
-    ctx.body = { collection };
-  });
+  api.get('/organizations', organizationsController.collection);
 
   /**
    * Count the number of organizations matching certain criteria.
    */
-  api.get('/organizations/count', async ctx => {
-    const { select, offset, limit, ...params } = ctx.query;
-    const results = await find(Organization)
-      .registerFilter('ne', ne)
-      .build(params)
-      .count();
-    if (1 === results.length) {
-      ctx.body = { count: results[0]['count(*)'] };
-    } else {
-      ctx.body = { count: 0 };
-    }
-  });
+  api.get('/organizations/count', organizationsController.count);
 
   /**
    * Get detailed information about an organization.
    */
-  api.get('/organizations/:id', async ctx => {
-    const { select } = ctx.query;
-    const results = await Organization
-      .query()
-      .where('id', '=', ctx.params.id)
-      .skipUndefined()
-      .select(fields(select));
-    if (1 === results.length) {
-      ctx.body = results[0];
-    } 
-  });
+  api.get('/organizations/:id', organizationsController.findOne);
 
   api.get('/protected', async ctx => {
     ctx.body = { message: 'This API is a teapot.' };
