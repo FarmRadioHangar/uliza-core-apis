@@ -12,6 +12,18 @@ Api.endpoint('/organizations/3').get(test => {
       .and.equals(3);
   });
 
+  the(test, 'should return an object with id, name, created_at, and updated_at properties', response => {
+    response.body
+      .should.have.a.property('id')
+      .that.is.a('number')
+      .and.also.have.a.property('name')
+      .that.is.a('string')
+      .and.also.have.a.property('created_at')
+      .that.is.a('string')
+      .and.also.have.a.property('updated_at')
+      .that.is.a('string');
+  });
+
 });
 
 Api.endpoint('/organizations/3?select=name').get(test => {

@@ -50,6 +50,9 @@ export default class ApiController {
     } 
   }
 
+  /**
+   * @private
+   */
   private ne(propertyRef, value) {
     return {
       method: 'where',
@@ -57,6 +60,9 @@ export default class ApiController {
     };
   }
 
+  /**
+   * @private
+   */
   private fields(select: string|undefined): Array<string>|undefined {
     if ('string' !== typeof select) {
       return undefined;

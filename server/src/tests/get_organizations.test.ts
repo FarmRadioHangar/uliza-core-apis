@@ -61,8 +61,9 @@ Api.endpoint('/organizations?select=id,name').get(test => {
   });
 
   the(test, 'should not return any items with a \'created_at\' or \'updated_at\' property', response => {
-    response.body.collection.should.all.not.have.a.property('created_at');
-    response.body.collection.should.all.not.have.a.property('updated_at');
+    const { collection } = response.body;
+    collection.should.all.not.have.a.property('created_at');
+    collection.should.all.not.have.a.property('updated_at');
   });
 
 });
