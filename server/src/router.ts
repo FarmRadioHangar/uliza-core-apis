@@ -1,5 +1,6 @@
 import * as Router from 'koa-router';
 import * as find   from 'objection-find';
+import { registerFilter } from 'objection-find';
 
 import Organization from './models/organization';
 
@@ -10,6 +11,13 @@ function fields(select: string|undefined): Array<string>|undefined {
   return select.split(',');
 }
 
+function ne(propertyRef, value, modelClass) {
+  return {
+    method: 'where',
+    args: [propertyRef.fullColumnName(), '<>', value]
+  };
+}
+
 export default (api: Router) => {
 
   /**
@@ -18,6 +26,7 @@ export default (api: Router) => {
   api.get('/organizations', async ctx => {
     const { select, offset, limit, ...params } = ctx.query;
     const collection = await find(Organization)
+      .registerFilter('ne', ne)
       .build(params)
       .skipUndefined()
       .select(fields(select))
@@ -32,6 +41,7 @@ export default (api: Router) => {
   api.get('/organizations/count', async ctx => {
     const { select, offset, limit, ...params } = ctx.query;
     const results = await find(Organization)
+      .registerFilter('ne', ne)
       .build(params)
       .count();
     if (1 === results.length) {
@@ -42,7 +52,7 @@ export default (api: Router) => {
   });
 
   /**
-   * Show detailed information about an organization.
+   * Get detailed information about an organization.
    */
   api.get('/organizations/:id', async ctx => {
     const { select } = ctx.query;
