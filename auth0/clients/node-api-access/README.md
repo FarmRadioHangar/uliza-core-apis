@@ -19,7 +19,7 @@ In the project's root directory, create and populate the `.env` file with the ap
 #### Sample `.env` file
 
 ```
-AUTH0_CLIENT_ID=Kyn4B2Ce460JAW9QvrXc0Q3B04U98N0e
+AUTH0_CLIENT_ID=ROCL8CvBnSJ2sVGk3NTZGDiAZOMlm26Z
 AUTH0_DOMAIN=farmradio.eu.auth0.com
 AUTH0_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
