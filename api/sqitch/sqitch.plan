@@ -1,0 +1,6 @@
+%syntax-version=1.0.0
+%project=farmradio_api
+%uri=farmradio_api
+
+api_schema 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+countries [api_schema] 2017-07-21T10:54:45Z Johannes <johannes@johannes-t440s> # Create table countries
