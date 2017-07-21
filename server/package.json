@@ -11,14 +11,17 @@
     "seeds": "$(npm bin)/knex seed:run"
   },
   "dependencies": {
+    "bookshelf": "^0.10.3",
     "chai": "^4.0.2",
     "chai-also": "^0.1.0",
+    "chai-http": "^3.0.0",
     "chai-things": "^0.2.0",
     "dotenv": "^4.0.0",
     "jwks-rsa": "^1.2.0",
     "knex": "^0.13.0",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
+    "koa-json-error": "^3.1.2",
     "koa-jwt": "^3.2.2",
     "koa-router": "^7.2.1",
     "mocha": "^3.4.2",
@@ -30,6 +33,7 @@
     "supertest-koa-agent": "^0.3.0"
   },
   "devDependencies": {
+    "@types/bookshelf": "^0.9.3",
     "@types/chai": "^4.0.1",
     "@types/dotenv": "^4.0.0",
     "@types/knex": "0.0.56",
