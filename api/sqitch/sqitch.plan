@@ -2,6 +2,7 @@
 %project=farmradio_api
 %uri=farmradio_api
 
-api_schema 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
-countries [api_schema] 2017-07-21T10:54:45Z Johannes <johannes@johannes-t440s> # Create table countries
-responses [api_schema] 2017-07-24T09:15:02Z Johannes <johannes@johannes-t440s> # Create table responses
+role_www 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+api_schema [role_www] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+countries [role_www api_schema] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+responses [role_www api_schema] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 

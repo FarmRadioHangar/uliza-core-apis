@@ -1,6 +1,3 @@
--- Deploy farmradio_api:countries to pg
--- requires: api_schema
-
 BEGIN;
 
   CREATE TABLE farmradio_api.countries (
@@ -22,4 +19,6 @@ BEGIN;
       ('Uganda',       'UG', 'UGA', '+256'),
       ('Zambia',       'ZM', 'ZMB', '+260');
 
+  GRANT SELECT ON farmradio_api.countries TO www;
+      
 COMMIT;
