@@ -3,6 +3,7 @@
 %uri=farmradio_api
 
 role_www 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
-api_schema [role_www] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
-countries [role_www api_schema] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
-responses [role_www api_schema] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+role_admin 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+api_schema [role_www role_admin] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+countries [role_www role_admin api_schema] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
+responses [role_www role_admin api_schema] 2017-07-18T08:09:06Z Johannes <johannes@johannes-t440s> 
