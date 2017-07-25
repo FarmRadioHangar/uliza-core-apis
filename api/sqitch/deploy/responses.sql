@@ -9,11 +9,11 @@ BEGIN;
     content_type      INT         NOT NULL,
     poll_id           INT         NOT NULL,
     delivery_log_id   INT         NOT NULL,
-    choice_id         INT         NOT NULL,
+    choice_id         INT             NULL,
     subscriber_id     INT         NOT NULL,
     subscriber_phone  VARCHAR     NOT NULL,
     question_title    TEXT        NOT NULL,
-    choice_name       TEXT        NOT NULL,
+    choice_name       TEXT            NULL,
     date_received     TIMESTAMPTZ NOT NULL
   );
 
