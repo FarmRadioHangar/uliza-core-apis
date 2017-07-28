@@ -1,6 +1,6 @@
 BEGIN;
 
-  CREATE TABLE farmradio_api.responses (
+  CREATE TABLE farmradio_api.voto_responses (
     id                SERIAL      PRIMARY KEY,
     question_id       INT         NOT NULL,
     survey_id         INT         NOT NULL,
@@ -17,9 +17,9 @@ BEGIN;
     date_received     TIMESTAMPTZ NOT NULL
   );
 
-  GRANT SELECT ON farmradio_api.responses TO www;
+  GRANT SELECT ON farmradio_api.voto_responses TO www;
 
-  GRANT ALL ON farmradio_api.responses TO admin;
-  GRANT USAGE, SELECT ON SEQUENCE farmradio_api.responses_id_seq TO admin;
+  GRANT ALL ON farmradio_api.voto_responses TO admin;
+  GRANT USAGE, SELECT ON SEQUENCE farmradio_api.voto_responses_id_seq TO admin;
 
 COMMIT;

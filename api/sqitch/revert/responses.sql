@@ -1,5 +1,5 @@
 BEGIN;
 
-  DROP TABLE farmradio_api.responses;
+  DROP TABLE farmradio_api.voto_responses;
 
 COMMIT;
