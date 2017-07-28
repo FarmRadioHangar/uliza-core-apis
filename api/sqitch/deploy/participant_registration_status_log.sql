@@ -7,10 +7,10 @@ BEGIN;
   );
 
   CREATE TABLE farmradio_api.participant_registration_status_log (
-    id             SERIAL                  PRIMARY KEY,
-    participant_id INT                     NOT NULL,
-    event_type     registration_event_type NOT NULL,
-    created_at     TIMESTAMPTZ             DEFAULT NOW() 
+    id                   SERIAL                  PRIMARY KEY,
+    participant_id       INT                     NOT NULL,
+    event_type           registration_event_type NOT NULL,
+    created_at           TIMESTAMPTZ             DEFAULT NOW() 
   );
 
   GRANT SELECT ON farmradio_api.participant_registration_status_log TO www;
