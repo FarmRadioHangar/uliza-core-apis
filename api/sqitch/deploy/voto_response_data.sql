@@ -2,7 +2,7 @@ BEGIN;
 
   CREATE TABLE farmradio_api.voto_response_data (
     id   SERIAL PRIMARY KEY,
-    data JSONB  NOT_NULL
+    data JSONB  NOT NULL
   );
 
   GRANT SELECT ON farmradio_api.voto_response_data TO www;

@@ -23,5 +23,5 @@ BEGIN;
 
   GRANT ALL ON farmradio_api.countries TO admin;
   GRANT USAGE, SELECT ON SEQUENCE farmradio_api.countries_id_seq TO admin;
-      
+
 COMMIT;
