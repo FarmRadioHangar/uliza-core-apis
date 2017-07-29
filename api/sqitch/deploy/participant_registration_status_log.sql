@@ -8,8 +8,8 @@ BEGIN;
 
   CREATE TABLE farmradio_api.participant_registration_status_log (
     id                   SERIAL                  PRIMARY KEY,
-    participant_id       INT                     NOT NULL          REFERENCES farmradio_api.participants(id) ON DELETE CASCADE,
-    registration_call_id INT                     NOT NULL          REFERENCES farmradio_api.registration_calls(id),
+    participant_id       INT                     NOT NULL      REFERENCES farmradio_api.participants(id) ON DELETE CASCADE,
+    registration_call_id INT                     NOT NULL      REFERENCES farmradio_api.registration_calls(id),
     event_type           registration_event_type NOT NULL,
     created_at           TIMESTAMPTZ             DEFAULT NOW() 
   );

@@ -1,10 +1,10 @@
 BEGIN;
 
   CREATE TABLE farmradio_api.registration_calls (
-    id                    SERIAL              PRIMARY KEY,
-    phone_number          VARCHAR             NOT NULL,
-    schedule_time         TIMESTAMPTZ         NOT NULL,
-    created_at            TIMESTAMPTZ         DEFAULT NOW() 
+    id             SERIAL       PRIMARY KEY,
+    phone_number   VARCHAR      NOT NULL,
+    schedule_time  TIMESTAMPTZ  NOT NULL,
+    created_at     TIMESTAMPTZ  DEFAULT NOW() 
   );
 
   GRANT SELECT ON farmradio_api.registration_calls TO www;
