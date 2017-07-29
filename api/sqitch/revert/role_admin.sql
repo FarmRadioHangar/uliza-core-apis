@@ -1,5 +1,0 @@
-BEGIN;
-
-  DROP ROLE admin;
-
-COMMIT;

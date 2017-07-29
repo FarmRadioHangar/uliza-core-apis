@@ -15,7 +15,7 @@ BEGIN;
 
   GRANT SELECT ON farmradio_api.participant_registration_status_log TO www;
 
-  GRANT ALL ON farmradio_api.participant_registration_status_log TO admin;
-  GRANT USAGE, SELECT ON SEQUENCE farmradio_api.participant_registration_status_log_id_seq TO admin;
+  GRANT ALL ON farmradio_api.participant_registration_status_log TO api_consumer;
+  GRANT USAGE, SELECT ON SEQUENCE farmradio_api.participant_registration_status_log_id_seq TO api_consumer;
 
 COMMIT;
