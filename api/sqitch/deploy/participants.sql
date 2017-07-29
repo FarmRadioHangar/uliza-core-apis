@@ -10,9 +10,12 @@ BEGIN;
     id                              SERIAL              PRIMARY KEY,
     phone_number                    VARCHAR             NOT NULL,
     registration_status             registration_status NOT NULL,
-    registration_call_schedule_time TIMESTAMPTZ         NULL,
+    registration_call_id            INT                 NULL               REFERENCES farmradio_api.registration_calls(id),
     created_at                      TIMESTAMPTZ         DEFAULT NOW() 
   );
+
+  CREATE UNIQUE INDEX participants_phone_number_idx ON farmradio_api.participants (phone_number);
+  CREATE INDEX participants_registration_call_idx ON farmradio_api.participants (registration_call_id);
 
   GRANT SELECT ON farmradio_api.participants TO www;
 
