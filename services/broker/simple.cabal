@@ -26,6 +26,7 @@ library
                      , either
                      , HTTP
                      , http-client
+                     , http-types
                      , lens
                      , lens-aeson
                      , MissingH
