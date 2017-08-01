@@ -32,6 +32,7 @@ library
                      , MissingH
                      , postgresql-simple
                      , safe-exceptions
+                     , scientific
                      , text
                      , time
                      , transformers
