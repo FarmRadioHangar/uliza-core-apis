@@ -1,5 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
-module Api.Context where
+module FarmRadio.Uliza.Api.Context where
 
 import Network.Wreq ( Options )
 import Control.Lens

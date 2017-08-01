@@ -1,13 +1,15 @@
 {-# LANGUAGE RecordWildCards #-}
-module Api
-    ( module Api.Context
+module FarmRadio.Uliza.Api.Client
+    ( module FarmRadio.Uliza.Api.Context
     , Api
+    , ApiError(..)
     , extractString
-    , unwrapRow
     , get
     , getJSON
+    , getSingleEntity
     , hoist
     , patch
+    , patchResource
     , post
     , post_
     , put
@@ -15,11 +17,9 @@ module Api
     , setBaseUrl
     , setHeader
     , setOauth2Token
-    , getSingleEntity
-    , patchResource
+    , unwrapRow
     ) where
 
-import Api.Context
 import Control.Lens
 import Control.Monad               ( void )
 import Control.Monad.IO.Class
@@ -32,6 +32,7 @@ import Data.ByteString
 import Data.Either.Utils           ( maybeToEither )
 import Data.Monoid                 ( (<>) )
 import Data.Text
+import FarmRadio.Uliza.Api.Context
 import Network.HTTP.Base           ( urlEncodeVars )
 import Network.Wreq                ( Options
                                    , Response
@@ -49,12 +50,18 @@ import Network.HTTP.Types.Header   ( HeaderName )
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString.Lazy      as BL
 
-type Api = EitherT Int (StateT ApiContext IO) 
+data ApiError 
+  = ServerError 
+  | AuthenticationError 
+  | XXX
+  deriving (Show)
 
-runApi :: Api a -> IO (Either Int a)
+type Api = EitherT ApiError (StateT ApiContext IO) 
+
+runApi :: Api a -> IO (Either ApiError a)
 runApi c = fst <$> runStateT (runEitherT c) (ApiContext mempty defaults) 
 
-hoist :: Maybe a -> Int -> Api a
+hoist :: Maybe a -> ApiError -> Api a
 hoist a = hoistEither . flip maybeToEither a
 
 extractString :: AsValue s => Text -> s -> Maybe Text

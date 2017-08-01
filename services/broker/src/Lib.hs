@@ -4,10 +4,10 @@ module Lib
   ( someFunc
     , obj
     , hoist
+    , number
     , extractString
   ) where
 
-import Api
 import Control.Exception.Safe
 import Control.Lens
 import Control.Monad (void, when, unless, join)
@@ -22,18 +22,21 @@ import Data.ByteString.Builder (toLazyByteString)
 import Data.ByteString.Lazy (toStrict)
 import Data.Maybe (fromJust, isNothing, fromMaybe)
 import Data.Monoid ((<>))
+import Data.Scientific 
 import Data.Text
 import Data.Text.Encoding (decodeUtf8, encodeUtf8)
 import Data.Time.Clock
 import Data.Time.Format
 import Database.PostgreSQL.Simple.Time
+import FarmRadio.Uliza.Api.Client
+import FarmRadio.Uliza.Api.Utils
 import Network.HTTP.Client (HttpException(..), HttpExceptionContent(..))
 import Network.Wreq (Response, responseStatus, responseBody, statusCode)
-import Participant (Participant(..))
-import RegistrationCall (RegistrationCall(..))
+import FarmRadio.Uliza.Registration.Participant (Participant(..))
+import FarmRadio.Uliza.Registration.RegistrationCall (RegistrationCall(..))
 
-import qualified Participant 
-import qualified RegistrationCall
+import qualified FarmRadio.Uliza.Registration.Participant as Participant
+import qualified FarmRadio.Uliza.Registration.RegistrationCall as RegistrationCall
 
 import qualified Data.ByteString.Lazy as BL
 
@@ -49,7 +52,7 @@ someFunc = do
         setHeader "Accept" ["*/*"]
         setHeader "Prefer" ["return=representation"]
         --
-        hoist (obj ^? key "data") 88 
+        hoist (obj ^? key "data") XXX
           >>= lookupParticipant 
           >>= \user -> getRegistrationCall user
           >>= \call -> scheduleCall user call
@@ -60,20 +63,45 @@ getParticipantByPhoneNumber :: String -> Api (Maybe Participant)
 getParticipantByPhoneNumber = getSingleEntity "participants" "phone_number"
 
 getRegistrationCall :: Participant -> Api (Maybe RegistrationCall)
-getRegistrationCall Participant{..} = 
-    join <$> sequence (getRegistrationCallById <$> registrationCallId)
+getRegistrationCall Participant{..} = sequence call >>= return . join
+  where
+    call = getRegistrationCallById <$> registrationCallId 
 
 getRegistrationCallById :: Int -> Api (Maybe RegistrationCall)
 getRegistrationCallById = getSingleEntity "registration_calls" "id" . show 
 
 patchParticipant :: Int -> Value -> Api ()
-patchParticipant p = void . patchResource "participants" p
+patchParticipant = (fmap fmap fmap) void (patchResource "participants")
+
+postParticipant :: Text -> Api (Maybe Participant)
+postParticipant phone = post_ "/participants" (object participant)
+  where
+    participant = [ ("phone_number"        , String phone)
+                  , ("registration_status" , "NOT_REGISTERED") ]
+
+registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
+registrationCallScheduleTime RegistrationCall{..} = 
+    eitherToMaybe $ parseUTCTime (encodeUtf8 scheduleTime)
+
+logRegistration :: Int -> Int -> Api () 
+logRegistration user call = 
+    void $ post "/participant_registration_status_log" (object entry)
+  where
+    entry = [ ("participant_id"       , number user) 
+            , ("registration_call_id" , number call) 
+            , ("event_type"           , "REGISTRATION_CALL_SCHEDULED") ]
+
+postRegistrationCall :: Text -> Text -> Api (Maybe RegistrationCall)
+postRegistrationCall phone stime = post_ "/registration_calls" (object call)
+  where
+    call = [ ("phone_number"  , String phone)
+           , ("schedule_time" , String stime) ]
 
 lookupParticipant :: Value -> Api Participant
 lookupParticipant request = do
 
     -- Extract phone number from request object
-    phone <- hoist (extractString "subscriber_phone" request) 5
+    phone <- hoist (extractString "subscriber_phone" request) XXX
 
     -- Log the raw response
     post "/voto_response_data" $ object [("data", request)] 
@@ -81,8 +109,6 @@ lookupParticipant request = do
     -- Look up participant from subscriber's phone number
     response <- getParticipantByPhoneNumber (unpack phone)
 
-    let participant = [ ("phone_number"        , String phone)
-                      , ("registration_status" , "NOT_REGISTERED") ]
     case response of
       --
       -- Participant exists: Done!  
@@ -91,57 +117,47 @@ lookupParticipant request = do
       --
       -- Create a participant if one wasn't found
       --
-      Nothing -> post_ "/participants" (object participant) >>= flip hoist 444
-
-eitherToMaybe :: Either a b -> Maybe b
-eitherToMaybe = either (const Nothing) Just
-
-getScheduleTime :: RegistrationCall -> Maybe UTCTime
-getScheduleTime RegistrationCall{..} = eitherToMaybe $ parseUTCTime (encodeUtf8 scheduleTime)
+      Nothing -> postParticipant phone >>= flip hoist XXX
 
 scheduleCall :: Participant -> Maybe RegistrationCall -> Api ()
-scheduleCall participant@Participant{..} call = do
+scheduleCall Participant{..} mcall = do
+
+    -- Current time
+    now <- getCurrentTime & liftIO
+
+    -- Time of most recent registration call (or Nothing)
+    let scheduleTime = mcall >>= registrationCallScheduleTime
+
+    case (registrationStatus, diffUTCTime <$> scheduleTime 
+                                          <*> Just now) of
+      -- Participant is already registered
+      ( "REGISTERED"     , _       ) -> left XXX
+      -- Participant has previously declined to register
+      ( "DECLINED"       , _       ) -> left XXX
+      -- Participant rs not registered
+      ( "NOT_REGISTERED" , Just diff ) 
+        -- A call is already scheduled
+        | diff > 0    -> left XXX
+        -- A registration call took place recently
+        | diff > -120 -> left XXX
+        -- Previous call was made, but long ago -- schedule a new call
+        | otherwise   -> right ()
+      -- No previous call was made -- schedule one
+      ( _                , Nothing ) -> right ()
+      -- Bad registration status
+      ( _                , _       ) -> left XXX
+
+    -- Create the registration call
     --
-    now <- liftIO getCurrentTime
-    --
-    case (join (getScheduleTime <$> call), registrationStatus) of
+    resp <- postRegistrationCall phoneNumber $ utcToText (addUTCTime 600 now)
+    user <- hoist participantId XXX
+    call <- hoist (resp >>= RegistrationCall.registrationCallId) XXX
 
-      (Just time, "NOT_REGISTERED") -> do
+    -- Update the participant's registration_call_id
+    patchParticipant user $ object [("registration_call_id", number call)]
 
-          let diff = diffUTCTime time now
-          if (diff < -3000)
-              then right ()
-              else left 908
-
-          --case call of
-          --  Nothing -> liftIO $ print "no call" 
-          --  Just r -> liftIO $ do
-          --    let st = getScheduleTime r
-          --    print st
-
-      (Nothing, _) -> right ()
-
-      (_, "REGISTERED") -> left 5
-
-      (_, "DECLINED") -> left 6
-
-      _ -> left 7
-
-    let scheduleTime = addUTCTime 600 now & utcTimeToBuilder 
-                                          & toLazyByteString 
-                                          & toStrict 
-                                          & decodeUtf8
-
-        call = [ ("phone_number"  , String phoneNumber)
-               , ("schedule_time" , String scheduleTime) ]
-
-    response <- post_ "/registration_calls" (object call)
-    userId   <- hoist participantId 111
-    callId   <- hoist (join $ RegistrationCall.registrationCallId <$> response) 888 
-
-    patchParticipant userId (toJSON participant { Participant.registrationCallId = Just callId })
-
-    return ()
+    -- Create a REGISTRATION_CALL_SCHEDULED log entry
+    logRegistration user call
 
 
 --    --what :: HttpException -> IO ()
@@ -151,6 +167,3 @@ scheduleCall participant@Participant{..} call = do
 --    --      case exception of
 --    --        StatusCodeException r bs -> print (r ^. responseStatus . statusCode)
 --    --    e -> print (displayException e)
-
--- print (response ^. responseStatus .statusCode) & liftIO
---        print (resp ^. responseStatus . statusCode) & liftIO

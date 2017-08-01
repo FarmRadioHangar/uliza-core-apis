@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
-module RegistrationCall where
+module FarmRadio.Uliza.Registration.RegistrationCall where
 
 import Data.Aeson
 import Data.Text
