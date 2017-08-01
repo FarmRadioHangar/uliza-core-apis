@@ -17,10 +17,12 @@ import Control.Monad.Trans.State   ( StateT, runStateT, modify, withState )
 import Data.Aeson
 import Data.Aeson.Lens
 import Data.Aeson.Types
+import Data.ByteString.Builder (toLazyByteString)
+import Data.ByteString.Lazy (toStrict)
 import Data.Maybe (fromJust, isNothing, fromMaybe)
 import Data.Monoid ((<>))
 import Data.Text
-import Data.Text.Encoding (encodeUtf8, utcTimeToBuilder)
+import Data.Text.Encoding (decodeUtf8, encodeUtf8)
 import Data.Time.Clock
 import Data.Time.Format
 import Database.PostgreSQL.Simple.Time
@@ -118,10 +120,17 @@ scheduleCall Participant{..} call = do
     let time = addUTCTime 600 now
 
     -- let bldr = utcTimeToBuilder now
+    --
+    --
+
+    let time = now & utcTimeToBuilder 
+                   & toLazyByteString 
+                   & toStrict 
+                   & decodeUtf8
 
     void $ post "/registration_calls" $ object 
       [ ("phone_number"  , String $ phoneNumber)
-      , ("schedule_time" , String $ pack $ show time) ]
+      , ("schedule_time" , String $ time) ]
 
 
 
