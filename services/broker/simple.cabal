@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Lib
                      , Participant
+                     , RegistrationCall
                      , REST
                      , REST.Context
   build-depends:       aeson
@@ -28,8 +29,10 @@ library
                      , lens
                      , lens-aeson
                      , MissingH
+                     , postgresql-simple
                      , safe-exceptions
                      , text
+                     , time
                      , transformers
                      , unordered-containers
                      , vector
