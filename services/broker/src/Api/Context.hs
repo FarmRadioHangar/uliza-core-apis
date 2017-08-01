@@ -1,13 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
-module REST.Context where
+module Api.Context where
 
 import Network.Wreq ( Options )
 import Control.Lens
 
-data RESTContext = RESTContext 
+data ApiContext = ApiContext 
     { _baseUrl :: String
     , _options :: Options 
     }
   deriving (Show)
 
-makeLenses ''RESTContext
+makeLenses ''ApiContext

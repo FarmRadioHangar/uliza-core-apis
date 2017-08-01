@@ -6,7 +6,7 @@ import Data.Aeson
 import Data.Text
 
 data Participant = Participant 
-    { entityId           :: !(Maybe Int)
+    { participantId      :: !(Maybe Int)
     , phoneNumber        :: !Text
     , registrationStatus :: !Text
     , registrationCallId :: !(Maybe Int)
@@ -15,7 +15,7 @@ data Participant = Participant
 
 instance ToJSON Participant where
   toJSON Participant{..} = object 
-    [ "id"                   .= entityId
+    [ "id"                   .= participantId
     , "phone_number"         .= phoneNumber
     , "registration_status"  .= registrationStatus
     , "registration_call_id" .= registrationCallId
