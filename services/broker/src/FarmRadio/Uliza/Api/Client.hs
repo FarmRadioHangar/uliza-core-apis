@@ -50,7 +50,6 @@ data ApiError
   = ServerError 
   | AuthenticationError 
   | BadRequestError
-  | MissingSubscriberPhoneError
   | XXX
   deriving (Show)
 
