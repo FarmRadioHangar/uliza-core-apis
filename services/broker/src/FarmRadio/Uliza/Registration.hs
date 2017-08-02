@@ -1,4 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE OverloadedStrings #-}
 module FarmRadio.Uliza.Registration where
 
 import Control.Lens

@@ -23,5 +23,5 @@ instance FromJSON RegistrationCall where
   parseJSON = withObject "RegistrationCall" $ \v -> RegistrationCall
     <$> v .:? "id"
     <*> v .:  "phone_number"
-    <*> v .:  "schedule_time"
+    <*> v .:  "scheduled_time"
     <*> v .:  "created_at"
