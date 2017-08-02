@@ -25,7 +25,8 @@ handler body = do
     xx <- runApi $ do
         -- 
         setBaseUrl "http://localhost:3000"
-        setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
+        --setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
+        setOauth2Token "xxx"
         setHeader "Accept" ["*/*"]
         setHeader "Prefer" ["return=representation"]
         --

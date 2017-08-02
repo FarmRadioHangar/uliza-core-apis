@@ -33,13 +33,16 @@ import Data.Monoid                 ( (<>) )
 import Data.Text
 import FarmRadio.Uliza.Api.Context
 import Network.HTTP.Base           ( urlEncodeVars )
+import Network.HTTP.Client         ( BodyReader, Request )
 import Network.Wreq                ( Response
                                    , auth
+                                   , checkResponse
                                    , defaults
                                    , header
                                    , oauth2Bearer
-                                   , responseBody )
-
+                                   , responseBody 
+                                   , responseStatus
+                                   , statusCode )
 import Network.HTTP.Types.Header   ( HeaderName )
 
 import qualified Control.Monad.Trans.State as State
@@ -60,7 +63,8 @@ runApi c = Session.withAPISession run
   where
     run sess = fst <$> runStateT 
           (runEitherT c) 
-          (ApiContext mempty defaults sess) 
+          (ApiContext mempty opts sess) 
+    opts = defaults & checkResponse .~ Just (\_ _ -> return ())
 
 hoist :: Maybe a -> ApiError -> Api a
 hoist a = hoistEither . flip maybeToEither a
@@ -99,7 +103,9 @@ post endpoint body = lift $ do
 get :: String -> Api (Response BL.ByteString)
 get endpoint = lift $ do
     ApiContext{..} <- State.get
-    Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
+    resp <- Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
+    case resp ^. responseStatus . statusCode of 
+      _ -> undefined
 
 getJSON :: (ToJSON a, FromJSON a) => String -> Api (Maybe a)
 getJSON endpoint = unwrapRow <$> get endpoint
