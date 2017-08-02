@@ -72,7 +72,7 @@ unwrapRow :: (AsValue a, ToJSON b, FromJSON b) => Response a -> Maybe b
 unwrapRow response = response ^? responseBody ^._Just ._Array ^? ix 0 ._JSON 
 
 resourceUrl :: String -> [(String, String)] -> String
-resourceUrl name vars = "/" <> name <> "?" <> urlEncodeVars vars
+resourceUrl name params = "/" <> name <> "?" <> urlEncodeVars params
 
 put :: String -> Value -> Api (Response BL.ByteString)
 put endpoint body = lift $ do
@@ -82,7 +82,8 @@ put endpoint body = lift $ do
 patch :: String -> Value -> Api (Response BL.ByteString)
 patch endpoint body = lift $ do
     ApiContext{..} <- State.get
-    Session.customPayloadMethodWith "PATCH" _options _session (_baseUrl <> endpoint) body & liftIO
+    Session.customPayloadMethodWith "PATCH" _options _session 
+        (_baseUrl <> endpoint) body & liftIO
 
 post_ :: (ToJSON a, FromJSON a) => String -> Value -> Api (Maybe a)
 post_ endpoint body = lift $ do
@@ -103,11 +104,19 @@ get endpoint = lift $ do
 getJSON :: (ToJSON a, FromJSON a) => String -> Api (Maybe a)
 getJSON endpoint = unwrapRow <$> get endpoint
 
-getSingleEntity :: (FromJSON a, ToJSON a) => String -> String -> String -> Api (Maybe a)
-getSingleEntity name prop value = getJSON $ resourceUrl name [(prop, "eq." <> value)]
+getSingleEntity :: (FromJSON a, ToJSON a) 
+                => String 
+                -> String 
+                -> String 
+                -> Api (Maybe a)
+getSingleEntity name prop value = getJSON $ resourceUrl name params
+  where
+    params = [(prop, "eq." <> value)]
 
 patchResource :: String -> Int -> Value -> Api (Response BL.ByteString)
-patchResource name entityId = patch $ resourceUrl name [("id", "eq." <> show entityId)]
+patchResource name entityId = patch $ resourceUrl name params
+  where
+    params = [("id", "eq." <> show entityId)]
 
 setBaseUrl :: String -> Api ()
 setBaseUrl = lift . modify . set baseUrl 
