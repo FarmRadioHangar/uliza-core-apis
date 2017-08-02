@@ -105,7 +105,8 @@ get endpoint = lift $ do
     ApiContext{..} <- State.get
     resp <- Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
     case resp ^. responseStatus . statusCode of 
-      _ -> undefined
+      statusOk -> undefined
+      _        -> undefined
 
 getJSON :: (ToJSON a, FromJSON a) => String -> Api (Maybe a)
 getJSON endpoint = unwrapRow <$> get endpoint
