@@ -47,14 +47,12 @@ obj :: String
 obj = "{\"data\":{\"question_id\": \"123123\", \"survey_id\": \"89324\", \"voto_id\": \"44\", \"response_type\": \"1\", \"content_type\": \"1\", \"poll_id\": \"213\", \"delivery_log_id\": \"832\", \"choice_id\": \"1\", \"subscriber_id\": \"232\", \"subscriber_phone\": \"+233212323\", \"question_title\": \"adfadfadfasdfasfdafd\", \"choice_name\": \"adfadsfas fadsfadsfasdf\", \"date_received\": \"2017-07-24T18:13:51Z\"}}"
 
 app :: ScottyM ()
-app = do
-    Scotty.post "/registrations" $ do
-      liftIO banan
-      Scotty.text "OK!"
+app = Scotty.post "/registrations" $ do
+        liftIO banan
+        Scotty.text "OK!"
 
 someFunc :: IO ()
-someFunc = do
-    scotty 3034 app
+someFunc = scotty 3034 app
 
 banan :: IO ()
 banan = do
@@ -76,7 +74,7 @@ getParticipantByPhoneNumber :: String -> Api (Maybe Participant)
 getParticipantByPhoneNumber = getSingleEntity "participants" "phone_number"
 
 getRegistrationCall :: Participant -> Api (Maybe RegistrationCall)
-getRegistrationCall Participant{..} = sequence call >>= return . join
+getRegistrationCall Participant{..} = join <$> sequence call
   where
     call = getRegistrationCallById <$> registrationCallId 
 
@@ -84,7 +82,7 @@ getRegistrationCallById :: Int -> Api (Maybe RegistrationCall)
 getRegistrationCallById = getSingleEntity "registration_calls" "id" . show 
 
 patchParticipant :: Int -> Value -> Api ()
-patchParticipant = (fmap fmap fmap) void (patchResource "participants")
+patchParticipant = fmap fmap fmap void (patchResource "participants")
 
 postParticipant :: Text -> Api (Maybe Participant)
 postParticipant phone = post_ "/participants" (object participant)
@@ -153,10 +151,8 @@ scheduleCall Participant{..} mcall = do
         | diff > 0    -> left XXX
         -- A registration call took place recently
         | diff > -120 -> left XXX
-        -- Previous call was made, but long ago -- schedule a new call
-        | otherwise   -> right ()
-      -- No previous call was made -- schedule one
-      ( _                , Nothing ) -> right ()
+      -- No previous call was made or last call was long ago -- schedule a call
+      ( "NOT_REGISTERED" , _       ) -> right ()
       -- Bad registration status
       ( _                , _       ) -> left XXX
 

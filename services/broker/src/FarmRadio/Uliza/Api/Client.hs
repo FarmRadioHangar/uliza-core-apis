@@ -47,7 +47,6 @@ import Network.Wreq                ( Options
                                    , responseBody )
 
 import Network.HTTP.Types.Header   ( HeaderName )
-import WreqStuff
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString.Lazy      as BL
@@ -77,6 +76,9 @@ extractString k json = json ^? key k . _String
 
 unwrapRow :: (AsValue a, ToJSON b, FromJSON b) => Response a -> Maybe b
 unwrapRow response = response ^? responseBody ^._Just ._Array ^? ix 0 ._JSON 
+
+resourceUrl :: String -> [(String, String)] -> String
+resourceUrl name vars = "/" <> name <> "?" <> urlEncodeVars vars
 
 put :: String -> Value -> Api (Response BL.ByteString)
 put endpoint body = lift $ do
@@ -108,14 +110,10 @@ getJSON :: (ToJSON a, FromJSON a) => String -> Api (Maybe a)
 getJSON endpoint = unwrapRow <$> get endpoint
 
 getSingleEntity :: (FromJSON a, ToJSON a) => String -> String -> String -> Api (Maybe a)
-getSingleEntity name prop value = getJSON resource
-  where
-    resource = "/" <> name <> "?" <> urlEncodeVars [(prop, "eq." <> value)]
+getSingleEntity name prop value = getJSON $ resourceUrl name [(prop, "eq." <> value)]
 
 patchResource :: String -> Int -> Value -> Api (Response BL.ByteString)
-patchResource name entityId = patch resource 
-  where
-    resource = "/" <> name <> "?" <> urlEncodeVars [("id", "eq." <> show entityId)]
+patchResource name entityId = patch $ resourceUrl name [("id", "eq." <> show entityId)]
 
 setBaseUrl :: String -> Api ()
 setBaseUrl = lift . modify . set baseUrl 
@@ -124,4 +122,4 @@ setOauth2Token :: ByteString -> Api ()
 setOauth2Token token = lift $ modify (options . auth ?~ oauth2Bearer token)
 
 setHeader :: HeaderName -> [ByteString] -> Api ()
-setHeader h values = lift $ modify (options . header h .~ values)
+setHeader name val = lift $ modify (options . header name .~ val)
