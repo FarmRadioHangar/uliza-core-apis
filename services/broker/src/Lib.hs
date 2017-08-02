@@ -20,7 +20,7 @@ import qualified Web.Scotty as Scotty
 -- obj = "{\"data\":{\"question_id\": \"123123\", \"survey_id\": \"89324\", \"voto_id\": \"44\", \"response_type\": \"1\", \"content_type\": \"1\", \"poll_id\": \"213\", \"delivery_log_id\": \"832\", \"choice_id\": \"1\", \"subscriber_id\": \"232\", \"subscriber_phone\": \"+233212323\", \"question_title\": \"adfadfadfasdfasfdafd\", \"choice_name\": \"adfadsfas fadsfadsfasdf\", \"date_received\": \"2017-07-24T18:13:51Z\"}}"
 
 app :: ScottyM ()
-app = Scotty.post "/registrations" $ do
+app = Scotty.post "/responses" $ do
     Scotty.body >>= liftIO . banan 
     Scotty.text "OK!"
 
@@ -42,7 +42,6 @@ banan body = do
           >>= \call -> scheduleCall user call
         --
     print xx
-
 
 
 -- import Control.Exception.Safe

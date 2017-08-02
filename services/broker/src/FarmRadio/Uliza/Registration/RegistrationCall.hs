@@ -8,16 +8,16 @@ import Data.Text
 data RegistrationCall = RegistrationCall 
     { registrationCallId :: !(Maybe Int)
     , phoneNumber        :: !Text
-    , scheduleTime       :: !Text 
+    , scheduledTime      :: !Text 
     , createdAt          :: !Text }
   deriving (Show)
 
 instance ToJSON RegistrationCall where
   toJSON RegistrationCall{..} = object 
-    [ "id"            .= registrationCallId
-    , "phone_number"  .= phoneNumber
-    , "schedule_time" .= scheduleTime
-    , "created_at"    .= createdAt ]
+    [ "id"             .= registrationCallId
+    , "phone_number"   .= phoneNumber
+    , "scheduled_time" .= scheduledTime
+    , "created_at"     .= createdAt ]
 
 instance FromJSON RegistrationCall where
   parseJSON = withObject "RegistrationCall" $ \v -> RegistrationCall

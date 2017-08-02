@@ -6,7 +6,6 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Either
 import Data.Aeson
-import Data.Aeson.Lens
 import Data.Text
 import Data.Text.Encoding ( encodeUtf8 )
 import Data.Time
@@ -40,7 +39,7 @@ postParticipant phone = post_ "/participants" (object participant)
 
 registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
 registrationCallScheduleTime RegistrationCall{..} = 
-    eitherToMaybe $ parseUTCTime (encodeUtf8 scheduleTime)
+    eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
 
 logRegistration :: Int -> Int -> Api () 
 logRegistration user call = 
@@ -53,8 +52,8 @@ logRegistration user call =
 postRegistrationCall :: Text -> Text -> Api (Maybe RegistrationCall)
 postRegistrationCall phone stime = post_ "/registration_calls" (object call)
   where
-    call = [ ("phone_number"  , String phone)
-           , ("schedule_time" , String stime) ]
+    call = [ ("phone_number"   , String phone)
+           , ("scheduled_time" , String stime) ]
 
 lookupParticipant :: Value -> Api Participant
 lookupParticipant request = do
@@ -85,9 +84,9 @@ scheduleCall Participant{..} mcall = do
     now <- getCurrentTime & liftIO
 
     -- Time of most recent registration call (or Nothing)
-    let scheduleTime = mcall >>= registrationCallScheduleTime
+    let scheduledTime = mcall >>= registrationCallScheduleTime
 
-    case (registrationStatus, diffUTCTime <$> scheduleTime <*> Just now) of
+    case (registrationStatus, diffUTCTime <$> scheduledTime <*> Just now) of
       -- Participant is already registered
       ( "REGISTERED"     , _       ) -> left XXX
       -- Participant has previously declined to register
