@@ -1,0 +1,768 @@
+
+==================== FINAL INTERFACE ====================
+2017-08-02 07:12:25.629543 UTC
+
+interface wreq-0.5.0.1@wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI:Network.Wreq.Cache.Store 8002
+  interface hash: 7e3bcd944e18da4140e05c1fa062924b
+  ABI hash: 435df114c6842a11a66f7289e64638c5
+  export-list hash: b9a697d827bc33cfb117e780480486fd
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: 62485f8d5025f5a9166ec8510696523c
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Network.Wreq.Cache.Store.delete
+  Network.Wreq.Cache.Store.empty
+  Network.Wreq.Cache.Store.fromList
+  Network.Wreq.Cache.Store.insert
+  Network.Wreq.Cache.Store.lookup
+  Network.Wreq.Cache.Store.toList
+  Network.Wreq.Cache.Store.Store
+module dependencies:
+package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      containers-0.5.7.1@containers-0.5.7.1
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      integer-gmp-1.0.0.1
+                      psqueues-0.2.3.0@psqueues-0.2.3.0-3SifEITsJstB5B1chSnur
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+family instance modules: base-4.9.1.0:Control.Applicative
+                         base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
+                         base-4.9.1.0:Data.Functor.Compose base-4.9.1.0:Data.Functor.Const
+                         base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+import  -/  base-4.9.1.0:Data.Foldable 3e0b6967a1da89945d0e2d47266337a2
+import  -/  base-4.9.1.0:Data.Int 07f5a36c488acfe0ac32e81c7536b8ff
+import  -/  base-4.9.1.0:Data.List 07ae2acca6538aa0800bd0a993ac6ac1
+import  -/  base-4.9.1.0:Data.Tuple 7dc4bbb45d2e69c991ffac438beeca11
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Err 3bba35a16538d33d424682ce66876cdd
+import  -/  base-4.9.1.0:GHC.Int e6f85fcab22769385fba2b5fce0acb40
+import  -/  base-4.9.1.0:GHC.Num 00bfaa7b2f9d6084913c0697a8a49ec8
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+import  -/  hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable 27b03ff780e9d73195c5aaa1719f6919
+import  -/  hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Class a1b222b41dee000240e3f24bda9d56d9
+import  -/  psqueues-0.2.3.0@psqueues-0.2.3.0-3SifEITsJstB5B1chSnur:Data.HashPSQ 8e5f91170de2af03048eb35fe75c9f45
+import  -/  psqueues-0.2.3.0@psqueues-0.2.3.0-3SifEITsJstB5B1chSnur:Data.HashPSQ.Internal a8de037be0c23a3f4022fa7fd001a621
+652bd8a6a28e068572620840c2562b18
+  $fShowStore ::
+    (GHC.Show.Show k, GHC.Show.Show v, GHC.Classes.Ord k,
+     Data.Hashable.Class.Hashable k) =>
+    GHC.Show.Show (Network.Wreq.Cache.Store.Store k v)
+  DFunId
+  {- Arity: 4,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><L,U(C(C1(U)),A,A)><L,A><L,A>m,
+     Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun: @ k
+                      @ v
+                      ($dShow :: GHC.Show.Show k)
+                      ($dShow1 :: GHC.Show.Show v)
+                      ($dOrd :: GHC.Classes.Ord k)
+                      ($dHashable :: Data.Hashable.Class.Hashable k).
+                  @ (Network.Wreq.Cache.Store.Store k v)
+                  (Network.Wreq.Cache.Store.$fShowStore_$cshowsPrec
+                     @ k
+                     @ v
+                     $dShow
+                     $dShow1
+                     $dOrd
+                     $dHashable)
+                  (Network.Wreq.Cache.Store.$fShowStore_$cshow
+                     @ k
+                     @ v
+                     $dShow
+                     $dShow1
+                     $dOrd
+                     $dHashable)
+                  (Network.Wreq.Cache.Store.$fShowStore_$cshowList
+                     @ k
+                     @ v
+                     $dShow
+                     $dShow1
+                     $dOrd
+                     $dHashable) -}
+000a284759ee8f4855f805fbc7d87896
+  $fShowStore1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackAppendCString#
+                   "[]"#
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+652bd8a6a28e068572620840c2562b18
+  $fShowStore_$cshow ::
+    (GHC.Show.Show k, GHC.Show.Show v, GHC.Classes.Ord k,
+     Data.Hashable.Class.Hashable k) =>
+    Network.Wreq.Cache.Store.Store k v -> GHC.Base.String
+  {- Arity: 5,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><L,U(C(C1(U)),A,A)><L,A><L,A><L,1*U(A,A,A,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (5, True, True)
+                (\ @ k
+                   @ v
+                   (w :: GHC.Show.Show k)
+                   (w1 :: GHC.Show.Show v)
+                   (w2 :: GHC.Classes.Ord k)
+                   (w3 :: Data.Hashable.Class.Hashable k)
+                   (w4 :: Network.Wreq.Cache.Store.Store k v) ->
+                 Network.Wreq.Cache.Store.$w$cshow @ k @ v w w1 w4) -}
+652bd8a6a28e068572620840c2562b18
+  $fShowStore_$cshowList ::
+    (GHC.Show.Show k, GHC.Show.Show v, GHC.Classes.Ord k,
+     Data.Hashable.Class.Hashable k) =>
+    [Network.Wreq.Cache.Store.Store k v] -> GHC.Show.ShowS
+  {- Arity: 6,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><L,U(C(C1(U)),A,A)><L,A><L,A><S,1*U><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (6, True, True)
+                (\ @ k
+                   @ v
+                   (w :: GHC.Show.Show k)
+                   (w1 :: GHC.Show.Show v)
+                   (w2 :: GHC.Classes.Ord k)
+                   (w3 :: Data.Hashable.Class.Hashable k)
+                   (w4 :: [Network.Wreq.Cache.Store.Store k v])
+                   (w5 :: GHC.Base.String) ->
+                 Network.Wreq.Cache.Store.$w$cshowList @ k @ v w w1 w4 w5) -}
+652bd8a6a28e068572620840c2562b18
+  $fShowStore_$cshowsPrec ::
+    (GHC.Show.Show k, GHC.Show.Show v, GHC.Classes.Ord k,
+     Data.Hashable.Class.Hashable k) =>
+    GHC.Types.Int
+    -> Network.Wreq.Cache.Store.Store k v -> GHC.Show.ShowS
+  {- Arity: 7,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><L,U(C(C1(U)),A,A)><L,A><L,A><L,A><L,1*U(A,A,A,U)><L,1*U>,
+     Unfolding: InlineRule (7, True, False)
+                (\ @ k
+                   @ v
+                   ($dShow :: GHC.Show.Show k)
+                   ($dShow1 :: GHC.Show.Show v)
+                   ($dOrd :: GHC.Classes.Ord k)
+                   ($dHashable :: Data.Hashable.Class.Hashable k)
+                   (ds :: GHC.Types.Int)
+                   (x :: Network.Wreq.Cache.Store.Store k v)
+                   (s :: GHC.Base.String) ->
+                 GHC.Base.augment
+                   @ GHC.Types.Char
+                   (\ @ b
+                      (c :: GHC.Types.Char -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ GHC.Types.Char
+                      @ b
+                      c
+                      n
+                      (Network.Wreq.Cache.Store.$fShowStore_$cshow
+                         @ k
+                         @ v
+                         $dShow
+                         $dShow1
+                         $dOrd
+                         $dHashable
+                         x))
+                   s) -}
+c103f13cc1176862468101921de02ccb
+  $fShowStore_lvl27 :: [GHC.Types.Char]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Types.Char
+                   GHC.Show.showList__1
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+e02d8528b9ad98596a317b980d27a577
+  $tc'Store :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   15736854283200761956##
+                   2800231047494485750##
+                   Network.Wreq.Cache.Store.$trModule
+                   Network.Wreq.Cache.Store.$tc'Store1) -}
+e7570ee8ceda9d051930c25b0865c741
+  $tc'Store1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Store"#) -}
+befae16b9a1bfe1a5298af5a16a9b7ac
+  $tcStore :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12837346200645240275##
+                   11113957013418648079##
+                   Network.Wreq.Cache.Store.$trModule
+                   Network.Wreq.Cache.Store.$tcStore1) -}
+ec43726966063d0223f1d8a9452c8f30
+  $tcStore1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Store"#) -}
+57c09989901150451fab31df18e35467
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   Network.Wreq.Cache.Store.$trModule2
+                   Network.Wreq.Cache.Store.$trModule1) -}
+d14efb3279210faad2fe0447bfb20a55
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Network.Wreq.Cache.Store"#) -}
+a7fbd198f111ce72ea4b789b0162852e
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI"#) -}
+652bd8a6a28e068572620840c2562b18
+  $w$cshow ::
+    (GHC.Show.Show k, GHC.Show.Show v) =>
+    Network.Wreq.Cache.Store.Store k v -> [GHC.Types.Char]
+  {- Arity: 3,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><L,U(C(C1(U)),A,A)><L,1*U(A,A,A,U)>,
+     Inline: [0],
+     Unfolding: (\ @ k
+                   @ v
+                   (w :: GHC.Show.Show k)
+                   (w1 :: GHC.Show.Show v)
+                   (w2 :: Network.Wreq.Cache.Store.Store k v) ->
+                 GHC.CString.unpackAppendCString#
+                   "fromList "#
+                   (case w2 of ww { Network.Wreq.Cache.Store.Store ww1 ww2 ww3 ww4 ->
+                    case Network.Wreq.Cache.Store.$wtoList @ k @ v ww4 of wild {
+                      [] -> Network.Wreq.Cache.Store.$fShowStore1
+                      : x xs
+                      -> GHC.Types.:
+                           @ GHC.Types.Char
+                           GHC.Show.showList__2
+                           (case x of ww5 { (,) ww6 ww7 ->
+                            GHC.Types.:
+                              @ GHC.Types.Char
+                              GHC.Show.shows7
+                              (GHC.Show.showsPrec
+                                 @ k
+                                 w
+                                 GHC.Show.shows22
+                                 ww6
+                                 (GHC.Types.:
+                                    @ GHC.Types.Char
+                                    GHC.Show.shows5
+                                    (GHC.Show.$fShow(,)_$sgo
+                                       (GHC.Types.:
+                                          @ GHC.Types.Char
+                                          GHC.Show.shows4
+                                          (letrec {
+                                             showl :: [(k, v)] -> GHC.Base.String
+                                               {- Arity: 1, Strictness: <S,1*U> -}
+                                             = \ (ds2 :: [(k, v)]) ->
+                                               case ds2 of wild1 {
+                                                 [] -> Network.Wreq.Cache.Store.$fShowStore_lvl27
+                                                 : y ys
+                                                 -> GHC.Types.:
+                                                      @ GHC.Types.Char
+                                                      GHC.Show.shows5
+                                                      (case y of ww8 { (,) ww9 ww10 ->
+                                                       GHC.Types.:
+                                                         @ GHC.Types.Char
+                                                         GHC.Show.shows7
+                                                         (GHC.Show.showsPrec
+                                                            @ k
+                                                            w
+                                                            GHC.Show.shows22
+                                                            ww9
+                                                            (GHC.Types.:
+                                                               @ GHC.Types.Char
+                                                               GHC.Show.shows5
+                                                               (GHC.Show.$fShow(,)_$sgo
+                                                                  (GHC.Types.:
+                                                                     @ GHC.Types.Char
+                                                                     GHC.Show.shows4
+                                                                     (showl ys))
+                                                                  (GHC.Show.showsPrec
+                                                                     @ v
+                                                                     w1
+                                                                     GHC.Show.shows22
+                                                                     ww10)
+                                                                  (GHC.Types.[]
+                                                                     @ GHC.Show.ShowS)))) }) }
+                                           } in
+                                           showl xs))
+                                       (GHC.Show.showsPrec @ v w1 GHC.Show.shows22 ww7)
+                                       (GHC.Types.[] @ GHC.Show.ShowS)))) }) } })) -}
+652bd8a6a28e068572620840c2562b18
+  $w$cshowList ::
+    (GHC.Show.Show k, GHC.Show.Show v) =>
+    [Network.Wreq.Cache.Store.Store k v]
+    -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 4,
+     Strictness: <L,U(C(C1(C1(U))),A,A)><L,U(C(C1(U)),A,A)><S,1*U><L,U>,
+     Inline: [0],
+     Unfolding: (\ @ k
+                   @ v
+                   (w :: GHC.Show.Show k)
+                   (w1 :: GHC.Show.Show v)
+                   (w2 :: [Network.Wreq.Cache.Store.Store k v])
+                   (w3 :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ (Network.Wreq.Cache.Store.Store k v)
+                   (\ (x :: Network.Wreq.Cache.Store.Store k v)
+                      (s :: GHC.Base.String)[OneShot] ->
+                    GHC.Base.++
+                      @ GHC.Types.Char
+                      (Network.Wreq.Cache.Store.$w$cshow @ k @ v w w1 x)
+                      s)
+                   w2
+                   w3) -}
+dc2ec736cc9650df23a95fd31f569e6d
+  $wempty ::
+    GHC.Prim.Void#
+    -> GHC.Types.Int -> Network.Wreq.Cache.Store.Store k v
+  {- Arity: 2, Strictness: <L,U>, Inline: INLINABLE[0],
+     Unfolding: <stable> (\ @ k @ v (void :: GHC.Prim.Void#) ->
+                          let {
+                            loc :: [GHC.Types.Char]
+                            = GHC.CString.unpackCString# "wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI"#
+                          } in
+                          let {
+                            loc1 :: [GHC.Types.Char]
+                            = GHC.CString.unpackCString# "Network.Wreq.Cache.Store"#
+                          } in
+                          let {
+                            loc2 :: [GHC.Types.Char]
+                            = GHC.CString.unpackCString# "./Network/Wreq/Cache/Store.hs"#
+                          } in
+                          let {
+                            loc3 :: GHC.Types.Int = GHC.Types.I# 34#
+                          } in
+                          let {
+                            loc4 :: GHC.Types.Int = GHC.Types.I# 17#
+                          } in
+                          let {
+                            loc5 :: GHC.Types.Int = GHC.Types.I# 34#
+                          } in
+                          let {
+                            loc6 :: GHC.Types.Int = GHC.Types.I# 48#
+                          } in
+                          let {
+                            $dIP :: [GHC.Types.Char] = GHC.CString.unpackCString# "error"#
+                          } in
+                          let {
+                            $dIP1 :: GHC.Stack.Types.SrcLoc
+                            = GHC.Stack.Types.SrcLoc loc loc1 loc2 loc3 loc4 loc5 loc6
+                          } in
+                          let {
+                            $dIP2 :: GHC.Stack.Types.CallStack
+                            = GHC.Stack.Types.PushCallStack
+                                $dIP
+                                $dIP1
+                                GHC.Stack.Types.EmptyCallStack
+                          } in
+                          \ (cap :: GHC.Types.Int) ->
+                          case cap of wild { GHC.Types.I# x ->
+                          case GHC.Prim.tagToEnum#
+                                 @ GHC.Types.Bool
+                                 (GHC.Prim.<=# x 0#) of wild1 {
+                            GHC.Types.False
+                            -> Network.Wreq.Cache.Store.Store
+                                 @ k
+                                 @ v
+                                 x
+                                 0#
+                                 0#
+                                 (Data.IntPSQ.Internal.Nil
+                                    @ Network.Wreq.Cache.Store.Epoch
+                                    @ (Data.HashPSQ.Internal.Bucket
+                                         k Network.Wreq.Cache.Store.Epoch v))
+                                   `cast`
+                                 (Sym (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                           <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R))
+                            GHC.Types.True
+                            -> GHC.Err.error
+                                 @ 'GHC.Types.PtrRepLifted
+                                 @ (Network.Wreq.Cache.Store.Store k v)
+                                 $dIP2
+                                   `cast`
+                                 (Sym (GHC.Classes.N:IP[0]
+                                           <"callStack">_N <GHC.Stack.Types.CallStack>_N))
+                                 (GHC.CString.unpackCString# "empty: invalid capacity"#) } }) -}
+cf010921858aba6c35a04e2cf7f46797
+  $wlookup ::
+    (GHC.Classes.Ord k, Data.Hashable.Class.Hashable k) =>
+    k
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> Data.HashPSQ.Internal.HashPSQ k Network.Wreq.Cache.Store.Epoch v
+    -> GHC.Base.Maybe (v, Network.Wreq.Cache.Store.Store k v)
+  {- Arity: 7,
+     Strictness: <L,U(U(C(C1(U)),A),C(C1(U)),C(C1(U)),C(C1(U)),A,A,A,A)><L,1*U(A,1*C1(U(U)))><L,U><L,U><L,U><L,U><S,U>,
+     Inline: INLINABLE[0],
+     Unfolding: <stable> (\ @ k
+                            @ v
+                            (w :: GHC.Classes.Ord k)
+                            (w1 :: Data.Hashable.Class.Hashable k)
+                            (w2 :: k)
+                            (ww :: GHC.Prim.Int#)
+                            (ww1 :: GHC.Prim.Int#)
+                            (ww2 :: GHC.Prim.Int#)
+                            (ww3 :: Data.HashPSQ.Internal.HashPSQ
+                                      k Network.Wreq.Cache.Store.Epoch v) ->
+                          case Data.HashPSQ.Internal.$walter
+                                 @ k
+                                 @ Network.Wreq.Cache.Store.Epoch
+                                 @ v
+                                 @ (GHC.Base.Maybe v)
+                                 w1
+                                 w
+                                 GHC.Int.$fOrdInt64
+                                 (\ (ds :: GHC.Base.Maybe
+                                             (Network.Wreq.Cache.Store.Epoch, v))[OneShot] ->
+                                  case ds of wild {
+                                    GHC.Base.Nothing
+                                    -> (GHC.Base.Nothing @ v,
+                                        GHC.Base.Nothing @ (Network.Wreq.Cache.Store.Epoch, v))
+                                    GHC.Base.Just ds1
+                                    -> case ds1 of wild1 { (,) ds2 v1 ->
+                                       (GHC.Base.Just @ v v1,
+                                        GHC.Base.Just
+                                          @ (Network.Wreq.Cache.Store.Epoch, v)
+                                          (GHC.Int.I64# ww2, v1)) } })
+                                 w2
+                                 ww3 of ww4 { (#,#) ww5 ww6 ->
+                          case ww5 of wild {
+                            GHC.Base.Nothing
+                            -> GHC.Base.Nothing @ (v, Network.Wreq.Cache.Store.Store k v)
+                            GHC.Base.Just v1
+                            -> GHC.Base.Just
+                                 @ (v, Network.Wreq.Cache.Store.Store k v)
+                                 (v1,
+                                  case ww6
+                                         `cast`
+                                       (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                            <k>_R
+                                            <Network.Wreq.Cache.Store.Epoch>_R
+                                            <v>_R) of nt { DEFAULT ->
+                                  Network.Wreq.Cache.Store.Store
+                                    @ k
+                                    @ v
+                                    ww
+                                    ww1
+                                    (GHC.Prim.+# ww2 1#)
+                                    nt
+                                      `cast`
+                                    (Sym (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                              <k>_R
+                                              <Network.Wreq.Cache.Store.Epoch>_R
+                                              <v>_R)) }) } }) -}
+8372304009f3df354bc5fbdc7c7c53e7
+  $wtoList ::
+    Data.HashPSQ.Internal.HashPSQ k Network.Wreq.Cache.Store.Epoch v
+    -> [(k, v)]
+  {- Arity: 1, HasNoCafRefs, Strictness: <S,U>, Inline: INLINABLE[0],
+     Unfolding: <stable> (\ @ k
+                            @ v
+                            (ww :: Data.HashPSQ.Internal.HashPSQ
+                                     k Network.Wreq.Cache.Store.Epoch v) ->
+                          letrec {
+                            go :: [(k, Network.Wreq.Cache.Store.Epoch, v)] -> [(k, v)]
+                              {- Arity: 1 -}
+                            = \ (ds :: [(k, Network.Wreq.Cache.Store.Epoch, v)]) ->
+                              case ds of wild {
+                                [] -> GHC.Types.[] @ (k, v)
+                                : y ys
+                                -> case y of wild1 { (,,) k1 ds1 v1 ->
+                                   GHC.Types.: @ (k, v) (k1, v1) (go ys) } }
+                          } in
+                          go
+                            (Data.HashPSQ.Internal.$wtoList
+                               @ k
+                               @ Network.Wreq.Cache.Store.Epoch
+                               @ v
+                               ww)) -}
+db857911f603e977f493bddc7547f845
+  type Epoch = GHC.Int.Int64
+652bd8a6a28e068572620840c2562b18
+  data Store k v
+    = Store {capacity :: {-# UNPACK #-}GHC.Types.Int,
+             size :: {-# UNPACK #-}GHC.Types.Int,
+             epoch :: {-# UNPACK #-}Network.Wreq.Cache.Store.Epoch,
+             psq :: !Data.HashPSQ.Internal.HashPSQ
+                       k Network.Wreq.Cache.Store.Epoch v}
+5ad88bbd4e22eaaf8d500f1e135418e8
+  capacity :: Network.Wreq.Cache.Store.Store k v -> GHC.Types.Int
+  RecSel Left Network.Wreq.Cache.Store.Store
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLLL),1*U(U,A,A,A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ k @ v (ds :: Network.Wreq.Cache.Store.Store k v) ->
+                 case ds of wild { Network.Wreq.Cache.Store.Store dt dt1 dt2 ds1 ->
+                 GHC.Types.I# dt }) -}
+af81d54d08f56d3b2bff6b193e7dedcc
+  delete ::
+    (GHC.Classes.Ord k, Data.Hashable.Class.Hashable k) =>
+    k
+    -> Network.Wreq.Cache.Store.Store k v
+    -> Network.Wreq.Cache.Store.Store k v
+  {- Arity: 4,
+     Strictness: <L,U(U(C(C1(U)),A),A,C(C1(U)),C(C1(U)),A,A,A,A)><L,1*U(A,1*C1(U(U)))><L,U><S(LLLS),1*U(U,U,U,U)>m,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (4, True, False)
+                (\ @ k
+                   @ v
+                   (w :: GHC.Classes.Ord k)
+                   (w1 :: Data.Hashable.Class.Hashable k)
+                   (w2 :: k)
+                   (w3 :: Network.Wreq.Cache.Store.Store k v) ->
+                 case w3 of ww { Network.Wreq.Cache.Store.Store ww1 ww2 ww3 ww4 ->
+                 case Data.HashPSQ.Internal.deleteView
+                        @ k
+                        @ Network.Wreq.Cache.Store.Epoch
+                        @ v
+                        w1
+                        w
+                        GHC.Int.$fOrdInt64
+                        w2
+                        ww4 of wild {
+                   GHC.Base.Nothing
+                   -> Network.Wreq.Cache.Store.Store @ k @ v ww1 ww2 ww3 ww4
+                   GHC.Base.Just ds
+                   -> case ds of wild1 { (,,) ds1 ds2 psq0 ->
+                      case psq0
+                             `cast`
+                           (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R) of nt { DEFAULT ->
+                      Network.Wreq.Cache.Store.Store
+                        @ k
+                        @ v
+                        ww1
+                        (GHC.Prim.-# ww2 1#)
+                        ww3
+                        nt
+                          `cast`
+                        (Sym (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                  <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R)) } } } }) -}
+234aff3dd805be6ad2bb8d103f6729bb
+  empty ::
+    GHC.Classes.Ord k =>
+    GHC.Types.Int -> Network.Wreq.Cache.Store.Store k v
+  {- Arity: 2, Strictness: <L,A>, Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, True)
+                (\ @ k @ v (w :: GHC.Classes.Ord k) ->
+                 Network.Wreq.Cache.Store.$wempty @ k @ v GHC.Prim.void#) -}
+99763df6e91264693097be4408fb0af3
+  epoch ::
+    Network.Wreq.Cache.Store.Store k v
+    -> Network.Wreq.Cache.Store.Epoch
+  RecSel Left Network.Wreq.Cache.Store.Store
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LLSL),1*U(A,A,U,A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ k @ v (ds :: Network.Wreq.Cache.Store.Store k v) ->
+                 case ds of wild { Network.Wreq.Cache.Store.Store dt dt1 dt2 ds1 ->
+                 GHC.Int.I64# dt2 }) -}
+12d145a5d64f520400ffb9dd27a0c993
+  fromList ::
+    (GHC.Classes.Ord k, Data.Hashable.Class.Hashable k) =>
+    GHC.Types.Int -> [(k, v)] -> Network.Wreq.Cache.Store.Store k v
+  {- Arity: 3,
+     Strictness: <L,U(U(U,U),C(C1(U)),C(C1(U)),C(C1(U)),A,A,A,A)><L,U(A,C(U(U)))><L,U>,
+     Inline: INLINABLE[ALWAYS],
+     Unfolding: <stable> (\ @ k
+                            @ v
+                            ($dOrd :: GHC.Classes.Ord k)
+                            ($dHashable :: Data.Hashable.Class.Hashable k)
+                            (eta :: GHC.Types.Int) ->
+                          GHC.List.foldl'
+                            @ (k, v)
+                            @ (Network.Wreq.Cache.Store.Store k v)
+                            (GHC.Base.flip
+                               @ (k, v)
+                               @ (Network.Wreq.Cache.Store.Store k v)
+                               @ (Network.Wreq.Cache.Store.Store k v)
+                               (Data.Tuple.uncurry
+                                  @ k
+                                  @ v
+                                  @ (Network.Wreq.Cache.Store.Store k v
+                                     -> Network.Wreq.Cache.Store.Store k v)
+                                  (Network.Wreq.Cache.Store.insert @ k @ v $dOrd $dHashable)))
+                            (Network.Wreq.Cache.Store.empty @ k @ v $dOrd eta)) -}
+c0e57103cd8fe34f5befecf9425cf126
+  insert ::
+    (GHC.Classes.Ord k, Data.Hashable.Class.Hashable k) =>
+    k
+    -> v
+    -> Network.Wreq.Cache.Store.Store k v
+    -> Network.Wreq.Cache.Store.Store k v
+  {- Arity: 5,
+     Strictness: <L,U(U(U,U),C(C1(U)),C(C1(U)),C(C1(U)),A,A,A,A)><L,U(A,C(U(U)))><L,U><L,U><S(SSSS),1*U(U,U,U,U)>m,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (5, True, False)
+                (\ @ k
+                   @ v
+                   (w :: GHC.Classes.Ord k)
+                   (w1 :: Data.Hashable.Class.Hashable k)
+                   (w2 :: k)
+                   (w3 :: v)
+                   (w4 :: Network.Wreq.Cache.Store.Store k v) ->
+                 case w4 of ww { Network.Wreq.Cache.Store.Store ww1 ww2 ww3 ww4 ->
+                 case Data.HashPSQ.Internal.$winsertView
+                        @ k
+                        @ Network.Wreq.Cache.Store.Epoch
+                        @ v
+                        w1
+                        w
+                        GHC.Int.$fOrdInt64
+                        w2
+                        (GHC.Int.I64# ww3)
+                        w3
+                        ww4 of ww5 { (#,#) ww6 ww7 ->
+                 case ww6 of wild {
+                   GHC.Base.Nothing
+                   -> case GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim.<# ww2 ww1) of wild1 {
+                        GHC.Types.False
+                        -> case case Data.HashPSQ.Internal.$wminView
+                                       @ k
+                                       @ Network.Wreq.Cache.Store.Epoch
+                                       @ v
+                                       w
+                                       GHC.Int.$fOrdInt64
+                                       ww7 of wild2 {
+                                  GHC.Base.Nothing
+                                  -> ww7
+                                       `cast`
+                                     (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                          <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R)
+                                  GHC.Base.Just ds
+                                  -> case ds of wild3 { (,,,) ds1 ds2 ds3 t' ->
+                                     t'
+                                       `cast`
+                                     (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                          <k>_R
+                                          <Network.Wreq.Cache.Store.Epoch>_R
+                                          <v>_R) } } of nt { DEFAULT ->
+                           Network.Wreq.Cache.Store.Store
+                             @ k
+                             @ v
+                             ww1
+                             ww2
+                             (GHC.Prim.+# ww3 1#)
+                             nt
+                               `cast`
+                             (Sym (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                       <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R)) }
+                        GHC.Types.True
+                        -> case ww7
+                                  `cast`
+                                (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                     <k>_R
+                                     <Network.Wreq.Cache.Store.Epoch>_R
+                                     <v>_R) of nt { DEFAULT ->
+                           Network.Wreq.Cache.Store.Store
+                             @ k
+                             @ v
+                             ww1
+                             (GHC.Prim.+# ww2 1#)
+                             (GHC.Prim.+# ww3 1#)
+                             nt
+                               `cast`
+                             (Sym (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                       <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R)) } }
+                   GHC.Base.Just ds
+                   -> case ds of wild1 { (,) ds1 ds2 ->
+                      case ww7
+                             `cast`
+                           (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R) of nt { DEFAULT ->
+                      Network.Wreq.Cache.Store.Store
+                        @ k
+                        @ v
+                        ww1
+                        ww2
+                        (GHC.Prim.+# ww3 1#)
+                        nt
+                          `cast`
+                        (Sym (Data.HashPSQ.Internal.N:HashPSQ[0]
+                                  <k>_R <Network.Wreq.Cache.Store.Epoch>_R <v>_R)) } } } } }) -}
+b6e2426bae4083e8f2b901be271991c1
+  lookup ::
+    (GHC.Classes.Ord k, Data.Hashable.Class.Hashable k) =>
+    k
+    -> Network.Wreq.Cache.Store.Store k v
+    -> GHC.Base.Maybe (v, Network.Wreq.Cache.Store.Store k v)
+  {- Arity: 4,
+     Strictness: <L,U(U(C(C1(U)),A),C(C1(U)),C(C1(U)),C(C1(U)),A,A,A,A)><L,1*U(A,1*C1(U(U)))><L,U><S(LLLS),1*U(U,U,U,U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (4, True, False)
+                (\ @ k
+                   @ v
+                   (w :: GHC.Classes.Ord k)
+                   (w1 :: Data.Hashable.Class.Hashable k)
+                   (w2 :: k)
+                   (w3 :: Network.Wreq.Cache.Store.Store k v) ->
+                 case w3 of ww { Network.Wreq.Cache.Store.Store ww1 ww2 ww3 ww4 ->
+                 Network.Wreq.Cache.Store.$wlookup
+                   @ k
+                   @ v
+                   w
+                   w1
+                   w2
+                   ww1
+                   ww2
+                   ww3
+                   ww4 }) -}
+12b50739232407648096a9241defc4ce
+  psq ::
+    Network.Wreq.Cache.Store.Store k v
+    -> Data.HashPSQ.Internal.HashPSQ k Network.Wreq.Cache.Store.Epoch v
+  RecSel Left Network.Wreq.Cache.Store.Store
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LLLS),1*U(A,A,A,U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ k @ v (ds :: Network.Wreq.Cache.Store.Store k v) ->
+                 case ds of wild { Network.Wreq.Cache.Store.Store dt dt1 dt2 ds1 ->
+                 ds1 }) -}
+5ee1d07f28a9efd99c1c9e9158f47ca7
+  size :: Network.Wreq.Cache.Store.Store k v -> GHC.Types.Int
+  RecSel Left Network.Wreq.Cache.Store.Store
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LSLL),1*U(A,U,A,A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ k @ v (ds :: Network.Wreq.Cache.Store.Store k v) ->
+                 case ds of wild { Network.Wreq.Cache.Store.Store dt dt1 dt2 ds1 ->
+                 GHC.Types.I# dt1 }) -}
+2baea326785a3fb853b6c94ccdbbfbe5
+  toList ::
+    (GHC.Classes.Ord k, Data.Hashable.Class.Hashable k) =>
+    Network.Wreq.Cache.Store.Store k v -> [(k, v)]
+  {- Arity: 3, HasNoCafRefs,
+     Strictness: <L,A><L,A><S(LLLS),1*U(A,A,A,U)>, Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ @ k
+                   @ v
+                   (w :: GHC.Classes.Ord k)
+                   (w1 :: Data.Hashable.Class.Hashable k)
+                   (w2 :: Network.Wreq.Cache.Store.Store k v) ->
+                 case w2 of ww { Network.Wreq.Cache.Store.Store ww1 ww2 ww3 ww4 ->
+                 Network.Wreq.Cache.Store.$wtoList @ k @ v ww4 }) -}
+instance GHC.Show.Show [Network.Wreq.Cache.Store.Store]
+  = Network.Wreq.Cache.Store.$fShowStore
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

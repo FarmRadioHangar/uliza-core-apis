@@ -1,0 +1,293 @@
+
+==================== FINAL INTERFACE ====================
+2017-08-02 07:12:16.627725 UTC
+
+interface wreq-0.5.0.1@wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI:Network.Wreq.Lens.Machinery 8002
+  interface hash: e1073f0fbb179375f56c3e62fda3d56c
+  ABI hash: fa6dd4f309b1d3c59813f8aa74be6f5e
+  export-list hash: 3ac741299fd856a6af846bd71b5e1d87
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: b73710e1603bda5ba84f38874400a2eb
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Network.Wreq.Lens.Machinery.fieldName
+  Network.Wreq.Lens.Machinery.makeLenses
+  Network.Wreq.Lens.Machinery.toCamelCase
+module dependencies:
+package dependencies: StateVar-1.1.0.4@StateVar-1.1.0.4-5dJbnTVECtEAhfJXPZKdbO
+                      adjunctions-4.3@adjunctions-4.3-6nMo9ca9E95L1lsN6Br4XL
+                      array-0.5.1.1@array-0.5.1.1 base-4.9.1.0
+                      base-orphans-0.6@base-orphans-0.6-AbJ3lKVXygDCG0eeQEv8Iu
+                      bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q
+                      binary-0.8.3.0@binary-0.8.3.0
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      comonad-5.0.1@comonad-5.0.1-2dOTQljdUSmGwatNHkYwW3
+                      containers-0.5.7.1@containers-0.5.7.1
+                      contravariant-1.4@contravariant-1.4-29zF0Im431177ovfbHYCGv
+                      deepseq-1.4.2.0@deepseq-1.4.2.0
+                      distributive-0.5.2@distributive-0.5.2-KlkgfUmuqy3Z181VSjKfJ
+                      exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U
+                      free-4.12.4@free-4.12.4-JUYfwQOGje1F6ljlwhsQfP
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      integer-gmp-1.0.0.1
+                      kan-extensions-5.0.2@kan-extensions-5.0.2-5SVDrYVManyKLFvHkx6yaS
+                      lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX
+                      mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      prelude-extras-0.4.0.3@prelude-extras-0.4.0.3-BhL9U5k7NtGJn1itwIHt2Y
+                      pretty-1.1.3.3@pretty-1.1.3.3
+                      primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh
+                      profunctors-5.2@profunctors-5.2-7ONvCmXw8M9Co9mYrudYx
+                      reflection-2.1.2@reflection-2.1.2-Bem12O1xFGSHr4C2Hyu1c4
+                      semigroupoids-5.2@semigroupoids-5.2-8RI6HtO1LKLE496qmzB9Po
+                      stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve
+                      tagged-0.8.5@tagged-0.8.5-1mTloBSoUxv8dqUr8XBGBt
+                      template-haskell-2.11.1.0
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      th-abstraction-0.2.3.0@th-abstraction-0.2.3.0-IC8R8TEnxiaENlxvcI4gyL
+                      transformers-0.5.2.0@transformers-0.5.2.0
+                      transformers-compat-0.5.1.4@transformers-compat-0.5.1.4-IuFogs8HAVUJBWVNMhtssu
+                      unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC
+                      vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         base-orphans-0.6@base-orphans-0.6-AbJ3lKVXygDCG0eeQEv8Iu:Data.Orphans
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         reflection-2.1.2@reflection-2.1.2-Bem12O1xFGSHr4C2Hyu1c4:Data.Reflection
+         stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve:Control.Monad.STM
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Fusion.Bundle
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+family instance modules: adjunctions-4.3@adjunctions-4.3-6nMo9ca9E95L1lsN6Br4XL:Data.Functor.Rep
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Biff
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Clown
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Fix
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Flip
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Join
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Joker
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Product
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Sum
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Tannen
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Wrapped
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         kan-extensions-5.0.2@kan-extensions-5.0.2-5SVDrYVManyKLFvHkx6yaS:Data.Functor.Day
+                         kan-extensions-5.0.2@kan-extensions-5.0.2-5SVDrYVManyKLFvHkx6yaS:Data.Functor.Yoneda
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.At
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Internal.Indexed
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Reified
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Tuple
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Wrapped
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Zoom
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Control.Monad.Primitive
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Data.Primitive.Array
+                         profunctors-5.2@profunctors-5.2-7ONvCmXw8M9Co9mYrudYx:Data.Profunctor.Rep
+                         tagged-0.8.5@tagged-0.8.5-1mTloBSoUxv8dqUr8XBGBt:Data.Tagged
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+                         th-abstraction-0.2.3.0@th-abstraction-0.2.3.0-IC8R8TEnxiaENlxvcI4gyL:Language.Haskell.TH.Datatype
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashMap.Base
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashSet
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Primitive
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Storable
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed.Base
+import  -/  base-4.9.1.0:Data.Char 01433d23661edb6e5ef1536ef1e6774c
+import  -/  base-4.9.1.0:Data.Function 7aca86bfbd92366def5f260e30cb2628
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Unicode a175ecf20bf1272d9ae31337e7da43ab
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens cd1550f6c488679db5861f401243c95b
+import  -/  lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Internal.FieldTH ed36e374d64875e6386e1923326d49bb
+import  -/  lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Setter 5fc5cbe426a271131fc78672bbbb12c9
+import  -/  lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.TH ceb501bb16eff2674c704c1bf84b8841
+import  -/  template-haskell-2.11.1.0:Language.Haskell.TH.Syntax f73a6f51a55e744c097972689232ddf4
+d60299fd0747ea07f07586ec41dde52c
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   Network.Wreq.Lens.Machinery.$trModule2
+                   Network.Wreq.Lens.Machinery.$trModule1) -}
+e2cd24b5f43d03f472852c93c5e9b268
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Network.Wreq.Lens.Machinery"#) -}
+059fab33ccb46bd4901cef85fdcf7385
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI"#) -}
+b979c6bd512c9ee8a69228de7bdaaccd
+  $wb1 ::
+    Language.Haskell.TH.Syntax.Name
+    -> (# Control.Lens.Internal.FieldTH.DefName,
+          [Control.Lens.Internal.FieldTH.DefName] #)
+  {- Arity: 1, Strictness: <L,1*U(1*U,A)>, Inline: [0],
+     Unfolding: (\ (w :: Language.Haskell.TH.Syntax.Name) ->
+                 (# Control.Lens.Internal.FieldTH.TopName
+                      (case GHC.List.reverse1
+                              @ GHC.Types.Char
+                              (Language.Haskell.TH.Syntax.nameBase w)
+                              (GHC.Types.[] @ GHC.Types.Char) of wild {
+                         [] -> Network.Wreq.Lens.Machinery.fieldName1
+                         : ds rev
+                         -> case ds of wild1 { GHC.Types.C# ds1 ->
+                            case ds1 of ds2 {
+                              DEFAULT
+                              -> case Language.Haskell.TH.Syntax.mkName_$s$wsplit1
+                                        rev
+                                        wild1
+                                        (GHC.Types.[] @ GHC.Types.Char) of ww { (#,#) ww1 ww2 ->
+                                 Language.Haskell.TH.Syntax.Name ww1 ww2 }
+                              '.'#
+                              -> case Language.Haskell.TH.Syntax.mkName_$s$wsplit1
+                                        rev
+                                        wild1
+                                        (GHC.Types.[] @ GHC.Types.Char) of ww { (#,#) ww1 ww2 ->
+                                 Language.Haskell.TH.Syntax.Name ww1 ww2 } } } }),
+                    GHC.Types.[] @ Control.Lens.Internal.FieldTH.DefName #)) -}
+817ae12ca59ac4a4b445f4eafc63c9cd
+  $wfieldName ::
+    (GHC.Base.String -> GHC.Base.String)
+    -> Language.Haskell.TH.Syntax.Name
+    -> (# Control.Lens.Internal.FieldTH.DefName,
+          [Control.Lens.Internal.FieldTH.DefName] #)
+  {- Arity: 2, Strictness: <L,1*C1(U)><L,1*U(1*U,A)>, Inline: [0],
+     Unfolding: (\ (w :: GHC.Base.String -> GHC.Base.String)
+                   (w1 :: Language.Haskell.TH.Syntax.Name) ->
+                 (# Control.Lens.Internal.FieldTH.TopName
+                      (case GHC.List.reverse1
+                              @ GHC.Types.Char
+                              (w (Language.Haskell.TH.Syntax.nameBase w1))
+                              (GHC.Types.[] @ GHC.Types.Char) of wild {
+                         [] -> Network.Wreq.Lens.Machinery.fieldName1
+                         : ds rev
+                         -> case ds of wild1 { GHC.Types.C# ds1 ->
+                            case ds1 of ds2 {
+                              DEFAULT
+                              -> case Language.Haskell.TH.Syntax.mkName_$s$wsplit1
+                                        rev
+                                        wild1
+                                        (GHC.Types.[] @ GHC.Types.Char) of ww { (#,#) ww1 ww2 ->
+                                 Language.Haskell.TH.Syntax.Name ww1 ww2 }
+                              '.'#
+                              -> case Language.Haskell.TH.Syntax.mkName_$s$wsplit1
+                                        rev
+                                        wild1
+                                        (GHC.Types.[] @ GHC.Types.Char) of ww { (#,#) ww1 ww2 ->
+                                 Language.Haskell.TH.Syntax.Name ww1 ww2 } } } }),
+                    GHC.Types.[] @ Control.Lens.Internal.FieldTH.DefName #)) -}
+beb965dd9a585b189cac0039de766389
+  fieldName ::
+    (GHC.Base.String -> GHC.Base.String)
+    -> Language.Haskell.TH.Syntax.Name
+    -> [Language.Haskell.TH.Syntax.Name]
+    -> Language.Haskell.TH.Syntax.Name
+    -> [Control.Lens.Internal.FieldTH.DefName]
+  {- Arity: 4, Strictness: <L,1*C1(U)><L,A><L,A><L,1*U(1*U,A)>m2,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (4, True, False)
+                (\ (w :: GHC.Base.String -> GHC.Base.String)
+                   (w1 :: Language.Haskell.TH.Syntax.Name)
+                   (w2 :: [Language.Haskell.TH.Syntax.Name])
+                   (w3 :: Language.Haskell.TH.Syntax.Name) ->
+                 case Network.Wreq.Lens.Machinery.$wfieldName
+                        w
+                        w3 of ww { (#,#) ww1 ww2 ->
+                 GHC.Types.: @ Control.Lens.Internal.FieldTH.DefName ww1 ww2 }) -}
+c09fcc355055b6f225734839ed0310b0
+  fieldName1 :: Language.Haskell.TH.Syntax.Name
+  {- HasNoCafRefs,
+     Unfolding: (Language.Haskell.TH.Syntax.Name
+                   (GHC.Types.[] @ GHC.Types.Char)
+                     `cast`
+                   (Sym (Language.Haskell.TH.Syntax.N:OccName[0]))
+                   Language.Haskell.TH.Syntax.NameS) -}
+ad09609a53b91d4d83c826d41198789c
+  makeLenses ::
+    Language.Haskell.TH.Syntax.Name
+    -> Language.Haskell.TH.Syntax.Q [Language.Haskell.TH.Syntax.Dec]
+  {- Arity: 2,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Lens.Machinery.makeLenses1
+                  `cast`
+                (<Language.Haskell.TH.Syntax.Name>_R
+                 ->_R Sym (Language.Haskell.TH.Syntax.N:Q[0]
+                               <[Language.Haskell.TH.Syntax.Dec]>_N)) -}
+a4fecfa7cc0d1c5fa9ea95031cc988f6
+  makeLenses1 ::
+    Language.Haskell.TH.Syntax.Name
+    -> forall (m :: * -> *).
+       Language.Haskell.TH.Syntax.Quasi m =>
+       m [Language.Haskell.TH.Syntax.Dec]
+  {- Arity: 2,
+     Unfolding: (Control.Lens.Internal.FieldTH.makeFieldOptics1
+                   Network.Wreq.Lens.Machinery.makeLenses2) -}
+54df1b23a248f7283c776eabc0fed7b1
+  makeLenses2 :: Control.Lens.Internal.FieldTH.LensRules
+  {- Strictness: m,
+     Unfolding: (Control.Lens.Internal.FieldTH.LensRules
+                   GHC.Types.False
+                   GHC.Types.True
+                   GHC.Types.False
+                   GHC.Types.True
+                   GHC.Types.True
+                   GHC.Types.False
+                   Network.Wreq.Lens.Machinery.makeLenses_b1
+                   Control.Lens.TH.abbreviatedFields1) -}
+9eb960a53692c05cc990142c22282f00
+  makeLenses_b1 :: Control.Lens.TH.FieldNamer
+  {- Arity: 3, Strictness: <L,A><L,A><L,1*U(1*U,A)>m2,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: Language.Haskell.TH.Syntax.Name)
+                   (w1 :: [Language.Haskell.TH.Syntax.Name])
+                   (w2 :: Language.Haskell.TH.Syntax.Name) ->
+                 case Network.Wreq.Lens.Machinery.$wb1 w2 of ww { (#,#) ww1 ww2 ->
+                 GHC.Types.: @ Control.Lens.Internal.FieldTH.DefName ww1 ww2 }) -}
+b109cabf2f1a5f9a8a6a5d9ed105f52a
+  toCamelCase :: GHC.Base.String -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: [GHC.Types.Char]) ->
+                 case ds of wild {
+                   [] -> GHC.Types.[] @ GHC.Types.Char
+                   : x0 x0s
+                   -> GHC.Types.:
+                        @ GHC.Types.Char
+                        x0
+                        (Network.Wreq.Lens.Machinery.toCamelCase_go x0s) }) -}
+deca256733bfd93eca00cb393070e65e
+  toCamelCase_go :: [GHC.Types.Char] -> [GHC.Types.Char]
+  {- Arity: 1, Strictness: <S,1*U> -}
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

@@ -1,0 +1,1802 @@
+
+==================== FINAL INTERFACE ====================
+2017-08-02 07:12:28.280896 UTC
+
+interface wreq-0.5.0.1@wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI:Network.Wreq 8002
+  interface hash: f408117ac63aa2f1dd6e5fa6da17c450
+  ABI hash: e68b3ca6288a85dc399218b8cf254fa5
+  export-list hash: 5faf827b0a1f1bfd19b32e2156b75420
+  orphan hash: 693e9af84d3dfcc71e640e005bdc5e2e
+  flag hash: b5817f9e9b15a34e418a73431e2448d4
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Network.HTTP.Client.MultipartFormData.partBS
+  Network.HTTP.Client.MultipartFormData.partFile
+  Network.HTTP.Client.MultipartFormData.partFileSource
+  Network.HTTP.Client.MultipartFormData.partLBS
+  Network.Wreq.asJSON
+  Network.Wreq.asValue
+  Network.Wreq.awsAuth
+  Network.Wreq.basicAuth
+  Network.Wreq.customMethod
+  Network.Wreq.customMethodWith
+  Network.Wreq.customPayloadMethod
+  Network.Wreq.customPayloadMethodWith
+  Network.Wreq.delete
+  Network.Wreq.deleteWith
+  Network.Wreq.foldGet
+  Network.Wreq.foldGetWith
+  Network.Wreq.get
+  Network.Wreq.getWith
+  Network.Wreq.headWith
+  Network.Wreq.head_
+  Network.Wreq.httpProxy
+  Network.Wreq.oauth1Auth
+  Network.Wreq.oauth2Bearer
+  Network.Wreq.oauth2Token
+  Network.Wreq.options
+  Network.Wreq.optionsWith
+  Network.Wreq.partString
+  Network.Wreq.partText
+  Network.Wreq.post
+  Network.Wreq.postWith
+  Network.Wreq.put
+  Network.Wreq.putWith
+  Network.Wreq.withManager
+  Network.Wreq.Internal.defaults
+  Network.Wreq.Lens.atto
+  Network.Wreq.Lens.atto_
+  Network.Wreq.Lens.auth
+  Network.Wreq.Lens.checkResponse
+  Network.Wreq.Lens.cookie
+  Network.Wreq.Lens.cookieDomain
+  Network.Wreq.Lens.cookieExpiryTime
+  Network.Wreq.Lens.cookieName
+  Network.Wreq.Lens.cookiePath
+  Network.Wreq.Lens.cookieValue
+  Network.Wreq.Lens.cookies
+  Network.Wreq.Lens.header
+  Network.Wreq.Lens.headers
+  Network.Wreq.Lens.linkParams
+  Network.Wreq.Lens.linkURL
+  Network.Wreq.Lens.manager
+  Network.Wreq.Lens.param
+  Network.Wreq.Lens.params
+  Network.Wreq.Lens.partContentType
+  Network.Wreq.Lens.partFileName
+  Network.Wreq.Lens.partGetBody
+  Network.Wreq.Lens.partName
+  Network.Wreq.Lens.proxy
+  Network.Wreq.Lens.redirects
+  Network.Wreq.Lens.responseBody
+  Network.Wreq.Lens.responseCookie
+  Network.Wreq.Lens.responseCookieJar
+  Network.Wreq.Lens.responseHeader
+  Network.Wreq.Lens.responseHeaders
+  Network.Wreq.Lens.responseLink
+  Network.Wreq.Lens.responseStatus
+  Network.Wreq.Lens.statusCode
+  Network.Wreq.Lens.statusMessage
+  Network.HTTP.Client.MultipartFormData.Part
+  Network.HTTP.Client.Types.Cookie
+  Network.HTTP.Client.Types.Proxy{Network.HTTP.Client.Types.Proxy}
+  Network.HTTP.Client.Types.Response
+  Network.HTTP.Types.Status.Status
+  Network.Wreq.Internal.Types.AWSAuthVersion{Network.Wreq.Internal.Types.AWSv4}
+  Network.Wreq.Internal.Types.Auth
+  Network.Wreq.Internal.Types.FormParam{Network.Wreq.Internal.Types.:=}
+  Network.Wreq.Internal.Types.FormValue
+  Network.Wreq.Internal.Types.JSONError{Network.Wreq.Internal.Types.JSONError}
+  Network.Wreq.Internal.Types.Link
+  Network.Wreq.Internal.Types.Options
+  Network.Wreq.Internal.Types.Payload{Network.Wreq.Internal.Types.Raw}
+module dependencies: Network.Wreq.Internal
+                     Network.Wreq.Internal.AWS Network.Wreq.Internal.Lens
+                     Network.Wreq.Internal.Link Network.Wreq.Internal.OAuth1
+                     Network.Wreq.Internal.Types Network.Wreq.Lens
+                     Network.Wreq.Lens.Machinery Network.Wreq.Lens.TH Network.Wreq.Types
+                     Paths_wreq
+package dependencies: RSA-2.3.0@RSA-2.3.0-IIqE1lBfN0DSfigORkzRr
+                      SHA-1.6.4.2@SHA-1.6.4.2-6ZuKopcglGG4yoCGsd9koJ
+                      StateVar-1.1.0.4@StateVar-1.1.0.4-5dJbnTVECtEAhfJXPZKdbO
+                      adjunctions-4.3@adjunctions-4.3-6nMo9ca9E95L1lsN6Br4XL
+                      aeson-1.1.2.0@aeson-1.1.2.0-H8KqCgI8gcq2RuIUkNEZvK
+                      array-0.5.1.1@array-0.5.1.1
+                      asn1-encoding-0.9.5@asn1-encoding-0.9.5-HjPVpmCG8yiHLrShsHhCjx
+                      asn1-parse-0.9.4@asn1-parse-0.9.4-96kZ6J4cmFC1crIy7sf8ZH
+                      asn1-types-0.3.2@asn1-types-0.3.2-BmsjAsDAG1wKuw6iaK2qhb
+                      async-2.1.1.1@async-2.1.1.1-8yywY4inVGRLJSCg60gBXj
+                      attoparsec-0.13.1.0@attoparsec-0.13.1.0-8bUdsjh6UCE83aHCxOEHna
+                      authenticate-oauth-1.6@authenticate-oauth-1.6-14urp0Wlxps2aU3KT34Irp
+                      base-4.9.1.0
+                      base-compat-0.9.3@base-compat-0.9.3-KeJp8zYMpcS9WibvTcxU22
+                      base-orphans-0.6@base-orphans-0.6-AbJ3lKVXygDCG0eeQEv8Iu
+                      base16-bytestring-0.1.1.6@base16-bytestring-0.1.1.6-4E2p94lTx8gIceMhu8Kl9o
+                      base64-bytestring-1.0.0.1@base64-bytestring-1.0.0.1-4O9TExPPz6eI82Yj7L4SIj
+                      bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q
+                      binary-0.8.3.0@binary-0.8.3.0
+                      blaze-builder-0.4.0.2@blaze-builder-0.4.0.2-LxClHUTiKUUAxWtvJ5Oeoy
+                      byteable-0.1.1@byteable-0.1.1-2lU1pexQSLj1KbNO17UifQ
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      case-insensitive-1.2.0.10@case-insensitive-1.2.0.10-1D5OUKQ7UrJ7IpOe0di4Un
+                      cereal-0.5.4.0@cereal-0.5.4.0-BsAGxfp8yAs3CiRo2E875e
+                      comonad-5.0.1@comonad-5.0.1-2dOTQljdUSmGwatNHkYwW3
+                      connection-0.2.8@connection-0.2.8-ABgG3RfP1b16n30raREirS
+                      containers-0.5.7.1@containers-0.5.7.1
+                      contravariant-1.4@contravariant-1.4-29zF0Im431177ovfbHYCGv
+                      cookie-0.4.2.1@cookie-0.4.2.1-ImqC1hbvUERAwQQgqhuUAD
+                      crypto-api-0.13.2@crypto-api-0.13.2-DBhN9RgaKHp5HflQM2s570
+                      crypto-pubkey-types-0.4.3@crypto-pubkey-types-0.4.3-54Nmhb2gSWL6AGN2Lansyh
+                      cryptohash-0.11.9@cryptohash-0.11.9-Cid4WoBi2xEBQdgCxicnqI
+                      cryptonite-0.23@cryptonite-0.23-EXqej153fRK6r6DVzkvS8x
+                      data-default-0.7.1.1@data-default-0.7.1.1-Atv1ZD6t1rI1MrH9qSGaQC
+                      data-default-class-0.1.2.0@data-default-class-0.1.2.0-GsXqKN6o1X9jr0fF5qCVD
+                      data-default-instances-containers-0.0.1@data-default-instances-containers-0.0.1-bob6IQGdJq92c061H46zK
+                      data-default-instances-dlist-0.0.1@data-default-instances-dlist-0.0.1-LBT1sjxIvyd63eC0aI9yNO
+                      data-default-instances-old-locale-0.0.1@data-default-instances-old-locale-0.0.1-9zaGDEmgOixKkmLylWdN5l
+                      deepseq-1.4.2.0@deepseq-1.4.2.0 directory-1.3.0.0@directory-1.3.0.0
+                      distributive-0.5.2@distributive-0.5.2-KlkgfUmuqy3Z181VSjKfJ
+                      dlist-0.8.0.3@dlist-0.8.0.3-BHFBNaw8k6n9WiaUNzoXpk
+                      entropy-0.3.8@entropy-0.3.8-14HIw40nRRY968j6AdY1H4
+                      exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U
+                      filepath-1.4.1.1@filepath-1.4.1.1
+                      foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa
+                      free-4.12.4@free-4.12.4-JUYfwQOGje1F6ljlwhsQfP
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      hourglass-0.2.10@hourglass-0.2.10-pnbvWmzfcY1rOFETQEmcY
+                      http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q
+                      http-client-tls-0.3.5.1@http-client-tls-0.3.5.1-5r5B8vte5mQ39CjZQd0XMi
+                      http-types-0.9.1@http-types-0.9.1-G7E1zHPzooHCYxKqGuQmxY
+                      integer-gmp-1.0.0.1
+                      integer-logarithms-1.0.2@integer-logarithms-1.0.2-92lMiWV9mmYAwfMEYgfQ0D
+                      kan-extensions-5.0.2@kan-extensions-5.0.2-5SVDrYVManyKLFvHkx6yaS
+                      lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX
+                      memory-0.14.6@memory-0.14.6-Aar7hKewN999MXzU9kvt2a
+                      mime-types-0.1.0.7@mime-types-0.1.0.7-6b3z22GcDYZLEl2kkfCUAB
+                      mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      network-2.6.3.2@network-2.6.3.2-IsLM4TXcLoRI0fmmBYVyQz
+                      network-uri-2.6.1.0@network-uri-2.6.1.0-7BN1tbB3iHQ2XgvmqLAYph
+                      old-locale-1.0.0.7@old-locale-1.0.0.7-KGBP1BSKxH5GCm0LnZP04j
+                      parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX
+                      pem-0.2.2@pem-0.2.2-CkEwei5500yF2642aAaOAi
+                      prelude-extras-0.4.0.3@prelude-extras-0.4.0.3-BhL9U5k7NtGJn1itwIHt2Y
+                      pretty-1.1.3.3@pretty-1.1.3.3
+                      primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh
+                      profunctors-5.2@profunctors-5.2-7ONvCmXw8M9Co9mYrudYx
+                      random-1.1@random-1.1-9tceXaeYIMZ4JrKq20Egog
+                      reflection-2.1.2@reflection-2.1.2-Bem12O1xFGSHr4C2Hyu1c4
+                      scientific-0.3.5.1@scientific-0.3.5.1-JHsAAp34Yyd8e5v3sK3O5Q
+                      semigroupoids-5.2@semigroupoids-5.2-8RI6HtO1LKLE496qmzB9Po
+                      socks-0.5.5@socks-0.5.5-JArtPcFTnbCItWBjXwWAhO
+                      stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve
+                      streaming-commons-0.1.17@streaming-commons-0.1.17-6xuIA5RXrs65yyeq3HWIWP
+                      tagged-0.8.5@tagged-0.8.5-1mTloBSoUxv8dqUr8XBGBt
+                      template-haskell-2.11.1.0
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      th-abstraction-0.2.3.0@th-abstraction-0.2.3.0-IC8R8TEnxiaENlxvcI4gyL
+                      time-1.6.0.1@time-1.6.0.1
+                      time-locale-compat-0.1.1.3@time-locale-compat-0.1.1.3-KZ1jqNx8uhlHjmuPPj6V1Y
+                      tls-1.3.11@tls-1.3.11-KJ7rZhgY7N7EStv5RGZiAN
+                      transformers-0.5.2.0@transformers-0.5.2.0
+                      transformers-compat-0.5.1.4@transformers-compat-0.5.1.4-IuFogs8HAVUJBWVNMhtssu
+                      unix-2.7.2.1@unix-2.7.2.1
+                      unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC
+                      uuid-types-1.0.3@uuid-types-1.0.3-HQOuja9trySCcuflACyDTJ
+                      vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ
+                      x509-1.7.1@x509-1.7.1-4lBZxvHuUw2FrDSf0RtNid
+                      x509-store-1.6.3@x509-store-1.6.3-1zbzJbSyMfK5ItxlVi9zlw
+                      x509-system-1.6.5@x509-system-1.6.5-JkZDBpZSJxP8FsZpythUMK
+                      x509-validation-1.6.8@x509-validation-1.6.8-80mkbL9VtTNF0oQ56EfQcN
+                      zlib-0.6.1.2@zlib-0.6.1.2-7negTfm2ujt1gW4wr40MUp
+orphans: RSA-2.3.0@RSA-2.3.0-IIqE1lBfN0DSfigORkzRr:Codec.Crypto.RSA.Pure
+         attoparsec-0.13.1.0@attoparsec-0.13.1.0-8bUdsjh6UCE83aHCxOEHna:Data.Attoparsec.ByteString.Char8
+         attoparsec-0.13.1.0@attoparsec-0.13.1.0-8bUdsjh6UCE83aHCxOEHna:Data.Attoparsec.Text.Internal
+         base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         base-orphans-0.6@base-orphans-0.6-AbJ3lKVXygDCG0eeQEv8Iu:Data.Orphans
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         data-default-instances-containers-0.0.1@data-default-instances-containers-0.0.1-bob6IQGdJq92c061H46zK:Data.Default.Instances.Containers
+         data-default-instances-dlist-0.0.1@data-default-instances-dlist-0.0.1-LBT1sjxIvyd63eC0aI9yNO:Data.Default.Instances.DList
+         data-default-instances-old-locale-0.0.1@data-default-instances-old-locale-0.0.1-9zaGDEmgOixKkmLylWdN5l:Data.Default.Instances.OldLocale
+         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Collection.Collection
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.Request
+         network-2.6.3.2@network-2.6.3.2-IsLM4TXcLoRI0fmmBYVyQz:Network.Socket
+         reflection-2.1.2@reflection-2.1.2-Bem12O1xFGSHr4C2Hyu1c4:Data.Reflection
+         stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve:Control.Monad.STM
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Fusion.Bundle
+         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+         wreq-0.5.0.1@wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI:Network.Wreq.Types
+family instance modules: adjunctions-4.3@adjunctions-4.3-6nMo9ca9E95L1lsN6Br4XL:Data.Functor.Rep
+                         attoparsec-0.13.1.0@attoparsec-0.13.1.0-8bUdsjh6UCE83aHCxOEHna:Data.Attoparsec.Internal.Types
+                         base-4.9.1.0:Control.Applicative base-4.9.1.0:Data.Complex
+                         base-4.9.1.0:Data.Either base-4.9.1.0:Data.Functor.Compose
+                         base-4.9.1.0:Data.Functor.Const base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Biff
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Clown
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Fix
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Flip
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Join
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Joker
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Product
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Sum
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Tannen
+                         bifunctors-5.4.2@bifunctors-5.4.2-5j5AtkN8t5O1W8mEe1pi0q:Data.Bifunctor.Wrapped
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         dlist-0.8.0.3@dlist-0.8.0.3-BHFBNaw8k6n9WiaUNzoXpk:Data.DList
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Array.Bitmap
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Array.Boxed
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Array.Chunked.Unboxed
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Boot.Builder
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Collection.Buildable
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Collection.Collection
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Collection.Element
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Collection.Keyed
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Collection.Mutable
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Monad.Exception
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Numerical.Subtractive
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Primitive.Block.Base
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Primitive.Monad
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Primitive.Types.OffsetSize
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Primitive.UArray.Base
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Primitive.UTF8.Base
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.String.Encoding.ASCII7
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.String.Encoding.ISO_8859_1
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.String.Encoding.UTF16
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.String.Encoding.UTF32
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.String.UTF8
+                         foundation-0.0.13@foundation-0.0.13-G4GHWkMwmXnF7HKMtT8vGa:Foundation.Tuple
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client
+                         kan-extensions-5.0.2@kan-extensions-5.0.2-5SVDrYVManyKLFvHkx6yaS:Data.Functor.Day
+                         kan-extensions-5.0.2@kan-extensions-5.0.2-5SVDrYVManyKLFvHkx6yaS:Data.Functor.Yoneda
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.At
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Internal.Indexed
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Reified
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Tuple
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Wrapped
+                         lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Zoom
+                         network-uri-2.6.1.0@network-uri-2.6.1.0-7BN1tbB3iHQ2XgvmqLAYph:Network.URI
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.Annotated.HughesPJ
+                         pretty-1.1.3.3@pretty-1.1.3.3:Text.PrettyPrint.HughesPJ
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Control.Monad.Primitive
+                         primitive-0.6.2.0@primitive-0.6.2.0-4578caNkWQ54Gt1mxLF2Yh:Data.Primitive.Array
+                         profunctors-5.2@profunctors-5.2-7ONvCmXw8M9Co9mYrudYx:Data.Profunctor.Rep
+                         tagged-0.8.5@tagged-0.8.5-1mTloBSoUxv8dqUr8XBGBt:Data.Tagged
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+                         th-abstraction-0.2.3.0@th-abstraction-0.2.3.0-IC8R8TEnxiaENlxvcI4gyL:Language.Haskell.TH.Datatype
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashMap.Base
+                         unordered-containers-0.2.8.0@unordered-containers-0.2.8.0-Bp9XgxjuHxcI4tFehVMDGC:Data.HashSet
+                         uuid-types-1.0.3@uuid-types-1.0.3-HQOuja9trySCcuflACyDTJ:Data.UUID.Types.Internal
+                         uuid-types-1.0.3@uuid-types-1.0.3-HQOuja9trySCcuflACyDTJ:Data.UUID.Types.Internal.Builder
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Primitive
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Storable
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed
+                         vector-0.12.0.1@vector-0.12.0.1-692PQMDMB6pIQ1uGwefDcQ:Data.Vector.Unboxed.Base
+                         zlib-0.6.1.2@zlib-0.6.1.2-7negTfm2ujt1gW4wr40MUp:Codec.Compression.Zlib.Stream
+import  -/  aeson-1.1.2.0@aeson-1.1.2.0-H8KqCgI8gcq2RuIUkNEZvK:Data.Aeson a0a69801f9213b5d9e50dd923801e2bf
+import  -/  aeson-1.1.2.0@aeson-1.1.2.0-H8KqCgI8gcq2RuIUkNEZvK:Data.Aeson.Types.FromJSON 8108557157943eb66121099884cee22c
+import  -/  aeson-1.1.2.0@aeson-1.1.2.0-H8KqCgI8gcq2RuIUkNEZvK:Data.Aeson.Types.Internal 14ced16b1b4b1d92da12e0813c4dfee3
+import  -/  base-4.9.1.0:Control.Monad a6784c5dab0d75c63dabec5a37843f98
+import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
+import  -/  base-4.9.1.0:Data.Function 7aca86bfbd92366def5f260e30cb2628
+import  -/  base-4.9.1.0:Data.Maybe d876c4ffe4b3c43755a781e8ad860d88
+import  -/  base-4.9.1.0:Data.Tuple 7dc4bbb45d2e69c991ffac438beeca11
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.List ab8c4e523e6c479c549d3bcd5fc4a439
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString 43e99fdac51908da414a28958688da64
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Char8 64661030f691dd1495e363eeda7a5344
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Internal 89cda42ec946d9d6577dd41ab95d523e
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Lazy 208431757121593b5ca64b062df0cfbd
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Lazy.Internal c946ea9e67fbde53de4be02c8dc7a943
+import  -/  exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U:Control.Monad.Catch b7c0706f1693a3a340b0c0acefd4e19d
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client 061b3ff266298c4df34c97386e44eded
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.Internal 4e42028be6f69e4477209f9b45353938
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.Manager 312344ad1aabdef48b5eb01c83a66eb7
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.MultipartFormData 49afb23c1315305382e601f10e7e5b94
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.Types 3a50d3b18de4f434ed7bb6cc70d2d727
+import  -/  http-types-0.9.1@http-types-0.9.1-G7E1zHPzooHCYxKqGuQmxY:Network.HTTP.Types.Status 89141eb12608ef6ae13b4ca925571920
+import  -/  lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens cd1550f6c488679db5861f401243c95b
+import  -/  lens-4.15.3@lens-4.15.3-5Jg3WKTSlS050icgk0CLIX:Control.Lens.Setter 5fc5cbe426a271131fc78672bbbb12c9
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3dde178f567ae461e65c988b
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Encoding b115c78a0552e839c4f5c625e533e735
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Internal 9bfcbbbe07ecef48f631025a838df7da
+import  -/  Network.Wreq.Internal 72820fcce9044045f88496b4eece6ab0
+  exports: 74d1cad1313d6b70a0fe677c44d6d848
+  defaultManagerSettings a9e7b085ef37cee7878f1d208c9567a2
+  defaults efe4a6dd0ba9af5742ad15ecada43297
+  foldResponseBody 2520974cce1d9efc2b2d5115451bab42
+  prepareDelete dd613af55b6aa39d7a819f4c8a52381b
+  prepareGet aa32e2a756fe747df4dad10a030d3a27
+  prepareHead 3c64123a6f36f8a10853f46e0e513fc6
+  prepareMethod cae2385380149b411f1e20dff626492b
+  prepareOptions a494bd860d8c85a9eddc902f38eefd3e
+  preparePayloadMethod df447441dede90e1bbadec362cb5a401
+  preparePost fd3de33d39bb069c5ad35e5319490777
+  preparePut 5ea1caf1de4a771dbd3d5d69e6d42e41
+  request 302743be2be6aec826226a8eaff64572
+  runIgnore a1eba1f8c752c80f42649f79909f9686
+  runRead 0d33a7e834ed71e8e9b7c6113c45f65e
+import  -/  Network.Wreq.Internal.Types be2a7748ee40548c69ace57897e4b24b
+  := ad8221586bc0dcbe158681412ade037f
+  AWSAuth 4ea2d9a82ac06320d90881827464d614
+  AWSAuthVersion ae3fce7c4ae2ad11decf775b4f9d66b1
+  AWSv4 13d83fde6203cd8097b806302ceeb645
+  Auth 50562406d9132fbf375d117ee4db6c63
+  BasicAuth a2c4a421ded8e86fc81a0db85b38857f
+  FormParam 6b3902c372f00e4878c0c7cc5af7c151
+  FormValue 3d100ec4872f5250f1661596ddad521e
+  JSONError c63819ab1f04d0bd3daa0f95e282eedd
+  JSONError 0a53ee3e37cb1ff4da8b06dbff56cd27
+  Link 8a9978a9ba38dcd07aab09cb60cdcf7f
+  OAuth1 6477b73f8b596ae49d1b69c944bc87ce
+  OAuth2Bearer fd8cec9ffd8b11b2e31e64593cf646c2
+  OAuth2Token c8a52d14e752d0be65e7008ee70395d8
+  Options a7ee0a275ba21a223c2335f85481728d
+  Payload d72a9f0de60e7c56c763278c7591f5b8
+  Postable 28418db8076d41411c0d5e19e67e50bb
+  Putable 2da3ace436c2b4bfad6acf98eb39dcc6
+  Raw 46af884b118a1122455380daeaf99fbc
+  manager ec89945468129a25cdee8adb4b061b97
+import  -/  Network.Wreq.Lens c7475e4511b39751240b8e45ea4fc2ab
+  exports: 60b9b27c24e9dc345fe996cab9626846
+  atto bc06bc829cf625a0e58d05b2181fa6fa
+  atto_ da4fcf0b502e05cb266e321bb472e901
+  auth 13be5be7681a831adf67776fb61be913
+  checkResponse add67dcdd02f54e0e28dc9babc245957
+  cookie 4bdf87bdaaca95bb9e4452582d36f46f
+  cookieDomain 030373a6535123b564af4ac23252a852
+  cookieExpiryTime 505a31c4d981f3b4021ae50e44cbf51d
+  cookieName 86a5ebcb7c9dba0d126f11cf554c0411
+  cookiePath 92e645e7631161b77440128ad26c57dd
+  cookieValue 35dbe4949ba403ca64b868976b935697
+  cookies 42698ad5792541aa8682407aa81bc865
+  header 680edf6c04a6e9debc708dc278475d31
+  headers 3ab68030cea678aa5739b0c6e57bd3db
+  linkParams e3ad0d4943da7b6012877a8f651814c4
+  linkURL 64b1369f6c5ddae0856bd6b18ca4f79c
+  manager 033ac0fef91f8f6d61cbf906fc42baab
+  param c5c0c61e98b91c21dd1d6d69a8e992d1
+  params deefef50ef8e58e472331770bf2cff9d
+  partContentType 8bd0d669118ad479387b5dc15facc1d8
+  partFileName 2c5498ec0d37f1f034dd5b7ca46bf8fc
+  partGetBody 0f2b41aac3809bf8e0ca1b8cf2ca27eb
+  partName 987ea71fbebf680c366f8d6894600d1c
+  proxy a5d002db9d6c6edf1f96c5433bd8d67d
+  redirects 536654fb0fcbec31ee62180035462e94
+  responseBody a267f83aec2d77ac74cffb39814aba80
+  responseCookie 25d6178e94433384e4a2792ce558c793
+  responseCookieJar 672410084dd7ad9b64805a1f4c0cf7ff
+  responseHeader bb0b8a15fa6209abafedec213dd224ff
+  responseHeaders b3b85faf27ade2a3af863fd86dbb4aa2
+  responseLink df57cb5eac21cbb4f0ba2cad63b1f8bd
+  responseStatus 3a2950d09e3709cf00d61258f74f8dcc
+  statusCode 3196078844e43182d4cfcde356b6ed88
+  statusMessage f048bc2c32face3843857cd87b1c1781
+import  -/  Network.Wreq.Types 45501ef112978562b667a7bc8d34c47e
+  exports: 2ef5ad95aa6d8bbdcbd0de190d19e1f4
+97d8b447a340c9a0c214446a2201993a
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   Network.Wreq.$trModule2
+                   Network.Wreq.$trModule1) -}
+ec7d10d5f85297aacf18422e53c1075e
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Network.Wreq"#) -}
+29963d333335c205622a275617abb8d0
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI"#) -}
+a0a2de44839fa92e0ded8b9d9c24ed8d
+  $w$sasJSON ::
+    Network.HTTP.Types.Status.Status
+    -> Network.HTTP.Types.Version.HttpVersion
+    -> Network.HTTP.Types.Header.ResponseHeaders
+    -> Data.ByteString.Lazy.Internal.ByteString
+    -> Network.HTTP.Client.Types.CookieJar
+    -> Network.HTTP.Client.Types.ResponseClose
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.Aeson.Types.Internal.Value #)
+  {- Arity: 7, Strictness: <L,U><L,U><S,U><L,1*U><L,U><L,U><L,U>,
+     Inline: [0] -}
+bb087ba35654d5c5e5b1c6719e724d8f
+  $w$sasJSON1 ::
+    Data.Aeson.Types.FromJSON.FromJSON a =>
+    Network.HTTP.Types.Status.Status
+    -> Network.HTTP.Types.Version.HttpVersion
+    -> Network.HTTP.Types.Header.ResponseHeaders
+    -> Data.ByteString.Lazy.Internal.ByteString
+    -> Network.HTTP.Client.Types.CookieJar
+    -> Network.HTTP.Client.Types.ResponseClose
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response a #)
+  {- Arity: 8,
+     Strictness: <L,1*U(1*C1(C1(C1(C1(U)))),A)><L,U><L,U><S,U><L,1*U><L,U><L,U><L,U>,
+     Inline: [0] -}
+02e3fde88e47ad73ca6eb5f27757b875
+  $wouter ::
+    GHC.Prim.MutableByteArray# GHC.Prim.RealWorld
+    -> GHC.Prim.Int#
+    -> [GHC.Types.Char]
+    -> GHC.Prim.Int#
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Data.Text.Internal.Text #)
+  {- Arity: 5, Strictness: <L,U><L,U><S,1*U><S,U><S,U>,
+     Inline: [0] -}
+951edf9fc166039ba077d8d1dda83cf9
+  asJSON ::
+    (Control.Monad.Catch.MonadThrow m,
+     Data.Aeson.Types.FromJSON.FromJSON a) =>
+    Network.HTTP.Client.Types.Response
+      Data.ByteString.Lazy.Internal.ByteString
+    -> m (Network.HTTP.Client.Types.Response a)
+  {- Arity: 3,
+     Strictness: <S(SL),U(1*U,C(C1(U)))><L,1*U(1*C1(C1(C1(C1(U)))),A)><L,U(U,U,U,1*U,U,U)> -}
+db30aa2b7cd8ff972e9c9de3ff2cb51c
+  asJSON1 ::
+    Network.HTTP.Client.Types.Response
+      Data.ByteString.Lazy.Internal.ByteString
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.Aeson.Types.Internal.Value #)
+  {- Arity: 2, Strictness: <S(LLSLLL),U(U,U,U,1*U,U,U)><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Network.HTTP.Client.Types.Response
+                           Data.ByteString.Lazy.Internal.ByteString)
+                   (w1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case w of ww { Network.HTTP.Client.Types.Response ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 Network.Wreq.$w$sasJSON ww1 ww2 ww3 ww4 ww5 ww6 w1 }) -}
+d89f58be458fb51af8b0c7dd7c3eb868
+  asJSON2 ::
+    Data.Aeson.Types.FromJSON.FromJSON a =>
+    Network.HTTP.Client.Types.Response
+      Data.ByteString.Lazy.Internal.ByteString
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response a #)
+  {- Arity: 3,
+     Strictness: <L,1*U(1*C1(C1(C1(C1(U)))),A)><S(LLSLLL),U(U,U,U,1*U,U,U)><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a
+                   (w :: Data.Aeson.Types.FromJSON.FromJSON a)
+                   (w1 :: Network.HTTP.Client.Types.Response
+                            Data.ByteString.Lazy.Internal.ByteString)
+                   (w2 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case w1 of ww { Network.HTTP.Client.Types.Response ww1 ww2 ww3 ww4 ww5 ww6 ->
+                 Network.Wreq.$w$sasJSON1 @ a w ww1 ww2 ww3 ww4 ww5 ww6 w2 }) -}
+83bd586bd5993aaf26e2dd2c19089873
+  asJSON_$sasJSON ::
+    Network.HTTP.Client.Types.Response
+      Data.ByteString.Lazy.Internal.ByteString
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.Aeson.Types.Internal.Value)
+  {- Arity: 2, Strictness: <S(LLSLLL),U(U,U,U,1*U,U,U)><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.asJSON1
+                  `cast`
+                (<Network.HTTP.Client.Types.Response
+                    Data.ByteString.Lazy.Internal.ByteString>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.Aeson.Types.Internal.Value>_R)) -}
+90548c8680247e9a92252b63469a4e0f
+  asJSON_$sasJSON1 ::
+    Data.Aeson.Types.FromJSON.FromJSON a =>
+    Network.HTTP.Client.Types.Response
+      Data.ByteString.Lazy.Internal.ByteString
+    -> GHC.Types.IO (Network.HTTP.Client.Types.Response a)
+  {- Arity: 3,
+     Strictness: <L,1*U(1*C1(C1(C1(C1(U)))),A)><S(LLSLLL),U(U,U,U,1*U,U,U)><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.asJSON2
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Data.Aeson.Types.FromJSON.FromJSON a>_R
+                 ->_R <Network.HTTP.Client.Types.Response
+                         Data.ByteString.Lazy.Internal.ByteString>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response a>_R)) -}
+0f175c3b94fea5bfe22b7ebf06aa926e
+  asValue ::
+    Control.Monad.Catch.MonadThrow m =>
+    Network.HTTP.Client.Types.Response
+      Data.ByteString.Lazy.Internal.ByteString
+    -> m (Network.HTTP.Client.Types.Response
+            Data.Aeson.Types.Internal.Value)
+  {- Arity: 2, Strictness: <L,U(U,C(C1(U)))>,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ (m :: * -> *)
+                   ($dMonadThrow :: Control.Monad.Catch.MonadThrow m)
+                   (eta :: Network.HTTP.Client.Types.Response
+                             Data.ByteString.Lazy.Internal.ByteString) ->
+                 Network.Wreq.asJSON
+                   @ m
+                   @ Data.Aeson.Types.Internal.Value
+                   $dMonadThrow
+                   Data.Aeson.Types.FromJSON.$fFromJSONValue
+                   eta) -}
+a48ffc277c0a53d04be381afc39effba
+  awsAuth ::
+    Network.Wreq.Internal.Types.AWSAuthVersion
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Network.Wreq.Internal.Types.Auth
+  {- Arity: 3, HasNoCafRefs, Strictness: <L,U><L,U><L,U>m4,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Internal.Types.AWSAuth -}
+dbde951b8540458b028238f141496fe5
+  basicAuth ::
+    Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Network.Wreq.Internal.Types.Auth
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,U>m1,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Internal.Types.BasicAuth -}
+526bd4c2b1707945ab3ee7f067c905a0
+  customMethod ::
+    GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 3, Strictness: <L,U><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.customMethod1
+                  `cast`
+                (<GHC.Base.String>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+9e0d54aa704b6d39045099fc30b14e29
+  customMethod1 ::
+    GHC.Base.String
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 3, Strictness: <L,U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (method :: GHC.Base.String)
+                   (url :: GHC.Base.String)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 Network.Wreq.customMethod2
+                   method
+                   Network.Wreq.Internal.defaults
+                   url
+                   eta) -}
+d4f9e0a72d72b1b22f6bf6e1c87db8b0
+  customMethod2 ::
+    GHC.Base.String
+    -> Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 4,
+     Strictness: <L,U><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: (\ (method :: GHC.Base.String)
+                   (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (\ (x :: Network.HTTP.Client.Types.Request)[OneShot]
+                           (s1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                         (# s1,
+                            case x of wild { Network.HTTP.Client.Types.Request x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 ->
+                            Network.HTTP.Client.Types.Request
+                              (Data.ByteString.Internal.packChars method)
+                              x2
+                              x3
+                              x4
+                              x5
+                              x6
+                              x7
+                              x8
+                              x9
+                              x10
+                              x11
+                              x12
+                              x13
+                              x14
+                              x15
+                              x16
+                              x17
+                              x18
+                              x19 } #))
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   ds1
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv } }) -}
+9afb26b9275ca13e2dcae4dca2f262cc
+  customMethodWith ::
+    GHC.Base.String
+    -> Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 4,
+     Strictness: <L,U><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.customMethod2
+                  `cast`
+                (<GHC.Base.String>_R
+                 ->_R <Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+adbdff90b15be82c48631107dc8b0fa2
+  customPayloadMethod ::
+    Network.Wreq.Internal.Types.Postable a =>
+    GHC.Base.String
+    -> GHC.Base.String
+    -> a
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 5,
+     Strictness: <L,C(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.customPayloadMethod1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Postable a>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <a>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+0e6f78024cdc58344b5449f0bbb9ecb8
+  customPayloadMethod1 ::
+    Network.Wreq.Internal.Types.Postable a =>
+    GHC.Base.String
+    -> GHC.Base.String
+    -> a
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 5,
+     Strictness: <L,C(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U><L,U>,
+     Unfolding: InlineRule (4, True, False)
+                (\ @ a
+                   ($dPostable :: Network.Wreq.Internal.Types.Postable a)
+                   (method :: GHC.Base.String)
+                   (url :: GHC.Base.String)
+                   (payload :: a)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 Network.Wreq.customPayloadMethod2
+                   @ a
+                   $dPostable
+                   method
+                   Network.Wreq.Internal.defaults
+                   url
+                   payload
+                   eta) -}
+ca1659766d1c26b61f5f0e64ca1a363c
+  customPayloadMethod2 ::
+    Network.Wreq.Internal.Types.Postable a =>
+    GHC.Base.String
+    -> Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> a
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 6,
+     Strictness: <L,1*C1(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><L,U><S,U>,
+     Unfolding: (\ @ a
+                   ($dPostable :: Network.Wreq.Internal.Types.Postable a)
+                   (method :: GHC.Base.String)
+                   (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (payload :: a)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (\ (x :: Network.HTTP.Client.Types.Request)[OneShot] ->
+                         $dPostable `cast` (Network.Wreq.Internal.Types.N:Postable[0] <a>_N)
+                           payload
+                           (case x of wild { Network.HTTP.Client.Types.Request x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 ->
+                            Network.HTTP.Client.Types.Request
+                              (Data.ByteString.Internal.packChars method)
+                              x2
+                              x3
+                              x4
+                              x5
+                              x6
+                              x7
+                              x8
+                              x9
+                              x10
+                              x11
+                              x12
+                              x13
+                              x14
+                              x15
+                              x16
+                              x17
+                              x18
+                              x19 }))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   ds1
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv } }) -}
+5d69b858efdf365b24e191703a51f95e
+  customPayloadMethodWith ::
+    Network.Wreq.Internal.Types.Postable a =>
+    GHC.Base.String
+    -> Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> a
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 6,
+     Strictness: <L,1*C1(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.customPayloadMethod2
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Postable a>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <a>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+0ae54fdf2708dbf1816ad7a85988190c
+  delete ::
+    GHC.Base.String
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 2,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.delete1
+                  `cast`
+                (<GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+9d235f9b1bbe1105b4a91543cdc8bca0
+  delete1 ::
+    GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 2,
+     Unfolding: (\ (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        Network.Wreq.delete2
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        Network.Wreq.Internal.defaults
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   Network.Wreq.Internal.defaults7
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv }) -}
+811a2b169e5916fc5ca6977336cbddb7
+  delete2 ::
+    Network.HTTP.Client.Types.Request
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Request #)
+  {- Arity: 2,
+     Unfolding: (\ (x :: Network.HTTP.Client.Types.Request)[OneShot]
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 (# s,
+                    case x of wild { Network.HTTP.Client.Types.Request x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 ->
+                    Network.HTTP.Client.Types.Request
+                      Network.HTTP.Types.Method.methodDelete
+                      x2
+                      x3
+                      x4
+                      x5
+                      x6
+                      x7
+                      x8
+                      x9
+                      x10
+                      x11
+                      x12
+                      x13
+                      x14
+                      x15
+                      x16
+                      x17
+                      x18
+                      x19 } #)) -}
+7731a5fc9ec2df9814b787118c75febf
+  deleteWith ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.deleteWith1
+                  `cast`
+                (<Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+520cf976f28d22363073e284d3fb13b6
+  deleteWith1 ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: (\ (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        Network.Wreq.delete2
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   ds1
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv } }) -}
+9b0f3485792cdb1f60a5fd8e4b6eb2c1
+  foldGet ::
+    (a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a)
+    -> a -> GHC.Base.String -> GHC.Types.IO a
+  {- Arity: 4, Strictness: <L,C(C1(C1(U(U,U))))><L,U><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.foldGet1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a>_R
+                 ->_R <a>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <a>_R)) -}
+25c17d145a566b49f34fb3a66eb54856
+  foldGet1 ::
+    (a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a)
+    -> a
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, a #)
+  {- Arity: 4, Strictness: <L,C(C1(C1(U(U,U))))><L,U><L,U><S,U>,
+     Unfolding: (\ @ a
+                   (f :: a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a)
+                   (z :: a)
+                   (url :: GHC.Base.String)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (GHC.Base.returnIO1 @ Network.HTTP.Client.Types.Request)
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        Network.Wreq.Internal.defaults
+                        url
+                        eta of ds1 { (#,#) ipv ipv1 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ a
+                   Network.Wreq.Internal.defaults7
+                   (Network.Wreq.Internal.foldResponseBody1 @ a f z)
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                   ipv1
+                   ipv }) -}
+6efe2567237634b6f2dfceab05aafd38
+  foldGetWith ::
+    Network.Wreq.Internal.Types.Options
+    -> (a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a)
+    -> a
+    -> GHC.Base.String
+    -> GHC.Types.IO a
+  {- Arity: 5,
+     Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,C(C1(C1(U(U,U))))><L,U><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.foldGetWith1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Options>_R
+                 ->_R <a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a>_R
+                 ->_R <a>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <a>_R)) -}
+6094de14b0c865809a7944954ce886cb
+  foldGetWith1 ::
+    Network.Wreq.Internal.Types.Options
+    -> (a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a)
+    -> a
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, a #)
+  {- Arity: 5,
+     Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,C(C1(C1(U(U,U))))><L,U><L,U><S,U>,
+     Unfolding: (\ @ a
+                   (opts :: Network.Wreq.Internal.Types.Options)
+                   (f :: a -> Data.ByteString.Internal.ByteString -> GHC.Types.IO a)
+                   (z0 :: a)
+                   (url :: GHC.Base.String)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (GHC.Base.returnIO1 @ Network.HTTP.Client.Types.Request)
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        opts
+                        url
+                        eta of ds1 { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds2 ds3 ds4 ds5 ds6 ds7 ds8 ds9 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ a
+                   ds2
+                   (Network.Wreq.Internal.foldResponseBody1 @ a f z0)
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0] <a>_R))
+                   ipv1
+                   ipv } }) -}
+6c658a822f64911b8f4e45ae2cde9f32
+  get ::
+    GHC.Base.String
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.get1
+                  `cast`
+                (<GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+f1033016fde058dac623550d4ae7f3cc
+  get1 ::
+    GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 2, Strictness: <L,U><S,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (GHC.Base.returnIO1 @ Network.HTTP.Client.Types.Request)
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        Network.Wreq.Internal.defaults
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   Network.Wreq.Internal.defaults7
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv }) -}
+955cd4b96a1c02e3024926fabddb3dfa
+  getWith ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.getWith1
+                  `cast`
+                (<Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+48221904f7fc852714ffd8146d0fb49e
+  getWith1 ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (GHC.Base.returnIO1 @ Network.HTTP.Client.Types.Request)
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   ds1
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv } }) -}
+215f3190b278a6696c20cebaf9c86d8b
+  headWith ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Types.IO (Network.HTTP.Client.Types.Response ())
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.headWith1
+                  `cast`
+                (<Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response ()>_R)) -}
+0fde50d1ef341f3c2c16c4879df709c9
+  headWith1 ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response () #)
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: (\ (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        Network.Wreq.headWith2
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response ())
+                   ds1
+                   Network.Wreq.Internal.emptyMethodWith2
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response ()>_R))
+                   ipv1
+                   ipv } }) -}
+237ad8d67d2d0e33fc755fb38c9ff3fa
+  headWith2 ::
+    Network.HTTP.Client.Types.Request
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Request #)
+  {- Arity: 2,
+     Unfolding: (\ (x :: Network.HTTP.Client.Types.Request)[OneShot]
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 (# s,
+                    case x of wild { Network.HTTP.Client.Types.Request x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 ->
+                    Network.HTTP.Client.Types.Request
+                      Network.HTTP.Types.Method.methodHead
+                      x2
+                      x3
+                      x4
+                      x5
+                      x6
+                      x7
+                      x8
+                      x9
+                      x10
+                      x11
+                      x12
+                      x13
+                      x14
+                      x15
+                      x16
+                      x17
+                      x18
+                      x19 } #)) -}
+9d1b596d36370b6df29993d558c4e96f
+  head_ ::
+    GHC.Base.String
+    -> GHC.Types.IO (Network.HTTP.Client.Types.Response ())
+  {- Arity: 2,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.head_1
+                  `cast`
+                (<GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response ()>_R)) -}
+c1e145f9ce5cb7d05e1d80f8305a9891
+  head_1 ::
+    GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response () #)
+  {- Arity: 2,
+     Unfolding: (\ (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        Network.Wreq.headWith2
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        Network.Wreq.head_2
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response ())
+                   Network.Wreq.Internal.defaults7
+                   Network.Wreq.Internal.emptyMethodWith2
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response ()>_R))
+                   ipv1
+                   ipv }) -}
+50610e90d193cc1ed49678d86cb14554
+  head_2 :: Network.Wreq.Internal.Types.Options
+  {- Strictness: m,
+     Unfolding: (Network.Wreq.Internal.Types.Options
+                   Network.Wreq.Internal.defaults7
+                   (GHC.Base.Nothing @ Network.HTTP.Client.Types.Proxy)
+                   (GHC.Base.Nothing @ Network.Wreq.Internal.Types.Auth)
+                   Network.Wreq.Internal.defaults3
+                   (GHC.Types.[] @ (Data.Text.Internal.Text, Data.Text.Internal.Text))
+                   Network.Wreq.head__b1
+                   Network.Wreq.Internal.defaults1
+                   (GHC.Base.Nothing
+                      @ Network.Wreq.Internal.Types.ResponseChecker)) -}
+6d80c27f580688a92f1d82128c07ccb2
+  head__b1 :: GHC.Types.Int
+  {- HasNoCafRefs, Strictness: m, Unfolding: (GHC.Types.I# 0#) -}
+74be2d8e52baa2e76752b09c4600d3cf
+  httpProxy ::
+    Data.ByteString.Internal.ByteString
+    -> GHC.Types.Int -> Network.HTTP.Client.Types.Proxy
+  {- Arity: 2, HasNoCafRefs, Strictness: <L,U><L,U>m,
+     Unfolding: InlineRule (0, True, True)
+                Network.HTTP.Client.Types.Proxy -}
+6a6d9507e0cffb0963357adad8ed8ca0
+  oauth1Auth ::
+    Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Data.ByteString.Internal.ByteString
+    -> Network.Wreq.Internal.Types.Auth
+  {- Arity: 4, HasNoCafRefs, Strictness: <L,U><L,U><L,U><L,U>m5,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Internal.Types.OAuth1 -}
+17aee802300fd1ae37e46c6eb885c7ef
+  oauth2Bearer ::
+    Data.ByteString.Internal.ByteString
+    -> Network.Wreq.Internal.Types.Auth
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U>m2,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Internal.Types.OAuth2Bearer -}
+a142c5351e6715cfc0003ea9939d8f78
+  oauth2Token ::
+    Data.ByteString.Internal.ByteString
+    -> Network.Wreq.Internal.Types.Auth
+  {- Arity: 1, HasNoCafRefs, Strictness: <L,U>m3,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Internal.Types.OAuth2Token -}
+49fbc994e7dda0fd6f0dd7cd60374616
+  options ::
+    GHC.Base.String
+    -> GHC.Types.IO (Network.HTTP.Client.Types.Response ())
+  {- Arity: 2,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.options1
+                  `cast`
+                (<GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response ()>_R)) -}
+0c646ecb1720db00e3e12cc1cc69d59b
+  options1 ::
+    GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response () #)
+  {- Arity: 2,
+     Unfolding: (\ (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        Network.Wreq.options2
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        Network.Wreq.Internal.defaults
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response ())
+                   Network.Wreq.Internal.defaults7
+                   Network.Wreq.Internal.emptyMethodWith2
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response ()>_R))
+                   ipv1
+                   ipv }) -}
+39fed9c32f222806894297a4a000f2c4
+  options2 ::
+    Network.HTTP.Client.Types.Request
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Request #)
+  {- Arity: 2,
+     Unfolding: (\ (x :: Network.HTTP.Client.Types.Request)[OneShot]
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 (# s,
+                    case x of wild { Network.HTTP.Client.Types.Request x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 ->
+                    Network.HTTP.Client.Types.Request
+                      Network.HTTP.Types.Method.methodOptions
+                      x2
+                      x3
+                      x4
+                      x5
+                      x6
+                      x7
+                      x8
+                      x9
+                      x10
+                      x11
+                      x12
+                      x13
+                      x14
+                      x15
+                      x16
+                      x17
+                      x18
+                      x19 } #)) -}
+1770f3e1ac5b4f030880ddc258c46c71
+  optionsWith ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Types.IO (Network.HTTP.Client.Types.Response ())
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.optionsWith1
+                  `cast`
+                (<Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response ()>_R)) -}
+7b53903cbb61e1687c04d5dfe10bbefc
+  optionsWith1 ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response () #)
+  {- Arity: 3, Strictness: <L,U(1*U,U,U,U,U,U(U),U,U)><L,U><S,U>,
+     Unfolding: (\ (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        Network.Wreq.options2
+                          `cast`
+                        (<Network.HTTP.Client.Types.Request>_R
+                         ->_R Sym (GHC.Types.N:IO[0] <Network.HTTP.Client.Types.Request>_R))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response ())
+                   ds1
+                   Network.Wreq.Internal.emptyMethodWith2
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response ()>_R))
+                   ipv1
+                   ipv } }) -}
+3a74b47404eb9835bc781ef6009d803a
+  partString ::
+    Data.Text.Internal.Text
+    -> GHC.Base.String -> Network.HTTP.Client.MultipartFormData.Part
+  {- Arity: 2, Strictness: <L,U><L,U>m, Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Data.Text.Internal.Text) (w1 :: GHC.Base.String) ->
+                 Network.HTTP.Client.MultipartFormData.Part
+                   w
+                   (GHC.Base.Nothing @ [GHC.Types.Char])
+                   (GHC.Base.Nothing @ Data.ByteString.Internal.ByteString)
+                   (GHC.Types.[]
+                      @ (Network.HTTP.Types.Header.HeaderName,
+                         Data.ByteString.Internal.ByteString))
+                   (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                    (# s,
+                       Network.HTTP.Client.Types.RequestBodyBS
+                         (case GHC.Magic.runRW#
+                                 @ 'GHC.Types.PtrRepLifted
+                                 @ Data.Text.Internal.Text
+                                 (\ (s1 :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                                  case GHC.Prim.newByteArray#
+                                         @ GHC.Prim.RealWorld
+                                         10#
+                                         s1 of ds1 { (#,#) ipv ipv1 ->
+                                  Network.Wreq.$wouter
+                                    ipv1
+                                    4#
+                                    w1
+                                    0#
+                                    ipv }) of ds1 { (#,#) ipv ipv1 ->
+                          case ipv1 of ww { Data.Text.Internal.Text ww1 ww2 ww3 ->
+                          Data.Text.Encoding.$wencodeUtf8 ww1 ww2 ww3 } }) #))
+                     `cast`
+                   (Sym (GHC.Types.N:IO[0]
+                             <Network.HTTP.Client.Types.RequestBody>_R))) -}
+45fdad3461a6f26ce9698674d30404c1
+  partText ::
+    Data.Text.Internal.Text
+    -> Data.Text.Internal.Text
+    -> Network.HTTP.Client.MultipartFormData.Part
+  {- Arity: 2, Strictness: <L,U><L,U(U,U,U)>m,
+     Unfolding: InlineRule (2, True, False)
+                (\ (name :: Data.Text.Internal.Text)
+                   (value :: Data.Text.Internal.Text) ->
+                 Network.HTTP.Client.MultipartFormData.Part
+                   name
+                   (GHC.Base.Nothing @ [GHC.Types.Char])
+                   (GHC.Base.Nothing @ Data.ByteString.Internal.ByteString)
+                   (GHC.Types.[]
+                      @ (Network.HTTP.Types.Header.HeaderName,
+                         Data.ByteString.Internal.ByteString))
+                   (\ (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                    (# s,
+                       Network.HTTP.Client.Types.RequestBodyBS
+                         (Data.Text.Encoding.encodeUtf8 value) #))
+                     `cast`
+                   (Sym (GHC.Types.N:IO[0]
+                             <Network.HTTP.Client.Types.RequestBody>_R))) -}
+918111bdefcdea455f6e7b03d2078b39
+  post ::
+    Network.Wreq.Internal.Types.Postable a =>
+    GHC.Base.String
+    -> a
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 4,
+     Strictness: <L,C(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.post1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Postable a>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <a>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+163ed1200fd607be420733c6aa54e23a
+  post1 ::
+    Network.Wreq.Internal.Types.Postable a =>
+    GHC.Base.String
+    -> a
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 4,
+     Strictness: <L,C(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a
+                   ($dPostable :: Network.Wreq.Internal.Types.Postable a)
+                   (url :: GHC.Base.String)
+                   (payload :: a)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 Network.Wreq.post2
+                   @ a
+                   $dPostable
+                   Network.Wreq.Internal.defaults
+                   url
+                   payload
+                   eta) -}
+717264867164fd2e414f103be529a220
+  post2 ::
+    Network.Wreq.Internal.Types.Postable a =>
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> a
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 5,
+     Strictness: <L,1*C1(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><L,U><S,U>,
+     Unfolding: (\ @ a
+                   ($dPostable :: Network.Wreq.Internal.Types.Postable a)
+                   (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (payload :: a)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (\ (x :: Network.HTTP.Client.Types.Request)[OneShot] ->
+                         $dPostable `cast` (Network.Wreq.Internal.Types.N:Postable[0] <a>_N)
+                           payload
+                           (case x of wild { Network.HTTP.Client.Types.Request x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 ->
+                            Network.HTTP.Client.Types.Request
+                              Network.HTTP.Types.Method.methodPost
+                              x2
+                              x3
+                              x4
+                              x5
+                              x6
+                              x7
+                              x8
+                              x9
+                              x10
+                              x11
+                              x12
+                              x13
+                              x14
+                              x15
+                              x16
+                              x17
+                              x18
+                              x19 }))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   ds1
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv } }) -}
+5b998e1ea1d441db377474c34cc60025
+  postWith ::
+    Network.Wreq.Internal.Types.Postable a =>
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> a
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 5,
+     Strictness: <L,1*C1(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.post2
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Postable a>_R
+                 ->_R <Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <a>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+e83d4ac95a48e6d6f3237c9de6e15405
+  put ::
+    Network.Wreq.Internal.Types.Putable a =>
+    GHC.Base.String
+    -> a
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 4,
+     Strictness: <L,C(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.put1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Putable a>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <a>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+fac93513281b05a2ae883f25e98344c4
+  put1 ::
+    Network.Wreq.Internal.Types.Putable a =>
+    GHC.Base.String
+    -> a
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 4,
+     Strictness: <L,C(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U><L,U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ @ a
+                   ($dPutable :: Network.Wreq.Internal.Types.Putable a)
+                   (url :: GHC.Base.String)
+                   (payload :: a)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 Network.Wreq.put2
+                   @ a
+                   $dPutable
+                   Network.Wreq.Internal.defaults
+                   url
+                   payload
+                   eta) -}
+d7a4c34ef7f842140728cd174d9a8e40
+  put2 ::
+    Network.Wreq.Internal.Types.Putable a =>
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> a
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld,
+          Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString #)
+  {- Arity: 5,
+     Strictness: <L,1*C1(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><L,U><S,U>,
+     Unfolding: (\ @ a
+                   ($dPutable :: Network.Wreq.Internal.Types.Putable a)
+                   (opts :: Network.Wreq.Internal.Types.Options)
+                   (url :: GHC.Base.String)
+                   (payload :: a)
+                   (s :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.Wreq.Internal.emptyMethodWith4
+                        (\ (x :: Network.HTTP.Client.Types.Request)[OneShot] ->
+                         $dPutable `cast` (Network.Wreq.Internal.Types.N:Putable[0] <a>_N)
+                           payload
+                           (case x of wild { Network.HTTP.Client.Types.Request x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15 x16 x17 x18 x19 ->
+                            Network.HTTP.Client.Types.Request
+                              Network.HTTP.Types.Method.methodPut
+                              x2
+                              x3
+                              x4
+                              x5
+                              x6
+                              x7
+                              x8
+                              x9
+                              x10
+                              x11
+                              x12
+                              x13
+                              x14
+                              x15
+                              x16
+                              x17
+                              x18
+                              x19 }))
+                        opts
+                        url
+                        s of ds { (#,#) ipv ipv1 ->
+                 case opts of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 Network.Wreq.Internal.emptyMethodWith3
+                   @ (Network.HTTP.Client.Types.Response
+                        Data.ByteString.Lazy.Internal.ByteString)
+                   ds1
+                   Network.Wreq.Internal.readResponse1
+                     `cast`
+                   (<Network.HTTP.Client.Types.Response
+                       Network.HTTP.Client.Types.BodyReader>_R
+                    ->_R Sym (GHC.Types.N:IO[0]
+                                  <Network.HTTP.Client.Types.Response
+                                     Data.ByteString.Lazy.Internal.ByteString>_R))
+                   ipv1
+                   ipv } }) -}
+aab9997050962e9d309f8c600c88b4d3
+  putWith ::
+    Network.Wreq.Internal.Types.Putable a =>
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String
+    -> a
+    -> GHC.Types.IO
+         (Network.HTTP.Client.Types.Response
+            Data.ByteString.Lazy.Internal.ByteString)
+  {- Arity: 5,
+     Strictness: <L,1*C1(C1(C1(U(U,U(U(U,U,U,U),U,U(U,U,U,U),U(U),U(U,U,U,U),U(U,U,U,U),U,U,U,U,U,U,U,U,U,U,U,U,U)))))><L,U(1*U,U,U,U,U,U(U),U,U)><L,U><L,U><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.put2
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Putable a>_R
+                 ->_R <Network.Wreq.Internal.Types.Options>_R
+                 ->_R <GHC.Base.String>_R
+                 ->_R <a>_R
+                 ->_R Sym (GHC.Types.N:IO[0]
+                               <Network.HTTP.Client.Types.Response
+                                  Data.ByteString.Lazy.Internal.ByteString>_R)) -}
+545655b97b75e81dcba444f27b745c9b
+  withManager ::
+    (Network.Wreq.Internal.Types.Options -> GHC.Types.IO a)
+    -> GHC.Types.IO a
+  {- Arity: 2, Strictness: <L,1*C1(C1(U(U,U)))><S,U>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.withManager1
+                  `cast`
+                (forall (a :: <*>_N).
+                 <Network.Wreq.Internal.Types.Options -> GHC.Types.IO a>_R
+                 ->_R Sym (GHC.Types.N:IO[0] <a>_R)) -}
+e46c90a4be3805a6457d1bad6eceb0a5
+  withManager1 ::
+    (Network.Wreq.Internal.Types.Options -> GHC.Types.IO a)
+    -> GHC.Prim.State# GHC.Prim.RealWorld
+    -> (# GHC.Prim.State# GHC.Prim.RealWorld, a #)
+  {- Arity: 2, Strictness: <L,1*C1(C1(U(U,U)))><S,U>,
+     Unfolding: (\ @ a
+                   (act :: Network.Wreq.Internal.Types.Options -> GHC.Types.IO a)
+                   (eta :: GHC.Prim.State# GHC.Prim.RealWorld)[OneShot] ->
+                 case Network.HTTP.Client.TLS.tlsManagerSettings of ww { Network.HTTP.Client.Types.ManagerSettings ww1 ww2 ww3 ww4 ww5 ww6 ww7 ww8 ww9 ww10 ww11 ww12 ->
+                 case Network.HTTP.Client.Manager.$wnewManager
+                        ww1
+                        ww2
+                        ww3
+                        ww4
+                        ww5
+                        ww6
+                        ww7
+                        ww8
+                        ww9
+                        ww10
+                        ww11
+                        ww12
+                        eta of ds1 { (#,#) ipv ipv1 ->
+                 (act
+                    (Network.Wreq.Internal.Types.Options
+                       (Data.Either.Right
+                          @ Network.HTTP.Client.Types.ManagerSettings
+                          @ Network.HTTP.Client.Types.Manager
+                          ipv1)
+                       (GHC.Base.Nothing @ Network.HTTP.Client.Types.Proxy)
+                       (GHC.Base.Nothing @ Network.Wreq.Internal.Types.Auth)
+                       Network.Wreq.Internal.defaults3
+                       (GHC.Types.[] @ (Data.Text.Internal.Text, Data.Text.Internal.Text))
+                       Network.Wreq.Internal.defaults2
+                       Network.Wreq.Internal.defaults1
+                       (GHC.Base.Nothing @ Network.Wreq.Internal.Types.ResponseChecker)))
+                   `cast`
+                 (GHC.Types.N:IO[0] <a>_R)
+                   ipv } }) -}
+"SPEC asJSON" [ALWAYS] forall @ a
+                              ($dFromJSON :: Data.Aeson.Types.FromJSON.FromJSON a)
+                              ($dMonadThrow :: Control.Monad.Catch.MonadThrow GHC.Types.IO)
+  Network.Wreq.asJSON @ GHC.Types.IO @ a $dMonadThrow $dFromJSON
+  = Network.Wreq.asJSON_$sasJSON1 @ a $dFromJSON
+"SPEC asJSON" [ALWAYS] forall ($dFromJSON :: Data.Aeson.Types.FromJSON.FromJSON
+                                               Data.Aeson.Types.Internal.Value)
+                              ($dMonadThrow :: Control.Monad.Catch.MonadThrow GHC.Types.IO)
+  Network.Wreq.asJSON @ GHC.Types.IO
+                      @ Data.Aeson.Types.Internal.Value
+                      $dMonadThrow
+                      $dFromJSON
+  = Network.Wreq.asJSON_$sasJSON
+"SPEC asValue" [ALWAYS] forall ($dMonadThrow :: Control.Monad.Catch.MonadThrow
+                                                  GHC.Types.IO)
+  Network.Wreq.asValue @ GHC.Types.IO $dMonadThrow
+  = Network.Wreq.asJSON_$sasJSON
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+

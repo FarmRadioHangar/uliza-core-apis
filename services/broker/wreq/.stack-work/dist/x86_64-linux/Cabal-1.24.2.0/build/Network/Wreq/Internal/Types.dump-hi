@@ -1,0 +1,1816 @@
+
+==================== FINAL INTERFACE ====================
+2017-08-02 07:12:17.7875 UTC
+
+interface wreq-0.5.0.1@wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI:Network.Wreq.Internal.Types 8002
+  interface hash: dd4ab019de8f4bcc5d89234232f80f4e
+  ABI hash: be2a7748ee40548c69ace57897e4b24b
+  export-list hash: a524fd43208fd80d0d6aeb6ff2dd8698
+  orphan hash: aacae9c08a822f88d1de07502a6b4195
+  flag hash: 8f9d49e1787a64af1d6b0f37fe83a8ab
+  sig of: Nothing
+  used TH splices: False
+  where
+exports:
+  Network.Wreq.Internal.Types.reqURL
+  Network.Wreq.Internal.Types.AWSAuthVersion{Network.Wreq.Internal.Types.AWSv4}
+  Network.Wreq.Internal.Types.Auth{Network.Wreq.Internal.Types.AWSAuth Network.Wreq.Internal.Types.BasicAuth Network.Wreq.Internal.Types.OAuth1 Network.Wreq.Internal.Types.OAuth2Bearer Network.Wreq.Internal.Types.OAuth2Token}
+  Network.Wreq.Internal.Types.Body{Network.Wreq.Internal.Types.NoBody Network.Wreq.Internal.Types.ReaderBody Network.Wreq.Internal.Types.StringBody}
+  Network.Wreq.Internal.Types.CacheEntry{Network.Wreq.Internal.Types.CacheEntry entryCreated entryExpires entryResponse}
+  Network.Wreq.Internal.Types.ContentType
+  Network.Wreq.Internal.Types.FormParam{Network.Wreq.Internal.Types.:=}
+  Network.Wreq.Internal.Types.FormValue{Network.Wreq.Internal.Types.renderFormValue}
+  Network.Wreq.Internal.Types.JSONError{Network.Wreq.Internal.Types.JSONError}
+  Network.Wreq.Internal.Types.Link{Network.Wreq.Internal.Types.Link linkParams linkURL}
+  Network.Wreq.Internal.Types.Mgr
+  Network.Wreq.Internal.Types.Options{Network.Wreq.Internal.Types.Options auth checkResponse cookies headers manager params proxy redirects}
+  Network.Wreq.Internal.Types.Payload{Network.Wreq.Internal.Types.Raw}
+  Network.Wreq.Internal.Types.Postable{Network.Wreq.Internal.Types.postPayload}
+  Network.Wreq.Internal.Types.Putable{Network.Wreq.Internal.Types.putPayload}
+  Network.Wreq.Internal.Types.Req{Network.Wreq.Internal.Types.Req}
+  Network.Wreq.Internal.Types.ResponseChecker
+  Network.Wreq.Internal.Types.Run
+  Network.Wreq.Internal.Types.Session{Network.Wreq.Internal.Types.Session seshCookies seshManager seshRun}
+module dependencies:
+package dependencies: array-0.5.1.1@array-0.5.1.1 base-4.9.1.0
+                      base64-bytestring-1.0.0.1@base64-bytestring-1.0.0.1-4O9TExPPz6eI82Yj7L4SIj
+                      binary-0.8.3.0@binary-0.8.3.0
+                      blaze-builder-0.4.0.2@blaze-builder-0.4.0.2-LxClHUTiKUUAxWtvJ5Oeoy
+                      bytestring-0.10.8.1@bytestring-0.10.8.1
+                      case-insensitive-1.2.0.10@case-insensitive-1.2.0.10-1D5OUKQ7UrJ7IpOe0di4Un
+                      containers-0.5.7.1@containers-0.5.7.1
+                      cookie-0.4.2.1@cookie-0.4.2.1-ImqC1hbvUERAwQQgqhuUAD
+                      data-default-class-0.1.2.0@data-default-class-0.1.2.0-GsXqKN6o1X9jr0fF5qCVD
+                      deepseq-1.4.2.0@deepseq-1.4.2.0
+                      exceptions-0.8.3@exceptions-0.8.3-ADEDRATtUrMK1JW4zMQ9U
+                      ghc-boot-th-8.0.2@ghc-boot-th-8.0.2 ghc-prim-0.5.0.0
+                      hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol
+                      http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q
+                      http-types-0.9.1@http-types-0.9.1-G7E1zHPzooHCYxKqGuQmxY
+                      integer-gmp-1.0.0.1 mtl-2.2.1@mtl-2.2.1-BLKBelFsPB3BoFeSWSOYj6
+                      network-2.6.3.2@network-2.6.3.2-IsLM4TXcLoRI0fmmBYVyQz
+                      network-uri-2.6.1.0@network-uri-2.6.1.0-7BN1tbB3iHQ2XgvmqLAYph
+                      parsec-3.1.11@parsec-3.1.11-1aqiimsgq2dCv7eoaC8WuX
+                      stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve
+                      streaming-commons-0.1.17@streaming-commons-0.1.17-6xuIA5RXrs65yyeq3HWIWP
+                      template-haskell-2.11.1.0
+                      text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00
+                      time-1.6.0.1@time-1.6.0.1 transformers-0.5.2.0@transformers-0.5.2.0
+                      zlib-0.6.1.2@zlib-0.6.1.2-7negTfm2ujt1gW4wr40MUp
+orphans: base-4.9.1.0:GHC.Base base-4.9.1.0:GHC.Float
+         binary-0.8.3.0@binary-0.8.3.0:Data.Binary.Generic
+         bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Builder
+         hashable-1.2.6.1@hashable-1.2.6.1-2ZLNuHq395GGIHwEHuqZol:Data.Hashable.Generic
+         http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.Request
+         network-2.6.3.2@network-2.6.3.2-IsLM4TXcLoRI0fmmBYVyQz:Network.Socket
+         stm-2.4.4.1@stm-2.4.4.1-JQn4hNPyYjP5m9AcbI88Ve:Control.Monad.STM
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Show
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Calendar.Gregorian
+         time-1.6.0.1@time-1.6.0.1:Data.Time.Format.Parse
+         time-1.6.0.1@time-1.6.0.1:Data.Time.LocalTime.LocalTime
+         transformers-0.5.2.0@transformers-0.5.2.0:Control.Monad.Trans.Error
+family instance modules: base-4.9.1.0:Control.Applicative
+                         base-4.9.1.0:Data.Complex base-4.9.1.0:Data.Either
+                         base-4.9.1.0:Data.Functor.Compose base-4.9.1.0:Data.Functor.Const
+                         base-4.9.1.0:Data.Functor.Identity
+                         base-4.9.1.0:Data.Functor.Product base-4.9.1.0:Data.Functor.Sum
+                         base-4.9.1.0:Data.List.NonEmpty base-4.9.1.0:Data.Monoid
+                         base-4.9.1.0:Data.Semigroup base-4.9.1.0:Data.Type.Equality
+                         base-4.9.1.0:Data.Version base-4.9.1.0:Data.Void
+                         base-4.9.1.0:GHC.Exts base-4.9.1.0:GHC.Generics
+                         base-4.9.1.0:GHC.IO.Exception base-4.9.1.0:GHC.TypeLits
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntMap.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.IntSet.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Map.Base
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Sequence
+                         containers-0.5.7.1@containers-0.5.7.1:Data.Set.Base
+                         ghc-boot-th-8.0.2@ghc-boot-th-8.0.2:GHC.LanguageExtensions.Type
+                         http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client
+                         network-uri-2.6.1.0@network-uri-2.6.1.0-7BN1tbB3iHQ2XgvmqLAYph:Network.URI
+                         template-haskell-2.11.1.0:Language.Haskell.TH.Syntax
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text
+                         text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Lazy
+                         zlib-0.6.1.2@zlib-0.6.1.2-7negTfm2ujt1gW4wr40MUp:Codec.Compression.Zlib.Stream
+import  -/  base-4.9.1.0:Control.Exception a76dd9666251322fe34dbcca3a0817bf
+import  -/  base-4.9.1.0:Data.Either 20b09ef8d0a5b74fdec011c40c1587f5
+import  -/  base-4.9.1.0:Data.Foldable 3e0b6967a1da89945d0e2d47266337a2
+import  -/  base-4.9.1.0:Data.IORef 71c87b0b25a8bca3e3f4497725f5e543
+import  -/  base-4.9.1.0:Data.Monoid 51cc9cd8c130d49ba96b7c2c2406022b
+import  -/  base-4.9.1.0:Data.Typeable 9257e47d10882145c67c5b489965cfb7
+import  -/  base-4.9.1.0:Data.Typeable.Internal 0e9bdefa4325a0112d8e73b5e1e1f85d
+import  -/  base-4.9.1.0:GHC.Base c4231c43c07e46080a26bf94094c7aa1
+import  -/  base-4.9.1.0:GHC.Exception e38fa3e73d54022fb9e3ce06477dfd07
+import  -/  base-4.9.1.0:GHC.IORef 306bd532f2f3b000347cbe6316adc20e
+import  -/  base-4.9.1.0:GHC.Show a027f5ac24879eaba752f44aa90fe511
+import  -/  base-4.9.1.0:Prelude 22dd289b8469a8fa8dc81cab7b237771
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString 43e99fdac51908da414a28958688da64
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Char8 64661030f691dd1495e363eeda7a5344
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Internal 89cda42ec946d9d6577dd41ab95d523e
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Lazy 208431757121593b5ca64b062df0cfbd
+import  -/  bytestring-0.10.8.1@bytestring-0.10.8.1:Data.ByteString.Lazy.Internal c946ea9e67fbde53de4be02c8dc7a943
+import  -/  ghc-prim-0.5.0.0:GHC.Classes 0bdf3d057a415ec1b84a7b1994efbe47
+import  -/  ghc-prim-0.5.0.0:GHC.Types 89f8de4f08018c9177c98d979eae0e45
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client 061b3ff266298c4df34c97386e44eded
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.Internal 4e42028be6f69e4477209f9b45353938
+import  -/  http-client-0.5.7.0@http-client-0.5.7.0-ZH40bByQedKxMmMnUi42q:Network.HTTP.Client.Types 3a50d3b18de4f434ed7bb6cc70d2d727
+import  -/  http-types-0.9.1@http-types-0.9.1-G7E1zHPzooHCYxKqGuQmxY:Network.HTTP.Types 1010d7b916d2dfae6a757564614cf65d
+import  -/  http-types-0.9.1@http-types-0.9.1-G7E1zHPzooHCYxKqGuQmxY:Network.HTTP.Types.Header 9a165ff3162913a68c9de866b2bd192e
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text e8aa34be3dde178f567ae461e65c988b
+import  -/  text-1.2.2.2@text-1.2.2.2-9UQZjEJZQFSGMffj1Z5g00:Data.Text.Internal 9bfcbbbe07ecef48f631025a838df7da
+import  -/  time-1.6.0.1@time-1.6.0.1:Data.Time.Clock 497255c34b71ccfa0ab1bf8f9ae56005
+import  -/  time-1.6.0.1@time-1.6.0.1:Data.Time.Clock.UTC a11128e40404d4167f29d45f57b1b0af
+fixities infixr 3 :=
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fEqAWSAuthVersion ::
+    GHC.Classes.Eq Network.Wreq.Internal.Types.AWSAuthVersion
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.AWSAuthVersion
+                  Network.Wreq.Internal.Types.$fEqAWSAuthVersion_$c==
+                  Network.Wreq.Internal.Types.$fEqAWSAuthVersion_$c/= -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fEqAWSAuthVersion_$c/= ::
+    Network.Wreq.Internal.Types.AWSAuthVersion
+    -> Network.Wreq.Internal.Types.AWSAuthVersion -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*H><S,1*H>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (a :: Network.Wreq.Internal.Types.AWSAuthVersion)
+                   (b :: Network.Wreq.Internal.Types.AWSAuthVersion) ->
+                 case a of wild { Network.Wreq.Internal.Types.AWSv4 ->
+                 case b of wild1 { Network.Wreq.Internal.Types.AWSv4 ->
+                 GHC.Types.False } }) -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fEqAWSAuthVersion_$c== ::
+    Network.Wreq.Internal.Types.AWSAuthVersion
+    -> Network.Wreq.Internal.Types.AWSAuthVersion -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*H><S,1*H>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.AWSAuthVersion)
+                   (ds1 :: Network.Wreq.Internal.Types.AWSAuthVersion) ->
+                 case ds of wild { Network.Wreq.Internal.Types.AWSv4 ->
+                 case ds1 of wild1 { Network.Wreq.Internal.Types.AWSv4 ->
+                 GHC.Types.True } }) -}
+50562406d9132fbf375d117ee4db6c63
+  $fEqAuth :: GHC.Classes.Eq Network.Wreq.Internal.Types.Auth
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.Auth
+                  Network.Wreq.Internal.Types.$fEqAuth_$c==
+                  Network.Wreq.Internal.Types.$fEqAuth_$c/= -}
+50562406d9132fbf375d117ee4db6c63
+  $fEqAuth_$c/= ::
+    Network.Wreq.Internal.Types.Auth
+    -> Network.Wreq.Internal.Types.Auth -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (a :: Network.Wreq.Internal.Types.Auth)
+                   (b :: Network.Wreq.Internal.Types.Auth) ->
+                 case Network.Wreq.Internal.Types.$fEqAuth_$c== a b of wild {
+                   GHC.Types.False -> GHC.Types.True
+                   GHC.Types.True -> GHC.Types.False }) -}
+50562406d9132fbf375d117ee4db6c63
+  $fEqAuth_$c== ::
+    Network.Wreq.Internal.Types.Auth
+    -> Network.Wreq.Internal.Types.Auth -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs, Strictness: <S,1*U><S,1*U> -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fEqLink :: GHC.Classes.Eq Network.Wreq.Internal.Types.Link
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.Link
+                  Network.Wreq.Internal.Types.$fEqLink_$c==
+                  Network.Wreq.Internal.Types.$fEqLink_$c/= -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fEqLink_$c/= ::
+    Network.Wreq.Internal.Types.Link
+    -> Network.Wreq.Internal.Types.Link -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(S(LLLS)L),1*U(1*U(U,U,U,U),1*U)><S(S(LLLS)L),1*U(1*U(U,U,U,U),1*U)>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (a :: Network.Wreq.Internal.Types.Link)
+                   (b :: Network.Wreq.Internal.Types.Link) ->
+                 case Network.Wreq.Internal.Types.$fEqLink_$c== a b of wild {
+                   GHC.Types.False -> GHC.Types.True
+                   GHC.Types.True -> GHC.Types.False }) -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fEqLink_$c== ::
+    Network.Wreq.Internal.Types.Link
+    -> Network.Wreq.Internal.Types.Link -> GHC.Types.Bool
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <S(S(LLLS)L),1*U(1*U(U,U,U,U),1*U)><S(S(LLLS)L),1*U(1*U(U,U,U,U),1*U)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (2, True, False)
+                (\ (w :: Network.Wreq.Internal.Types.Link)
+                   (w1 :: Network.Wreq.Internal.Types.Link) ->
+                 case w of ww { Network.Wreq.Internal.Types.Link ww1 ww2 ->
+                 case ww1 of ww3 { Data.ByteString.Internal.PS ww4 ww5 ww6 ww7 ->
+                 case w1 of ww8 { Network.Wreq.Internal.Types.Link ww9 ww10 ->
+                 case ww9 of ww11 { Data.ByteString.Internal.PS ww12 ww13 ww14 ww15 ->
+                 Network.Wreq.Internal.Types.$w$c==
+                   ww4
+                   ww5
+                   ww6
+                   ww7
+                   ww2
+                   ww12
+                   ww13
+                   ww14
+                   ww15
+                   ww10 } } } }) -}
+4fd3395f0b36bbba69205826897553ad
+  $fEqLink_$s$fEq(,) ::
+    GHC.Classes.Eq
+      (Data.ByteString.Internal.ByteString,
+       Data.ByteString.Internal.ByteString)
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ (Data.ByteString.Internal.ByteString,
+                     Data.ByteString.Internal.ByteString)
+                  (GHC.Classes.$fEq(,)_$c==
+                     @ Data.ByteString.Internal.ByteString
+                     @ Data.ByteString.Internal.ByteString
+                     Data.ByteString.Internal.$fEqByteString
+                     Data.ByteString.Internal.$fEqByteString)
+                  (GHC.Classes.$fEq(,)_$c/=
+                     @ Data.ByteString.Internal.ByteString
+                     @ Data.ByteString.Internal.ByteString
+                     Data.ByteString.Internal.$fEqByteString
+                     Data.ByteString.Internal.$fEqByteString) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fExceptionJSONError ::
+    GHC.Exception.Exception Network.Wreq.Internal.Types.JSONError
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.JSONError
+                  Network.Wreq.Internal.Types.$fExceptionJSONError_$cp1Exception
+                  Network.Wreq.Internal.Types.$fShowJSONError
+                  Network.Wreq.Internal.Types.$fExceptionJSONError_$ctoException
+                  Network.Wreq.Internal.Types.$fExceptionJSONError_$cfromException
+                  Network.Wreq.Internal.Types.$fExceptionJSONError_$cdisplayException -}
+888b7d70b4a30829b98e438dae1994b0
+  $fExceptionJSONError1 :: [GHC.Types.Char]
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Types.:
+                   @ GHC.Types.Char
+                   GHC.Show.shows6
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+0672e16abb7db5d1afea13e941f8fcfa
+  $fExceptionJSONError2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "JSONError "#) -}
+60eb419d426ec32889b56c006a2f781c
+  $fExceptionJSONError3 :: Data.Typeable.Internal.TypeRep
+  {- Unfolding: (case Data.Typeable.Internal.typeRepFingerprints
+                        (GHC.Types.[] @ Data.Typeable.Internal.TypeRep)
+                        (GHC.Types.[]
+                           @ Data.Typeable.Internal.TypeRep) of kt_fps { DEFAULT ->
+                 case GHC.Fingerprint.fingerprintFingerprints
+                        (GHC.Types.:
+                           @ GHC.Fingerprint.Type.Fingerprint
+                           Network.Wreq.Internal.Types.$fExceptionJSONError4
+                           kt_fps) of dt { GHC.Fingerprint.Type.Fingerprint dt1 dt2 ->
+                 Data.Typeable.Internal.TypeRep
+                   dt1
+                   dt2
+                   Network.Wreq.Internal.Types.$tcJSONError
+                   (GHC.Types.[] @ Data.Typeable.Internal.TypeRep)
+                   (GHC.Types.[] @ Data.Typeable.Internal.TypeRep) } }) -}
+e771b021b95a2c5f7a67ab3c7a2cca01
+  $fExceptionJSONError4 :: GHC.Fingerprint.Type.Fingerprint
+  {- HasNoCafRefs,
+     Unfolding: (GHC.Fingerprint.Type.Fingerprint
+                   2983409120563349169##
+                   12188144696972734307##) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fExceptionJSONError5 ::
+    GHC.Prim.Proxy# Network.Wreq.Internal.Types.JSONError
+    -> Data.Typeable.Internal.TypeRep
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ (wild :: GHC.Prim.Proxy#
+                              Network.Wreq.Internal.Types.JSONError) ->
+                 Network.Wreq.Internal.Types.$fExceptionJSONError3) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fExceptionJSONError_$cdisplayException ::
+    Network.Wreq.Internal.Types.JSONError -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(1*U)>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Internal.Types.$fExceptionJSONError_$cshow -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fExceptionJSONError_$cfromException ::
+    GHC.Exception.SomeException
+    -> GHC.Base.Maybe Network.Wreq.Internal.Types.JSONError
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (eta :: GHC.Exception.SomeException) ->
+                 case eta of wild { GHC.Exception.SomeException e10 $dException1 e2 ->
+                 case (GHC.Exception.$p1Exception @ e10 $dException1)
+                        `cast`
+                      (Data.Typeable.Internal.N:Typeable[0] <*>_N <e10>_N)
+                        (GHC.Prim.proxy#
+                           @ *
+                           @ e10) of wild1 { Data.Typeable.Internal.TypeRep dt dt1 ds2 ds3 ds4 ->
+                 case Network.Wreq.Internal.Types.$fExceptionJSONError3 of wild2 { Data.Typeable.Internal.TypeRep dt2 dt3 ds5 ds6 ds7 ->
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.eqWord# dt dt2) of wild3 {
+                   GHC.Types.False
+                   -> GHC.Base.Nothing @ Network.Wreq.Internal.Types.JSONError
+                   GHC.Types.True
+                   -> case GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim.eqWord# dt1 dt3) of wild4 {
+                        GHC.Types.False
+                        -> GHC.Base.Nothing @ Network.Wreq.Internal.Types.JSONError
+                        GHC.Types.True
+                        -> GHC.Base.Just
+                             @ Network.Wreq.Internal.Types.JSONError
+                             e2
+                               `cast`
+                             (UnsafeCo representational e10 Network.Wreq.Internal.Types.JSONError) } } } } }) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fExceptionJSONError_$cp1Exception ::
+    Data.Typeable.Internal.Typeable
+      Network.Wreq.Internal.Types.JSONError
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (0, True, True)
+                Network.Wreq.Internal.Types.$fExceptionJSONError5
+                  `cast`
+                (Sym (Data.Typeable.Internal.N:Typeable[0]
+                          <*>_N <Network.Wreq.Internal.Types.JSONError>_N)) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fExceptionJSONError_$cshow ::
+    Network.Wreq.Internal.Types.JSONError -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(1*U)>, Inline: INLINE[0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Network.Wreq.Internal.Types.JSONError) ->
+                 case w of ww { Network.Wreq.Internal.Types.JSONError ww1 ->
+                 Network.Wreq.Internal.Types.$w$cshow ww1 }) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fExceptionJSONError_$ctoException ::
+    Network.Wreq.Internal.Types.JSONError
+    -> GHC.Exception.SomeException
+  {- Arity: 1 -}
+4d2572d75382e40620e72ddfc4e3c8d9
+  $fFunctorCacheEntry ::
+    GHC.Base.Functor Network.Wreq.Internal.Types.CacheEntry
+  DFunId
+  {- HasNoCafRefs, Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.CacheEntry
+                  Network.Wreq.Internal.Types.$fFunctorCacheEntry_$cfmap
+                  Network.Wreq.Internal.Types.$fFunctorCacheEntry_$c<$ -}
+4d2572d75382e40620e72ddfc4e3c8d9
+  $fFunctorCacheEntry_$c<$ ::
+    a
+    -> Network.Wreq.Internal.Types.CacheEntry b
+    -> Network.Wreq.Internal.Types.CacheEntry a
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <L,U><S,1*U(U,U,1*U(U,U,U,A,U,U))>m,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a
+                   @ b
+                   (eta :: a)
+                   (eta1 :: Network.Wreq.Internal.Types.CacheEntry b) ->
+                 case eta1 of wild { Network.Wreq.Internal.Types.CacheEntry a1 a2 a3 ->
+                 Network.Wreq.Internal.Types.CacheEntry
+                   @ a
+                   a1
+                   a2
+                   (case a3 of wild1 { Network.HTTP.Client.Types.Response a4 a5 a6 a7 a8 a9 ->
+                    Network.HTTP.Client.Types.Response @ a a4 a5 a6 eta a8 a9 }) }) -}
+4d2572d75382e40620e72ddfc4e3c8d9
+  $fFunctorCacheEntry_$cfmap ::
+    (a -> b)
+    -> Network.Wreq.Internal.Types.CacheEntry a
+    -> Network.Wreq.Internal.Types.CacheEntry b
+  {- Arity: 2, HasNoCafRefs,
+     Strictness: <L,1*C1(U)><S,1*U(U,U,1*U(U,U,U,U,U,U))>m,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ a
+                   @ b
+                   (f :: a -> b)
+                   (ds :: Network.Wreq.Internal.Types.CacheEntry a) ->
+                 case ds of wild { Network.Wreq.Internal.Types.CacheEntry a1 a2 a3 ->
+                 Network.Wreq.Internal.Types.CacheEntry
+                   @ b
+                   a1
+                   a2
+                   (Network.HTTP.Client.Types.$fFunctorResponse_$cfmap
+                      @ a
+                      @ b
+                      f
+                      a3) }) -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fShowAWSAuthVersion ::
+    GHC.Show.Show Network.Wreq.Internal.Types.AWSAuthVersion
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.AWSAuthVersion
+                  Network.Wreq.Internal.Types.$fShowAWSAuthVersion_$cshowsPrec
+                  Network.Wreq.Internal.Types.$fShowAWSAuthVersion_$cshow
+                  Network.Wreq.Internal.Types.$fShowAWSAuthVersion_$cshowList -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fShowAWSAuthVersion1 ::
+    Network.Wreq.Internal.Types.AWSAuthVersion -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*H><L,1*U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.AWSAuthVersion)
+                   (eta :: GHC.Base.String) ->
+                 case ds of wild { Network.Wreq.Internal.Types.AWSv4 ->
+                 GHC.Base.augment
+                   @ GHC.Types.Char
+                   (\ @ b
+                      (c :: GHC.Types.Char -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ GHC.Types.Char
+                      @ b
+                      c
+                      n
+                      Network.Wreq.Internal.Types.$fShowAWSAuthVersion2)
+                   eta }) -}
+366b0e9a966b98643e394783f1591e0b
+  $fShowAWSAuthVersion2 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "AWSv4"#) -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fShowAWSAuthVersion_$cshow ::
+    Network.Wreq.Internal.Types.AWSAuthVersion -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*H>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: Network.Wreq.Internal.Types.AWSAuthVersion) ->
+                 case x of wild { Network.Wreq.Internal.Types.AWSv4 ->
+                 Network.Wreq.Internal.Types.$fShowAWSAuthVersion2 }) -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fShowAWSAuthVersion_$cshowList ::
+    [Network.Wreq.Internal.Types.AWSAuthVersion] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ Network.Wreq.Internal.Types.AWSAuthVersion
+                   Network.Wreq.Internal.Types.$fShowAWSAuthVersion1) -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  $fShowAWSAuthVersion_$cshowsPrec ::
+    GHC.Types.Int
+    -> Network.Wreq.Internal.Types.AWSAuthVersion -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*H><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (ds :: GHC.Types.Int)
+                   (ds1 :: Network.Wreq.Internal.Types.AWSAuthVersion)
+                   (eta :: GHC.Base.String) ->
+                 case ds1 of wild { Network.Wreq.Internal.Types.AWSv4 ->
+                 GHC.Base.augment
+                   @ GHC.Types.Char
+                   (\ @ b
+                      (c :: GHC.Types.Char -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ GHC.Types.Char
+                      @ b
+                      c
+                      n
+                      Network.Wreq.Internal.Types.$fShowAWSAuthVersion2)
+                   eta }) -}
+50562406d9132fbf375d117ee4db6c63
+  $fShowAuth :: GHC.Show.Show Network.Wreq.Internal.Types.Auth
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.Auth
+                  Network.Wreq.Internal.Types.$fShowAuth_$cshowsPrec
+                  Network.Wreq.Internal.Types.$fShowAuth_$cshow
+                  Network.Wreq.Internal.Types.$fShowAuth_$cshowList -}
+50562406d9132fbf375d117ee4db6c63
+  $fShowAuth1 :: Network.Wreq.Internal.Types.Auth -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (\ (w :: Network.Wreq.Internal.Types.Auth)
+                   (w1 :: GHC.Base.String) ->
+                 Network.Wreq.Internal.Types.$w$cshowsPrec1 0# w w1) -}
+50562406d9132fbf375d117ee4db6c63
+  $fShowAuth_$cshow ::
+    Network.Wreq.Internal.Types.Auth -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: Network.Wreq.Internal.Types.Auth) ->
+                 Network.Wreq.Internal.Types.$fShowAuth_$cshowsPrec
+                   GHC.Show.shows22
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+50562406d9132fbf375d117ee4db6c63
+  $fShowAuth_$cshowList ::
+    [Network.Wreq.Internal.Types.Auth] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ Network.Wreq.Internal.Types.Auth
+                   Network.Wreq.Internal.Types.$fShowAuth1) -}
+50562406d9132fbf375d117ee4db6c63
+  $fShowAuth_$cshowsPrec ::
+    GHC.Types.Int -> Network.Wreq.Internal.Types.Auth -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <S(S),1*U(U)><S,1*U><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: Network.Wreq.Internal.Types.Auth)
+                   (w2 :: GHC.Base.String) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 Network.Wreq.Internal.Types.$w$cshowsPrec1 ww1 w1 w2 }) -}
+4d2572d75382e40620e72ddfc4e3c8d9
+  $fShowCacheEntry ::
+    GHC.Show.Show (Network.Wreq.Internal.Types.CacheEntry body)
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun: @ body.
+                  @ (Network.Wreq.Internal.Types.CacheEntry body)
+                  (Network.Wreq.Internal.Types.$fShowCacheEntry_$cshowsPrec @ body)
+                  (Network.Wreq.Internal.Types.$fShowCacheEntry_$cshow @ body)
+                  (Network.Wreq.Internal.Types.$fShowCacheEntry_$cshowList @ body) -}
+536080c98bc587c961bfeacee26de6c4
+  $fShowCacheEntry1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "CacheEntry"#) -}
+4d2572d75382e40620e72ddfc4e3c8d9
+  $fShowCacheEntry_$cshow ::
+    Network.Wreq.Internal.Types.CacheEntry body -> GHC.Base.String
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ @ body (ds :: Network.Wreq.Internal.Types.CacheEntry body) ->
+                 Network.Wreq.Internal.Types.$fShowCacheEntry1) -}
+4d2572d75382e40620e72ddfc4e3c8d9
+  $fShowCacheEntry_$cshowList ::
+    [Network.Wreq.Internal.Types.CacheEntry body] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ @ body
+                   (ls :: [Network.Wreq.Internal.Types.CacheEntry body])
+                   (s :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ (Network.Wreq.Internal.Types.CacheEntry body)
+                   (\ (x :: Network.Wreq.Internal.Types.CacheEntry body)
+                      (s1 :: GHC.Base.String)[OneShot] ->
+                    GHC.Base.augment
+                      @ GHC.Types.Char
+                      (\ @ b
+                         (c :: GHC.Types.Char -> b -> b)[OneShot]
+                         (n :: b)[OneShot] ->
+                       GHC.Base.foldr
+                         @ GHC.Types.Char
+                         @ b
+                         c
+                         n
+                         Network.Wreq.Internal.Types.$fShowCacheEntry1)
+                      s1)
+                   ls
+                   s) -}
+4d2572d75382e40620e72ddfc4e3c8d9
+  $fShowCacheEntry_$cshowsPrec ::
+    GHC.Types.Int
+    -> Network.Wreq.Internal.Types.CacheEntry body -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><L,A><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ @ body
+                   (ds :: GHC.Types.Int)
+                   (x :: Network.Wreq.Internal.Types.CacheEntry body)
+                   (s :: GHC.Base.String) ->
+                 GHC.Base.augment
+                   @ GHC.Types.Char
+                   (\ @ b
+                      (c :: GHC.Types.Char -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ GHC.Types.Char
+                      @ b
+                      c
+                      n
+                      Network.Wreq.Internal.Types.$fShowCacheEntry1)
+                   s) -}
+6b3902c372f00e4878c0c7cc5af7c151
+  $fShowFormParam ::
+    GHC.Show.Show Network.Wreq.Internal.Types.FormParam
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.FormParam
+                  Network.Wreq.Internal.Types.$fShowFormParam_$cshowsPrec
+                  Network.Wreq.Internal.Types.$fShowFormParam_$cshow
+                  Network.Wreq.Internal.Types.$fShowFormParam_$cshowList -}
+6b3902c372f00e4878c0c7cc5af7c151
+  $fShowFormParam1 ::
+    Network.Wreq.Internal.Types.FormParam
+    -> GHC.Base.String -> [GHC.Types.Char]
+  {- Arity: 2,
+     Unfolding: (\ (x :: Network.Wreq.Internal.Types.FormParam)
+                   (s :: GHC.Base.String)[OneShot] ->
+                 GHC.Base.++
+                   @ GHC.Types.Char
+                   (Network.Wreq.Internal.Types.$fShowFormParam_$cshow x)
+                   s) -}
+6b3902c372f00e4878c0c7cc5af7c151
+  $fShowFormParam_$cshow ::
+    Network.Wreq.Internal.Types.FormParam -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U>,
+     Unfolding: (\ (ds :: Network.Wreq.Internal.Types.FormParam) ->
+                 case ds of wild { Network.Wreq.Internal.Types.:= v $dFormValue a b ->
+                 GHC.Base.++
+                   @ GHC.Types.Char
+                   (GHC.Types.:
+                      @ GHC.Types.Char
+                      GHC.Show.shows6
+                      (case a of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                       GHC.Show.showLitString
+                         (Data.ByteString.Internal.$wunpackAppendCharsLazy
+                            ww1
+                            ww2
+                            ww3
+                            ww4
+                            (GHC.Types.[] @ GHC.Types.Char))
+                         Network.Wreq.Internal.Types.$fExceptionJSONError1 }))
+                   (GHC.CString.unpackAppendCString#
+                      " := "#
+                      (GHC.Types.:
+                         @ GHC.Types.Char
+                         GHC.Show.shows6
+                         (case $dFormValue
+                                 `cast`
+                               (Network.Wreq.Internal.Types.N:FormValue[0] <v>_N)
+                                 b of ww { Data.ByteString.Internal.PS ww1 ww2 ww3 ww4 ->
+                          GHC.Show.showLitString
+                            (Data.ByteString.Internal.$wunpackAppendCharsLazy
+                               ww1
+                               ww2
+                               ww3
+                               ww4
+                               (GHC.Types.[] @ GHC.Types.Char))
+                            Network.Wreq.Internal.Types.$fExceptionJSONError1 }))) }) -}
+6b3902c372f00e4878c0c7cc5af7c151
+  $fShowFormParam_$cshowList ::
+    [Network.Wreq.Internal.Types.FormParam] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: (\ (ls :: [Network.Wreq.Internal.Types.FormParam])
+                   (s :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ Network.Wreq.Internal.Types.FormParam
+                   Network.Wreq.Internal.Types.$fShowFormParam1
+                   ls
+                   s) -}
+6b3902c372f00e4878c0c7cc5af7c151
+  $fShowFormParam_$cshowsPrec ::
+    GHC.Types.Int
+    -> Network.Wreq.Internal.Types.FormParam -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><S,1*U><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (ds :: GHC.Types.Int)
+                   (x :: Network.Wreq.Internal.Types.FormParam)
+                   (s :: GHC.Base.String) ->
+                 GHC.Base.augment
+                   @ GHC.Types.Char
+                   (\ @ b
+                      (c :: GHC.Types.Char -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ GHC.Types.Char
+                      @ b
+                      c
+                      n
+                      (Network.Wreq.Internal.Types.$fShowFormParam_$cshow x))
+                   s) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fShowJSONError ::
+    GHC.Show.Show Network.Wreq.Internal.Types.JSONError
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.JSONError
+                  Network.Wreq.Internal.Types.$fShowJSONError_$cshowsPrec
+                  Network.Wreq.Internal.Types.$fExceptionJSONError_$cshow
+                  Network.Wreq.Internal.Types.$fShowJSONError_$cshowList -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fShowJSONError1 ::
+    Network.Wreq.Internal.Types.JSONError -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (\ (w :: Network.Wreq.Internal.Types.JSONError)
+                   (w1 :: GHC.Base.String) ->
+                 case w of ww { Network.Wreq.Internal.Types.JSONError ww1 ->
+                 Network.Wreq.Internal.Types.$w$cshowsPrec 0# ww1 w1 }) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fShowJSONError_$cshowList ::
+    [Network.Wreq.Internal.Types.JSONError] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ Network.Wreq.Internal.Types.JSONError
+                   Network.Wreq.Internal.Types.$fShowJSONError1) -}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  $fShowJSONError_$cshowsPrec ::
+    GHC.Types.Int
+    -> Network.Wreq.Internal.Types.JSONError -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <S(S),1*U(U)><S,1*U(1*U)><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: Network.Wreq.Internal.Types.JSONError)
+                   (w2 :: GHC.Base.String) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 case w1 of ww2 { Network.Wreq.Internal.Types.JSONError ww3 ->
+                 Network.Wreq.Internal.Types.$w$cshowsPrec ww1 ww3 w2 } }) -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fShowLink :: GHC.Show.Show Network.Wreq.Internal.Types.Link
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.Link
+                  Network.Wreq.Internal.Types.$fShowLink_$cshowsPrec
+                  Network.Wreq.Internal.Types.$fShowLink_$cshow
+                  Network.Wreq.Internal.Types.$fShowLink_$cshowList -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fShowLink1 :: Network.Wreq.Internal.Types.Link -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (\ (w :: Network.Wreq.Internal.Types.Link)
+                   (w1 :: GHC.Base.String) ->
+                 case w of ww { Network.Wreq.Internal.Types.Link ww1 ww2 ->
+                 Network.Wreq.Internal.Types.$w$cshowsPrec2 0# ww1 ww2 w1 }) -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fShowLink_$cshow ::
+    Network.Wreq.Internal.Types.Link -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(1*U(U,U,U,U),1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (x :: Network.Wreq.Internal.Types.Link) ->
+                 Network.Wreq.Internal.Types.$fShowLink_$cshowsPrec
+                   GHC.Show.shows22
+                   x
+                   (GHC.Types.[] @ GHC.Types.Char)) -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fShowLink_$cshowList ::
+    [Network.Wreq.Internal.Types.Link] -> GHC.Show.ShowS
+  {- Arity: 2,
+     Unfolding: (GHC.Show.showList__
+                   @ Network.Wreq.Internal.Types.Link
+                   Network.Wreq.Internal.Types.$fShowLink1) -}
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  $fShowLink_$cshowsPrec ::
+    GHC.Types.Int -> Network.Wreq.Internal.Types.Link -> GHC.Show.ShowS
+  {- Arity: 3,
+     Strictness: <S(S),1*U(U)><S,1*U(1*U(U,U,U,U),1*U)><L,U>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (3, True, False)
+                (\ (w :: GHC.Types.Int)
+                   (w1 :: Network.Wreq.Internal.Types.Link)
+                   (w2 :: GHC.Base.String) ->
+                 case w of ww { GHC.Types.I# ww1 ->
+                 case w1 of ww2 { Network.Wreq.Internal.Types.Link ww3 ww4 ->
+                 Network.Wreq.Internal.Types.$w$cshowsPrec2 ww1 ww3 ww4 w2 } }) -}
+a7ee0a275ba21a223c2335f85481728d
+  $fShowOptions :: GHC.Show.Show Network.Wreq.Internal.Types.Options
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.Options
+                  Network.Wreq.Internal.Types.$fShowOptions_$cshowsPrec
+                  Network.Wreq.Internal.Types.$fShowOptions_$cshow
+                  Network.Wreq.Internal.Types.$fShowOptions_$cshowList -}
+a7ee0a275ba21a223c2335f85481728d
+  $fShowOptions1 ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.String -> [GHC.Types.Char]
+  {- Arity: 2,
+     Unfolding: (\ (x :: Network.Wreq.Internal.Types.Options)
+                   (s :: GHC.Base.String)[OneShot] ->
+                 case x of ww { Network.Wreq.Internal.Types.Options ww1 ww2 ww3 ww4 ww5 ww6 ww7 ww8 ->
+                 GHC.Base.++
+                   @ GHC.Types.Char
+                   (Network.Wreq.Internal.Types.$w$cshow1 ww1 ww2 ww3 ww4 ww5 ww6 ww7)
+                   s }) -}
+a7ee0a275ba21a223c2335f85481728d
+  $fShowOptions_$cshow ::
+    Network.Wreq.Internal.Types.Options -> GHC.Base.String
+  {- Arity: 1, Strictness: <S,1*U(1*U,1*U,1*U,1*U,1*U,1*U(U),1*U,A)>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Network.Wreq.Internal.Types.Options) ->
+                 case w of ww { Network.Wreq.Internal.Types.Options ww1 ww2 ww3 ww4 ww5 ww6 ww7 ww8 ->
+                 Network.Wreq.Internal.Types.$w$cshow1
+                   ww1
+                   ww2
+                   ww3
+                   ww4
+                   ww5
+                   ww6
+                   ww7 }) -}
+a7ee0a275ba21a223c2335f85481728d
+  $fShowOptions_$cshowList ::
+    [Network.Wreq.Internal.Types.Options] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: (\ (ls :: [Network.Wreq.Internal.Types.Options])
+                   (s :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ Network.Wreq.Internal.Types.Options
+                   Network.Wreq.Internal.Types.$fShowOptions1
+                   ls
+                   s) -}
+a7ee0a275ba21a223c2335f85481728d
+  $fShowOptions_$cshowsPrec ::
+    GHC.Types.Int
+    -> Network.Wreq.Internal.Types.Options -> GHC.Show.ShowS
+  {- Arity: 3,
+     Strictness: <L,A><S,1*U(1*U,1*U,1*U,1*U,1*U,1*U(U),1*U,A)><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (ds :: GHC.Types.Int)
+                   (x :: Network.Wreq.Internal.Types.Options)
+                   (s :: GHC.Base.String) ->
+                 GHC.Base.augment
+                   @ GHC.Types.Char
+                   (\ @ b
+                      (c :: GHC.Types.Char -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ GHC.Types.Char
+                      @ b
+                      c
+                      n
+                      (Network.Wreq.Internal.Types.$fShowOptions_$cshow x))
+                   s) -}
+f368629ac35c1f55d336260c0e29886e
+  $fShowSession :: GHC.Show.Show Network.Wreq.Internal.Types.Session
+  DFunId
+  {- Strictness: m, Inline: [ALWAYS] CONLIKE,
+     Unfolding: DFun:.
+                  @ Network.Wreq.Internal.Types.Session
+                  Network.Wreq.Internal.Types.$fShowSession_$cshowsPrec
+                  Network.Wreq.Internal.Types.$fShowSession_$cshow
+                  Network.Wreq.Internal.Types.$fShowSession_$cshowList -}
+493211cf2cb2258200345cb9bdb9c428
+  $fShowSession1 :: [GHC.Types.Char]
+  {- Unfolding: (GHC.CString.unpackCString# "Session"#) -}
+f368629ac35c1f55d336260c0e29886e
+  $fShowSession_$cshow ::
+    Network.Wreq.Internal.Types.Session -> GHC.Base.String
+  {- Arity: 1, Strictness: <L,A>,
+     Unfolding: InlineRule (1, True, True)
+                (\ (ds :: Network.Wreq.Internal.Types.Session) ->
+                 Network.Wreq.Internal.Types.$fShowSession1) -}
+f368629ac35c1f55d336260c0e29886e
+  $fShowSession_$cshowList ::
+    [Network.Wreq.Internal.Types.Session] -> GHC.Show.ShowS
+  {- Arity: 2, Strictness: <S,1*U><L,U>,
+     Unfolding: InlineRule (2, True, False)
+                (\ (ls :: [Network.Wreq.Internal.Types.Session])
+                   (s :: GHC.Base.String) ->
+                 GHC.Show.showList__
+                   @ Network.Wreq.Internal.Types.Session
+                   (\ (x :: Network.Wreq.Internal.Types.Session)
+                      (s1 :: GHC.Base.String)[OneShot] ->
+                    GHC.Base.augment
+                      @ GHC.Types.Char
+                      (\ @ b
+                         (c :: GHC.Types.Char -> b -> b)[OneShot]
+                         (n :: b)[OneShot] ->
+                       GHC.Base.foldr
+                         @ GHC.Types.Char
+                         @ b
+                         c
+                         n
+                         Network.Wreq.Internal.Types.$fShowSession1)
+                      s1)
+                   ls
+                   s) -}
+f368629ac35c1f55d336260c0e29886e
+  $fShowSession_$cshowsPrec ::
+    GHC.Types.Int
+    -> Network.Wreq.Internal.Types.Session -> GHC.Show.ShowS
+  {- Arity: 3, Strictness: <L,A><L,A><L,1*U>,
+     Unfolding: InlineRule (3, True, False)
+                (\ (ds :: GHC.Types.Int)
+                   (x :: Network.Wreq.Internal.Types.Session)
+                   (s :: GHC.Base.String) ->
+                 GHC.Base.augment
+                   @ GHC.Types.Char
+                   (\ @ b
+                      (c :: GHC.Types.Char -> b -> b)[OneShot]
+                      (n :: b)[OneShot] ->
+                    GHC.Base.foldr
+                      @ GHC.Types.Char
+                      @ b
+                      c
+                      n
+                      Network.Wreq.Internal.Types.$fShowSession1)
+                   s) -}
+1236096315eb7fc53ff52c58a0778882
+  $s$dmshowList1 ::
+    Network.Wreq.Internal.Types.Session
+    -> GHC.Base.String -> [GHC.Types.Char]
+  {- Arity: 2,
+     Unfolding: (\ (x :: Network.Wreq.Internal.Types.Session)
+                   (s :: GHC.Base.String)[OneShot] ->
+                 GHC.Base.++
+                   @ GHC.Types.Char
+                   Network.Wreq.Internal.Types.$fShowSession1
+                   s) -}
+9c09a27837ffa3592304277005c0881b
+  $tc':= :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17936889429341342963##
+                   3577634672429098357##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc':=1) -}
+debe618fe6c5ecd15f977548abbfc169
+  $tc':=1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "':="#) -}
+6072c2154a32a2ffdcdd0fc18a35fa76
+  $tc'AWSAuth :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   7163052117391666352##
+                   3363731688651253596##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'AWSAuth1) -}
+d7b315984e3a51e283cee899437c688a
+  $tc'AWSAuth1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'AWSAuth"#) -}
+067eec7bcbf016f2c9673a32775248ac
+  $tc'AWSv1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'AWSv4"#) -}
+7fe449b58a1bbfc99c5eacb90d79ce26
+  $tc'AWSv4 :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14536800506311988019##
+                   11682119244331181580##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'AWSv1) -}
+572ece532af368a4757887cd35fb314d
+  $tc'BasicAuth :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   3588289755780801121##
+                   3764126285688460494##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'BasicAuth1) -}
+86abf330898c46823315979e996e18fa
+  $tc'BasicAuth1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'BasicAuth"#) -}
+77f97714c96f1efb7972fae6adbbef73
+  $tc'C:FormValue :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   3779845249460690325##
+                   809383554193108709##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'C:FormValue1) -}
+4b73af682e6cbc254b0563978b97fdfd
+  $tc'C:FormValue1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'C:FormValue"#) -}
+417e3c931d6d327f1137256220f1b7b1
+  $tc'C:Postable :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   10222239906773277739##
+                   73946320664640840##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'C:Postable1) -}
+df57e572f275a50f36f2da17ad1bbc88
+  $tc'C:Postable1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'C:Postable"#) -}
+796be75a01aa228b4e37d889f2ce099c
+  $tc'C:Putable :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   17012009688435599268##
+                   4885067302399042523##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'C:Putable1) -}
+ba293da3532709ed123c9459aae3996b
+  $tc'C:Putable1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'C:Putable"#) -}
+229c54243359a6890d80a0cf61acaaaf
+  $tc'CacheEntry :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   13916590033272011412##
+                   18104817882658713126##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'CacheEntry1) -}
+a1870696fb370954995c3a88dfd1ec95
+  $tc'CacheEntry1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'CacheEntry"#) -}
+3144399a2e55ce11ccfcfa2b7bfd3635
+  $tc'JSONError :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4824824762971398287##
+                   17724445729883649771##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'JSONError1) -}
+d3f4c2720971e546209e3497ecd57974
+  $tc'JSONError1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'JSONError"#) -}
+ec310ef9cb0eaf11a66f5273d1724dc5
+  $tc'Link :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   504090125698802020##
+                   5946435628865331857##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'Link1) -}
+3a45896df47a31f1d5840bd52be2eff6
+  $tc'Link1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Link"#) -}
+99c03265f856194527594ba1a13b6936
+  $tc'NoBody :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14888385434847946803##
+                   6685481432004832520##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'NoBody1) -}
+b30a226245885c6f8f4548bdde0e99e6
+  $tc'NoBody1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'NoBody"#) -}
+c30101d42e384dc30c193828320fc1c2
+  $tc'OAuth1 :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   6092724215061646909##
+                   15673726488567219663##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'OAuth2) -}
+3b8a3d68608e7e0e37d81d935845bf53
+  $tc'OAuth2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'OAuth1"#) -}
+bedc10a9841a28265521e23c10f09dda
+  $tc'OAuth2Bearer :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   11062931847339096639##
+                   958983878109431936##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'OAuth2Bearer1) -}
+5602cdf7087c9639c5bc60013cfa12f9
+  $tc'OAuth2Bearer1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'OAuth2Bearer"#) -}
+6a40f7b51b0d97f0c70e5c731a38176f
+  $tc'OAuth2Token :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12733207367007511427##
+                   954239239243217682##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'OAuth2Token1) -}
+0dead4e79078be633da69aa141299293
+  $tc'OAuth2Token1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'OAuth2Token"#) -}
+77d00afe55acfc4db8041bbe807da6e6
+  $tc'Options :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   2264661718084009980##
+                   8914200028850870279##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'Options1) -}
+628096b77087cbb1c96467b69468601c
+  $tc'Options1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Options"#) -}
+b265d0f8158f817341ba9ed7719fc259
+  $tc'Raw :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   16479566775944338587##
+                   3616993747614085989##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'Raw1) -}
+d2c2db4e6b51d042076e3b1f83d9fcf7
+  $tc'Raw1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Raw"#) -}
+fa6020d386b59db922662f2a03564cf1
+  $tc'ReaderBody :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14265313424213822471##
+                   3952089112280850306##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'ReaderBody1) -}
+c6b95d5c8e1fdf1a7482d51abc044c94
+  $tc'ReaderBody1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'ReaderBody"#) -}
+37211693720b47d650efb418d4d5c3cc
+  $tc'Req :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4101506682578710539##
+                   17554585084557577355##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'Req1) -}
+53de2125cd1340817f683e40b5b98784
+  $tc'Req1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Req"#) -}
+92781ca9a7ff81d45d4a6565e8f8bda8
+  $tc'Session :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8289436985701694258##
+                   15089309847780071790##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'Session1) -}
+53da13c9a3c17c9e27b704a2d136dd4d
+  $tc'Session1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'Session"#) -}
+d9cd2474c18bf53542bbbcab73b5a424
+  $tc'StringBody :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   2770098946721391676##
+                   2841907584291510177##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tc'StringBody1) -}
+dc92d306029d45af6a9d085865da55b6
+  $tc'StringBody1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "'StringBody"#) -}
+7cbf59773a8a3e56314c23e470fb7f90
+  $tcAWSAuthVersion :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   2456843962356265052##
+                   12277472317589761547##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcAWSAuthVersion1) -}
+1a937dba045715c627b36c8cd2f6b5ad
+  $tcAWSAuthVersion1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "AWSAuthVersion"#) -}
+bdb6a7f21dd061676063263bae7f3581
+  $tcAuth :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4188223230995058899##
+                   17603298843430642974##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcAuth1) -}
+5653c25fb86a2834cfc4e65847f00335
+  $tcAuth1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Auth"#) -}
+f0acae8fddd1255f8b5826107bdee4fe
+  $tcBody :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   12269936596892901438##
+                   1314263988789549148##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcBody1) -}
+db4a3395c533149c4afe6722e589c48c
+  $tcBody1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Body"#) -}
+476bc6410e413cd3404730cb500dcdfc
+  $tcCacheEntry :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8632946694681796305##
+                   15016059147068996416##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcCacheEntry1) -}
+b45bbc0ac9fe1ca61cedd931a9d06e37
+  $tcCacheEntry1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "CacheEntry"#) -}
+b29d92edf101c8f7d74fbe595ba9cc2b
+  $tcFormParam :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   9977712907856088484##
+                   9530834120602987068##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcFormParam1) -}
+6f9dd6c3ace9f30dc0be2208b4eca099
+  $tcFormParam1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "FormParam"#) -}
+35bbac79f1f6cabfe7fed3542b41f552
+  $tcFormValue :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   9442525084239840514##
+                   12238536706067218949##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcFormValue1) -}
+09fb0b4de5c7e03545bb26c2d32e12a6
+  $tcFormValue1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "FormValue"#) -}
+2c67a9cca675ca7390512593dd83eac9
+  $tcJSONError :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   2983409120563349169##
+                   12188144696972734307##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcJSONError1) -}
+17c5fe33fcf2733d89939ec608e0feae
+  $tcJSONError1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "JSONError"#) -}
+423294fad43d774e5c59f742425c2c39
+  $tcLink :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   9160144767478535347##
+                   9171036905073537466##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcLink1) -}
+a90d779f8b14394d1717e8874c9fc046
+  $tcLink1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Link"#) -}
+cec4d9a7675d3606c56ffac0fcb818c9
+  $tcOptions :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   4971654046249741865##
+                   6160369543481277231##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcOptions1) -}
+918dc6cdefbee94e3a76e38dc217bfd8
+  $tcOptions1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Options"#) -}
+11caf47ffc36cb4511f9cd279429089f
+  $tcPayload :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   8254279943261709813##
+                   18430646738990426271##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcPayload1) -}
+b688d5051c2e91e3d2a9828f426849e5
+  $tcPayload1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Payload"#) -}
+ed63b6edd8c97425aabb18cb2ba84008
+  $tcPostable :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   14337145468316116905##
+                   16680688103970859488##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcPostable1) -}
+992e6eb70cc476117e4f10ad2432e2f5
+  $tcPostable1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Postable"#) -}
+cd71b127a90d20fcd072942c336b681d
+  $tcPutable :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   5035197104737158451##
+                   14563846845875180530##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcPutable1) -}
+943f83014c113466e27013427c3d5010
+  $tcPutable1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Putable"#) -}
+ad99062c47dfe2f6ba72783da1f714af
+  $tcReq :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   15546662156257886256##
+                   3191776696460220968##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcReq1) -}
+471f362aafd5f0eda1a956c467dc8de7
+  $tcReq1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Req"#) -}
+7c3cb28958fcd96037668d3cbccaa7b9
+  $tcSession :: GHC.Types.TyCon
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.TyCon
+                   719523548623360843##
+                   8562248580711881875##
+                   Network.Wreq.Internal.Types.$trModule
+                   Network.Wreq.Internal.Types.$tcSession1) -}
+79f84d2a2b39f6c11d72975ff4280172
+  $tcSession1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Session"#) -}
+eb2108d6237402bfbc64560190d23dfa
+  $trModule :: GHC.Types.Module
+  {- HasNoCafRefs, Strictness: m,
+     Unfolding: (GHC.Types.Module
+                   Network.Wreq.Internal.Types.$trModule2
+                   Network.Wreq.Internal.Types.$trModule1) -}
+0ca52ca276435419a83bac6b9fd830c4
+  $trModule1 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS "Network.Wreq.Internal.Types"#) -}
+7e44f7cb9cf298131383fd862f0d8f61
+  $trModule2 :: GHC.Types.TrName
+  {- HasNoCafRefs, Strictness: m1,
+     Unfolding: (GHC.Types.TrNameS
+                   "wreq-0.5.0.1-LabPVfSpM6c4hnlpFpxHHI"#) -}
+1f50eceb403f40060d590ba5a68a4618
+  $w$c== ::
+    GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> [(Data.ByteString.Internal.ByteString,
+         Data.ByteString.Internal.ByteString)]
+    -> GHC.Prim.Addr#
+    -> GHC.ForeignPtr.ForeignPtrContents
+    -> GHC.Prim.Int#
+    -> GHC.Prim.Int#
+    -> [(Data.ByteString.Internal.ByteString,
+         Data.ByteString.Internal.ByteString)]
+    -> GHC.Types.Bool
+  {- Arity: 10, HasNoCafRefs,
+     Strictness: <L,U><L,U><L,U><S,U><L,1*U><L,U><L,U><L,U><S,U><L,1*U>,
+     Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Addr#)
+                   (ww1 :: GHC.ForeignPtr.ForeignPtrContents)
+                   (ww2 :: GHC.Prim.Int#)
+                   (ww3 :: GHC.Prim.Int#)
+                   (ww4 :: [(Data.ByteString.Internal.ByteString,
+                             Data.ByteString.Internal.ByteString)])
+                   (ww5 :: GHC.Prim.Addr#)
+                   (ww6 :: GHC.ForeignPtr.ForeignPtrContents)
+                   (ww7 :: GHC.Prim.Int#)
+                   (ww8 :: GHC.Prim.Int#)
+                   (ww9 :: [(Data.ByteString.Internal.ByteString,
+                             Data.ByteString.Internal.ByteString)]) ->
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim./=# ww3 ww8) of wild2 {
+                   GHC.Types.False
+                   -> let {
+                        $j :: GHC.Prim.Void# -> GHC.Types.Bool
+                          {- Arity: 1, Strictness: <L,A> -}
+                        = \ (w :: GHC.Prim.Void#)[OneShot] ->
+                          case Data.ByteString.Internal.$wcompareBytes
+                                 ww
+                                 ww1
+                                 ww2
+                                 ww3
+                                 ww5
+                                 ww6
+                                 ww7
+                                 ww8 of wild {
+                            DEFAULT -> GHC.Types.False
+                            GHC.Types.EQ
+                            -> GHC.Classes.$fEq[]_$c==
+                                 @ (Data.ByteString.Internal.ByteString,
+                                    Data.ByteString.Internal.ByteString)
+                                 Network.Wreq.Internal.Types.$fEqLink_$s$fEq(,)
+                                 ww4
+                                 ww9 }
+                      } in
+                      case GHC.Prim.tagToEnum#
+                             @ GHC.Types.Bool
+                             (GHC.Prim.eqAddr# ww ww5) of wild {
+                        GHC.Types.False -> $j GHC.Prim.void#
+                        GHC.Types.True
+                        -> case GHC.Prim.tagToEnum#
+                                  @ GHC.Types.Bool
+                                  (GHC.Prim.==# ww2 ww7) of wild3 {
+                             GHC.Types.False -> $j GHC.Prim.void#
+                             GHC.Types.True
+                             -> GHC.Classes.$fEq[]_$c==
+                                  @ (Data.ByteString.Internal.ByteString,
+                                     Data.ByteString.Internal.ByteString)
+                                  Network.Wreq.Internal.Types.$fEqLink_$s$fEq(,)
+                                  ww4
+                                  ww9 } }
+                   GHC.Types.True -> GHC.Types.False }) -}
+e22e160ab71e3c423f51399a1f933de3
+  $w$cshow :: GHC.Base.String -> GHC.Base.String
+  {- Arity: 1, Strictness: <L,1*U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Base.String) ->
+                 GHC.Base.++
+                   @ GHC.Types.Char
+                   Network.Wreq.Internal.Types.$fExceptionJSONError2
+                   (GHC.Types.:
+                      @ GHC.Types.Char
+                      GHC.Show.shows6
+                      (GHC.Show.showLitString
+                         ww
+                         Network.Wreq.Internal.Types.$fExceptionJSONError1))) -}
+f0db984f1880da2bb87bca70b8545037
+  $w$cshow1 ::
+    Network.Wreq.Internal.Types.Mgr
+    -> GHC.Base.Maybe Network.HTTP.Client.Types.Proxy
+    -> GHC.Base.Maybe Network.Wreq.Internal.Types.Auth
+    -> [Network.HTTP.Types.Header.Header]
+    -> [(Data.Text.Internal.Text, Data.Text.Internal.Text)]
+    -> GHC.Types.Int
+    -> GHC.Base.Maybe Network.HTTP.Client.Types.CookieJar
+    -> GHC.Base.String
+  {- Arity: 7,
+     Strictness: <L,1*U><L,1*U><L,1*U><L,1*U><L,1*U><L,1*U(U)><L,1*U>,
+     Inline: [0] -}
+290ce50d9c74ccaa2dd7ecf7078b4f2b
+  $w$cshowsPrec ::
+    GHC.Prim.Int#
+    -> GHC.Base.String -> GHC.Base.String -> GHC.Base.String
+  {- Arity: 3, Strictness: <S,U><L,1*U><L,U>, Inline: [0],
+     Unfolding: (\ (ww :: GHC.Prim.Int#)
+                   (ww1 :: GHC.Base.String)
+                   (w :: GHC.Base.String) ->
+                 case GHC.Prim.tagToEnum#
+                        @ GHC.Types.Bool
+                        (GHC.Prim.>=# ww 11#) of wild {
+                   GHC.Types.False
+                   -> GHC.Base.++
+                        @ GHC.Types.Char
+                        Network.Wreq.Internal.Types.$fExceptionJSONError2
+                        (GHC.Types.:
+                           @ GHC.Types.Char
+                           GHC.Show.shows6
+                           (GHC.Show.showLitString
+                              ww1
+                              (GHC.Types.: @ GHC.Types.Char GHC.Show.shows6 w)))
+                   GHC.Types.True
+                   -> GHC.Types.:
+                        @ GHC.Types.Char
+                        GHC.Show.shows7
+                        (GHC.Base.++
+                           @ GHC.Types.Char
+                           Network.Wreq.Internal.Types.$fExceptionJSONError2
+                           (GHC.Types.:
+                              @ GHC.Types.Char
+                              GHC.Show.shows6
+                              (GHC.Show.showLitString
+                                 ww1
+                                 (GHC.Types.:
+                                    @ GHC.Types.Char
+                                    GHC.Show.shows6
+                                    (GHC.Types.: @ GHC.Types.Char GHC.Show.shows4 w))))) }) -}
+50562406d9132fbf375d117ee4db6c63
+  $w$cshowsPrec1 ::
+    GHC.Prim.Int#
+    -> Network.Wreq.Internal.Types.Auth
+    -> GHC.Base.String
+    -> GHC.Base.String
+  {- Arity: 3, Strictness: <S,U><S,1*U><L,U>, Inline: [0] -}
+33b72ae880d89a1f2cac426082e1446b
+  $w$cshowsPrec2 ::
+    GHC.Prim.Int#
+    -> Data.ByteString.Internal.ByteString
+    -> [(Data.ByteString.Internal.ByteString,
+         Data.ByteString.Internal.ByteString)]
+    -> GHC.Base.String
+    -> GHC.Base.String
+  {- Arity: 4, Strictness: <S,U><L,1*U(U,U,U,U)><L,1*U><L,U>,
+     Inline: [0] -}
+5e1ed94dda289e1a1d43025c353f423c
+  $wreqURL ::
+    Network.HTTP.Client.Types.Request
+    -> Data.ByteString.Internal.ByteString
+  {- Arity: 1,
+     Strictness: <L,U(A,1*U,1*U(U,U,U,U),1*U(1*U),1*U(U,U,U,U),1*U(U,U,U,U),A,A,A,A,A,A,A,A,A,A,A,A,A)>,
+     Inline: [0] -}
+ae3fce7c4ae2ad11decf775b4f9d66b1
+  data AWSAuthVersion = AWSv4
+50562406d9132fbf375d117ee4db6c63
+  data Auth
+    = BasicAuth Data.ByteString.Internal.ByteString
+                Data.ByteString.Internal.ByteString
+    | OAuth2Bearer Data.ByteString.Internal.ByteString
+    | OAuth2Token Data.ByteString.Internal.ByteString
+    | AWSAuth Network.Wreq.Internal.Types.AWSAuthVersion
+              Data.ByteString.Internal.ByteString
+              Data.ByteString.Internal.ByteString
+    | OAuth1 Data.ByteString.Internal.ByteString
+             Data.ByteString.Internal.ByteString
+             Data.ByteString.Internal.ByteString
+             Data.ByteString.Internal.ByteString
+c0c4e7c0a951e51f160cfcf7b3495525
+  data Body
+    = NoBody
+    | StringBody Data.ByteString.Lazy.Internal.ByteString
+    | ReaderBody Network.HTTP.Client.Types.BodyReader
+4d2572d75382e40620e72ddfc4e3c8d9
+  data CacheEntry body
+    = CacheEntry {entryCreated :: Data.Time.Clock.UTC.UTCTime,
+                  entryExpires :: GHC.Base.Maybe Data.Time.Clock.UTC.UTCTime,
+                  entryResponse :: Network.HTTP.Client.Types.Response body}
+22385d8cdb231b93feab97cafb3413df
+  type ContentType = Data.ByteString.Internal.ByteString
+6b3902c372f00e4878c0c7cc5af7c151
+  data FormParam where
+    (:=) :: Network.Wreq.Internal.Types.FormValue v =>
+            Data.ByteString.Internal.ByteString -> v -> FormParam
+3d100ec4872f5250f1661596ddad521e
+  class FormValue a where
+    renderFormValue :: a -> Data.ByteString.Internal.ByteString
+    {-# MINIMAL renderFormValue #-}
+0a53ee3e37cb1ff4da8b06dbff56cd27
+  data JSONError = JSONError GHC.Base.String
+8a9978a9ba38dcd07aab09cb60cdcf7f
+  data Link
+    = Link {linkURL :: Data.ByteString.Internal.ByteString,
+            linkParams :: [(Data.ByteString.Internal.ByteString,
+                            Data.ByteString.Internal.ByteString)]}
+d4d3784dc7295b2befd37701bfcfd1cc
+  type Mgr =
+    Data.Either.Either
+      Network.HTTP.Client.Types.ManagerSettings
+      Network.HTTP.Client.Types.Manager
+a7ee0a275ba21a223c2335f85481728d
+  data Options
+    = Options {manager :: Network.Wreq.Internal.Types.Mgr,
+               proxy :: GHC.Base.Maybe Network.HTTP.Client.Types.Proxy,
+               auth :: GHC.Base.Maybe Network.Wreq.Internal.Types.Auth,
+               headers :: [Network.HTTP.Types.Header.Header],
+               params :: [(Data.Text.Internal.Text, Data.Text.Internal.Text)],
+               redirects :: GHC.Types.Int,
+               cookies :: GHC.Base.Maybe Network.HTTP.Client.Types.CookieJar,
+               checkResponse :: GHC.Base.Maybe
+                                  Network.Wreq.Internal.Types.ResponseChecker}
+d72a9f0de60e7c56c763278c7591f5b8
+  data Payload where
+    Raw :: Network.Wreq.Internal.Types.ContentType
+           -> Network.HTTP.Client.Types.RequestBody -> Payload
+28418db8076d41411c0d5e19e67e50bb
+  class Postable a where
+    postPayload :: a
+                   -> Network.HTTP.Client.Types.Request
+                   -> GHC.Types.IO Network.HTTP.Client.Types.Request
+    {-# MINIMAL postPayload #-}
+2da3ace436c2b4bfad6acf98eb39dcc6
+  class Putable a where
+    putPayload :: a
+                  -> Network.HTTP.Client.Types.Request
+                  -> GHC.Types.IO Network.HTTP.Client.Types.Request
+    {-# MINIMAL putPayload #-}
+db86217c2a7fa9022516ac3692d871e1
+  data Req
+    = Req Network.Wreq.Internal.Types.Mgr
+          Network.HTTP.Client.Types.Request
+4ab1c3030f304cea5569fd7c1afea7d9
+  type ResponseChecker =
+    Network.HTTP.Client.Types.Request
+    -> Network.HTTP.Client.Types.Response
+         Network.HTTP.Client.Types.BodyReader
+    -> GHC.Types.IO ()
+7868b46275dc686f0089b90eb1de622d
+  type Run body =
+    Network.Wreq.Internal.Types.Req
+    -> GHC.Types.IO (Network.HTTP.Client.Types.Response body)
+f368629ac35c1f55d336260c0e29886e
+  data Session
+    = Session {seshCookies :: GHC.Base.Maybe
+                                (GHC.IORef.IORef Network.HTTP.Client.Types.CookieJar),
+               seshManager :: Network.HTTP.Client.Types.Manager,
+               seshRun :: Network.Wreq.Internal.Types.Session
+                          -> Network.Wreq.Internal.Types.Run Network.Wreq.Internal.Types.Body
+                          -> Network.Wreq.Internal.Types.Run
+                               Network.Wreq.Internal.Types.Body}
+    RecFlag: Recursive
+d55e03972d74d0555201b53c6a987ade
+  auth ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.Maybe Network.Wreq.Internal.Types.Auth
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLSLLLLL),1*U(A,A,1*U,A,A,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds3 }) -}
+f3d76cea6e41e63bb6de17dced83c968
+  checkResponse ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.Maybe Network.Wreq.Internal.Types.ResponseChecker
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLLLLLLS),1*U(A,A,A,A,A,A,A,1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds8 }) -}
+702d092f60b3431e360e767493726943
+  cookies ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.Maybe Network.HTTP.Client.Types.CookieJar
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLLLLLSL),1*U(A,A,A,A,A,A,1*U,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds7 }) -}
+f574f1b67b007abe69a3b2467cb278c2
+  entryCreated ::
+    Network.Wreq.Internal.Types.CacheEntry body
+    -> Data.Time.Clock.UTC.UTCTime
+  RecSel Left Network.Wreq.Internal.Types.CacheEntry
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLL),1*U(1*U(U,U),A,A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ body (ds :: Network.Wreq.Internal.Types.CacheEntry body) ->
+                 case ds of wild { Network.Wreq.Internal.Types.CacheEntry ds1 ds2 ds3 ->
+                 ds1 }) -}
+4073ec3e4b14cbf114e0fad655429d37
+  entryExpires ::
+    Network.Wreq.Internal.Types.CacheEntry body
+    -> GHC.Base.Maybe Data.Time.Clock.UTC.UTCTime
+  RecSel Left Network.Wreq.Internal.Types.CacheEntry
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LSL),1*U(A,1*U,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ body (ds :: Network.Wreq.Internal.Types.CacheEntry body) ->
+                 case ds of wild { Network.Wreq.Internal.Types.CacheEntry ds1 ds2 ds3 ->
+                 ds2 }) -}
+40dfcd48d6c8253186aa51e3eb689712
+  entryResponse ::
+    Network.Wreq.Internal.Types.CacheEntry body
+    -> Network.HTTP.Client.Types.Response body
+  RecSel Left Network.Wreq.Internal.Types.CacheEntry
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLS),1*U(A,A,1*U(U,U,U,U,U,U))>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ @ body (ds :: Network.Wreq.Internal.Types.CacheEntry body) ->
+                 case ds of wild { Network.Wreq.Internal.Types.CacheEntry ds1 ds2 ds3 ->
+                 ds3 }) -}
+5baf79e1290c7ffc3e0cf0bc506163cd
+  headers ::
+    Network.Wreq.Internal.Types.Options
+    -> [Network.HTTP.Types.Header.Header]
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLLSLLLL),1*U(A,A,A,1*U,A,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds4 }) -}
+3b041194ff5df5c49120d017beedbc86
+  linkParams ::
+    Network.Wreq.Internal.Types.Link
+    -> [(Data.ByteString.Internal.ByteString,
+         Data.ByteString.Internal.ByteString)]
+  RecSel Left Network.Wreq.Internal.Types.Link
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LS),1*U(A,1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Link) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Link ds1 ds2 ->
+                 ds2 }) -}
+57dd6589c9f4883e3a21c9f7ab65f596
+  linkURL ::
+    Network.Wreq.Internal.Types.Link
+    -> Data.ByteString.Internal.ByteString
+  RecSel Left Network.Wreq.Internal.Types.Link
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(SL),1*U(1*U(U,U,U,U),A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Link) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Link ds1 ds2 ->
+                 ds1 }) -}
+ec89945468129a25cdee8adb4b061b97
+  manager ::
+    Network.Wreq.Internal.Types.Options
+    -> Network.Wreq.Internal.Types.Mgr
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(SLLLLLLL),1*U(1*U,A,A,A,A,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds1 }) -}
+17cebb4e13e04f45211bb8f3f2f6ebf5
+  params ::
+    Network.Wreq.Internal.Types.Options
+    -> [(Data.Text.Internal.Text, Data.Text.Internal.Text)]
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLLLSLLL),1*U(A,A,A,A,1*U,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds5 }) -}
+d42fbae72db0623515bbe5e603c7915a
+  proxy ::
+    Network.Wreq.Internal.Types.Options
+    -> GHC.Base.Maybe Network.HTTP.Client.Types.Proxy
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LSLLLLLL),1*U(A,1*U,A,A,A,A,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds2 }) -}
+df2e6de5e05e81c3ff476a3a7dbc39c5
+  redirects :: Network.Wreq.Internal.Types.Options -> GHC.Types.Int
+  RecSel Left Network.Wreq.Internal.Types.Options
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LLLLLSLL),1*U(A,A,A,A,A,1*U(U),A,A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Options) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Options ds1 ds2 ds3 ds4 ds5 ds6 ds7 ds8 ->
+                 ds6 }) -}
+1b4bb50b850de8c526931dc2f87d21c9
+  reqURL ::
+    Network.Wreq.Internal.Types.Req
+    -> Data.ByteString.Internal.ByteString
+  {- Arity: 1,
+     Strictness: <S,1*U(A,U(A,1*U,1*U(U,U,U,U),1*U(1*U),1*U(U,U,U,U),1*U(U,U,U,U),A,A,A,A,A,A,A,A,A,A,A,A,A))>,
+     Inline: INLINE[0],
+     Unfolding: InlineRule (1, True, False)
+                (\ (w :: Network.Wreq.Internal.Types.Req) ->
+                 case w of ww { Network.Wreq.Internal.Types.Req ww1 ww2 ->
+                 Network.Wreq.Internal.Types.$wreqURL ww2 }) -}
+c9f103d42dbb857493b4a3e2b2c48ab3
+  seshCookies ::
+    Network.Wreq.Internal.Types.Session
+    -> GHC.Base.Maybe
+         (GHC.IORef.IORef Network.HTTP.Client.Types.CookieJar)
+  RecSel Left Network.Wreq.Internal.Types.Session
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(SLL),1*U(1*U,A,A)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Session) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Session ds1 ds2 ds3 ->
+                 ds1 }) -}
+be671cef27b006042b83bed43555e7c9
+  seshManager ::
+    Network.Wreq.Internal.Types.Session
+    -> Network.HTTP.Client.Types.Manager
+  RecSel Left Network.Wreq.Internal.Types.Session
+  {- Arity: 1, HasNoCafRefs,
+     Strictness: <S(LSL),1*U(A,1*U(U,U,U,U,U,U,U,U,U,U,U,U,U),A)>m,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Session) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Session ds1 ds2 ds3 ->
+                 ds2 }) -}
+c54163408bc579d9d087c989e307be49
+  seshRun ::
+    Network.Wreq.Internal.Types.Session
+    -> Network.Wreq.Internal.Types.Session
+    -> Network.Wreq.Internal.Types.Run Network.Wreq.Internal.Types.Body
+    -> Network.Wreq.Internal.Types.Run Network.Wreq.Internal.Types.Body
+  RecSel Left Network.Wreq.Internal.Types.Session
+  {- Arity: 1, HasNoCafRefs, Strictness: <S(LLS),1*U(A,A,1*U)>,
+     Unfolding: InlineRule (1, True, False)
+                (\ (ds :: Network.Wreq.Internal.Types.Session) ->
+                 case ds of wild { Network.Wreq.Internal.Types.Session ds1 ds2 ds3 ->
+                 ds3 }) -}
+instance GHC.Classes.Eq [Network.Wreq.Internal.Types.AWSAuthVersion]
+  = Network.Wreq.Internal.Types.$fEqAWSAuthVersion
+instance GHC.Classes.Eq [Network.Wreq.Internal.Types.Auth]
+  = Network.Wreq.Internal.Types.$fEqAuth
+instance GHC.Classes.Eq [Network.Wreq.Internal.Types.Link]
+  = Network.Wreq.Internal.Types.$fEqLink
+instance GHC.Exception.Exception [Network.Wreq.Internal.Types.JSONError]
+  = Network.Wreq.Internal.Types.$fExceptionJSONError
+instance GHC.Base.Functor [Network.Wreq.Internal.Types.CacheEntry]
+  = Network.Wreq.Internal.Types.$fFunctorCacheEntry
+instance GHC.Show.Show [Network.Wreq.Internal.Types.AWSAuthVersion]
+  = Network.Wreq.Internal.Types.$fShowAWSAuthVersion
+instance GHC.Show.Show [Network.Wreq.Internal.Types.Auth]
+  = Network.Wreq.Internal.Types.$fShowAuth
+instance GHC.Show.Show [Network.Wreq.Internal.Types.CacheEntry]
+  = Network.Wreq.Internal.Types.$fShowCacheEntry
+instance GHC.Show.Show [Network.Wreq.Internal.Types.FormParam]
+  = Network.Wreq.Internal.Types.$fShowFormParam
+instance GHC.Show.Show [Network.Wreq.Internal.Types.JSONError]
+  = Network.Wreq.Internal.Types.$fShowJSONError
+instance GHC.Show.Show [Network.Wreq.Internal.Types.Link]
+  = Network.Wreq.Internal.Types.$fShowLink
+instance GHC.Show.Show [Network.Wreq.Internal.Types.Options]
+  = Network.Wreq.Internal.Types.$fShowOptions
+instance GHC.Show.Show [Network.Wreq.Internal.Types.Session]
+  = Network.Wreq.Internal.Types.$fShowSession
+"SPEC/Network.Wreq.Internal.Types $fEq(,) @ ByteString @ ByteString" [ALWAYS] forall ($dEq1 :: GHC.Classes.Eq
+                                                                                                 Data.ByteString.Internal.ByteString)
+                                                                                     ($dEq :: GHC.Classes.Eq
+                                                                                                Data.ByteString.Internal.ByteString)
+  GHC.Classes.$fEq(,) @ Data.ByteString.Internal.ByteString
+                      @ Data.ByteString.Internal.ByteString
+                      $dEq
+                      $dEq1
+  = Network.Wreq.Internal.Types.$fEqLink_$s$fEq(,)
+vectorised variables:
+vectorised tycons:
+vectorised reused tycons:
+parallel variables:
+parallel tycons:
+trusted: none
+require own pkg trusted: False
+
