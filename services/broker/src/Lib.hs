@@ -96,7 +96,7 @@ lookupParticipant :: Value -> Api Participant
 lookupParticipant request = do
 
     -- Extract phone number from request object
-    phone <- hoist (extractString "subscriber_phone" request) XXX
+    phone <- hoist (extractString "subscriber_phone" request) MissingSubscriberPhoneError
 
     -- Log the raw response
     void $ post "/voto_response_data" $ object [("data", request)] 
