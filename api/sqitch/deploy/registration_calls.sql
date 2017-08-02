@@ -3,7 +3,7 @@ BEGIN;
   CREATE TABLE farmradio_api.registration_calls (
     id             SERIAL       PRIMARY KEY,
     phone_number   VARCHAR      NOT NULL,
-    schedule_time  TIMESTAMPTZ  NOT NULL,
+    scheduled_time TIMESTAMPTZ  NOT NULL,
     created_at     TIMESTAMPTZ  DEFAULT NOW() 
   );
 
