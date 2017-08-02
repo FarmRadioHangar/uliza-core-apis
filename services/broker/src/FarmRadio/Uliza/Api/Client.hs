@@ -21,11 +21,10 @@ module FarmRadio.Uliza.Api.Client
     ) where
 
 import Control.Lens
-import Control.Monad               ( void )
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Either
-import Control.Monad.Trans.State   ( StateT, runStateT, modify, withState )
+import Control.Monad.Trans.State   ( StateT, runStateT, modify )
 import Data.Aeson 
 import Data.Aeson.Lens
 import Data.ByteString
@@ -34,16 +33,11 @@ import Data.Monoid                 ( (<>) )
 import Data.Text
 import FarmRadio.Uliza.Api.Context
 import Network.HTTP.Base           ( urlEncodeVars )
-import Network.Wreq                ( Options
-                                   , Response
+import Network.Wreq                ( Response
                                    , auth
-                                   , customPayloadMethodWith
                                    , defaults
-                                   , getWith
                                    , header
                                    , oauth2Bearer
-                                   , postWith
-                                   , putWith
                                    , responseBody )
 
 import Network.HTTP.Types.Header   ( HeaderName )
@@ -64,15 +58,15 @@ type Api = EitherT ApiError (StateT ApiContext IO)
 runApi :: Api a -> IO (Either ApiError a)
 runApi c = Session.withAPISession run
   where
-    run session = fst <$> runStateT 
+    run sess = fst <$> runStateT 
           (runEitherT c) 
-          (ApiContext mempty defaults session) 
+          (ApiContext mempty defaults sess) 
 
 hoist :: Maybe a -> ApiError -> Api a
 hoist a = hoistEither . flip maybeToEither a
 
 extractString :: AsValue s => Text -> s -> Maybe Text
-extractString k json = json ^? key k . _String
+extractString k obj = obj ^? key k . _String
 
 unwrapRow :: (AsValue a, ToJSON b, FromJSON b) => Response a -> Maybe b
 unwrapRow response = response ^? responseBody ^._Just ._Array ^? ix 0 ._JSON 
@@ -88,7 +82,7 @@ put endpoint body = lift $ do
 patch :: String -> Value -> Api (Response BL.ByteString)
 patch endpoint body = lift $ do
     ApiContext{..} <- State.get
-    customPayloadMethodWith "PATCH" _options (_baseUrl <> endpoint) body & liftIO
+    Session.customPayloadMethodWith "PATCH" _options _session (_baseUrl <> endpoint) body & liftIO
 
 post_ :: (ToJSON a, FromJSON a) => String -> Value -> Api (Maybe a)
 post_ endpoint body = lift $ do

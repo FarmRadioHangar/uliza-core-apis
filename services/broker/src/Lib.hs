@@ -8,39 +8,23 @@ module Lib
     , extractString
   ) where
 
-import Control.Exception.Safe
 import Control.Lens
-import Control.Monad (void, when, unless, join)
+import Control.Monad (void, join)
 import Control.Monad.IO.Class
-import Control.Monad.Trans.Class
 import Control.Monad.Trans.Either
-import Control.Monad.Trans.State   ( StateT, runStateT, modify, withState )
 import Data.Aeson
 import Data.Aeson.Lens
-import Data.Aeson.Types
-import Data.ByteString.Builder (toLazyByteString)
-import Data.ByteString.Lazy (toStrict)
-import Data.Maybe (fromJust, isNothing, fromMaybe)
-import Data.Monoid ((<>))
-import Data.Scientific 
 import Data.Text
-import Data.Text.Encoding (decodeUtf8, encodeUtf8)
+import Data.Text.Encoding (encodeUtf8)
 import Data.Time.Clock
-import Data.Time.Format
 import Database.PostgreSQL.Simple.Time
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Api.Utils
-import Network.HTTP.Client (HttpException(..), HttpExceptionContent(..))
-import Network.Wreq (Response, responseStatus, responseBody, statusCode)
 import FarmRadio.Uliza.Registration.Participant (Participant(..))
 import FarmRadio.Uliza.Registration.RegistrationCall (RegistrationCall(..))
-import Network.HTTP.Types.Status
 import Web.Scotty (ScottyM, scotty)
 
-import qualified FarmRadio.Uliza.Registration.Participant as Participant
 import qualified FarmRadio.Uliza.Registration.RegistrationCall as RegistrationCall
-
-import qualified Data.ByteString.Lazy as BL
 import qualified Web.Scotty as Scotty
 
 obj :: String
@@ -115,7 +99,7 @@ lookupParticipant request = do
     phone <- hoist (extractString "subscriber_phone" request) XXX
 
     -- Log the raw response
-    post "/voto_response_data" $ object [("data", request)] 
+    void $ post "/voto_response_data" $ object [("data", request)] 
 
     -- Look up participant from subscriber's phone number
     response <- getParticipantByPhoneNumber (unpack phone)
@@ -139,8 +123,7 @@ scheduleCall Participant{..} mcall = do
     -- Time of most recent registration call (or Nothing)
     let scheduleTime = mcall >>= registrationCallScheduleTime
 
-    case (registrationStatus, diffUTCTime <$> scheduleTime 
-                                          <*> Just now) of
+    case (registrationStatus, diffUTCTime <$> scheduleTime <*> Just now) of
       -- Participant is already registered
       ( "REGISTERED"     , _       ) -> left XXX
       -- Participant has previously declined to register
@@ -169,6 +152,7 @@ scheduleCall Participant{..} mcall = do
     logRegistration user call
 
 
+-- import Control.Exception.Safe
 --    --what :: HttpException -> IO ()
 --    --what e = 
 --    --  case e of
