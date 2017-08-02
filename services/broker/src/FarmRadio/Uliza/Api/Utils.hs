@@ -13,7 +13,7 @@ eitherToMaybe :: Either a b -> Maybe b
 eitherToMaybe = either (const Nothing) Just
 
 number :: Int -> Value
-number = Number . fromFloatDigits . fromIntegral  
+number n = Number $ fromFloatDigits (fromIntegral n :: Double)
 
 utcToText :: UTCTime -> Text
 utcToText = decodeUtf8 . toStrict . toLazyByteString . utcTimeToBuilder
