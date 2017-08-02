@@ -32,6 +32,9 @@ library
                      , MissingH
                      , postgresql-simple
                      , safe-exceptions
+                     , template-haskell
+                     , mime-types
+                     , scotty
                      , scientific
                      , text
                      , time

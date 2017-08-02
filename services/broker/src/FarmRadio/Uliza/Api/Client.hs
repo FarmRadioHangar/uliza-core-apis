@@ -45,21 +45,29 @@ import Network.Wreq                ( Options
                                    , postWith
                                    , putWith
                                    , responseBody )
+
 import Network.HTTP.Types.Header   ( HeaderName )
+import WreqStuff
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString.Lazy      as BL
+import qualified Network.Wreq.Session      as Session
 
 data ApiError 
   = ServerError 
   | AuthenticationError 
+  | BadRequestError
   | XXX
   deriving (Show)
 
 type Api = EitherT ApiError (StateT ApiContext IO) 
 
 runApi :: Api a -> IO (Either ApiError a)
-runApi c = fst <$> runStateT (runEitherT c) (ApiContext mempty defaults) 
+runApi c = Session.withAPISession run
+  where
+    run session = fst <$> runStateT 
+          (runEitherT c) 
+          (ApiContext mempty defaults session) 
 
 hoist :: Maybe a -> ApiError -> Api a
 hoist a = hoistEither . flip maybeToEither a
@@ -73,7 +81,7 @@ unwrapRow response = response ^? responseBody ^._Just ._Array ^? ix 0 ._JSON
 put :: String -> Value -> Api (Response BL.ByteString)
 put endpoint body = lift $ do
     ApiContext{..} <- State.get
-    putWith _options (_baseUrl <> endpoint) body & liftIO
+    Session.putWith _options _session (_baseUrl <> endpoint) body & liftIO
 
 patch :: String -> Value -> Api (Response BL.ByteString)
 patch endpoint body = lift $ do
@@ -83,17 +91,18 @@ patch endpoint body = lift $ do
 post_ :: (ToJSON a, FromJSON a) => String -> Value -> Api (Maybe a)
 post_ endpoint body = lift $ do
     ApiContext{..} <- State.get
-    unwrapRow <$> postWith _options (_baseUrl <> endpoint) body & liftIO
+    unwrapRow <$> Session.postWith _options _session 
+        (_baseUrl <> endpoint) body & liftIO
 
 post :: String -> Value -> Api (Response BL.ByteString)
 post endpoint body = lift $ do
     ApiContext{..} <- State.get
-    postWith _options (_baseUrl <> endpoint) body & liftIO
+    Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
 
 get :: String -> Api (Response BL.ByteString)
 get endpoint = lift $ do
     ApiContext{..} <- State.get
-    getWith _options (_baseUrl <> endpoint) & liftIO
+    Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
 
 getJSON :: (ToJSON a, FromJSON a) => String -> Api (Maybe a)
 getJSON endpoint = unwrapRow <$> get endpoint

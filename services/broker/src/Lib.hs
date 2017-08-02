@@ -34,17 +34,30 @@ import Network.HTTP.Client (HttpException(..), HttpExceptionContent(..))
 import Network.Wreq (Response, responseStatus, responseBody, statusCode)
 import FarmRadio.Uliza.Registration.Participant (Participant(..))
 import FarmRadio.Uliza.Registration.RegistrationCall (RegistrationCall(..))
+import Network.HTTP.Types.Status
+import Web.Scotty (ScottyM, scotty)
 
 import qualified FarmRadio.Uliza.Registration.Participant as Participant
 import qualified FarmRadio.Uliza.Registration.RegistrationCall as RegistrationCall
 
 import qualified Data.ByteString.Lazy as BL
+import qualified Web.Scotty as Scotty
 
 obj :: String
 obj = "{\"data\":{\"question_id\": \"123123\", \"survey_id\": \"89324\", \"voto_id\": \"44\", \"response_type\": \"1\", \"content_type\": \"1\", \"poll_id\": \"213\", \"delivery_log_id\": \"832\", \"choice_id\": \"1\", \"subscriber_id\": \"232\", \"subscriber_phone\": \"+233212323\", \"question_title\": \"adfadfadfasdfasfdafd\", \"choice_name\": \"adfadsfas fadsfadsfasdf\", \"date_received\": \"2017-07-24T18:13:51Z\"}}"
 
+app :: ScottyM ()
+app = do
+    Scotty.post "/registrations" $ do
+      liftIO banan
+      Scotty.text "OK!"
+
 someFunc :: IO ()
 someFunc = do
+    scotty 3034 app
+
+banan :: IO ()
+banan = do
     xx <- runApi $ do
         -- 
         setBaseUrl "http://localhost:3000"
@@ -52,7 +65,7 @@ someFunc = do
         setHeader "Accept" ["*/*"]
         setHeader "Prefer" ["return=representation"]
         --
-        hoist (obj ^? key "data") XXX
+        hoist (obj ^? key "data") BadRequestError
           >>= lookupParticipant 
           >>= \user -> getRegistrationCall user
           >>= \call -> scheduleCall user call
