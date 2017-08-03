@@ -55,7 +55,7 @@ handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
     hint InternalServerError       = "INTERNAL_SERVER_ERROR"
     hint UnexpectedResponse        = "UNEXPECTED_RESPONSE_FORMAT"
     hint (StatusCodeResponse code) = statusCodeResponse code "STATUS_CODE_{}" 
-    hint ServerConnectionError     = "SERVER_CONNECTION_ERROR"
+    hint ServerConnectionFailed    = "SERVER_CONNECTION_FAILED"
     hint AuthenticationError       = "UNAUTHORIZED"
     hint BadRequestError           = "BAD_REQUEST_FORMAT"
 

@@ -52,7 +52,7 @@ data ApiError
   = InternalServerError     -- ^ Something went wrong during processing
   | UnexpectedResponse      -- ^ API response did not have the expected format
   | StatusCodeResponse Int  -- ^ API server returned a non-200 response code
-  | ServerConnectionError   -- ^ Connection failed. Is the API server running?
+  | ServerConnectionFailed  -- ^ Connection failed. Is the API server running?
   | AuthenticationError     -- ^ Unauthorized.
   | BadRequestError         -- ^ Bad request format.
   deriving (Show)
@@ -67,7 +67,7 @@ runApi c = Session.withAPISession run `catch` httpException
 
 httpException :: HttpException -> IO (Either ApiError a)
 httpException = \case 
-    HttpExceptionRequest _ (ConnectionFailure _) -> err ServerConnectionError
+    HttpExceptionRequest _ (ConnectionFailure _) -> err ServerConnectionFailed
     _                                            -> err InternalServerError
   where
     err = return . Left
