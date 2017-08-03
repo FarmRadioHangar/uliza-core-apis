@@ -102,8 +102,8 @@ data RegistrationStatus =
 determineRegistrationStatus :: Participant 
                             -> Maybe RegistrationCall 
                             -> Api RegistrationStatus
-determineRegistrationStatus Participant{..} 
-                            mcall = do
+determineRegistrationStatus Participant{..} mcall = do
+
     -- Current time
     now <- getCurrentTime & liftIO
 

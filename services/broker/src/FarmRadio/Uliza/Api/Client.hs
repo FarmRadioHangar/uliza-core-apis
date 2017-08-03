@@ -60,15 +60,15 @@ data ApiError
 type Api = EitherT ApiError (StateT ApiContext IO) 
 
 runApi :: Api a -> IO (Either ApiError a)
-runApi c = catch (Session.withAPISession run) stuff
+runApi c = catch (Session.withAPISession run) httpException
   where
     run sess = fst <$> runStateT 
         (runEitherT c) 
         (ApiContext mempty opts sess) 
     opts = defaults & checkResponse .~ Just (\_ _ -> return ())
 
-stuff :: HttpException -> IO (Either ApiError a)
-stuff = 
+httpException :: HttpException -> IO (Either ApiError a)
+httpException = 
   \case 
     HttpExceptionRequest _ (ConnectionFailure _) -> err ServerConnectionError
     _                                            -> err InternalServerError
@@ -152,11 +152,14 @@ extractBody response =
       401 -> left AuthenticationError
       500 -> left InternalServerError
       err -> left (StatusCodeResponse err)
-  where ok = right (response ^. responseBody)
+  where 
+    ok = right (response ^. responseBody)
 
+-- | Specify the API base url.
 setBaseUrl :: String -> Api ()
 setBaseUrl = lift . modify . set baseUrl 
 
+-- | Set an OAuth2.0 token (JWT) for authentication with API server.
 setOauth2Token :: ByteString -> Api ()
 setOauth2Token token = lift $ modify (options . auth ?~ oauth2Bearer token)
 
