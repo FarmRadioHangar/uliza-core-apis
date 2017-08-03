@@ -7,7 +7,6 @@ module FarmRadio.Uliza.Api.Client
     , get
     , getJSON
     , getSingleEntity
-    , hoist
     , patch
     , patchResource
     , post
@@ -21,19 +20,19 @@ module FarmRadio.Uliza.Api.Client
     ) where
 
 import Control.Lens
+import Network.HTTP.Client (HttpExceptionContent(..), HttpException(..))
 import Control.Monad.IO.Class
+import Control.Exception.Safe
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Either
 import Control.Monad.Trans.State   ( StateT, runStateT, modify )
 import Data.Aeson 
 import Data.Aeson.Lens
 import Data.ByteString
-import Data.Either.Utils           ( maybeToEither )
 import Data.Monoid                 ( (<>) )
 import Data.Text
 import FarmRadio.Uliza.Api.Context
 import Network.HTTP.Base           ( urlEncodeVars )
-import Network.HTTP.Client         ( BodyReader, Request )
 import Network.Wreq                ( Response
                                    , auth
                                    , checkResponse
@@ -51,6 +50,8 @@ import qualified Network.Wreq.Session      as Session
 
 data ApiError 
   = ServerError 
+  | StatusCodeError Int
+  | ServerConnectionError
   | AuthenticationError 
   | BadRequestError
   | XXX
@@ -59,15 +60,23 @@ data ApiError
 type Api = EitherT ApiError (StateT ApiContext IO) 
 
 runApi :: Api a -> IO (Either ApiError a)
-runApi c = Session.withAPISession run
+runApi c = catch (Session.withAPISession run) stuff
   where
     run sess = fst <$> runStateT 
-          (runEitherT c) 
-          (ApiContext mempty opts sess) 
+        (runEitherT c) 
+        (ApiContext mempty opts sess) 
     opts = defaults & checkResponse .~ Just (\_ _ -> return ())
 
-hoist :: Maybe a -> ApiError -> Api a
-hoist a = hoistEither . flip maybeToEither a
+stuff :: HttpException -> IO (Either ApiError a)
+stuff exc = 
+    case exc of
+      HttpExceptionRequest _ exception -> 
+        case exception of
+          ConnectionFailure e -> return $ Left ServerConnectionError
+          e -> do
+              print e 
+              return $ Left ServerError
+      _ -> return $ Left ServerError
 
 extractString :: AsValue s => Text -> s -> Maybe Text
 extractString k obj = obj ^? key k . _String
@@ -79,34 +88,52 @@ resourceUrl :: String -> [(String, String)] -> String
 resourceUrl name params = "/" <> name <> "?" <> urlEncodeVars params
 
 put :: String -> Value -> Api (Response BL.ByteString)
-put endpoint body = lift $ do
-    ApiContext{..} <- State.get
-    Session.putWith _options _session (_baseUrl <> endpoint) body & liftIO
+put endpoint body = do
+    response <- lift $ do
+      ApiContext{..} <- State.get
+      Session.putWith _options _session (_baseUrl <> endpoint) body & liftIO
+    createResponse response
 
 patch :: String -> Value -> Api (Response BL.ByteString)
-patch endpoint body = lift $ do
-    ApiContext{..} <- State.get
-    Session.customPayloadMethodWith "PATCH" _options _session 
-        (_baseUrl <> endpoint) body & liftIO
+patch endpoint body = do
+    response <- lift $ do
+      ApiContext{..} <- State.get
+      Session.customPayloadMethodWith "PATCH" _options _session 
+          (_baseUrl <> endpoint) body & liftIO
+    createResponse response
 
 post_ :: (ToJSON a, FromJSON a) => String -> Value -> Api (Maybe a)
-post_ endpoint body = lift $ do
-    ApiContext{..} <- State.get
-    unwrapRow <$> Session.postWith _options _session 
-        (_baseUrl <> endpoint) body & liftIO
+post_ endpoint body = do
+    response <- lift $ do
+      ApiContext{..} <- State.get
+      Session.postWith _options _session 
+          (_baseUrl <> endpoint) body & liftIO
+    unwrapRow <$> createResponse response
 
 post :: String -> Value -> Api (Response BL.ByteString)
-post endpoint body = lift $ do
-    ApiContext{..} <- State.get
-    Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
+post endpoint body = do
+    response <- lift $ do
+      ApiContext{..} <- State.get
+      Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
+    createResponse response
 
 get :: String -> Api (Response BL.ByteString)
-get endpoint = lift $ do
-    ApiContext{..} <- State.get
-    resp <- Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
-    case resp ^. responseStatus . statusCode of 
-      statusOk -> undefined
-      _        -> undefined
+get endpoint = do
+    response <- lift $ do
+      ApiContext{..} <- State.get
+      Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
+    createResponse response
+
+createResponse :: Response BL.ByteString -> Api (Response BL.ByteString)
+createResponse response =
+    case response ^. responseStatus . statusCode of
+      200 -> ok
+      201 -> ok
+      202 -> ok
+      401 -> left AuthenticationError
+      500 -> left ServerError
+      err -> left (StatusCodeError err)
+  where ok = right response
 
 getJSON :: (ToJSON a, FromJSON a) => String -> Api (Maybe a)
 getJSON endpoint = unwrapRow <$> get endpoint

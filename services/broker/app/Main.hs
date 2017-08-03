@@ -2,8 +2,11 @@
 module Main where
 
 import Control.Lens
+import Control.Monad (void)
 import Control.Monad.IO.Class
+import Data.Aeson
 import Data.Aeson.Lens
+import Data.Either.Utils           ( maybeToEither )
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
 import Web.Scotty (ScottyM, scotty)
@@ -14,35 +17,32 @@ import qualified Web.Scotty as Scotty
 app :: ScottyM ()
 app = 
   Scotty.post "/responses" $ do
-    Scotty.body >>= liftIO . handler
-    Scotty.text "OK!"
+    b <- Scotty.body 
+    handler b
 
 main :: IO ()
 main = scotty 3034 app
 
-handler :: BL.ByteString -> IO ()
+handler :: BL.ByteString -> Scotty.ActionM ()
 handler body = do
-    xx <- runApi $ do
+    x <- liftIO $ runApi $ do
         -- 
         setBaseUrl "http://localhost:3000"
-        --setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
-        setOauth2Token "xxx"
+        setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
+        --setOauth2Token "xxx"
         setHeader "Accept" ["*/*"]
         setHeader "Prefer" ["return=representation"]
         --
-        hoist (body ^? key "data") BadRequestError
+        maybeToEither BadRequestError (body ^? key "data") 
           >>= lookupParticipant 
           >>= \user -> getRegistrationCall user
           >>= \call -> scheduleCall user call
         --
-    print xx
-
--- import Control.Exception.Safe
---    --what :: HttpException -> IO ()
---    --what e = 
---    --  case e of
---    --    HttpExceptionRequest req exception -> 
---    --      case exception of
---    --        StatusCodeException r bs -> print (r ^. responseStatus . statusCode)
---    --    e -> print (displayException e)
+    case x of
+      Left err -> do
+          liftIO $ print err
+          Scotty.json $ object [("message", "error")]
+      Right x  -> do
+          liftIO $ print x
+          Scotty.json x
 

@@ -6,7 +6,7 @@ import Data.Aeson
 import Data.Text
 
 data RegistrationCall = RegistrationCall 
-    { registrationCallId :: !(Maybe Int)
+    { entityId           :: !(Maybe Int)
     , phoneNumber        :: !Text
     , scheduledTime      :: !Text 
     , createdAt          :: !Text }
@@ -14,7 +14,7 @@ data RegistrationCall = RegistrationCall
 
 instance ToJSON RegistrationCall where
   toJSON RegistrationCall{..} = object 
-    [ "id"             .= registrationCallId
+    [ "id"             .= entityId
     , "phone_number"   .= phoneNumber
     , "scheduled_time" .= scheduledTime
     , "created_at"     .= createdAt ]

@@ -7,6 +7,7 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Either
 import Data.Aeson
+import Data.Either.Utils  ( maybeToEither )
 import Data.Text
 import Data.Text.Encoding ( encodeUtf8 )
 import Data.Time
@@ -38,6 +39,7 @@ postParticipant phone = post_ "/participants" (object participant)
     participant = [ ("phone_number"        , String phone)
                   , ("registration_status" , "NOT_REGISTERED") ]
 
+-- | Parse and translate the 'RegistrationCall' datetime field to 'UTCTime'.
 registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
 registrationCallScheduleTime RegistrationCall{..} = 
     eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
@@ -60,7 +62,7 @@ lookupParticipant :: Value -> Api Participant
 lookupParticipant request = do
 
     -- Extract phone number from request object
-    phone <- hoist (extractString "subscriber_phone" request) BadRequestError
+    phone <- maybeToEither BadRequestError (extractString "subscriber_phone" request) 
 
     -- Log the raw response
     void $ post "/voto_response_data" $ object [("data", request)] 
@@ -76,10 +78,10 @@ lookupParticipant request = do
       --
       -- Create a participant if one wasn't found
       --
-      Nothing -> postParticipant phone >>= flip hoist XXX
+      Nothing -> postParticipant phone >>= maybeToEither XXX
 
-scheduleCall :: Participant -> Maybe RegistrationCall -> Api ()
-scheduleCall Participant{..} mcall = do
+scheduleCall :: Participant -> Maybe RegistrationCall -> Api RegistrationCall
+scheduleCall Participant{ entityId = participantId, .. } mcall = do
 
     -- Current time
     now <- getCurrentTime & liftIO
@@ -92,26 +94,30 @@ scheduleCall Participant{..} mcall = do
       ( "REGISTERED"     , _       ) -> left XXX
       -- Participant has previously declined to register
       ( "DECLINED"       , _       ) -> left XXX
-      -- Participant rs not registered
+      -- Participant is not registered
       ( "NOT_REGISTERED" , Just diff ) 
         -- A call is already scheduled
         | diff > 0    -> left XXX
         -- A registration call took place recently
         | diff > -120 -> left XXX
-      -- No previous call was made or last call was long ago -- schedule a call
+      -- No previous call was made, or last call was a while ago--let's schedule 
       ( "NOT_REGISTERED" , _       ) -> right ()
       -- Bad registration status
       ( _                , _       ) -> left XXX
 
-    -- Create the registration call
-    --
-    resp <- postRegistrationCall phoneNumber $ utcToText (addUTCTime 600 now)
-    user <- hoist participantId XXX
-    call <- hoist (resp >>= RegistrationCall.registrationCallId) XXX
+    -- Create timestamp
+    let time = utcToText (addUTCTime 600 now)
+
+    -- Persist registration call
+    regc <- postRegistrationCall phoneNumber time >>= maybeToEither XXX 
+    call <- maybeToEither ServerError (RegistrationCall.entityId regc) 
+    user <- maybeToEither ServerError participantId
 
     -- Update the participant's registration_call_id
     patchParticipant user $ object [("registration_call_id", number call)]
 
     -- Create a REGISTRATION_CALL_SCHEDULED log entry
     logRegistration user call
+
+    return regc
 
