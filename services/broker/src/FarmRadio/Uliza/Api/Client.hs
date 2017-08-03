@@ -49,12 +49,12 @@ import qualified Data.ByteString.Lazy      as BL
 import qualified Network.Wreq.Session      as Session
 
 data ApiError 
-  = InternalServerError 
-  | UnexpectedResponse
-  | StatusCodeResponse Int
-  | ServerConnectionError
-  | AuthenticationError 
-  | BadRequestError
+  = InternalServerError     -- ^ Something went wrong during processing
+  | UnexpectedResponse      -- ^ API response did not have the expected format
+  | StatusCodeResponse Int  -- ^ API server returned a non-200 response code
+  | ServerConnectionError   -- ^ Connection failed. Is the API server running?
+  | AuthenticationError     -- ^ Unauthorized.
+  | BadRequestError         -- ^ Bad request format.
   deriving (Show)
 
 type Api = EitherT ApiError (StateT ApiContext IO) 
