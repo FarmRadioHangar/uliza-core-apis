@@ -39,13 +39,13 @@ handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
           >>= \user -> getRegistrationCall user
             >>= determineRegistrationStatus user 
               >>= \case 
-                AlreadyRegistered    -> notScheduled "PARTICIPANT_PREVIOUSLY_REGISTERED"
-                RegistrationDeclined -> notScheduled "REGISTRATION_DECLINED"
-                PriorCallScheduled   -> notScheduled "PRIOR_CALL_SCHEDULED"
-                RecentCallMade       -> notScheduled "RECENT_CALL"
+                AlreadyRegistered    -> noAction "PARTICIPANT_PREVIOUSLY_REGISTERED"
+                RegistrationDeclined -> noAction "REGISTRATION_DECLINED"
+                PriorCallScheduled   -> noAction "PRIOR_CALL_SCHEDULED"
+                RecentCallMade       -> noAction "RECENT_CALL_MADE"
                 ScheduleCall time    -> toJSON <$> scheduleRegistrationCall user time
 
-    notScheduled message = return $ object [("message", String message)]
+    noAction message = return $ object [("message", String message)]
     errorResponse err = do
         liftIO $ print err
         Scotty.status internalServerError500
