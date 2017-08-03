@@ -56,10 +56,13 @@ executable simple-exe
                      , bytestring
                      , lens
                      , lens-aeson
+                     , http-types
                      , MissingH
                      , safe-exceptions
                      , http-client
                      , simple
+                     , text
+                     , text-format
                      , scotty
                      , wreq
   default-language:    Haskell2010
