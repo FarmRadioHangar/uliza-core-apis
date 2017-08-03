@@ -22,6 +22,7 @@ library
                      , FarmRadio.Uliza.Registration.Participant
                      , FarmRadio.Uliza.Registration.RegistrationCall
   build-depends:       aeson
+                     , text
                      , HTTP
                      , MissingH
                      , base >= 4.7 && < 5
@@ -31,17 +32,17 @@ library
                      , http-types
                      , lens
                      , lens-aeson
-                     , mime-types
+                     --, mime-types
                      , postgresql-simple
                      , safe-exceptions
                      , scientific
-                     , scotty
-                     , template-haskell
-                     , text
+                     --, scotty
+                     --, template-haskell
+                     --, text
                      , time
                      , transformers
-                     , unordered-containers
-                     , vector
+                     --, unordered-containers
+                     --, vector
                      , wreq
   default-language:    Haskell2010
 
@@ -50,11 +51,16 @@ executable simple-exe
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
+                     , either
                      , bytestring
                      , lens
                      , lens-aeson
+                     , MissingH
+                     , safe-exceptions
+                     , http-client
                      , simple
                      , scotty
+                     , wreq
   default-language:    Haskell2010
 
 test-suite simple-test
@@ -63,6 +69,7 @@ test-suite simple-test
   main-is:             Spec.hs
   build-depends:       base
                      , simple
+                     , safe-exceptions
                      , postgresql-simple-migration
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   default-language:    Haskell2010
