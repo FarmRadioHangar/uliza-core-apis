@@ -3,7 +3,6 @@
 module Main where
 
 import Control.Lens
-import Control.Monad (void)
 import Control.Monad.IO.Class
 import Data.Aeson
 import Data.Aeson.Lens
@@ -30,7 +29,6 @@ handler body = do
         -- 
         setBaseUrl "http://localhost:3000"
         setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
-        --setOauth2Token "xxx"
         setHeader "Accept" ["*/*"]
         setHeader "Prefer" ["return=representation"]
         --
@@ -43,13 +41,13 @@ handler body = do
                       RegistrationDeclined      -> undefined
                       RegistrationCallScheduled -> undefined
                       RecentCallMade            -> undefined
-                      ScheduleCall time         -> scheduleRegistrationCall undefined time
+                      ScheduleCall time         -> scheduleRegistrationCall user time
         --
     case x of
       Left err -> do
           liftIO $ print err
           Scotty.json $ object [("message", "error")]
-      Right x  -> do
-          liftIO $ print x
-          Scotty.json x
+      Right xyz  -> do
+          liftIO $ print xyz
+          Scotty.json xyz
 
