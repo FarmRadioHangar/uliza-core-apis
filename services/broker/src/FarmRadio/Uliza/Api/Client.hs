@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE LambdaCase #-}
 module FarmRadio.Uliza.Api.Client
@@ -6,7 +7,7 @@ module FarmRadio.Uliza.Api.Client
     , ApiError(..)
     , extractString
     , get
-    , getResource
+    , lookupResource
     , patch
     , patchResource
     , post
@@ -16,7 +17,6 @@ module FarmRadio.Uliza.Api.Client
     , setBaseUrl
     , setHeader
     , setOauth2Token
-    , unwrapRow
     ) where
 
 import Control.Lens
@@ -60,16 +60,13 @@ data ApiError
 type Api = EitherT ApiError (StateT ApiContext IO) 
 
 runApi :: Api a -> IO (Either ApiError a)
-runApi c = catch (Session.withAPISession run) httpException
+runApi c = Session.withAPISession run `catch` httpException
   where
-    run sess = fst <$> runStateT 
-        (runEitherT c) 
-        (ApiContext mempty opts sess) 
+    run sess = fst <$> runStateT (runEitherT c) (ApiContext mempty opts sess) 
     opts = defaults & checkResponse .~ Just (\_ _ -> return ())
 
 httpException :: HttpException -> IO (Either ApiError a)
-httpException = 
-  \case 
+httpException = \case 
     HttpExceptionRequest _ (ConnectionFailure _) -> err ServerConnectionError
     _                                            -> err InternalServerError
   where
@@ -77,9 +74,6 @@ httpException =
 
 extractString :: AsValue s => Text -> s -> Maybe Text
 extractString k obj = obj ^? key k . _String
-
-unwrapRow :: (ToJSON b, FromJSON b) => BL.ByteString -> Maybe b
-unwrapRow body = body ^?_Array . ix 0 ._JSON 
 
 resourceUrl :: String -> [(String, String)] -> String
 resourceUrl name params = "/" <> name <> "?" <> urlEncodeVars params
@@ -105,11 +99,12 @@ patch endpoint body = do
 --   response.
 post_ :: (ToJSON a, FromJSON a) => String -> Value -> Api (Maybe a)
 post_ endpoint body = do
+    setHeader "Prefer" ["return=representation"]
+    setHeader "Accept" ["application/vnd.pgrst.object+json"]
     response <- lift $ do
       ApiContext{..} <- State.get
-      Session.postWith _options _session 
-          (_baseUrl <> endpoint) body & liftIO
-    unwrapRow <$> extractBody response
+      Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
+    decode <$> extractBody response
 
 -- | Send a POST request.
 post :: String -> Value -> Api BL.ByteString
@@ -127,21 +122,24 @@ get endpoint = do
       Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
     extractBody response
 
--- | Send a GET request, parse the JSON response and return the first row of 
---   the result.
-getResource :: (FromJSON a, ToJSON a) 
-            => String 
-            -> String 
-            -> String 
-            -> Api (Maybe a)
-getResource name prop value = unwrapRow <$> get (resourceUrl name params)
+-- | Look up a resource, parse the JSON response and return the result.
+lookupResource :: (FromJSON a, ToJSON a) 
+               => String 
+               -> String 
+               -> String 
+               -> Api (Maybe a)
+lookupResource name prop value = do
+    setHeader "Accept" ["application/vnd.pgrst.object+json"]
+    decode <$> get (resourceUrl name params)
   where
-    params = [(prop, "eq." <> value)]
+    params = [ (prop    , "eq." <> value) 
+             , ("limit" , "1") ]
 
+-- | Send a PATCH request acting on the resource identified by the provided id.
 patchResource :: String -> Int -> Value -> Api BL.ByteString
 patchResource name entityId = patch $ resourceUrl name params
   where
-    params = [("id", "eq." <> show entityId)]
+    params = [ ("id", "eq." <> show entityId) ]
 
 extractBody :: Response BL.ByteString -> Api BL.ByteString
 extractBody response =

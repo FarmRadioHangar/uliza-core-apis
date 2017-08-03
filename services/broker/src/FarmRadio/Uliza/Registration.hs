@@ -21,7 +21,7 @@ import qualified FarmRadio.Uliza.Registration.RegistrationCall as RegistrationCa
 
 -- | Look up a 'Participant' by phone number.
 getParticipantByPhoneNumber :: String -> Api (Maybe Participant)
-getParticipantByPhoneNumber = getResource "participants" "phone_number"
+getParticipantByPhoneNumber = lookupResource "participants" "phone_number"
 
 -- | Look up the most recent 'RegistrationCall' for a 'Participant' (if any).
 getRegistrationCall :: Participant -> Api (Maybe RegistrationCall)
@@ -31,15 +31,16 @@ getRegistrationCall Participant{..} = join <$> sequence call
 
 -- | Look up a 'RegistrationCall' by id.
 getRegistrationCallById :: Int -> Api (Maybe RegistrationCall)
-getRegistrationCallById = getResource "registration_calls" "id" . show 
+getRegistrationCallById = lookupResource "registration_calls" "id" . show 
 
 -- | Update a 'Participant'.
 patchParticipant :: Int -> Value -> Api ()
 patchParticipant = fmap fmap fmap void (patchResource "participants")
 
--- | Submit a participant to the API.
+-- | Post a participant to the API.
 postParticipant :: Text -> Api (Maybe Participant)
-postParticipant phone = post_ "/participants" (object participant)
+postParticipant phone = do
+    post_ "/participants" (object participant)
   where
     participant = [ ("phone_number"        , String phone)
                   , ("registration_status" , "NOT_REGISTERED") ]
@@ -49,7 +50,7 @@ registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
 registrationCallScheduleTime RegistrationCall{..} = 
     eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
 
--- | Submit a registration call status change log entry to the API.
+-- | Post a registration call status change log entry to the API.
 logRegistration :: Int -> Int -> Text -> Api () 
 logRegistration user call event = 
     void $ post "/participant_registration_status_log" (object entry)
@@ -58,7 +59,7 @@ logRegistration user call event =
             , ("registration_call_id" , number call) 
             , ("event_type"           , String event) ]
 
--- | Submit a registration call to the API.
+-- | Post a registration call to the API.
 postRegistrationCall :: Text -> Text -> Api (Maybe RegistrationCall)
 postRegistrationCall phone stime = post_ "/registration_calls" (object call)
   where
@@ -91,11 +92,11 @@ lookupParticipant request = do
 
 -- | Data type representation of a participant's registration status
 data RegistrationStatus = 
-    AlreadyRegistered            -- ^ The participant is already registered
-  | RegistrationDeclined         -- ^ Participant has declined to register
-  | RegistrationCallScheduled    -- ^ A registration call is already due
-  | RecentCallMade               -- ^ A call was recently made
-  | ScheduleCall UTCTime         -- ^ Schedule a call at the given time
+    AlreadyRegistered       -- ^ The participant is already registered
+  | RegistrationDeclined    -- ^ Participant has declined to register
+  | PriorCallScheduled      -- ^ A registration call is already due
+  | RecentCallMade          -- ^ A call was recently made
+  | ScheduleCall UTCTime    -- ^ Schedule a call at the given time
   deriving (Show)
 
 -- | Determine a 'Participant''s registration status.
@@ -118,7 +119,7 @@ determineRegistrationStatus Participant{..} mcall = do
       -- Participant is not registered
       ( "NOT_REGISTERED" , Just diff ) 
         -- A call is already scheduled
-        | diff > 0    -> right RegistrationCallScheduled
+        | diff > 0    -> right PriorCallScheduled
         -- A registration call took place recently
         | diff > -120 -> right RecentCallMade
       -- No previous call was made, or last call was a while ago--let's schedule 
