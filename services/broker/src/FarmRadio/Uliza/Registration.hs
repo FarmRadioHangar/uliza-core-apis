@@ -70,10 +70,10 @@ postRegistrationCall phone stime = post_ "/registration_calls" (object call)
 lookupParticipant :: Value -> Api Participant
 lookupParticipant request = do
 
-    -- Extract phone number from request object
+    -- Extract phone number from request 
     phone <- maybeToEither BadRequestError (extractString "subscriber_phone" request) 
 
-    -- Log the raw response
+    -- Log the raw JSON payload received
     void $ post "/voto_response_data" $ object [("data", request)] 
 
     -- Look up participant from subscriber's phone number
@@ -87,7 +87,7 @@ lookupParticipant request = do
       --
       -- Create a participant if one wasn't found
       --
-      Nothing -> postParticipant phone >>= maybeToEither XXX
+      Nothing -> postParticipant phone >>= maybeToEither UnexpectedResponse
 
 -- | Data type representation of a participant's registration status
 data RegistrationStatus = 
@@ -102,8 +102,8 @@ data RegistrationStatus =
 determineRegistrationStatus :: Participant 
                             -> Maybe RegistrationCall 
                             -> Api RegistrationStatus
-determineRegistrationStatus Participant{ entityId = participantId, .. } mcall = do
-
+determineRegistrationStatus Participant{ entityId = participantId, .. } 
+                            mcall = do
     -- Current time
     now <- getCurrentTime & liftIO
 
@@ -131,7 +131,7 @@ scheduleRegistrationCall :: Participant -> UTCTime -> Api RegistrationCall
 scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
 
     -- Persist registration call
-    regc <- postRegistrationCall phoneNumber (utcToText time) >>= maybeToEither XXX 
+    regc <- postRegistrationCall phoneNumber (utcToText time) >>= maybeToEither UnexpectedResponse
     call <- maybeToEither ServerError (RegistrationCall.entityId regc) 
     user <- maybeToEither ServerError participantId
 

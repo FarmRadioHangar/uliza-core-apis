@@ -49,12 +49,12 @@ import qualified Data.ByteString.Lazy      as BL
 import qualified Network.Wreq.Session      as Session
 
 data ApiError 
-  = ServerError 
-  | StatusCodeError Int
+  = InternalServerError 
+  | UnexpectedResponse
+  | StatusCodeResponse Int
   | ServerConnectionError
   | AuthenticationError 
   | BadRequestError
-  | XXX
   deriving (Show)
 
 type Api = EitherT ApiError (StateT ApiContext IO) 
@@ -75,8 +75,8 @@ stuff exc =
           ConnectionFailure e -> return $ Left ServerConnectionError
           e -> do
               print e 
-              return $ Left ServerError
-      _ -> return $ Left ServerError
+              return $ Left InternalServerError
+      _ -> return $ Left InternalServerError
 
 extractString :: AsValue s => Text -> s -> Maybe Text
 extractString k obj = obj ^? key k . _String
@@ -131,8 +131,8 @@ createResponse response =
       201 -> ok
       202 -> ok
       401 -> left AuthenticationError
-      500 -> left ServerError
-      err -> left (StatusCodeError err)
+      500 -> left InternalServerError
+      err -> left (StatusCodeResponse err)
   where ok = right response
 
 getJSON :: (ToJSON a, FromJSON a) => String -> Api (Maybe a)
