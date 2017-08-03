@@ -21,7 +21,7 @@ import qualified FarmRadio.Uliza.Registration.RegistrationCall as RegistrationCa
 
 -- | Look up a 'Participant' by phone number.
 getParticipantByPhoneNumber :: String -> Api (Maybe Participant)
-getParticipantByPhoneNumber = getSingleEntity "participants" "phone_number"
+getParticipantByPhoneNumber = getResource "participants" "phone_number"
 
 -- | Look up the most recent 'RegistrationCall' for a 'Participant' (if any).
 getRegistrationCall :: Participant -> Api (Maybe RegistrationCall)
@@ -31,7 +31,7 @@ getRegistrationCall Participant{..} = join <$> sequence call
 
 -- | Look up a 'RegistrationCall' by id.
 getRegistrationCallById :: Int -> Api (Maybe RegistrationCall)
-getRegistrationCallById = getSingleEntity "registration_calls" "id" . show 
+getRegistrationCallById = getResource "registration_calls" "id" . show 
 
 -- | Update a 'Participant'.
 patchParticipant :: Int -> Value -> Api ()
@@ -102,7 +102,7 @@ data RegistrationStatus =
 determineRegistrationStatus :: Participant 
                             -> Maybe RegistrationCall 
                             -> Api RegistrationStatus
-determineRegistrationStatus Participant{ entityId = participantId, .. } 
+determineRegistrationStatus Participant{..} 
                             mcall = do
     -- Current time
     now <- getCurrentTime & liftIO
@@ -124,7 +124,7 @@ determineRegistrationStatus Participant{ entityId = participantId, .. }
       -- No previous call was made, or last call was a while ago--let's schedule 
       ( "NOT_REGISTERED" , _ ) -> right $ ScheduleCall (addUTCTime 600 now)
       -- Bad registration status
-      ( _                , _ ) -> left ServerError
+      ( _                , _ ) -> left InternalServerError
 
 -- | Schedule a registration call for the participant at the given time.
 scheduleRegistrationCall :: Participant -> UTCTime -> Api RegistrationCall
@@ -132,8 +132,8 @@ scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
 
     -- Persist registration call
     regc <- postRegistrationCall phoneNumber (utcToText time) >>= maybeToEither UnexpectedResponse
-    call <- maybeToEither ServerError (RegistrationCall.entityId regc) 
-    user <- maybeToEither ServerError participantId
+    call <- maybeToEither InternalServerError (RegistrationCall.entityId regc) 
+    user <- maybeToEither InternalServerError participantId
 
     -- Update the participant's registration_call_id
     patchParticipant user $ object [("registration_call_id", number call)]
