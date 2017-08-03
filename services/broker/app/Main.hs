@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase #-}
 module Main where
 
 import Control.Lens
@@ -35,8 +36,14 @@ handler body = do
         --
         maybeToEither BadRequestError (body ^? key "data") 
           >>= lookupParticipant 
-          >>= \user -> getRegistrationCall user
-          >>= \call -> scheduleCall user call
+            >>= \user -> getRegistrationCall user
+              >>= determineRegistrationStatus user 
+                >>= \case 
+                      AlreadyRegistered         -> undefined
+                      RegistrationDeclined      -> undefined
+                      RegistrationCallScheduled -> undefined
+                      RecentCallMade            -> undefined
+                      ScheduleCall time         -> scheduleRegistrationCall undefined time
         --
     case x of
       Left err -> do
