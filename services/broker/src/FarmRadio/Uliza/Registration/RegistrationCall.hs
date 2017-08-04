@@ -10,7 +10,7 @@ data RegistrationCall = RegistrationCall
     , phoneNumber        :: !Text
     , scheduledTime      :: !Text 
     , createdAt          :: !Text }
-  deriving (Show)
+  deriving (Show, Eq)
 
 instance ToJSON RegistrationCall where
   toJSON RegistrationCall{..} = object 

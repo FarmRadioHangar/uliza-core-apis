@@ -11,7 +11,7 @@ data Participant = Participant
     , registrationStatus :: !Text
     , registrationCallId :: !(Maybe Int)
     , createdAt          :: !Text }
-  deriving (Show)
+  deriving (Show, Eq)
 
 instance ToJSON Participant where
   toJSON Participant{..} = object 

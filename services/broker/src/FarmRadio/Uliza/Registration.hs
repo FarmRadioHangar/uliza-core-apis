@@ -1,4 +1,5 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 module FarmRadio.Uliza.Registration where
 
@@ -8,6 +9,7 @@ import Control.Monad.IO.Class
 import Control.Monad.Trans.Either
 import Data.Aeson
 import Data.Either.Utils  ( maybeToEither )
+import Data.Monoid        ( (<>) )
 import Data.Text
 import Data.Text.Encoding ( encodeUtf8 )
 import Data.Time
@@ -82,6 +84,8 @@ lookupParticipant request = do
     -- Look up participant from subscriber's phone number
     response <- getParticipantByPhoneNumber (unpack phone)
 
+    logDebugJSON "lookup_participant" response
+
     case response of
       Just participant -> do
           --
@@ -99,7 +103,7 @@ lookupParticipant request = do
 
           logDebugJSON "participant_created" participant
 
-          maybeToEither UnexpectedResponse participant
+          maybeToEither (UnexpectedResponse "postParticipant") participant
 
 -- | Data type representation of a participant's registration status
 data RegistrationStatus = 
@@ -110,7 +114,7 @@ data RegistrationStatus =
   | ScheduleCall UTCTime    -- ^ Schedule a call at the given time
   deriving (Show)
 
--- | Determine a 'Participant''s registration status.
+-- | Determine a participant's registration status.
 determineRegistrationStatus :: Participant 
                             -> Maybe RegistrationCall 
                             -> Api RegistrationStatus
@@ -148,15 +152,22 @@ determineRegistrationStatus Participant{..} mcall = do
 scheduleRegistrationCall :: Participant -> UTCTime -> Api RegistrationCall
 scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
 
-    -- Persist registration call
-    regc <- postRegistrationCall phoneNumber (utcToText time) 
-        >>= maybeToEither UnexpectedResponse
+    -- Send registration call to API for posterity
+    regc <- postRegistrationCall phoneNumber (utcToText time)
+            >>= maybeToEither (UnexpectedResponse "postRegistrationCall")
 
-    call <- maybeToEither InternalServerError (RegistrationCall.entityId regc) 
-    user <- maybeToEither InternalServerError participantId
+    call <- maybeToEither (UnexpectedResponse "scheduleRegistrationCall: \ 
+                                              \registration_call id is null")
+                          (RegistrationCall.entityId regc) 
+
+    user <- maybeToEither (UnexpectedResponse "scheduleRegistrationCall: \
+                                              \participant id is null") 
+                           participantId
 
     -- Update the participant's registration_call_id
     patchParticipant user $ object [("registration_call_id", number call)]
+
+    logNoticeJSON "patch_participant" ("update registration_call_id to " <> show call)
 
     -- Create a log entry to record the status change 
     createStatusChangeLogEntry user call "REGISTRATION_CALL_SCHEDULED"
