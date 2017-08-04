@@ -22,7 +22,7 @@ import qualified Web.Scotty as Scotty
 
 main :: IO ()
 main = do
-    updateGlobalLogger "uliza_registration_middleware" (setLevel DEBUG)
+    updateGlobalLogger loggerNamespace (setLevel DEBUG)
     scotty 3034 app
 
 app :: ScottyM ()
@@ -53,32 +53,43 @@ handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
     --
     noAction :: Text -> Api Value
     noAction message = do
-      liftIO $ noticeM loggerNamespace $ "[no_call_scheduled] " <> (unpack message)
+
+      liftIO $ noticeM loggerNamespace $ "[no_call_scheduled]\
+             \ A registration call was NOT scheduled. Reason: " 
+             <> unpack message
+
       return $ object [("message", String message)]
 
     -- An error occurred
     --
     errorResponse :: ApiError -> Scotty.ActionM ()
     errorResponse err = do
-      liftIO $ errorM loggerNamespace $ "[server_error] " <> (logErrorMessage err)
+      liftIO $ errorM loggerNamespace $ "[server_error] " <> logErrorMessage err
       Scotty.status internalServerError500
       Scotty.json $ object [("error", String (hint err))]
 
     hint :: ApiError -> Text
     hint InternalServerError       = "INTERNAL_SERVER_ERROR"
-    hint UnexpectedResponse        = "UNEXPECTED_RESPONSE_FORMAT"
+    hint (UnexpectedResponse _)    = "UNEXPECTED_RESPONSE_FORMAT"
     hint (StatusCodeResponse code) = statusCodeResponse code "STATUS_CODE_{}" 
     hint ServerConnectionFailed    = "SERVER_CONNECTION_FAILED"
     hint AuthenticationError       = "UNAUTHORIZED"
     hint BadRequestError           = "BAD_REQUEST_FORMAT"
 
     logErrorMessage :: ApiError -> String
-    logErrorMessage InternalServerError       = ""
-    logErrorMessage UnexpectedResponse        = ""
-    logErrorMessage (StatusCodeResponse _)    = ""
-    logErrorMessage ServerConnectionFailed    = "Connection failed. Is the API server running?"
-    logErrorMessage AuthenticationError       = "Authentication error. Verify that the JSON web token (JWT) is valid."
-    logErrorMessage BadRequestError           = "The request is not valid."
+    logErrorMessage InternalServerError       
+      = "Server error."
+    logErrorMessage (UnexpectedResponse what)
+      = ("An unexpected response was received from the API server. (" <> what <> ")")
+    logErrorMessage (StatusCodeResponse code) 
+      = ("The API server responded with status code " <> show code)
+    logErrorMessage ServerConnectionFailed    
+      = "Connection failed. Is the API server running?"
+    logErrorMessage AuthenticationError       
+      = "Authentication error when connecting to API server.\
+       \ Verify that the JSON web token (JWT) is valid."
+    logErrorMessage BadRequestError           
+      = "The request format was not recognized."
 
     statusCodeResponse code = toStrict . flip format (Only code) 
 
