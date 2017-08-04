@@ -51,8 +51,8 @@ registrationCallScheduleTime RegistrationCall{..} =
     eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
 
 -- | Post a registration call status change log entry to the API.
-logRegistration :: Int -> Int -> Text -> Api () 
-logRegistration user call event = 
+createStatusChangeLogEntry :: Int -> Int -> Text -> Api () 
+createStatusChangeLogEntry user call event = 
     void $ post "/participant_registration_status_log" (object entry)
   where
     entry = [ ("participant_id"       , number user) 
@@ -77,18 +77,29 @@ lookupParticipant request = do
     -- Log the raw JSON payload received
     void $ post "/voto_response_data" $ object [("data", request)] 
 
+    logDebugJSON "incoming_response" request
+
     -- Look up participant from subscriber's phone number
     response <- getParticipantByPhoneNumber (unpack phone)
 
     case response of
-      --
-      -- Participant exists: Done!  
-      --
-      Just participant -> right participant
-      --
-      -- Create a participant if one wasn't found
-      --
-      Nothing -> postParticipant phone >>= maybeToEither UnexpectedResponse
+      Just participant -> do
+          --
+          -- Participant exists: Done!  
+          --
+          logDebugJSON "participant_found" participant
+
+          right participant
+
+      Nothing -> do
+          --
+          -- Create a participant if one wasn't found
+          --
+          participant <- postParticipant phone 
+
+          logDebugJSON "participant_created" participant
+
+          maybeToEither UnexpectedResponse participant
 
 -- | Data type representation of a participant's registration status
 data RegistrationStatus = 
@@ -111,6 +122,12 @@ determineRegistrationStatus Participant{..} mcall = do
     -- Time of most recent registration call (or Nothing)
     let lastCall = mcall >>= registrationCallScheduleTime
 
+    logDebugJSON "participant_last_call" $ case lastCall of
+      Nothing   -> "No previous registration call found for this participant."
+      Just time -> (show time)
+
+    logDebugJSON "participant_registration_status" registrationStatus
+
     case (registrationStatus, diffUTCTime <$> lastCall <*> Just now) of
       -- Participant is already registered
       ( "REGISTERED"     , _ ) -> right AlreadyRegistered
@@ -132,7 +149,9 @@ scheduleRegistrationCall :: Participant -> UTCTime -> Api RegistrationCall
 scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
 
     -- Persist registration call
-    regc <- postRegistrationCall phoneNumber (utcToText time) >>= maybeToEither UnexpectedResponse
+    regc <- postRegistrationCall phoneNumber (utcToText time) 
+        >>= maybeToEither UnexpectedResponse
+
     call <- maybeToEither InternalServerError (RegistrationCall.entityId regc) 
     user <- maybeToEither InternalServerError participantId
 
@@ -140,7 +159,9 @@ scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
     patchParticipant user $ object [("registration_call_id", number call)]
 
     -- Create a log entry to record the status change 
-    logRegistration user call "REGISTRATION_CALL_SCHEDULED"
+    createStatusChangeLogEntry user call "REGISTRATION_CALL_SCHEDULED"
+
+    logNoticeJSON "registration_call_scheduled" regc
 
     return regc
 

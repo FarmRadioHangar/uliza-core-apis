@@ -7,19 +7,23 @@ import Control.Monad.IO.Class
 import Data.Aeson
 import Data.Aeson.Lens
 import Data.Either.Utils                ( maybeToEither )
-import Data.Text                        ( Text )
+import Data.Monoid                      ( (<>) )
+import Data.Text                        ( Text, unpack )
 import Data.Text.Format                 ( Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
 import Network.HTTP.Types
+import System.Log.Logger
 import Web.Scotty                       ( ScottyM, scotty )
 
 import qualified Data.ByteString.Lazy as BL
 import qualified Web.Scotty as Scotty
 
 main :: IO ()
-main = scotty 3034 app
+main = do
+    updateGlobalLogger "uliza_registration_middleware" (setLevel DEBUG)
+    scotty 3034 app
 
 app :: ScottyM ()
 app = Scotty.post "/responses" (Scotty.body >>= handler)
@@ -45,11 +49,20 @@ handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
                 RecentCallMade       -> noAction "RECENT_CALL_MADE"
                 ScheduleCall time    -> toJSON <$> scheduleRegistrationCall user time
 
-    noAction message = return $ object [("message", String message)]
+    -- Request successfully processed, but no registration call was scheduled
+    --
+    noAction :: Text -> Api Value
+    noAction message = do
+      liftIO $ noticeM loggerNamespace $ "[no_call_scheduled] " <> (unpack message)
+      return $ object [("message", String message)]
+
+    -- An error occurred
+    --
+    errorResponse :: ApiError -> Scotty.ActionM ()
     errorResponse err = do
-        liftIO $ print err
-        Scotty.status internalServerError500
-        Scotty.json $ object [("error", String (hint err))]
+      liftIO $ errorM loggerNamespace $ "[server_error] " <> (logErrorMessage err)
+      Scotty.status internalServerError500
+      Scotty.json $ object [("error", String (hint err))]
 
     hint :: ApiError -> Text
     hint InternalServerError       = "INTERNAL_SERVER_ERROR"
@@ -58,6 +71,14 @@ handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
     hint ServerConnectionFailed    = "SERVER_CONNECTION_FAILED"
     hint AuthenticationError       = "UNAUTHORIZED"
     hint BadRequestError           = "BAD_REQUEST_FORMAT"
+
+    logErrorMessage :: ApiError -> String
+    logErrorMessage InternalServerError       = ""
+    logErrorMessage UnexpectedResponse        = ""
+    logErrorMessage (StatusCodeResponse _)    = ""
+    logErrorMessage ServerConnectionFailed    = "Connection failed. Is the API server running?"
+    logErrorMessage AuthenticationError       = "Authentication error. Verify that the JSON web token (JWT) is valid."
+    logErrorMessage BadRequestError           = "The request is not valid."
 
     statusCodeResponse code = toStrict . flip format (Only code) 
 

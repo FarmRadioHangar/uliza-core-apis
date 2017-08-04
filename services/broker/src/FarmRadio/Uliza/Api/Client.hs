@@ -7,6 +7,13 @@ module FarmRadio.Uliza.Api.Client
     , ApiError(..)
     , extractString
     , get
+    , loggerNamespace
+    , logDebug
+    , logDebugJSON
+    , logNotice
+    , logNoticeJSON
+    , logError
+    , logErrorJSON
     , lookupResource
     , patch
     , patchResource
@@ -43,10 +50,13 @@ import Network.Wreq                ( Response
                                    , responseStatus
                                    , statusCode )
 import Network.HTTP.Types.Header   ( HeaderName )
+import System.Log.Logger
 
 import qualified Control.Monad.Trans.State as State
 import qualified Data.ByteString.Lazy      as BL
 import qualified Network.Wreq.Session      as Session
+
+import qualified Data.ByteString.Lazy.Char8 
 
 data ApiError 
   = InternalServerError     -- ^ Something went wrong during processing
@@ -163,3 +173,32 @@ setOauth2Token token = lift $ modify (options . auth ?~ oauth2Bearer token)
 
 setHeader :: HeaderName -> [ByteString] -> Api ()
 setHeader name val = lift $ modify (options . header name .~ val)
+
+loggerNamespace :: String
+loggerNamespace = "uliza_registration_middleware"
+
+logUsing :: (String -> String -> IO ()) -> String -> String -> Api ()
+logUsing logger tag message = liftIO $ logger loggerNamespace 
+                                     $ "[" <> tag <> "]" <> " " 
+                                     <> message
+
+logDebug :: String -> String -> Api ()
+logDebug = logUsing debugM 
+
+logDebugJSON :: ToJSON a => String -> a -> Api ()
+logDebugJSON tag obj = logDebug tag (jsonEncode obj)
+
+logNotice :: String -> String -> Api ()
+logNotice = logUsing noticeM 
+
+logNoticeJSON :: ToJSON a => String -> a -> Api ()
+logNoticeJSON tag obj = logNotice tag (jsonEncode obj)
+
+logError :: String -> String -> Api ()
+logError = logUsing errorM 
+
+logErrorJSON :: ToJSON a => String -> a -> Api ()
+logErrorJSON tag obj = logError tag (jsonEncode obj)
+
+jsonEncode :: ToJSON a => a -> String
+jsonEncode = Data.ByteString.Lazy.Char8.unpack . encode 
