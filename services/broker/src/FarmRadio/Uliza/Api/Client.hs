@@ -7,13 +7,13 @@ module FarmRadio.Uliza.Api.Client
     , ApiError(..)
     , extractString
     , get
-    , loggerNamespace
     , logDebug
     , logDebugJSON
-    , logNotice
-    , logNoticeJSON
     , logError
     , logErrorJSON
+    , logNotice
+    , logNoticeJSON
+    , loggerNamespace
     , lookupResource
     , patch
     , patchResource
@@ -59,12 +59,18 @@ import qualified Network.Wreq.Session      as Session
 import qualified Data.ByteString.Lazy.Char8 
 
 data ApiError 
-  = InternalServerError     -- ^ Something went wrong during processing
-  | UnexpectedResponse      -- ^ API response did not have the expected format
-  | StatusCodeResponse Int  -- ^ API server returned a non-200 response code
-  | ServerConnectionFailed  -- ^ Connection failed. Is the API server running?
-  | AuthenticationError     -- ^ Unauthorized.
-  | BadRequestError         -- ^ Bad request format.
+  = InternalServerError       
+  -- ^ Something went wrong during processing.
+  | UnexpectedResponse String 
+  -- ^ An API response did not have the expected format.
+  | StatusCodeResponse Int    
+  -- ^ API server returned a non-200 response code.
+  | ServerConnectionFailed    
+  -- ^ Connection failed. Is the API server running?
+  | AuthenticationError       
+  -- ^ Unauthorized
+  | BadRequestError           
+  -- ^ Bad request format.
   deriving (Show)
 
 type Api = EitherT ApiError (StateT ApiContext IO) 
@@ -132,15 +138,18 @@ get endpoint = do
       Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
     extractBody response
 
--- | Look up a resource, parse the JSON response and return the result.
+-- | Look up a (singleton) resource, parse the JSON response and return the 
+--   result.
 lookupResource :: (FromJSON a, ToJSON a) 
                => String 
                -> String 
                -> String 
                -> Api (Maybe a)
 lookupResource name prop value = do
-    setHeader "Accept" ["application/vnd.pgrst.object+json"]
-    decode <$> get (resourceUrl name params)
+    response <- get (resourceUrl name params)
+    return $ case decode response of
+      Just [one] -> one
+      _          -> Nothing
   where
     params = [ (prop    , "eq." <> value) 
              , ("limit" , "1") ]
@@ -179,8 +188,7 @@ loggerNamespace = "uliza_registration_middleware"
 
 logUsing :: (String -> String -> IO ()) -> String -> String -> Api ()
 logUsing logger tag message = liftIO $ logger loggerNamespace 
-                                     $ "[" <> tag <> "]" <> " " 
-                                     <> message
+                                     $ "[" <> tag <> "]" <> " " <> message
 
 logDebug :: String -> String -> Api ()
 logDebug = logUsing debugM 
