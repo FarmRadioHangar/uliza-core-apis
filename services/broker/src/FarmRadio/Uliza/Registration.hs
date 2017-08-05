@@ -107,11 +107,11 @@ lookupParticipant request = do
 
 -- | Data type representation of a participant's registration status
 data RegistrationStatus = 
-    AlreadyRegistered       -- ^ The participant is already registered
-  | RegistrationDeclined    -- ^ Participant has declined to register
-  | PriorCallScheduled      -- ^ A registration call is already due
-  | RecentCallMade          -- ^ A call was recently made
-  | ScheduleCall UTCTime    -- ^ Schedule a call at the given time
+     AlreadyRegistered       -- ^ The participant is already registered
+   | RegistrationDeclined    -- ^ Participant has declined to register
+   | PriorCallScheduled      -- ^ A registration call is already due
+   | RecentCallMade          -- ^ A call was recently made
+   | ScheduleCall UTCTime    -- ^ Schedule a call at the given time
   deriving (Show)
 
 -- | Determine a participant's registration status.
