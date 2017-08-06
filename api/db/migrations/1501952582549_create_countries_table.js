@@ -25,7 +25,8 @@ exports.up = (pg) => {
     }
   });
   pg.sql(
-    "INSERT INTO farmradio_api.countries (name, iso_2, iso_3, country_code) \
+    "INSERT INTO farmradio_api.countries \
+      (name, iso_2, iso_3, country_code) \
      VALUES \
       ('Burkina Faso', 'BF', 'BFA', '+226'), \
       ('Ethiopia',     'ET', 'ETH', '+251'), \
