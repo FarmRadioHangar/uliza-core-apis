@@ -424,12 +424,20 @@ describe('Response from a participant for whom the most recent call took place m
     });
   });
 
+  it('should create a new registration call in the database', function() {
+    return runner(response_001, function(response) {
+      return pg.query('SELECT * FROM farmradio_api.registration_calls;')
+      .then(function(results) {
+        results.rowCount.should.equal(2);
+      });
+    });
+  });
+
   it('should update the participant\'s registration_call_id', function() {
     return runner(response_001, function(response) {
       var registrationCall = null;
       return pg.query('SELECT * FROM farmradio_api.registration_calls;')
       .then(function(results) {
-        results.rowCount.should.equal(2);
         registrationCall = results.rows[1];
         registrationCall.should.be.an('object');
         return pg.query(util.format(
