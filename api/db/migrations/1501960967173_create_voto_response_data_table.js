@@ -7,7 +7,7 @@ exports.up = (pg) => {
       type: 'serial', 
       primaryKey: true 
     },
-    name: {
+    data: {
       type: 'jsonb',
       notNull: true
     }
