@@ -44,7 +44,7 @@ handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
           >>= \user -> getRegistrationCall user
             >>= determineRegistrationStatus user 
               >>= \case 
-                AlreadyRegistered    -> noAction "PARTICIPANT_PREVIOUSLY_REGISTERED"
+                AlreadyRegistered    -> noAction "PARTICIPANT_ALREADY_REGISTERED"
                 RegistrationDeclined -> noAction "REGISTRATION_DECLINED"
                 PriorCallScheduled   -> noAction "PRIOR_CALL_SCHEDULED"
                 RecentCallMade       -> noAction "RECENT_CALL_MADE"
