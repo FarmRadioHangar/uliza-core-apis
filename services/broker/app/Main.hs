@@ -34,7 +34,8 @@ handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
     task = do
       -- 
       setBaseUrl "http://localhost:3000"
-      setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
+      --setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
+      setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXV0aCJ9.ECxpLsBiTGIUPLV75-RdwqerfS-asXAPGvAxMenbroo"
       setHeader "Accept" ["application/json"]
       setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
       --
