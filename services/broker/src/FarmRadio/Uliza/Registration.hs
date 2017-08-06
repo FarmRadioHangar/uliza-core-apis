@@ -126,6 +126,10 @@ determineRegistrationStatus Participant{..} mcall = do
     -- Time of most recent registration call (or Nothing)
     let lastCall = mcall >>= registrationCallScheduleTime
 
+        timeTreshold = 60*60*24*2
+
+        delay = 60*10
+
     logDebugJSON "participant_last_call" $ case lastCall of
       Nothing   -> "No previous registration call found for this participant."
       Just time -> (show time)
@@ -142,9 +146,9 @@ determineRegistrationStatus Participant{..} mcall = do
         -- A call is already scheduled
         | diff > 0    -> right PriorCallScheduled
         -- A registration call took place recently
-        | diff > -120 -> right RecentCallMade
+        | diff > -timeTreshold -> right RecentCallMade
       -- No previous call was made, or last call was a while ago--let's schedule 
-      ( "NOT_REGISTERED" , _ ) -> right $ ScheduleCall (addUTCTime 600 now)
+      ( "NOT_REGISTERED" , _ ) -> right $ ScheduleCall (addUTCTime delay now)
       -- Bad registration status
       ( _                , _ ) -> left InternalServerError
 
