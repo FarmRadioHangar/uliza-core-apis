@@ -1,3 +1,2 @@
 #!/bin/bash
-set -e
-(cd /home/db && npm install && npm run migrations up)
+(cd /home/db && npm run migrations up)
