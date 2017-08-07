@@ -8,4 +8,5 @@ services:
       POSTGRES_DB: registration_middleware_test
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: docker
+      DATABASE_URL: "postgres://docker:docker@localhost/registration_middleware_test"
 
