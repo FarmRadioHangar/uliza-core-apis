@@ -22,6 +22,8 @@ exports.up = (pg) => {
     }
   });
   pg.sql("GRANT SELECT ON farmradio_api.registration_calls TO www;");
+  pg.sql("GRANT ALL ON farmradio_api.registration_calls TO app;");
+  pg.sql("GRANT USAGE, SELECT ON SEQUENCE farmradio_api.registration_calls_id_seq TO app;");
 };
 
 exports.down = (pg) => {

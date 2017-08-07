@@ -25,6 +25,8 @@ exports.up = (pg) => {
     }
   });
   pg.sql("GRANT SELECT ON farmradio_api.countries TO www;");
+  pg.sql("GRANT ALL ON farmradio_api.countries TO app;");
+  pg.sql("GRANT USAGE, SELECT ON SEQUENCE farmradio_api.countries_id_seq TO app;");
   pg.sql(
     "INSERT INTO farmradio_api.countries \
       (name, iso_2, iso_3, country_code) \

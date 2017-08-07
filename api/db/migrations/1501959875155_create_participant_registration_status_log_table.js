@@ -49,6 +49,8 @@ exports.up = (pg) => {
     name: 'participant_registration_status_log_registration_call_id_index'
   });
   pg.sql("GRANT SELECT ON farmradio_api.participant_registration_status_log TO www;");
+  pg.sql("GRANT ALL ON farmradio_api.participant_registration_status_log TO app;");
+  pg.sql("GRANT USAGE, SELECT ON SEQUENCE farmradio_api.participant_registration_status_log_id_seq TO app;");
 };
 
 exports.down = (pg) => {

@@ -13,6 +13,8 @@ exports.up = (pg) => {
     }
   });
   pg.sql("GRANT SELECT ON farmradio_api.voto_response_data TO www;");
+  pg.sql("GRANT ALL ON farmradio_api.voto_response_data TO app;");
+  pg.sql("GRANT USAGE, SELECT ON SEQUENCE farmradio_api.voto_response_data_id_seq TO app;");
 };
 
 exports.down = (pg) => {
