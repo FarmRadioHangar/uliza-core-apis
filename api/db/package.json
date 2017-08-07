@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "migrations": "$(npm bin)/pg-migrate"
+  },
+  "devDependencies": {
+    "node-pg-migrate": "^2.7.0",
+    "pg": "^7.1.0",
+    "pg-hstore": "^2.3.2"
+  }
+}
