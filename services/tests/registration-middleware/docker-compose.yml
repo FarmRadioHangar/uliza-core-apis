@@ -1,0 +1,11 @@
+version: '2'
+services:
+  database: 
+    build: ../../../api/db/
+    ports: 
+      - "8432:5432"
+    environment:
+      POSTGRES_DB: registration_middleware_test
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+
