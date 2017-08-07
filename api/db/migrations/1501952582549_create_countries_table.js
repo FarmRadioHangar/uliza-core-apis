@@ -24,6 +24,7 @@ exports.up = (pg) => {
       notNull: true
     }
   });
+  pg.sql("GRANT SELECT ON farmradio_api.countries TO www;");
   pg.sql(
     "INSERT INTO farmradio_api.countries \
       (name, iso_2, iso_3, country_code) \

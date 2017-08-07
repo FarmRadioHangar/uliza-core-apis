@@ -21,6 +21,7 @@ exports.up = (pg) => {
       default: pg.func('CURRENT_TIMESTAMP')
     }
   });
+  pg.sql("GRANT SELECT ON farmradio_api.registration_calls TO www;");
 };
 
 exports.down = (pg) => {

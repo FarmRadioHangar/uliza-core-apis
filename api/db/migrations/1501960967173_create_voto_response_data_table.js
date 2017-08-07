@@ -12,6 +12,7 @@ exports.up = (pg) => {
       notNull: true
     }
   });
+  pg.sql("GRANT SELECT ON farmradio_api.voto_response_data TO www;");
 };
 
 exports.down = (pg) => {
