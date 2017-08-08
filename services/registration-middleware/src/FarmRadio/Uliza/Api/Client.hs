@@ -62,7 +62,7 @@ data ApiError
   = InternalServerError       
   -- ^ Something went wrong during processing.
   | UnexpectedResponse String 
-  -- ^ An API response did not have the expected format.
+  -- ^ API response was inconsistent with the expected format.
   | StatusCodeResponse Int    
   -- ^ API server returned a non-200 response code.
   | ServerConnectionFailed    
