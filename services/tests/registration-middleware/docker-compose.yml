@@ -1,5 +1,17 @@
 version: '2'
 services:
+  postgrest: 
+    build: postgrest-docker/
+    ports: 
+      - "3210:3000"
+    links: 
+      - database:database
+    environment:
+      PGRST_DB_URI: postgres://docker:docker@database:8432/registration_middleware_test
+      PGRST_DB_SCHEMA: farmradio_api
+      PGRST_DB_ANON_ROLE: www
+      #    volumes:
+      #      - ./tests.conf:/etc/postgrest.conf
   database: 
     build: ../../../api/db/
     ports: 
@@ -8,5 +20,4 @@ services:
       POSTGRES_DB: registration_middleware_test
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: docker
-      DATABASE_URL: "postgres://docker:docker@localhost/registration_middleware_test"
-
+      DATABASE_URL: postgres://docker:docker@localhost/registration_middleware_test
