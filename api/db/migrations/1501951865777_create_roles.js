@@ -8,4 +8,6 @@ exports.up = (pg) => {
 };
 
 exports.down = (pg) => {
+  pg.sql("DROP ROLE www;");
+  pg.sql("DROP ROLE app;");
 };
