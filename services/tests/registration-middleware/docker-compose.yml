@@ -1,11 +1,22 @@
 version: '2'
 services:
+  middleware:
+    build: ../../registration-middleware/
+    ports: 
+      - "3034:3034"
+    links: 
+      - postgrest:postgrest
+    depends_on:
+      - postgrest
+      - database
   postgrest: 
     build: postgrest-docker/
     ports: 
       - "3210:3000"
     links: 
       - database:database
+    depends_on:
+      - database
   database: 
     build: ../../../api/db/
     ports: 
