@@ -26,10 +26,10 @@ main = do
     scotty 3034 app
 
 app :: ScottyM ()
-app = Scotty.post "/responses" (Scotty.body >>= handler)
+app = Scotty.post "/responses" (Scotty.body >>= responseHandler)
 
-handler :: BL.ByteString -> Scotty.ActionM ()
-handler body = either errorResponse Scotty.json =<< liftIO (runApi task)
+responseHandler :: BL.ByteString -> Scotty.ActionM ()
+responseHandler body = either errorResponse Scotty.json =<< liftIO (runApi task)
   where
     task = do
       -- 
