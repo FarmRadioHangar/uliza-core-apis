@@ -1,6 +1,7 @@
 FROM postgres:9.6
 
-ADD . /home/db
+ADD package.json /home/db/package.json
+ADD migrations /home/db/migrations
 ADD dbup.sh /docker-entrypoint-initdb.d/
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
