@@ -33,7 +33,7 @@ responseHandler body = either errorResponse Scotty.json =<< liftIO (runApi task)
   where
     task = do
       -- 
-      setBaseUrl "http://postgrest"
+      setBaseUrl "http://0.0.0.0:3210"
       --setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBpX2NvbnN1bWVyIn0.pCGD-RP8oYcYzLukq1HEKyuQ2iFMPFXpPt3Aum7aXYY"
       setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXV0aCJ9.ECxpLsBiTGIUPLV75-RdwqerfS-asXAPGvAxMenbroo"
       setHeader "Accept" ["application/json"]
