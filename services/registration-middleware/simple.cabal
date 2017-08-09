@@ -38,7 +38,7 @@ library
                      , scientific
                      , time
                      , transformers
-                     , wreq
+                     , wreq >= 0.5.1.0
   default-language:    Haskell2010
 
 executable simple-exe
@@ -60,7 +60,7 @@ executable simple-exe
                      , text
                      , text-format
                      , scotty
-                     , wreq
+                     , wreq >= 0.5.1.0
   default-language:    Haskell2010
 
 test-suite simple-test
