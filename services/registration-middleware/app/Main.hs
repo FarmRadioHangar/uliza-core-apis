@@ -33,14 +33,12 @@ responseHandler body = either errorResponse Scotty.json =<< liftIO (runApi task)
   where
     task = do
       -- 
-      setBaseUrl "http://0.0.0.0:3210"
-      setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXBwIn0.mmcWi-LxtDF8p4-nc8RQuVo-g7yOulFTb6rEnKRNxrE"
+      setBaseUrl "http://localhost:3000"
+      setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
       --setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXV0aCJ9.ECxpLsBiTGIUPLV75-RdwqerfS-asXAPGvAxMenbroo"
       setHeader "Accept" ["application/json"]
       setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
       --
-      --maybeToEither BadRequestError (body ^? key "data") 
-      --  >>= lookupParticipant 
       maybeToEither BadRequestError (decode body) 
         >>= lookupParticipant 
           >>= \user -> getRegistrationCall user
