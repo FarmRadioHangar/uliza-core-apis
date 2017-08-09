@@ -12,6 +12,8 @@ var host = process.env.DB_HOST;
 var user = process.env.DB_USER;
 var pass = process.env.DB_PASS;
 
+var server = process.env.REG_SERVICE_URL;
+
 var conn = 'postgres://' + user + ':' + pass + '@' + host 
                          + '/registration_middleware_test';
 
@@ -31,26 +33,14 @@ var config = {
   dir: '../../../api/db/migrations'
 };
 
-function grantPermissions() {
-  var queries = [
-    'GRANT USAGE ON SCHEMA farmradio_api TO www;',
-    'GRANT USAGE ON SCHEMA farmradio_api TO auth;',
-    'GRANT SELECT ON ALL TABLES IN SCHEMA farmradio_api TO www;',
-    'GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA farmradio_api TO auth;',
-    'GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA farmradio_api TO auth;'
-  ];
-  return Promise.all(queries.map(function(query) { 
-    return pg.query(query); 
-  }));
-}
-
 function schemaUp() {
   console.log = function() {};
   return migrate(Object.assign({}, {
     direction: 'up'
   }, config))
-  .then(function() { delete console.log; })
-  .then(grantPermissions);
+  .then(function() {
+    delete console.log;
+  });
 }
 
 function schemaDown() {
@@ -59,7 +49,9 @@ function schemaDown() {
     direction: 'down',
     count: Number.MAX_SAFE_INTEGER 
   }, config))
-  .then(function() { delete console.log; });
+  .then(function() {
+    delete console.log;
+  });
 }
 
 var response_001 = {
@@ -81,10 +73,10 @@ var response_001 = {
 };
 
 function runner(data, next) {
-  return request('http://localhost:3034')
+  return request(server)
   .post('/responses')
   .set('Accept', 'application/json')
-  .send(data)
+  .send(data.data)
   .then(next);
 }
 
