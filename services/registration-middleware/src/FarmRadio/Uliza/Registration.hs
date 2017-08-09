@@ -76,10 +76,10 @@ lookupParticipant request = do
     -- Extract phone number from request 
     phone <- maybeToEither BadRequestError (extractString "subscriber_phone" request) 
 
+    logDebugJSON "incoming_response" request
+
     -- Log the raw JSON payload received
     void $ post "/voto_response_data" $ object [("data", request)] 
-
-    logDebugJSON "incoming_response" request
 
     -- Look up participant from subscriber's phone number
     response <- getParticipantByPhoneNumber (unpack phone)
