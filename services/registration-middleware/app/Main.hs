@@ -14,6 +14,9 @@ import Data.Text.Lazy                   ( toStrict )
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
 import Network.HTTP.Types
+import Network.Wai
+import Network.Wai.Handler.Warp
+import Network.Wai.Routing
 import System.Log.Logger
 import Web.Scotty                       ( ScottyM, scotty )
 
@@ -23,7 +26,11 @@ import qualified Web.Scotty as Scotty
 main :: IO ()
 main = do
     updateGlobalLogger loggerNamespace (setLevel DEBUG)
-    scotty 3034 app
+    run 3034 app'
+--    scotty 3034 app
+
+app' :: Application
+app' req respond = respond $ responseLBS status200 [] "Herro!"
 
 app :: ScottyM ()
 app = Scotty.post "/responses" (Scotty.body >>= responseHandler)

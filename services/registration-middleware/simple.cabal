@@ -40,6 +40,7 @@ library
                      , transformers
                      , wreq >= 0.5.1.0
                      , wai
+                     , wai-routing
                      , warp
   default-language:    Haskell2010
 
@@ -64,6 +65,7 @@ executable simple-exe
                      , scotty
                      , wreq >= 0.5.1.0
                      , wai
+                     , wai-routing
                      , warp
   default-language:    Haskell2010
 
