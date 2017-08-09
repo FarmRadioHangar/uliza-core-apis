@@ -106,8 +106,8 @@ lookupParticipant request = do
           maybeToEither (UnexpectedResponse "postParticipant") participant
 
 -- | Data type representation of a participant's registration status
-data RegistrationStatus = 
-     AlreadyRegistered       -- ^ The participant is already registered
+data RegistrationStatus 
+   = AlreadyRegistered       -- ^ The participant is already registered
    | RegistrationDeclined    -- ^ Participant has declined to register
    | PriorCallScheduled      -- ^ A registration call is already due
    | RecentCallMade          -- ^ A call was recently made
