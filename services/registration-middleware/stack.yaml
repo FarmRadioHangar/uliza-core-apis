@@ -37,11 +37,9 @@ resolver: lts-9.0
 # will not be run. This is useful for tweaking upstream packages.
 packages:
 - '.'
-- wreq
-- wreq/examples
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
-extra-deps: []
+extra-deps: [wreq-0.5.1.0]
 
 # Override default flag values for local packages and extra-deps
 flags: {}
