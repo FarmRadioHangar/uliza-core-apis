@@ -39,6 +39,8 @@ library
                      , time
                      , transformers
                      , wreq >= 0.5.1.0
+                     , wai
+                     , warp
   default-language:    Haskell2010
 
 executable simple-exe
@@ -61,6 +63,8 @@ executable simple-exe
                      , text-format
                      , scotty
                      , wreq >= 0.5.1.0
+                     , wai
+                     , warp
   default-language:    Haskell2010
 
 test-suite simple-test
