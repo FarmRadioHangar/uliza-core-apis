@@ -26,11 +26,18 @@ import qualified Web.Scotty as Scotty
 main :: IO ()
 main = do
     updateGlobalLogger loggerNamespace (setLevel DEBUG)
-    run 3034 app'
+--    run 3034 app'
+    run 3034 $ route (prepare start)
 --    scotty 3034 app
 
-app' :: Application
-app' req respond = respond $ responseLBS status200 [] "Herro!"
+start :: Routes a IO ()
+start = Network.Wai.Routing.get "/user/:name" (continue fetchUser) (capture "name")
+
+fetchUser :: Text -> IO Response
+fetchUser name = undefined
+
+--app' :: Application
+--app' req respond = respond $ responseLBS status200 [] "Herro!"
 
 app :: ScottyM ()
 app = Scotty.post "/responses" (Scotty.body >>= responseHandler)
