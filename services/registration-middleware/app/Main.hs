@@ -11,12 +11,14 @@ import Data.Monoid                      ( (<>) )
 import Data.Text                        ( Text, unpack )
 import Data.Text.Format                 ( Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
+import Data.Predicate
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp
 import Network.Wai.Routing
+import Network.Wai.Parse
 import System.Log.Logger
 import Web.Scotty                       ( ScottyM, scotty )
 
@@ -26,21 +28,38 @@ import qualified Web.Scotty as Scotty
 main :: IO ()
 main = do
     updateGlobalLogger loggerNamespace (setLevel DEBUG)
---    run 3034 app'
-    run 3034 $ route (prepare start)
---    scotty 3034 app
+    run 3034 app'
 
-start :: Routes a IO ()
-start = Network.Wai.Routing.get "/user/:name" (continue fetchUser) (capture "name")
+start :: BL.ByteString -> Routes a IO ()
+start body = Network.Wai.Routing.post "/responses" (const $ fetchUser body) true
 
-fetchUser :: Text -> IO Response
-fetchUser name = print $ show name
+fetchUser :: BL.ByteString -> Continue IO -> IO ResponseReceived
+fetchUser b c = c $ responseLBS status200 [] "Herro!"
 
---app' :: Application
---app' req respond = respond $ responseLBS status200 [] "Herro!"
+--    print $ show name
+
+app' :: Application
+app' req respond = do
+    body <- strictRequestBody req
+    route (prepare $ start body) req respond
+
+-- respond $ responseLBS status200 [] "Herro!"
 
 app :: ScottyM ()
 app = Scotty.post "/responses" (Scotty.body >>= responseHandler)
+
+responseHandler' :: BL.ByteString -> IO ()
+responseHandler' body = do
+    x <- runApi task
+    either errorResponse jsonResponse x
+  where
+    task :: Api Value
+    task = undefined
+    errorResponse :: ApiError -> IO ()
+    errorResponse = undefined
+    jsonResponse :: Value -> IO ()
+    jsonResponse = undefined
+
 
 responseHandler :: BL.ByteString -> Scotty.ActionM ()
 responseHandler body = either errorResponse Scotty.json =<< liftIO (runApi task)
