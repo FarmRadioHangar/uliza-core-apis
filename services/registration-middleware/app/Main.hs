@@ -81,9 +81,9 @@ responseHandler body = either errorResponse Scotty.json =<< liftIO (runApi task)
     logErrorMessage InternalServerError       
       = "Server error."
     logErrorMessage (UnexpectedResponse what)
-      = ("An unexpected response was received from the API server. (" <> what <> ")")
+      = "An unexpected response was received from the API server. (" <> what <> ")"
     logErrorMessage (StatusCodeResponse code) 
-      = ("The API server responded with status code " <> show code)
+      = "The API server responded with status code " <> show code
     logErrorMessage ServerConnectionFailed    
       = "Connection failed. Is the API server running?"
     logErrorMessage AuthenticationError       
