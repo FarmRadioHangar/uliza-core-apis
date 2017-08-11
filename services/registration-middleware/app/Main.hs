@@ -8,17 +8,17 @@ import Data.Aeson
 import Data.Aeson.Lens
 import Data.Either.Utils                ( maybeToEither )
 import Data.Monoid                      ( (<>) )
+import Data.Predicate
 import Data.Text                        ( Text, unpack )
 import Data.Text.Format                 ( Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
-import Data.Predicate
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp
-import Network.Wai.Routing
 import Network.Wai.Parse
+import Network.Wai.Routing
 import System.Log.Logger
 import Web.Scotty                       ( ScottyM, scotty )
 
@@ -31,44 +31,21 @@ main = do
     run 3034 app'
 
 start :: BL.ByteString -> Routes a IO ()
-start body = Network.Wai.Routing.post "/responses" (const $ fetchUser body) true
-
-fetchUser :: BL.ByteString -> Continue IO -> IO ResponseReceived
-fetchUser b c = c $ responseLBS status200 [] "Herro!"
-
---    print $ show name
+start body = Network.Wai.Routing.post "/responses" (const $ responseHandler' body) true
 
 app' :: Application
 app' req respond = do
     body <- strictRequestBody req
     route (prepare $ start body) req respond
 
--- respond $ responseLBS status200 [] "Herro!"
-
-app :: ScottyM ()
-app = Scotty.post "/responses" (Scotty.body >>= responseHandler)
-
-responseHandler' :: BL.ByteString -> IO ()
-responseHandler' body = do
-    x <- runApi task
-    either errorResponse jsonResponse x
+responseHandler' :: BL.ByteString -> Continue IO -> IO ResponseReceived
+responseHandler' body c = 
+    runApi task >>= either errorResponse jsonResponse 
   where
     task :: Api Value
-    task = undefined
-    errorResponse :: ApiError -> IO ()
-    errorResponse = undefined
-    jsonResponse :: Value -> IO ()
-    jsonResponse = undefined
-
-
-responseHandler :: BL.ByteString -> Scotty.ActionM ()
-responseHandler body = either errorResponse Scotty.json =<< liftIO (runApi task)
-  where
     task = do
-      -- 
       setBaseUrl "http://localhost:3000"
       setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
-      --setOauth2Token "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYXV0aCJ9.ECxpLsBiTGIUPLV75-RdwqerfS-asXAPGvAxMenbroo"
       setHeader "Accept" ["application/json"]
       setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
       --
@@ -94,13 +71,16 @@ responseHandler body = either errorResponse Scotty.json =<< liftIO (runApi task)
 
       return $ object [("message", String message)]
 
+    jsonResponse :: Value -> IO ResponseReceived
+    jsonResponse v = c $ responseLBS status200 [(hContentType, "application/json")] (encode v)
+
     -- An error occurred
     --
-    errorResponse :: ApiError -> Scotty.ActionM ()
+    errorResponse :: ApiError -> IO ResponseReceived
     errorResponse err = do
-      liftIO $ errorM loggerNamespace $ "[server_error] " <> logErrorMessage err
-      Scotty.status internalServerError500
-      Scotty.json $ object [("error", String (hint err))]
+        errorM loggerNamespace $ "[server_error] " <> logErrorMessage err
+        c $ responseLBS internalServerError500 [] 
+          $ encode $ object [("error", String (hint err))]
 
     hint :: ApiError -> Text
     hint InternalServerError       = "INTERNAL_SERVER_ERROR"
