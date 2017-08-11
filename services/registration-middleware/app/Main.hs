@@ -28,18 +28,18 @@ import qualified Web.Scotty as Scotty
 main :: IO ()
 main = do
     updateGlobalLogger loggerNamespace (setLevel DEBUG)
-    run 3034 app'
+    run 3034 app
 
 start :: BL.ByteString -> Routes a IO ()
-start body = Network.Wai.Routing.post "/responses" (const $ responseHandler' body) true
+start body = Network.Wai.Routing.post "/responses" (const $ responseHandler body) true
 
-app' :: Application
-app' req respond = do
+app :: Application
+app req respond = do
     body <- strictRequestBody req
     route (prepare $ start body) req respond
 
-responseHandler' :: BL.ByteString -> Continue IO -> IO ResponseReceived
-responseHandler' body c = 
+responseHandler :: BL.ByteString -> Continue IO -> IO ResponseReceived
+responseHandler body c = 
     runApi task >>= either errorResponse jsonResponse 
   where
     task :: Api Value
