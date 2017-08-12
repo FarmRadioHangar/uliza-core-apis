@@ -32,7 +32,7 @@ import Control.Monad.IO.Class
 import Control.Exception.Safe
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Either
-import Control.Monad.Trans.State   ( StateT, runStateT, modify )
+import Control.Monad.Trans.State   ( StateT, evalStateT, modify )
 import Data.Aeson 
 import Data.Aeson.Lens
 import Data.ByteString
@@ -78,7 +78,7 @@ type Api = EitherT ApiError (StateT ApiContext IO)
 runApi :: Api a -> IO (Either ApiError a)
 runApi c = Session.withAPISession run `catch` httpException
   where
-    run sess = fst <$> runStateT (runEitherT c) (ApiContext mempty opts sess) 
+    run sess = evalStateT (runEitherT c) (ApiContext mempty opts sess) 
     opts = defaults & checkResponse .~ Just (\_ _ -> return ())
 
 httpException :: HttpException -> IO (Either ApiError a)
