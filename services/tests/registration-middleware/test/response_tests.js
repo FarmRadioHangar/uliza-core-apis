@@ -4,6 +4,7 @@ var assert  = require('assert');
 var chai    = require('chai');
 var client  = require('pg').Client;
 var migrate = require('node-pg-migrate').default;
+var unlock  = require('node-pg-migrate').unlockRunner;
 var mocha   = require('mocha');
 var request = require('supertest');
 var util    = require('util');
@@ -15,7 +16,8 @@ var pass = process.env.DB_PASS;
 var server = process.env.REG_SERVICE_URL;
 
 var conn = 'postgres://' + user + ':' + pass + '@' + host 
-                         + '/registration_middleware_test';
+                         + '/postgres';
+//                         + '/registration_middleware_test';
 
 var pg = new client(conn);
 pg.connect();
@@ -84,7 +86,11 @@ describe('Response from new participant', function() {
 
   this.timeout(6000);
 
-  beforeEach(schemaUp);
+  beforeEach(function() { 
+    return unlock(config)
+    .then(schemaDown)
+    .then(schemaUp); 
+  });
 
   afterEach(schemaDown);
 
@@ -156,7 +162,9 @@ describe('Response from an already registered participant', function() {
   this.timeout(6000);
 
   beforeEach(function() {
-    return schemaUp()
+    return unlock(config)
+    .then(schemaDown)
+    .then(schemaUp)
     .then(function() {
       return pg.query(
         "INSERT INTO farmradio_api.registration_calls\
@@ -201,7 +209,9 @@ describe('Response from a participant who has declided to be registered', functi
   this.timeout(6000);
 
   beforeEach(function() {
-    return schemaUp()
+    return unlock(config)
+    .then(schemaDown)
+    .then(schemaUp)
     .then(function() {
       return pg.query(
         "INSERT INTO farmradio_api.participants\
@@ -241,7 +251,9 @@ describe('Response from a participant for whom a registration call is already du
   this.timeout(6000);
 
   beforeEach(function() {
-    return schemaUp()
+    return unlock(config)
+    .then(schemaDown)
+    .then(schemaUp)
     .then(function() {
       var d = new Date();
       d.setMinutes(d.getMinutes() + 20);
@@ -288,7 +300,9 @@ describe('Response from a participant for whom a registration call happened rece
   this.timeout(6000);
 
   beforeEach(function() {
-    return schemaUp()
+    return unlock(config)
+    .then(schemaDown)
+    .then(schemaUp)
     .then(function() {
       var d = new Date();
       return pg.query(util.format(
@@ -334,7 +348,9 @@ describe('Response from a participant for whom the most recent call took place 1
   this.timeout(6000);
 
   beforeEach(function() {
-    return schemaUp()
+    return unlock(config)
+    .then(schemaDown)
+    .then(schemaUp)
     .then(function() {
       var d = new Date();
       d.setMinutes(d.getMinutes() - 60*24*1);
@@ -381,7 +397,9 @@ describe('Response from a participant for whom the most recent call took place m
   this.timeout(6000);
 
   beforeEach(function() {
-    return schemaUp()
+    return unlock(config)
+    .then(schemaDown)
+    .then(schemaUp)
     .then(function() {
       var d = new Date();
       d.setMinutes(d.getMinutes() - 60*24*2);
