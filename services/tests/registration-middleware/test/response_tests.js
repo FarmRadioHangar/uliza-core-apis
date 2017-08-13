@@ -471,3 +471,15 @@ describe('Response from a participant for whom the most recent call took place m
   });
 
 });
+
+describe('Bad request format', function() {
+
+  it('should return a status code 500', function() {
+    return runner({}, function(response) {
+      response.should.have.header('Content-Type', /json/);
+      response.status.should.equal(500);
+    });
+  });
+
+});
+
