@@ -94,9 +94,11 @@ httpException = \case
   where
     err = return . Left
 
+-- | Extract a Text key from JSON data.
 extractString :: AsValue s => Text -> s -> Maybe Text
 extractString k obj = obj ^? key k ._String
 
+-- | Extract a Bool key from JSON data.
 extractBool :: AsValue s => Text -> s -> Maybe Bool
 extractBool k obj = 
   case obj ^? key k of
@@ -104,9 +106,9 @@ extractBool k obj =
     Just (Bool   b) -> Just b
     _               -> Nothing
 
+-- | Extract a Int key from JSON data.
 extractInt :: AsValue s => Text -> s -> Maybe Int
-extractInt k obj = 
-  case obj ^? key k of
+extractInt k obj = case obj ^? key k of
     Just (String s) -> join (fromScientific <$> s ^? _Number)
     Just (Number n) -> fromScientific n
     _               -> Nothing
