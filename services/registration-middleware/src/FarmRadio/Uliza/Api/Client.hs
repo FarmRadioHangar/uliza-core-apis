@@ -6,6 +6,8 @@ module FarmRadio.Uliza.Api.Client
     , Api
     , ApiError(..)
     , extractString
+    , extractBool
+    , extractInt
     , get
     , logDebug
     , logDebugJSON
@@ -27,7 +29,9 @@ module FarmRadio.Uliza.Api.Client
     ) where
 
 import Control.Lens
-import Network.HTTP.Client (HttpExceptionContent(..), HttpException(..))
+import Network.HTTP.Client         ( HttpExceptionContent(..)
+                                   , HttpException(..) )
+import Control.Monad               ( join )
 import Control.Monad.IO.Class
 import Control.Exception.Safe
 import Control.Monad.Trans.Class
@@ -37,8 +41,10 @@ import Data.Aeson
 import Data.Aeson.Lens
 import Data.ByteString
 import Data.Monoid                 ( (<>) )
+import Data.Scientific
 import Data.Text
 import FarmRadio.Uliza.Api.Context
+import FarmRadio.Uliza.Api.Utils   ( eitherToMaybe )
 import Network.HTTP.Base           ( urlEncodeVars )
 import Network.Wreq                ( Response
                                    , auth
@@ -89,7 +95,24 @@ httpException = \case
     err = return . Left
 
 extractString :: AsValue s => Text -> s -> Maybe Text
-extractString k obj = obj ^? key k . _String
+extractString k obj = obj ^? key k ._String
+
+extractBool :: AsValue s => Text -> s -> Maybe Bool
+extractBool k obj = 
+  case obj ^? key k of
+    Just (String s) -> s ^? _Bool
+    Just (Bool   b) -> Just b
+    _               -> Nothing
+
+extractInt :: AsValue s => Text -> s -> Maybe Int
+extractInt k obj = 
+  case obj ^? key k of
+    Just (String s) -> join (fromScientific <$> s ^? _Number)
+    Just (Number n) -> fromScientific n
+    _               -> Nothing
+  where
+    fromScientific :: Scientific -> Maybe Int
+    fromScientific = eitherToMaybe . floatingOrInteger 
 
 resourceUrl :: String -> [(String, String)] -> String
 resourceUrl name params = "/" <> name <> "?" <> urlEncodeVars params
