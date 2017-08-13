@@ -5,9 +5,9 @@ module FarmRadio.Uliza.Api.Client
     ( module FarmRadio.Uliza.Api.Context
     , Api
     , ApiError(..)
-    , extractString
     , extractBool
     , extractInt
+    , extractString
     , get
     , logDebug
     , logDebugJSON
