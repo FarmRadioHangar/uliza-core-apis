@@ -15,6 +15,8 @@ module FarmRadio.Uliza.Api.Client
     , logErrorJSON
     , logNotice
     , logNoticeJSON
+    , logWarning
+    , logWarningJSON
     , loggerNamespace
     , lookupResource
     , patch
@@ -75,6 +77,8 @@ data ApiError
   -- ^ Connection failed. Is the API server running?
   | AuthenticationError       
   -- ^ Unauthorized
+  | NotFoundError
+  -- ^ Server returned 404 NOT FOUND
   | BadRequestError           
   -- ^ Bad request format.
   deriving (Show)
@@ -85,7 +89,7 @@ runApi :: Api a -> IO (Either ApiError a)
 runApi c = Session.withAPISession run `catch` httpException
   where
     run sess = evalStateT (runEitherT c) (ApiContext mempty opts sess) 
-    opts = defaults & checkResponse .~ Just (\_ _ -> return ())
+    opts = defaults & checkResponse .~ Just (const $ const $ return ())
 
 httpException :: HttpException -> IO (Either ApiError a)
 httpException = \case 
@@ -106,7 +110,7 @@ extractBool k obj =
     Just (Bool   b) -> Just b
     _               -> Nothing
 
--- | Extract a Int key from JSON data.
+-- | Extract an Int key from JSON data.
 extractInt :: AsValue s => Text -> s -> Maybe Int
 extractInt k obj = case obj ^? key k of
     Just (String s) -> join (fromScientific <$> s ^? _Number)
@@ -189,9 +193,11 @@ extractBody :: Response BL.ByteString -> Api BL.ByteString
 extractBody response =
     case response ^. responseStatus . statusCode of
       200 -> ok
-      201 -> ok
-      202 -> ok
+      201 -> ok                          -- 210 CREATED
+      202 -> ok                          -- 202 ACCEPTED
+      204 -> ok                          -- 204 NO CONTENT
       401 -> left AuthenticationError
+      404 -> left NotFoundError
       500 -> left InternalServerError
       err -> left (StatusCodeResponse err)
   where 
@@ -209,27 +215,41 @@ setHeader :: HeaderName -> [ByteString] -> Api ()
 setHeader name val = lift $ modify (options . header name .~ val)
 
 loggerNamespace :: String
-loggerNamespace = "uliza_registration_middleware"
+loggerNamespace = "uliza_voto_registration_middleware"
 
 logUsing :: (String -> String -> IO ()) -> String -> String -> Api ()
 logUsing logger tag message = liftIO $ logger loggerNamespace 
                                      $ "[" <> tag <> "]" <> " " <> message
 
+-- | Log a message at DEBUG priority.
 logDebug :: String -> String -> Api ()
 logDebug = logUsing debugM 
 
+-- | Send a JSON object to the log at DEBUG priority.
 logDebugJSON :: ToJSON a => String -> a -> Api ()
 logDebugJSON tag obj = logDebug tag (jsonEncode obj)
 
+-- | Log a message at WARNING priority.
+logWarning :: String -> String -> Api ()
+logWarning = logUsing warningM 
+
+-- | Send a JSON object to the log at WARNING priority.
+logWarningJSON :: ToJSON a => String -> a -> Api ()
+logWarningJSON tag obj = logWarning tag (jsonEncode obj)
+
+-- | Log a message at NOTICE priority.
 logNotice :: String -> String -> Api ()
 logNotice = logUsing noticeM 
 
+-- | Send a JSON object to the log at NOTICE priority.
 logNoticeJSON :: ToJSON a => String -> a -> Api ()
 logNoticeJSON tag obj = logNotice tag (jsonEncode obj)
 
+-- | Log a message at ERROR priority.
 logError :: String -> String -> Api ()
 logError = logUsing errorM 
 
+-- | Send a JSON object to the log at ERROR priority.
 logErrorJSON :: ToJSON a => String -> a -> Api ()
 logErrorJSON tag obj = logError tag (jsonEncode obj)
 

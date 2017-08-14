@@ -21,6 +21,7 @@ library
                      , FarmRadio.Uliza.Registration
                      , FarmRadio.Uliza.Registration.Participant
                      , FarmRadio.Uliza.Registration.RegistrationCall
+                     , FarmRadio.Voto.Client
   build-depends:       aeson
                      , text
                      , HTTP
