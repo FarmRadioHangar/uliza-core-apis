@@ -23,7 +23,7 @@ exports.up = (pg) => {
     },
     registration_call_id: {
       type: 'int',
-      notNull: true,
+      notNull: false,
       references: 'farmradio_api.registration_calls(id)'
     },
     event_type: {
