@@ -2,108 +2,149 @@
 {-# LANGUAGE LambdaCase #-}
 module Main where
 
+import Control.Concurrent
 import Control.Lens
+import Control.Monad
 import Control.Monad.IO.Class
+import Control.Monad.Trans.State
 import Data.Aeson
 import Data.Aeson.Lens
 import Data.Either.Utils                ( maybeToEither )
 import Data.Monoid                      ( (<>) )
 import Data.Predicate
 import Data.Text                        ( Text, unpack )
-import Data.Text.Format                 ( Only(..), format )
+import Data.Text.Format                 ( Format, Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
+import FarmRadio.Voto.Client
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp
+import Network.Wai.Handler.WebSockets
 import Network.Wai.Parse
-import Network.Wai.Routing
+import Network.WebSockets
 import System.Log.Logger
-import Web.Scotty                       ( ScottyM, scotty )
+import Web.Scotty                       ( ScottyM, scotty, status )
 
 import qualified Data.ByteString.Lazy as BL
 import qualified Web.Scotty as Scotty
 
 main :: IO ()
 main = do
+    state <- newMVar []
     updateGlobalLogger loggerNamespace (setLevel DEBUG)
-    run 3034 app
+    httpServer <- Scotty.scottyApp (app state)
+    let server = websocketsOr defaultConnectionOptions (ws state) httpServer
+    run 3034 server
 
-start :: BL.ByteString -> Routes a IO ()
-start body = Network.Wai.Routing.post "/responses" (const $ responseHandler body) true
+app :: MVar [Connection] -> Scotty.ScottyM ()
+app state = do
+    Scotty.post "/responses" (process votoResponse)
+    Scotty.post "/call_status_update" (process callStatusUpdate)
 
-app :: Application
-app req respond = do
-    body <- strictRequestBody req
-    route (prepare $ start body) req respond
+ws :: MVar [Connection] -> ServerApp
+ws state pending = do 
+    conn <- acceptRequest pending
+    modifyMVar_ state $ \conns -> return (conn : conns)
+    sendTextData conn ("Hello, client!" :: Text)
 
-responseHandler :: BL.ByteString -> Continue IO -> IO ResponseReceived
-responseHandler body c = 
-    runApi task >>= either errorResponse jsonResponse 
+process :: (Value -> Api Value) -> Scotty.ActionM ()
+process handler = do
+  body <- decode <$> Scotty.body
+  either errorResponse jsonResponse =<< liftIO (runApi $ do
+    setBaseUrl "http://localhost:3000"
+    setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
+    setHeader "Accept" ["application/json"]
+    setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
+    maybeToEither BadRequestError body >>= handler) 
+
+properties :: Value -> Maybe Value
+properties v = v ^? key "data" 
+                  . key "subscriber" 
+                  . key "properties" 
+
+callStatusUpdate :: Value -> Api Value
+callStatusUpdate request = do
+  logDebugJSON "incoming_call_status_update" request 
+  callComplete <- isCallComplete request
+  phone  <- maybeToEither BadRequestError (extractString "subscriber_phone" request)
+  votoId <- maybeToEither BadRequestError (extractInt "subscriber_id" request)
+  subscriber <- votoSubscriber votoId & liftIO
+  print subscriber & liftIO
+  registered <- maybeToEither InternalServerError (join $ extractBool "registered" <$> properties subscriber) 
+  if callComplete && registered
+     then do
+       getOrCreateParticipant (FromPhoneNumber phone)
+         >>= registerParticipant 
+         >>= send
+     else do
+       liftIO $ noticeM loggerNamespace $ "[no_action] Participant not registered." 
+       return $ object [("message", "NO_ACTION")]
   where
-    task :: Api Value
-    task = do
-      setBaseUrl "http://localhost:3000"
-      setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
-      setHeader "Accept" ["application/json"]
-      setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
-      --
-      maybeToEither BadRequestError (decode body) 
-        >>= lookupParticipant 
-          >>= \user -> getRegistrationCall user
-            >>= determineRegistrationStatus user 
-              >>= \case 
-                AlreadyRegistered    -> noAction "PARTICIPANT_ALREADY_REGISTERED"
-                RegistrationDeclined -> noAction "REGISTRATION_DECLINED"
-                PriorCallScheduled   -> noAction "PRIOR_CALL_SCHEDULED"
-                RecentCallMade       -> noAction "RECENT_CALL_MADE"
-                ScheduleCall time    -> toJSON <$> scheduleRegistrationCall user time
+    send response = do
+      liftIO $ noticeM loggerNamespace $ "[registration_complete]\ 
+                                       \ Participant registration complete." 
+      return $ object 
+        [ ("message" , "REGISTRATION_COMPLETE")
+        , ("data"    , response) ]
 
-    -- Request successfully processed, but no registration call was scheduled
-    --
+votoResponse :: Value -> Api Value
+votoResponse request = 
+  logDebugJSON "incoming_response" request 
+    >> post "/voto_response_data" (object [("data", request)])
+    >> getOrCreateParticipant (FromRequest request)
+    >>= \user -> getRegistrationCall user 
+    >>= determineRegistrationStatus user 
+    >>= \case 
+      AlreadyRegistered    -> noAction "PARTICIPANT_ALREADY_REGISTERED"
+      RegistrationDeclined -> noAction "REGISTRATION_DECLINED"
+      PriorCallScheduled   -> noAction "PRIOR_CALL_SCHEDULED"
+      RecentCallMade       -> noAction "RECENT_CALL_MADE"
+      ScheduleCall time    -> toJSON <$> scheduleRegistrationCall user time
+  where
     noAction :: Text -> Api Value
     noAction message = do
-
+      -- Request successfully processed, but no registration call was scheduled
       liftIO $ noticeM loggerNamespace $ "[no_call_scheduled]\
              \ A registration call was NOT scheduled. Reason: " 
-             <> unpack message
-
+            <> unpack message
       return $ object [("message", String message)]
 
-    jsonResponse :: Value -> IO ResponseReceived
-    jsonResponse v = c $ responseLBS status200 [(hContentType, "application/json")] (encode v)
+-- Normal response
+jsonResponse :: Value -> Scotty.ActionM ()
+jsonResponse value = status ok200 >> Scotty.json value
 
-    -- An error occurred
-    --
-    errorResponse :: ApiError -> IO ResponseReceived
-    errorResponse err = do
-        errorM loggerNamespace $ "[server_error] " <> logErrorMessage err
-        c $ responseLBS internalServerError500 [] 
-          $ encode $ object [("error", String (hint err))]
+-- An error occurred
+errorResponse :: ApiError -> Scotty.ActionM ()
+errorResponse err = do
+    liftIO (errorM loggerNamespace $ "[server_error] " <> logErrorMessage err)
+    status internalServerError500
+    Scotty.json $ object [("error", String (hint err))]
 
-    hint :: ApiError -> Text
-    hint InternalServerError       = "INTERNAL_SERVER_ERROR"
-    hint (UnexpectedResponse _)    = "UNEXPECTED_RESPONSE_FORMAT"
-    hint (StatusCodeResponse code) = statusCodeResponse code "STATUS_CODE_{}" 
-    hint ServerConnectionFailed    = "SERVER_CONNECTION_FAILED"
-    hint AuthenticationError       = "UNAUTHORIZED"
-    hint BadRequestError           = "BAD_REQUEST_FORMAT"
+hint :: ApiError -> Text
+hint InternalServerError       = "INTERNAL_SERVER_ERROR"
+hint (UnexpectedResponse _)    = "UNEXPECTED_RESPONSE_FORMAT"
+hint (StatusCodeResponse code) = "STATUS_CODE_{}" & statusCodeResponse code 
+hint ServerConnectionFailed    = "SERVER_CONNECTION_FAILED"
+hint AuthenticationError       = "UNAUTHORIZED"
+hint NotFoundError             = "RESOURCE_NOT_FOUND"
+hint BadRequestError           = "BAD_REQUEST_FORMAT"
 
-    logErrorMessage :: ApiError -> String
-    logErrorMessage InternalServerError       
-      = "Server error."
-    logErrorMessage (UnexpectedResponse what)
-      = "An unexpected response was received from the API server. (" <> what <> ")"
-    logErrorMessage (StatusCodeResponse code) 
-      = "The API server responded with status code " <> show code
-    logErrorMessage ServerConnectionFailed    
-      = "Connection failed. Is the API server running?"
-    logErrorMessage AuthenticationError       
-      = "Authentication error when connecting to API server.\
-       \ Verify that the JSON web token (JWT) is valid."
-    logErrorMessage BadRequestError           
-      = "The request format was not recognized."
+statusCodeResponse :: Int -> Format -> Text
+statusCodeResponse code = toStrict . flip format (Only code) 
 
-    statusCodeResponse code = toStrict . flip format (Only code) 
-
+logErrorMessage :: ApiError -> String
+logErrorMessage InternalServerError = "Server error."
+logErrorMessage (UnexpectedResponse what)
+  = "An unexpected response was received from the API server. (" <> what <> ")"
+logErrorMessage (StatusCodeResponse code) 
+  = "The API server responded with status code " <> show code
+logErrorMessage ServerConnectionFailed    
+  = "Connection failed. Is the API server running?"
+logErrorMessage AuthenticationError       
+  = "Authentication error when connecting to API server.\
+   \ Verify that the JSON web token (JWT) is valid."
+logErrorMessage NotFoundError 
+  = "The API server returned a 404 error. Check the database schema!"
+logErrorMessage BadRequestError = "The request format was not recognized."
