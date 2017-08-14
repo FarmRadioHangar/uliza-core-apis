@@ -25,6 +25,13 @@ function runner(data, next) {
   .then(next);
 }
 
+function stripPrefix(s) {
+  if (s.length && '+' === s[0]) {
+    return s.substring(1);
+  }
+  return s;
+}
+
 describe('Response from new participant', function() {
 
   this.timeout(6000);
@@ -46,7 +53,7 @@ describe('Response from new participant', function() {
 
   it('should return a scheduled call with the participant\'s phone number', function() {
     return runner(response_001, function(response) {
-      response.body.should.have.property('phone_number').equal(response_001.subscriber_phone);
+      response.body.should.have.property('phone_number').equal(stripPrefix(response_001.subscriber_phone));
     });
   });
 
@@ -80,7 +87,7 @@ describe('Response from new participant', function() {
         registrationCall.should.be.an('object');
         return tests.db.query(util.format(
           "SELECT * FROM farmradio_api.participants WHERE phone_number='%s';", 
-          response_001.subscriber_phone
+          stripPrefix(response_001.subscriber_phone)
         ));
       })
       .then(function(results) {
@@ -112,13 +119,13 @@ describe('Response from an already registered participant', function() {
       return tests.db.query(
         "INSERT INTO farmradio_api.registration_calls\
                 \ (phone_number, scheduled_time)\
-         \ VALUES ('+255678647268', '2017-07-24T18:13:51Z') RETURNING id;");
+         \ VALUES ('255678647268', '2017-07-24T18:13:51Z') RETURNING id;");
     })
     .then(function(results) {
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.participants\
                 \ (phone_number, registration_status, registration_call_id)\
-         \ VALUES ('+255678647268', 'REGISTERED', %d);", results.rows[0].id));
+         \ VALUES ('255678647268', 'REGISTERED', %d);", results.rows[0].id));
     });
   });
 
@@ -159,7 +166,7 @@ describe('Response from a participant who has declided to be registered', functi
       return tests.db.query(
         "INSERT INTO farmradio_api.participants\
                 \ (phone_number, registration_status)\
-         \ VALUES ('+255678647268', 'DECLINED');"
+         \ VALUES ('255678647268', 'DECLINED');"
       );
     });
   });
@@ -203,13 +210,13 @@ describe('Response from a participant for whom a registration call is already du
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.registration_calls\
                 \ (phone_number, scheduled_time)\
-         \ VALUES ('+255678647268', '%s') RETURNING id;", d.toISOString()));
+         \ VALUES ('255678647268', '%s') RETURNING id;", d.toISOString()));
     })
     .then(function(results) {
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.participants\
                 \ (phone_number, registration_status, registration_call_id)\
-         \ VALUES ('+255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
+         \ VALUES ('255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
     });
   });
 
@@ -251,13 +258,13 @@ describe('Response from a participant for whom a registration call happened rece
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.registration_calls\
                 \ (phone_number, scheduled_time)\
-         \ VALUES ('+255678647268', '%s') RETURNING id;", d.toISOString()));
+         \ VALUES ('255678647268', '%s') RETURNING id;", d.toISOString()));
     })
     .then(function(results) {
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.participants\
                 \ (phone_number, registration_status, registration_call_id)\
-         \ VALUES ('+255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
+         \ VALUES ('255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
     });
   });
 
@@ -300,13 +307,13 @@ describe('Response from a participant for whom the most recent call took place 1
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.registration_calls\
                 \ (phone_number, scheduled_time)\
-         \ VALUES ('+255678647268', '%s') RETURNING id;", d.toISOString()));
+         \ VALUES ('255678647268', '%s') RETURNING id;", d.toISOString()));
     })
     .then(function(results) {
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.participants\
                 \ (phone_number, registration_status, registration_call_id)\
-         \ VALUES ('+255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
+         \ VALUES ('255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
     });
   });
 
@@ -349,13 +356,13 @@ describe('Response from a participant for whom the most recent call took place m
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.registration_calls\
                 \ (phone_number, scheduled_time)\
-         \ VALUES ('+255678647268', '%s') RETURNING id;", d.toISOString()));
+         \ VALUES ('255678647268', '%s') RETURNING id;", d.toISOString()));
     })
     .then(function(results) {
       return tests.db.query(util.format(
         "INSERT INTO farmradio_api.participants\
                 \ (phone_number, registration_status, registration_call_id)\
-         \ VALUES ('+255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
+         \ VALUES ('255678647268', 'NOT_REGISTERED', %d);", results.rows[0].id));
     });
   });
 
@@ -363,7 +370,7 @@ describe('Response from a participant for whom the most recent call took place m
 
   it('should return a scheduled call with the participant\'s phone number', function() {
     return runner(response_001, function(response) {
-      response.body.should.have.property('phone_number').equal(response_001.subscriber_phone);
+      response.body.should.have.property('phone_number').equal(stripPrefix(response_001.subscriber_phone));
     });
   });
 
@@ -395,7 +402,7 @@ describe('Response from a participant for whom the most recent call took place m
         registrationCall.should.be.an('object');
         return tests.db.query(util.format(
           "SELECT * FROM farmradio_api.participants WHERE phone_number='%s';", 
-          response_001.subscriber_phone
+          stripPrefix(response_001.subscriber_phone)
         ));
       })
       .then(function(results) {
@@ -421,6 +428,36 @@ describe('Bad request format', function() {
     return runner({}, function(response) {
       response.should.have.header('Content-Type', /json/);
       response.status.should.equal(500);
+    });
+  });
+
+});
+
+describe('Phone number with + prefix', function() {
+
+  this.timeout(6000);
+
+  beforeEach(function() {
+    return tests.unlock()
+    .then(tests.schemaDown)
+    .then(tests.schemaUp);
+  });
+
+  afterEach(tests.schemaDown);
+
+  it('should be stripped off before inserted into database', function() {
+    return runner(response_001, function(response) {
+      return tests.db.query('SELECT * FROM farmradio_api.participants;')
+      .then(function(results) {
+        var participant = results.rows[0];
+        participant.phone_number.should.equal(stripPrefix(response_001.subscriber_phone));
+      });
+    });
+  });
+
+  it('should appear without + in response', function() {
+    return runner(response_001, function(response) {
+      response.body.should.have.property('phone_number').equal(stripPrefix(response_001.subscriber_phone));
     });
   });
 
