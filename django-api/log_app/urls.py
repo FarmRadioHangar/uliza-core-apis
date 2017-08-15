@@ -11,5 +11,5 @@ radiostations = patterns('log_app.views.vRadiostations',
 # Main URL Patterns
 urlpatterns = patterns('',
 	#  Modules
-	url(r'radiostations',include(radiostations,'radiostations')),
+	url(r'radio_stations',include(radiostations,'radiostations')),
 )

@@ -3,6 +3,6 @@ from django.conf.urls import include, url
 
 
 urlpatterns = [
-    url(r'^', include('log_app.urls')),
+    url(r'^log/', include('log_app.urls')),
     # url(r'^api/uliza', include(uliza.urls)),
 ]
