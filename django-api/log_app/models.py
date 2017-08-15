@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 # from log_app.storage.gd_storage import GoogleDriveStorage
-from django.utils import deconstruct 
 
 class Account(User):
 	def is_admin(self):
@@ -162,7 +161,7 @@ class Project(models.Model):
 
 languages = (
 	    ('en-us', 'English'),
-	    ('pt-mz', 'English'),
+	    ('pt-mz', 'Portuguese'),
 	    ('am-et', 'Amharic'),
 	   	('fr-fr', 'Francais')
 )
