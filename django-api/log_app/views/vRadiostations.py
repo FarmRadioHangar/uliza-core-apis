@@ -11,4 +11,7 @@ def stations_list(request):
 		serializer = RadioStationSerializer(stations, many=True)
 
 		return JsonResponse(serializer.data, safe=False)
+
 	return False
+
+
