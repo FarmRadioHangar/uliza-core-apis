@@ -13,6 +13,7 @@ import Data.Either.Utils                ( maybeToEither )
 import Data.Monoid                      ( (<>) )
 import Data.Predicate
 import Data.Text                        ( Text, unpack )
+import Data.Text.Encoding               ( decodeUtf8 )
 import Data.Text.Format                 ( Format, Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
 import FarmRadio.Uliza.Api.Client
@@ -53,8 +54,8 @@ process :: (Value -> Api Value) -> Scotty.ActionM ()
 process handler = do
   body <- decode <$> Scotty.body
   either errorResponse jsonResponse =<< liftIO (runApi $ do
-    setBaseUrl "http://localhost:3000"
-    setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
+    setBaseUrl "http://localhost:8000/api/v1"
+    -- setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
     setHeader "Accept" ["application/json"]
     setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
     maybeToEither BadRequestError body >>= handler) 
@@ -92,7 +93,7 @@ callStatusUpdate request = do
 votoResponse :: Value -> Api Value
 votoResponse request = 
   logDebugJSON "incoming_response" request 
-    >> post "/voto_response_data" (object [("data", request)])
+    >> post "/voto_response_data" (object [("data", String $ dump request)])
     >> getOrCreateParticipant (FromRequest request)
     >>= \user -> getRegistrationCall user 
     >>= determineRegistrationStatus user 
@@ -103,6 +104,8 @@ votoResponse request =
       RecentCallMade       -> noAction "RECENT_CALL_MADE"
       ScheduleCall time    -> toJSON <$> scheduleRegistrationCall user time
   where
+    dump :: Value -> Text
+    dump = decodeUtf8 . BL.toStrict . encode 
     noAction :: Text -> Api Value
     noAction message = do
       -- Request successfully processed, but no registration call was scheduled
