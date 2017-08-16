@@ -2,7 +2,7 @@ from log_app.models import RadioStation
 from log_app.serializers import RadioStationSerializer
 from django.http import HttpResponse, JsonResponse
 
-def stations_list(request):
+def root(request):
 	"""
 	List of all stations and create a new station
 	"""
