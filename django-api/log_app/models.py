@@ -160,10 +160,10 @@ class Project(models.Model):
 		return self.name
 
 languages = (
-	    ('en-us', 'English'),
-	    ('pt-mz', 'Portuguese'),
-	    ('am-et', 'Amharic'),
-	   	('fr-fr', 'Francais')
+	('en-us', 'English'), 
+	('pt-mz', 'Portuguese'),  
+	('am-et', 'Amharic'),  
+	('fr-fr', 'Francais')  
 )
 
 class Presenter(models.Model):
@@ -180,7 +180,7 @@ class Presenter(models.Model):
 class Group_account(models.Model):
 	user = models.ForeignKey(User)
 	radio_station = models.ForeignKey(RadioStation,null=True)
-	members = models.ManyToManyField('Presenter',null=True,blank=True)
+	members = models.ManyToManyField('Presenter',blank=True)
 	language = models.CharField(max_length=6,default='en-us',choices=languages)
 
 	def __unicode__(self):
@@ -242,9 +242,9 @@ class Program(models.Model):
 
 	weeks = models.IntegerField(default=16)
 
-	journalists = models.ManyToManyField('Presenter',null=True,blank=True)
-	knowledge_partner = models.ManyToManyField('Knowledge_partner',null=True,blank=True)
-	access = models.ManyToManyField(User,null=True,blank=True)
+	journalists = models.ManyToManyField('Presenter',blank=True)
+	knowledge_partner = models.ManyToManyField('Knowledge_partner',blank=True)
+	access = models.ManyToManyField(User,blank=True)
 	
 	# Time track
 	last_updated_at = models.DateTimeField(auto_now=True)

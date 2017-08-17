@@ -4,7 +4,7 @@ radiostations = patterns('log_app.views.vRadiostations',
 	# url(r'/view/(?P<id>\d+)','view',name="view"),
 	# url(r'/add','add',name="add"),
 	# url(r'/edit/(?P<id>\d+)','edit',name="edit"),
-	url(r'$','root',name='root'),	
+	url(r'$','index',name='index'),	
 )
 
 

@@ -1,6 +1,8 @@
 from log_app.models import RadioStation
 from log_app.serializers import RadioStationSerializer
+
 from django.http import HttpResponse, JsonResponse
+
 
 def root(request):
 	"""
@@ -11,6 +13,8 @@ def root(request):
 		serializer = RadioStationSerializer(stations, many=True)
 
 		return JsonResponse(serializer.data, safe=False)
+
+
 
 	return False
 
