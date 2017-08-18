@@ -6,12 +6,12 @@ from rest_framework.views import APIView
 from log_app.models import RadioStation
 from log_app.serializers import RadioStationSerializer
 
-class RadioStations(generics.ListCreateAPIView):
+class RadioStationGet(generics.ListCreateAPIView):
 
     queryset = RadioStation.objects.all()
     model = RadioStation
     serializer_class = RadioStationSerializer
-    filter_fields = ['country']
+    filter_fields = ['id','country']
 
 class RadioStationEntity(generics.RetrieveUpdateAPIView):
 
