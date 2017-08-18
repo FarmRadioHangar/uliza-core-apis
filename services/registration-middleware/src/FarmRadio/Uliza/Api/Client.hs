@@ -154,6 +154,7 @@ post_ endpoint body = do
 -- | Send a POST request.
 post :: String -> Value -> Api BL.ByteString
 post endpoint body = do
+    liftIO $ print $ encode body
     response <- lift $ do
       ApiContext{..} <- State.get
       Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
@@ -175,13 +176,12 @@ lookupResource :: (FromJSON a, ToJSON a)
                -> String 
                -> Api (Maybe a)
 lookupResource name prop value = do
-    response <- get (resourceUrl name params)
+    response <- get $ resourceUrl (name <> "/" <> value) params
     return $ case decode response of
       Just [one] -> one
       _          -> Nothing
   where
-    params = [ (prop    , "eq." <> value) 
-             , ("limit" , "1") ]
+    params = [ ("limit", "1") ]
 
 -- | Send a PATCH request acting on the resource identified by the provided id.
 patchResource :: String -> Int -> Value -> Api BL.ByteString
