@@ -10,9 +10,9 @@ class RegistrationCalls(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         call = serializer.save()
-        found = Participant.objects.filter(phone_number=call.phone_number)
-        if (found):
-            participant = found.first()
+        result_set = Participant.objects.filter(phone_number=call.phone_number)
+        if (result_set):
+            participant = result_set.first()
             log_entry = ParticipantRegistrationStatusLog(
                     registration_call=call,
                     participant=participant, 
