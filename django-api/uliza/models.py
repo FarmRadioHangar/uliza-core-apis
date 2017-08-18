@@ -32,7 +32,7 @@ registration_event_types = (
 class ParticipantRegistrationStatusLog(models.Model):
     participant = models.ForeignKey('Participant')
     registration_call = models.ForeignKey('RegistrationCall', null=True)
-    event_type = models.CharField(max_length=20, choices=registration_event_types)
+    event_type = models.CharField(max_length=100, choices=registration_event_types)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -43,4 +43,3 @@ class VotoResponseData(models.Model):
 
     class Meta:
         db_table = 'voto_response_data'
-
