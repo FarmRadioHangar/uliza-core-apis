@@ -131,7 +131,7 @@ hint (UnexpectedResponse _)    = "UNEXPECTED_RESPONSE_FORMAT"
 hint (StatusCodeResponse code) = "STATUS_CODE_{}" & statusCodeResponse code 
 hint ServerConnectionFailed    = "SERVER_CONNECTION_FAILED"
 hint AuthenticationError       = "UNAUTHORIZED"
-hint NotFoundError             = "RESOURCE_NOT_FOUND"
+hint NotFoundError             = "API_RESOURCE_NOT_FOUND"
 hint BadRequestError           = "BAD_REQUEST_FORMAT"
 
 statusCodeResponse :: Int -> Format -> Text
