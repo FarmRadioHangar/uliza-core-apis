@@ -1,6 +1,4 @@
 from django.conf.urls import patterns, include, url
-
-from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 from uliza import views
 from uliza.views.Participants import *
@@ -8,17 +6,17 @@ from uliza.views.RegistrationCalls import *
 from uliza.views.VotoResponseData import *
 
 participants = patterns('uliza.views.Participants',
-    url(r'/(?P<id>\d+)$', ParticipantsEntity.as_view()),
+    url(r'/(?P<id>\d+)$', ParticipantsInstance.as_view()),
     url(r'$', Participants.as_view()),
 )
 
 registration_calls = patterns('uliza.views.RegistrationCalls',
-    url(r'/(?P<id>\d+)$', RegistrationCallsEntity.as_view()),
+    url(r'/(?P<id>\d+)$', RegistrationCallsInstance.as_view()),
     url(r'$', RegistrationCalls.as_view()),
 )
 
 voto_response_data = patterns('uliza.views.VotoResponseData',
-    url(r'/(?P<id>\d+)$', VotoResponseDataEntity.as_view()),
+    url(r'/(?P<id>\d+)$', VotoResponseDataInstance.as_view()),
     url(r'$', VotoResponseDataDefault.as_view()),
 ) 
 
