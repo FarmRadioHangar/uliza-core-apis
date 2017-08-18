@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='log',
             name='recording',
-            field=models.FileField(storage=log_app.storage.gd_storage.GoogleDriveStorage(), null=True, upload_to=b'/programs', blank=True),
+            field=models.FileField(storage=None, null=True, upload_to=b'/programs', blank=True),
             preserve_default=True,
         ),
         migrations.AlterField(
