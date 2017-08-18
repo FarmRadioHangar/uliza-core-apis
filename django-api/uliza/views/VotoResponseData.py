@@ -12,7 +12,7 @@ class VotoResponseDataDefault(generics.ListCreateAPIView):
     model = VotoResponseData
     serializer_class = VotoResponseDataSerializer
 
-class VotoResponseDataEntity(generics.RetrieveUpdateAPIView):
+class VotoResponseDataInstance(generics.RetrieveUpdateAPIView):
 
     queryset = VotoResponseData.objects.all()
     model = VotoResponseData
