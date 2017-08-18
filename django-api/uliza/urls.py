@@ -1,30 +1,29 @@
 from django.conf.urls import patterns, include, url
 
-participants = patterns('uliza.views.vParticipants',
-    url(r'/(?P<id>\d+)$', 'instance', name='instance'),
-    url(r'$', 'default', name='default'),
+from django.conf.urls import url
+from rest_framework.urlpatterns import format_suffix_patterns
+from uliza import views
+from uliza.views.Participants import *
+from uliza.views.RegistrationCalls import *
+from uliza.views.VotoResponseData import *
+
+participants = patterns('uliza.views.Participants',
+    url(r'/(?P<id>\d+)$', ParticipantsEntity.as_view()),
+    url(r'$', Participants.as_view()),
 )
 
-registration_calls = patterns('uliza.views.vRegistrationCalls',
-    url(r'/(?P<id>\d+)$', 'instance', name='instance'),
-    url(r'$', 'default', name='default'),
+registration_calls = patterns('uliza.views.RegistrationCalls',
+    url(r'/(?P<id>\d+)$', RegistrationCallsEntity.as_view()),
+    url(r'$', RegistrationCalls.as_view()),
 )
 
-# eventually remove
-participant_registration_status_log = patterns('uliza.views.vParticipantRegistrationStatusLog',
-    url(r'/(?P<id>\d+)$', 'instance', name='instance'),
-    url(r'$', 'default', name='default'),
-) 
-
-# eventually remove??
-voto_response_data = patterns('uliza.views.vVotoResponseData',
-    url(r'/(?P<id>\d+)$', 'instance', name='instance'),
-    url(r'$', 'default', name='default'),
+voto_response_data = patterns('uliza.views.VotoResponseData',
+    url(r'/(?P<id>\d+)$', VotoResponseDataEntity.as_view()),
+    url(r'$', VotoResponseDataDefault.as_view()),
 ) 
 
 urlpatterns = patterns('',
     url(r'participants', include(participants, 'participants')),
     url(r'registration_calls', include(registration_calls, 'registration_calls')),
-    url(r'participant_registration_status_log', include(participant_registration_status_log, 'participant_registration_status_log')),
     url(r'voto_response_data', include(voto_response_data, 'voto_response_data')),
 )
