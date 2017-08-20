@@ -1,31 +1,22 @@
 {-# LANGUAGE OverloadedStrings #-}
--- {-# LANGUAGE LambdaCase #-}
 module Main where
 
 import Control.Concurrent
 import Control.Lens
-import Control.Monad
 import Control.Monad.IO.Class
-import Control.Monad.Trans.State
 import Data.Aeson
-import Data.Aeson.Lens
 import Data.Either.Utils                ( maybeToEither )
 import Data.Monoid                      ( (<>) )
-import Data.Predicate
 import Data.Text                        ( Text, unpack )
 import Data.Text.Encoding               ( decodeUtf8 )
 import Data.Text.Format                 ( Format, Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
-import FarmRadio.Uliza.Registration.RegistrationCall ( RegistrationCall(..) )
-import FarmRadio.Voto.Client
 import Network.HTTP.Types
-import Network.Wai
-import Network.Wai.Handler.Warp
+import Network.Wai.Handler.Warp         ( run )
 import Network.Wai.Handler.WebSockets
-import Network.Wai.Parse
-import Network.WebSockets
+import Network.WebSockets               
 import System.Log.Logger
 import Web.Scotty                       ( ScottyM, scotty, status )
 
