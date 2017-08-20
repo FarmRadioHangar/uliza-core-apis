@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
+-- {-# LANGUAGE LambdaCase #-}
 module Main where
 
 import Control.Concurrent
@@ -18,6 +18,7 @@ import Data.Text.Format                 ( Format, Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
+import FarmRadio.Uliza.Registration.RegistrationCall ( RegistrationCall(..) )
 import FarmRadio.Voto.Client
 import Network.HTTP.Types
 import Network.Wai
@@ -40,79 +41,27 @@ main = do
     run 3034 server
 
 app :: MVar [Connection] -> Scotty.ScottyM ()
-app state = do
-    Scotty.post "/responses" (process votoResponse)
-    Scotty.post "/call_status_update" (process callStatusUpdate)
+app state = 
+    Scotty.post "/responses" (runHandler votoResponse)
+--    Scotty.post "/call_status_update" (runHandler callStatusUpdate)
 
 ws :: MVar [Connection] -> ServerApp
-ws state pending = do 
+ws state pending = do
     conn <- acceptRequest pending
     modifyMVar_ state $ \conns -> return (conn : conns)
     sendTextData conn ("Hello, client!" :: Text)
 
-process :: (Value -> Api Value) -> Scotty.ActionM ()
-process handler = do
-  body <- decode <$> Scotty.body
-  either errorResponse jsonResponse =<< liftIO (runApi $ do
-    setBaseUrl "http://localhost:8000/api/v1"
-    -- setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
-    setHeader "Accept" ["application/json"]
-    setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
-    maybeToEither BadRequestError body >>= handler) 
-
-properties :: Value -> Maybe Value
-properties v = v ^? key "data" 
-                  . key "subscriber" 
-                  . key "properties" 
-
-callStatusUpdate :: Value -> Api Value
-callStatusUpdate request = do
-  logDebugJSON "incoming_call_status_update" request 
-  callComplete <- isCallComplete request
-  phone  <- maybeToEither BadRequestError (extractString "subscriber_phone" request)
-  votoId <- maybeToEither BadRequestError (extractInt "subscriber_id" request)
-  subscriber <- votoSubscriber votoId & liftIO
-  print subscriber & liftIO
-  registered <- maybeToEither InternalServerError (join $ extractBool "registered" <$> properties subscriber) 
-  if callComplete && registered
-     then do
-       getOrCreateParticipant (FromPhoneNumber phone)
-         >>= registerParticipant 
-         >>= send
-     else do
-       liftIO $ noticeM loggerNamespace $ "[no_action] Participant not registered." 
-       return $ object [("message", "NO_ACTION")]
-  where
-    send response = do
-      liftIO $ noticeM loggerNamespace $ "[registration_complete]\ 
-                                       \ Participant registration complete." 
-      return $ object 
-        [ ("message" , "REGISTRATION_COMPLETE")
-        , ("data"    , response) ]
-
-votoResponse :: Value -> Api Value
-votoResponse request = 
-  logDebugJSON "incoming_response" request 
-    >> post "/voto_response_data" (object [("data", String $ dump request)])
-    >> getOrCreateParticipant (FromRequest request)
-    >>= \user -> getRegistrationCall user 
-    >>= determineRegistrationStatus user 
-    >>= \case 
-      AlreadyRegistered    -> noAction "PARTICIPANT_ALREADY_REGISTERED"
-      RegistrationDeclined -> noAction "REGISTRATION_DECLINED"
-      PriorCallScheduled   -> noAction "PRIOR_CALL_SCHEDULED"
-      RecentCallMade       -> noAction "RECENT_CALL_MADE"
-      ScheduleCall time    -> toJSON <$> scheduleRegistrationCall user time
-  where
-    dump :: Value -> Text
-    dump = decodeUtf8 . BL.toStrict . encode 
-    noAction :: Text -> Api Value
-    noAction message = do
-      -- Request successfully processed, but no registration call was scheduled
-      liftIO $ noticeM loggerNamespace $ "[no_call_scheduled]\
-             \ A registration call was NOT scheduled. Reason: " 
-            <> unpack message
-      return $ object [("message", String message)]
+runHandler :: (Value -> Api Value) -> Scotty.ActionM ()
+runHandler handler = 
+    decode <$> Scotty.body 
+    >>= liftIO . runApi . action
+    >>= either errorResponse jsonResponse 
+  where 
+    action body = do
+      setBaseUrl "http://localhost:8000/api/v1" -- setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
+      setHeader "Accept" ["application/json"]
+      setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
+      maybeToEither BadRequestError body >>= handler
 
 -- Normal response
 jsonResponse :: Value -> Scotty.ActionM ()
@@ -124,6 +73,78 @@ errorResponse err = do
     liftIO (errorM loggerNamespace $ "[server_error] " <> logErrorMessage err)
     status internalServerError500
     Scotty.json $ object [("error", String (hint err))]
+
+votoResponse :: Value -> Api Value
+votoResponse request = do
+
+    -- Log raw VOTO survey response
+    logDebugJSON "incoming_response" request
+    post "/voto_response_data" $ object [("data", String (toText request))]
+
+    -- Get or create participant
+    participant <- getOrCreateParticipant (FromRequest request)
+
+    -- Retrieve most recent registration call for participant (if one exists) 
+    call <- getRegistrationCall participant
+
+    -- Determine participant's registration status
+    status <- determineRegistrationStatus participant call
+
+    -- Take some action, log and respond
+    case status of
+      AlreadyRegistered    -> noAction "PARTICIPANT_ALREADY_REGISTERED"
+      RegistrationDeclined -> noAction "REGISTRATION_DECLINED"
+      PriorCallScheduled   -> noAction "PRIOR_CALL_SCHEDULED"
+      RecentCallMade       -> noAction "RECENT_CALL_MADE"
+      ScheduleCall time    -> do
+        call <- scheduleRegistrationCall participant time 
+        return $ toJSON $ object 
+          [ ("action", "REGISTRATION_CALL_SCHEDULED")
+          , ("registration_call", toJSON call) ]
+  where
+    toText :: Value -> Text
+    toText = decodeUtf8 . BL.toStrict . encode 
+    noAction :: Text -> Api Value
+    noAction message = do
+      -- Request successfully processed, but no registration call was scheduled
+      liftIO $ noticeM loggerNamespace $ "[no_call_scheduled]\
+             \ A registration call was NOT scheduled. Reason: " 
+            <> unpack message
+      return $ object $ fmap String <$> [ ("message" , message) 
+                                        , ("action"  , "NONE") ]
+
+callStatusUpdate :: Value -> Api Value
+callStatusUpdate request = undefined
+
+-- properties :: Value -> Maybe Value
+-- properties v = v ^? key "data" 
+--                   . key "subscriber" 
+--                   . key "properties" 
+-- 
+-- callStatusUpdate :: Value -> Api Value
+-- callStatusUpdate request = do
+--   logDebugJSON "incoming_call_status_update" request 
+--   callComplete <- isCallComplete request
+--   phone  <- maybeToEither BadRequestError (extractString "subscriber_phone" request)
+--   votoId <- maybeToEither BadRequestError (extractInt "subscriber_id" request)
+--   subscriber <- votoSubscriber votoId & liftIO
+--   print subscriber & liftIO
+--   registered <- maybeToEither InternalServerError (join $ extractBool "registered" <$> properties subscriber) 
+--   if callComplete && registered
+--      then do
+--        getOrCreateParticipant (FromPhoneNumber phone)
+--          >>= registerParticipant 
+--          >>= send
+--      else do
+--        liftIO $ noticeM loggerNamespace $ "[no_action] Participant not registered." 
+--        return $ object [("message", "NO_ACTION")]
+--   where
+--     send response = do
+--       liftIO $ noticeM loggerNamespace $ "[registration_complete]\ 
+--                                        \ Participant registration complete." 
+--       return $ object 
+--         [ ("message" , "REGISTRATION_COMPLETE")
+--         , ("data"    , response) ]
 
 hint :: ApiError -> Text
 hint InternalServerError       = "INTERNAL_SERVER_ERROR"
