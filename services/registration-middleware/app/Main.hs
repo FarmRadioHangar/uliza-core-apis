@@ -75,7 +75,7 @@ votoResponse request = do
     -- Get or create participant
     participant <- getOrCreateParticipant (FromRequest request)
 
-    -- Retrieve most recent registration call for participant (if one exists) 
+    -- Retrieve most recent registration call for participant (if any) 
     call <- getRegistrationCall participant
 
     -- Determine participant's registration status
@@ -102,8 +102,8 @@ votoResponse request = do
              \ A registration call was NOT scheduled. Reason: " 
             <> unpack message
       return $ object $ fmap String <$> [ ("message" , message) 
-                                        , ("action"  , "NONE") ]
-
+                                        , ("action"  , "NONE") 
+                                        ]
 callStatusUpdate :: Value -> Api Value
 callStatusUpdate request = undefined
 
