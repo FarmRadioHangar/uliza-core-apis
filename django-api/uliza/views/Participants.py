@@ -35,5 +35,3 @@ class ParticipantsInstance(generics.RetrieveUpdateAPIView):
         elif status == 'DECLINED':
             return 'REGISTRATION_DECLINED'
         return None
-
-

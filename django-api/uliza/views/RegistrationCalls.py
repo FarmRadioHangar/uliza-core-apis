@@ -13,6 +13,8 @@ class RegistrationCalls(generics.ListCreateAPIView):
         result_set = Participant.objects.filter(phone_number=call.phone_number)
         if (result_set):
             participant = result_set.first()
+            participant.registration_call = call
+            participant.save()
             log_entry = ParticipantRegistrationStatusLog(
                     registration_call=call,
                     participant=participant, 

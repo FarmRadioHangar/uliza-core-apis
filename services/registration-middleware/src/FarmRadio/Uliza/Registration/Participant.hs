@@ -18,7 +18,7 @@ instance ToJSON Participant where
     [ "id"                   .= entityId
     , "phone_number"         .= phoneNumber
     , "registration_status"  .= registrationStatus
-    , "registration_call_id" .= registrationCallId
+    , "registration_call"    .= registrationCallId
     , "created_at"           .= createdAt ]
 
 instance FromJSON Participant where
@@ -26,5 +26,5 @@ instance FromJSON Participant where
     <$> v .:? "id"
     <*> v .:  "phone_number"
     <*> v .:  "registration_status"
-    <*> v .:? "registration_call_id"
+    <*> v .:? "registration_call"
     <*> v .:  "created_at"
