@@ -18,7 +18,7 @@ module FarmRadio.Uliza.Api.Client
     , logWarning
     , logWarningJSON
     , loggerNamespace
-    , lookupResource
+    , getResource
     , patch
     , patchResource
     , post
@@ -28,6 +28,7 @@ module FarmRadio.Uliza.Api.Client
     , setBaseUrl
     , setHeader
     , setOauth2Token
+    , getWhere
     ) where
 
 import Control.Lens
@@ -92,17 +93,15 @@ runApi c = Session.withAPISession run `catch` httpException
     opts = defaults & checkResponse .~ Just (const $ const $ return ())
 
 httpException :: HttpException -> IO (Either ApiError a)
-httpException = \case 
-    HttpExceptionRequest _ (ConnectionFailure _) -> err ServerConnectionFailed
-    _                                            -> err InternalServerError
-  where
-    err = return . Left
+httpException = return . Left . \case 
+    HttpExceptionRequest _ (ConnectionFailure _) -> ServerConnectionFailed
+    _                                            -> InternalServerError
 
--- | Extract a Text key from JSON data.
+-- | Extract value of type Text matching the given key from a JSON object.
 extractString :: AsValue s => Text -> s -> Maybe Text
 extractString k obj = obj ^? key k ._String
 
--- | Extract a Bool key from JSON data.
+-- | Extract value of type Bool matching the given key from a JSON object.
 extractBool :: AsValue s => Text -> s -> Maybe Bool
 extractBool k obj = 
   case obj ^? key k of
@@ -110,7 +109,7 @@ extractBool k obj =
     Just (Bool   b) -> Just b
     _               -> Nothing
 
--- | Extract an Int key from JSON data.
+-- | Extract value of type Int matching the given key from a JSON object.
 extractInt :: AsValue s => Text -> s -> Maybe Int
 extractInt k obj = case obj ^? key k of
     Just (String s) -> join (fromScientific <$> s ^? _Number)
@@ -144,8 +143,6 @@ patch endpoint body = do
 --   response.
 post_ :: (ToJSON a, FromJSON a) => String -> Value -> Api (Maybe a)
 post_ endpoint body = do
-    setHeader "Prefer" ["return=representation"]
-    setHeader "Accept" ["application/vnd.pgrst.object+json"]
     response <- lift $ do
       ApiContext{..} <- State.get
       Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
@@ -154,7 +151,6 @@ post_ endpoint body = do
 -- | Send a POST request.
 post :: String -> Value -> Api BL.ByteString
 post endpoint body = do
-    liftIO $ print $ encode body
     response <- lift $ do
       ApiContext{..} <- State.get
       Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
@@ -168,20 +164,19 @@ get endpoint = do
       Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
     extractBody response
 
--- | Look up a (singleton) resource, parse the JSON response and return the 
---   result.
-lookupResource :: (FromJSON a, ToJSON a) 
-               => String 
-               -> String 
-               -> String 
-               -> Api (Maybe a)
-lookupResource name prop value = do
-    response <- get $ resourceUrl (name <> "/" <> value) params
-    return $ case decode response of
-      Just [one] -> one
-      _          -> Nothing
+getWhere :: (FromJSON a, ToJSON a) 
+         => String 
+         -> String 
+         -> String 
+         -> [(String, String)]
+         -> Api (Maybe a)
+getWhere name prop value params = decode <$> get (resourceUrl name params')
   where
-    params = [ ("limit", "1") ]
+    params' = (prop, value) : params
+
+-- | Look up a resource instance, parse the JSON response and return result.
+getResource :: (FromJSON a, ToJSON a) => String -> String -> Api (Maybe a)
+getResource name value = decode <$> get (resourceUrl (name <> "/" <> value) [])
 
 -- | Send a PATCH request acting on the resource identified by the provided id.
 patchResource :: String -> Int -> Value -> Api BL.ByteString
@@ -193,7 +188,7 @@ extractBody :: Response BL.ByteString -> Api BL.ByteString
 extractBody response =
     case response ^. responseStatus . statusCode of
       200 -> ok
-      201 -> ok                          -- 210 CREATED
+      201 -> ok                          -- 201 CREATED
       202 -> ok                          -- 202 ACCEPTED
       204 -> ok                          -- 204 NO CONTENT
       401 -> left AuthenticationError
@@ -225,7 +220,7 @@ logUsing logger tag message = liftIO $ logger loggerNamespace
 logDebug :: String -> String -> Api ()
 logDebug = logUsing debugM 
 
--- | Send a JSON object to the log at DEBUG priority.
+-- | Send a JSON object to log at DEBUG priority.
 logDebugJSON :: ToJSON a => String -> a -> Api ()
 logDebugJSON tag obj = logDebug tag (jsonEncode obj)
 
@@ -233,7 +228,7 @@ logDebugJSON tag obj = logDebug tag (jsonEncode obj)
 logWarning :: String -> String -> Api ()
 logWarning = logUsing warningM 
 
--- | Send a JSON object to the log at WARNING priority.
+-- | Send a JSON object to log at WARNING priority.
 logWarningJSON :: ToJSON a => String -> a -> Api ()
 logWarningJSON tag obj = logWarning tag (jsonEncode obj)
 
@@ -241,7 +236,7 @@ logWarningJSON tag obj = logWarning tag (jsonEncode obj)
 logNotice :: String -> String -> Api ()
 logNotice = logUsing noticeM 
 
--- | Send a JSON object to the log at NOTICE priority.
+-- | Send a JSON object to log at NOTICE priority.
 logNoticeJSON :: ToJSON a => String -> a -> Api ()
 logNoticeJSON tag obj = logNotice tag (jsonEncode obj)
 
@@ -249,7 +244,7 @@ logNoticeJSON tag obj = logNotice tag (jsonEncode obj)
 logError :: String -> String -> Api ()
 logError = logUsing errorM 
 
--- | Send a JSON object to the log at ERROR priority.
+-- | Send a JSON object to log at ERROR priority.
 logErrorJSON :: ToJSON a => String -> a -> Api ()
 logErrorJSON tag obj = logError tag (jsonEncode obj)
 
