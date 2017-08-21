@@ -19,3 +19,4 @@ class RadioStationEntity(generics.RetrieveUpdateAPIView):
     model = RadioStation
     serializer_class = RadioStationSerializer
     lookup_field = 'id'
+         

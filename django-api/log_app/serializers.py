@@ -7,6 +7,7 @@ class RadioStationSerializer(serializers.ModelSerializer):
 		model = RadioStation
 		fields = "__all__"
 
+
 class ProgramSerializer(serializers.ModelSerializer):
 
 	class Meta:

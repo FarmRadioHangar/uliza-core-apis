@@ -11,7 +11,7 @@ class PresenterGet(generics.ListCreateAPIView):
     queryset = Presenter.objects.all()
     model = Presenter
     serializer_class = PresenterSerializer
-    filter_fields = ['id']
+    filter_fields = ['id','radio_station']
 
 class PresenterEntity(generics.RetrieveUpdateAPIView):
 
