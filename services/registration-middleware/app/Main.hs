@@ -162,4 +162,4 @@ logErrorMessage AuthenticationError
    \ Verify that the JSON web token (JWT) is valid."
 logErrorMessage NotFoundError 
   = "The API server returned a 404 error. Check the database schema!"
-logErrorMessage BadRequestError = "The request format was not recognized."
+logErrorMessage BadRequestError = "Request format was not recognized."
