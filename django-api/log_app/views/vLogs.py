@@ -11,7 +11,7 @@ class LogGet(generics.ListCreateAPIView):
     queryset = Log.objects.all()
     model = Log
     serializer_class = LogSerializer
-    filter_fields = ['id']
+    filter_fields = ['id','program']
 
 class LogEntity(generics.RetrieveUpdateAPIView):
 
