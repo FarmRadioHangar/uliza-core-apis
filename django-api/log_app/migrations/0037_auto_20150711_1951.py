@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='project',
             name='country',
-            field=models.ForeignKey(default='Ethiopia', to='log_app.Country'),
+            field=models.ForeignKey(to='log_app.Country'),
             preserve_default=False,
         ),
     ]
