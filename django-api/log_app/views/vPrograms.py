@@ -16,7 +16,7 @@ class ProgramFilter(filters.FilterSet):
 
     class Meta:
         model = Program
-        fields = ['id', 'radio_station', 'end_date','start_date','radio_station__country','end_date__lt','end_date__gte','start_date__gte']
+        fields = ['id', 'radio_station','end_date','start_date','radio_station__country','end_date__lt','end_date__gte','start_date__gte']
 
 
 class ProgramGet(generics.ListCreateAPIView):

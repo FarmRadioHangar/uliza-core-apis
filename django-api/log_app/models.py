@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from log_app.storage.gd_storage import GoogleDriveStorage
+from api_core.settings import GDRIVE_STORAGE
 
 class Account(User):
 	def is_admin(self):
@@ -58,8 +58,6 @@ class RadioStation(models.Model):
 		return self.name
 
 
-gdstorage = None
-
 def filename(instance, filename):
 	return 'FRI-LOG-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
 
@@ -91,7 +89,7 @@ class Log(models.Model):
 
 	email = models.TextField(blank=True,null=True,default=None)
 
-	recording = models.FileField(upload_to='/FRI-LOG',storage=gdstorage, null=True,blank=True)
+	recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
 	recording_backup = models.FileField(null=True,blank=True)
 	recording_saved = models.BooleanField(default=True)
 	offset = models.PositiveIntegerField(default=0)
@@ -241,7 +239,7 @@ class Program(models.Model):
 	duration = models.IntegerField(null=True,default=30)
 
 	weeks = models.IntegerField(default=16)
-	
+
 	access = models.ManyToManyField(User,blank=True)
 	
 	# Time track
