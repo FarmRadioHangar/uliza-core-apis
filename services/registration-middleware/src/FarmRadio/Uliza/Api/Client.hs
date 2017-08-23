@@ -120,7 +120,11 @@ extractInt k obj = case obj ^? key k of
     fromScientific = eitherToMaybe . floatingOrInteger 
 
 resourceUrl :: String -> [(String, String)] -> String
-resourceUrl name params = "/" <> name <> "?" <> urlEncodeVars params
+resourceUrl name = \case
+    []     -> url
+    params -> url <> "?" <> urlEncodeVars params
+  where 
+    url = "/" <> name
 
 -- | Send a PUT request.
 put :: String -> Value -> Api BL.ByteString
@@ -128,6 +132,7 @@ put endpoint body = do
     response <- lift $ do
       ApiContext{..} <- State.get
       Session.putWith _options _session (_baseUrl <> endpoint) body & liftIO
+    logDebugJSON ("PUT" <> " " <> endpoint) body
     extractBody response
 
 -- | Send a PATCH request.
@@ -137,6 +142,7 @@ patch endpoint body = do
       ApiContext{..} <- State.get
       Session.customPayloadMethodWith "PATCH" _options _session 
           (_baseUrl <> endpoint) body & liftIO
+    logDebugJSON ("PATCH" <> " " <> endpoint) body
     extractBody response
 
 -- | Send a POST request, and subsequently capture, parse, and return the JSON 
@@ -146,6 +152,7 @@ post_ endpoint body = do
     response <- lift $ do
       ApiContext{..} <- State.get
       Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
+    logDebugJSON ("POST" <> " " <> endpoint) body
     decode <$> extractBody response
 
 -- | Send a POST request.
@@ -154,6 +161,7 @@ post endpoint body = do
     response <- lift $ do
       ApiContext{..} <- State.get
       Session.postWith _options _session (_baseUrl <> endpoint) body & liftIO
+    logDebugJSON ("POST" <> " " <> endpoint) body
     extractBody response
 
 -- | Send a GET request.
@@ -162,6 +170,7 @@ get endpoint = do
     response <- lift $ do
       ApiContext{..} <- State.get
       Session.getWith _options _session (_baseUrl <> endpoint) & liftIO
+    logDebug ("GET" <> " " <> endpoint) ""
     extractBody response
 
 getWhere :: (FromJSON a, ToJSON a) 
