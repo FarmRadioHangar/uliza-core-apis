@@ -241,9 +241,7 @@ class Program(models.Model):
 	duration = models.IntegerField(null=True,default=30)
 
 	weeks = models.IntegerField(default=16)
-
-	journalists = models.ManyToManyField('Presenter',blank=True)
-	knowledge_partner = models.ManyToManyField('Knowledge_partner',blank=True)
+	
 	access = models.ManyToManyField(User,blank=True)
 	
 	# Time track
