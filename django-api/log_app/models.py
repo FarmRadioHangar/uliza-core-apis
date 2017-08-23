@@ -225,18 +225,19 @@ class Program(models.Model):
 
 	name = models.CharField(max_length=50)
 	public_name = models.CharField(null=True,blank=True,max_length=50)
-	radio_station = models.ForeignKey('RadioStation')
+	radio_station = models.ForeignKey('RadioStation',null=True,blank=True)
 	project = models.ForeignKey('Project')
 	program_type = models.CharField(null=True,blank=True,max_length=50)
 
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=50)
-	start_date = models.DateTimeField(null=True)
+	from datetime import datetime
+	start_date = models.DateTimeField(default=datetime.today())
 	end_date = models.DateField(null=True,blank=True)
 
 	repeat_week_day = models.CharField(max_length=3,null=True,blank=True,choices=days)
 	repeat_start_time = models.TimeField(null=True,blank=True)
-	duration = models.IntegerField(null=True,default=30)
+	duration = models.IntegerField(default=30)
 
 	weeks = models.IntegerField(default=16)
 
