@@ -9,7 +9,7 @@ class RadioStationSerializer(serializers.ModelSerializer):
 
 
 class ProgramSerializer(serializers.ModelSerializer):
-
+	radio_station = RadioStationSerializer(read_only=True)
 	class Meta:
 		model = Program
 		fields = "__all__"
