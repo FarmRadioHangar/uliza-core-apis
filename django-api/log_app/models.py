@@ -233,7 +233,7 @@ class Program(models.Model):
 	uliza = models.CharField(null=True,blank=True,max_length=50)
 	
 	from datetime import datetime
-	start_date = models.DateTimeField(null=True)
+	start_date = models.DateTimeField()
 	end_date = models.DateField(null=True)
 
 	repeat_week_day = models.CharField(max_length=3,null=True,blank=True,choices=days)
