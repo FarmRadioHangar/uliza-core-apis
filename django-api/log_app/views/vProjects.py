@@ -11,7 +11,7 @@ class ProjectGet(generics.ListCreateAPIView):
     queryset = Project.objects.all()
     model = Project 
     serializer_class = ProjectSerializer
-    filter_fields = ['id']
+    filter_fields = ['id','country']
 
 class ProjectEntity(generics.RetrieveUpdateAPIView):
     queryset = Project.objects.all()
