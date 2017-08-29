@@ -21,11 +21,6 @@ class ProgramSerializer(serializers.ModelSerializer):
 		model = Program
 		fields = "__all__"
 	
-	# def create(self, validated_data):
-	# 	radio_station = validated_data.pop('radio_station')
-	# 	radio_station = RadioStation.objects.create(**validated_data)
-	# 	Profile.objects.create(user=user, **profile_data)
-	# 	return user
 
 class CountrySerializer(serializers.ModelSerializer):
 

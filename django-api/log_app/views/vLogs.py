@@ -11,7 +11,7 @@ class LogGet(generics.ListCreateAPIView):
     queryset = Log.objects.all()
     model = Log
     serializer_class = LogSerializer
-    filter_fields = ['id','program']
+    filter_fields = ['id','program','program__radio_station__country']
 
 class LogEntity(generics.RetrieveUpdateAPIView):
 

@@ -13,10 +13,11 @@ class ProgramFilter(filters.FilterSet):
 	end_date__gte = django_filters.DateTimeFilter(name="end_date", lookup_expr='gte')
 	end_date__lt = django_filters.DateTimeFilter(name="end_date", lookup_expr='lt')
 	start_date__gte = django_filters.DateTimeFilter(name="start_date", lookup_expr='gte')
+	project__end_date__gte = django_filters.DateTimeFilter(name="project__end_date", lookup_expr='gte')
 
 	class Meta:
 		model = Program
-		fields = ['id', 'radio_station','end_date','start_date','radio_station__country','end_date__lt','end_date__gte','start_date__gte']
+		fields = ['id', 'radio_station','end_date','start_date','radio_station__country','end_date__lt','end_date__gte','start_date__gte','project__end_date__gte']
 
 
 class ProgramGet(generics.ListCreateAPIView):
