@@ -13,6 +13,7 @@ from log_app.views.vProjects import *
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)$', RadioStationEntity.as_view()),
     url(r'$', RadioStationGet.as_view()),
+    
 )
 
 programs = patterns('log_app.views.vPrograms',

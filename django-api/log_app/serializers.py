@@ -7,18 +7,31 @@ class RadioStationSerializer(serializers.ModelSerializer):
 		model = RadioStation
 		fields = "__all__"
 
+class ProjectSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Project
+		fields = "__all__"
 
 class ProgramSerializer(serializers.ModelSerializer):
-	radio_station = RadioStationSerializer(read_only=True)
+	station_name = serializers.CharField(source='radio_station.name',read_only=True)
+	project_name = serializers.CharField(source='project.name',read_only=True)
+	country = serializers.CharField(source='radio_station.country.id',read_only=True)
+
 	class Meta:
 		model = Program
 		fields = "__all__"
+	
+	# def create(self, validated_data):
+	# 	radio_station = validated_data.pop('radio_station')
+	# 	radio_station = RadioStation.objects.create(**validated_data)
+	# 	Profile.objects.create(user=user, **profile_data)
+	# 	return user
 
 class CountrySerializer(serializers.ModelSerializer):
 
 	class Meta:
-		model = Country
-		fields = "__all__"
+			model = Country
+			fields = "__all__"
 
 class LogSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -30,10 +43,7 @@ class CommentSerializer(serializers.ModelSerializer):
 		model = Comment
 		fields = "__all__"
 
-class ProjectSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Project
-		fields = "__all__"
+
 
 class PresenterSerializer(serializers.ModelSerializer):
 	class Meta:

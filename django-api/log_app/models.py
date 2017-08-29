@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from log_app.storage.gd_storage import GoogleDriveStorage
+from api_core.settings import GDRIVE_STORAGE
 
 class Account(User):
 	def is_admin(self):
@@ -58,8 +58,6 @@ class RadioStation(models.Model):
 		return self.name
 
 
-gdstorage = None
-
 def filename(instance, filename):
 	return 'FRI-LOG-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
 
@@ -91,7 +89,7 @@ class Log(models.Model):
 
 	email = models.TextField(blank=True,null=True,default=None)
 
-	recording = models.FileField(upload_to='/FRI-LOG',storage=gdstorage, null=True,blank=True)
+	recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
 	recording_backup = models.FileField(null=True,blank=True)
 	recording_saved = models.BooleanField(default=True)
 	offset = models.PositiveIntegerField(default=0)
@@ -233,17 +231,17 @@ class Program(models.Model):
 
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=50)
+	
+	from datetime import datetime
 	start_date = models.DateTimeField(null=True)
-	end_date = models.DateField(null=True,blank=True)
+	end_date = models.DateField(null=True)
 
 	repeat_week_day = models.CharField(max_length=3,null=True,blank=True,choices=days)
 	repeat_start_time = models.TimeField(null=True,blank=True)
-	duration = models.IntegerField(null=True,default=30)
+	duration = models.IntegerField(default=30)
 
-	weeks = models.IntegerField(default=16)
+	weeks = models.IntegerField()
 
-	journalists = models.ManyToManyField('Presenter',blank=True)
-	knowledge_partner = models.ManyToManyField('Knowledge_partner',blank=True)
 	access = models.ManyToManyField(User,blank=True)
 	
 	# Time track
