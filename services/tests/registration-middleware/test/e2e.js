@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+var fs     = require('fs');
 var Docker = require('simple-dockerode');
 var assert = require('assert');
 var chai   = require('chai');
@@ -52,8 +53,16 @@ function createApiContainer() {
   return docker.createContainer(options);
 }
 
-function createArchive() {
-  return targz({}, {fromBase: true}).compress('../../../django-api/', './django_api.tar.gz'); 
+var archive = './django_api.tar.gz';
+
+function createTarArchive() {
+  if (fs.existsSync(archive)) {
+    console.log('Archive found.');
+    return Promise.resolve();
+  } else {
+    console.log('Creating django-api tar archive.');
+    return targz({}, {fromBase: true}).compress('../../../django-api/', archive); 
+  }
 }
 
 function buildApiImage() {
@@ -66,8 +75,7 @@ function buildApiImage() {
       process.stdout.write(JSON.parse(chunk.toString()).stream);
       done();
     }
-    var file = './django_api.tar.gz';
-    docker.buildImage(file, {t: 'django_api'}, function(err, stream) {
+    docker.buildImage(archive, {t: 'django_api'}, function(err, stream) {
      if (err) {
         reject(err);
       }
@@ -152,7 +160,7 @@ describe('123', function() {
   };
 
   before(function() { 
-    return createArchive()
+    return createTarArchive()
     .then(buildApiImage)
     .then(createDatabaseContainer)
     .then(saveContainer('db'))
