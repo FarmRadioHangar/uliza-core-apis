@@ -53,15 +53,15 @@ function createApiContainer() {
   return docker.createContainer(options);
 }
 
-var archive = './django_api.tar.gz';
+var buildArchive = './.build/django_api.tar.gz';
 
 function createTarArchive() {
-  if (fs.existsSync(archive)) {
+  if (fs.existsSync(buildArchive)) {
     console.log('Archive found.');
     return Promise.resolve();
   } else {
     console.log('Creating django-api tar archive.');
-    return targz({}, {fromBase: true}).compress('../../../django-api/', archive); 
+    return targz({}, {fromBase: true}).compress('../../../django-api/', buildArchive); 
   }
 }
 
@@ -75,7 +75,7 @@ function buildApiImage() {
       process.stdout.write(JSON.parse(chunk.toString()).stream);
       done();
     }
-    docker.buildImage(archive, {t: 'django_api'}, function(err, stream) {
+    docker.buildImage(buildArchive, {t: 'django_api'}, function(err, stream) {
      if (err) {
         reject(err);
       }
