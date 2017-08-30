@@ -4,8 +4,13 @@ COPY . /home/
 
 WORKDIR /home
 
-RUN stack build 
+RUN apt-get update && \
+    apt-get -y install libpq5 libpq-dev && \
+    cabal sandbox init && \
+    cabal update && \
+    cabal install --only-dependencies && \
+    cabal build
 
-CMD exec stack exec simple-exe
+CMD exec dist/build/simple-exe/simple-exe
 
 EXPOSE 3034
