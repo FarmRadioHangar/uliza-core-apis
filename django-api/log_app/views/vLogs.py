@@ -7,6 +7,7 @@ from log_app.models import Log
 from log_app.serializers import LogSerializer
 
 from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 class LogGet(generics.ListCreateAPIView):
 
@@ -14,7 +15,7 @@ class LogGet(generics.ListCreateAPIView):
 	model = Log
 	serializer_class = LogSerializer
 	filter_fields = ['id','program','program__radio_station__country','postpone']
-	filter_backends = (filters.OrderingFilter,)
+	filter_backends = (filters.OrderingFilter, DjangoFilterBackend,)
 	ordering_fields = ('week','id')
 
 	def get_queryset(self):
