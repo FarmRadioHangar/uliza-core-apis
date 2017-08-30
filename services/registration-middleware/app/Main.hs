@@ -83,10 +83,10 @@ votoResponse request = do
 
     -- Take some action, log and respond
     case status of
-      AlreadyRegistered    -> noAction "PARTICIPANT_ALREADY_REGISTERED"
+      AlreadyRegistered    -> noAction "ALREADY_REGISTERED"
       RegistrationDeclined -> noAction "REGISTRATION_DECLINED"
       PriorCallScheduled   -> noAction "PRIOR_CALL_SCHEDULED"
-      RecentCallMade       -> noAction "RECENT_CALL_MADE"
+      RecentCallMade       -> noAction "TOO_SOON"
       ScheduleCall time    -> do
         call <- scheduleRegistrationCall participant time 
         return $ toJSON $ object 
