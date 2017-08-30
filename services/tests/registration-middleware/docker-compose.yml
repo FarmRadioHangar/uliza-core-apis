@@ -21,34 +21,13 @@ services:
         DATABASE_USER: root
         DATABASE_PASSWORD: root
         DATABASE_SERVICE_HOST: django_api_database
-
 # api:
-  #  middleware:
-  #    build: ../../registration-middleware/
-  #    ports: 
-  #      - "3034:3034"
-  #    links: 
-  #      - postgrest:postgrest
-  #    depends_on:
-  #      - postgrest
-  #      - database
-  #postgrest: 
-  #  build: postgrest-docker/
-  #  ports: 
-  #    - "3210:3000"
-  #  links: 
-  #    - database:database
-  #  depends_on:
-  #    - database
-  #  volumes:
-  #    - ./postgrest.conf:/etc/postgrest.conf
-  #database:
-  #  image: postgres:9.6
-  #  ports:
-  #    - "8432:5432"
-  #  environment:
-  #    POSTGRES_DB: registration_middleware_test
-  #    POSTGRES_USER: docker
-  #    POSTGRES_PASSWORD: docker
-  #  volumes:
-  #    - ./init.sh:/docker-entrypoint-initdb.d/init-db.sh
+#  middleware:
+#    build: ../../registration-middleware/
+#    ports: 
+#      - "3034:3034"
+#    links: 
+#      - postgrest:postgrest
+#    depends_on:
+#      - postgrest
+#      - database
