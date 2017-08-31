@@ -75,7 +75,7 @@ function createArchive(path, archive) {
         console.log('Archive found: ' + archive);
         resolve(archive);
       } else {
-        console.log('Creating django-api tar archive: ' + archive);
+        console.log('Creating tar archive: ' + archive);
         targz({}, {fromBase: true}).compress(path, archive).then(function() { 
           resolve(archive); 
         }); 
@@ -95,7 +95,7 @@ function buildImage(tag) {
         process.stdout.write(JSON.parse(chunk.toString()).stream);
         done();
       }
-      console.log('Build image ' + tag + ' from archive ' + archive);
+      console.log('Building image ' + tag + ' from archive ' + archive);
       docker.buildImage(archive, {t: tag}, function(err, stream) {
        if (err) {
           reject(err);
@@ -142,15 +142,15 @@ describe('123', function() {
     }
   };
 
-  var runExec = function(container) {
-    var cmd = Array.from(arguments).slice(1);
+  var runExec = function(container, opts) {
+    var opts = ('object' === typeof(opts)) ? opts : {
+      Cmd: Array.from(arguments).slice(1), 
+      AttachStdin: true, 
+      AttachStdout: true,
+      tty: true
+    };
     return new Promise(function(resolve, reject) {
-      container.execRaw({
-        Cmd: cmd, 
-        AttachStdin: true, 
-        AttachStdout: true,
-        tty: true
-      }, function(err, exec) {
+      container.execRaw(opts, function(err, exec) {
         if (err) {
           console.error(err);
           return;
@@ -165,7 +165,6 @@ describe('123', function() {
           }
           container.modem.demuxStream(stream, process.stdout, process.stderr);
           process.stdin.pipe(stream);
-          bufs = [];
           stream.on('end', resolve);
         });
       });
@@ -176,17 +175,17 @@ describe('123', function() {
     return runExec(self._containers.api, 'python', 'manage.py', 'makemigrations');
   };
 
-  var exec = function() {
-    var cmd = Array.from(arguments);
-    return new Promise(function(resolve, reject) {
-      self._containers.api.exec(cmd, {live: true, stdout: true, stderr: true}, 
-      function(err, streamLink) {
-        if (err) {
-          return reject(err);
-        }
-        var stream = streamLink(process.stdout, process.stderr);
-        stream.on('end', resolve);
-      });
+  var runMigrations = function() {
+    return runExec(self._containers.api, 'python', 'manage.py', 'migrate');
+  };
+
+  var rollbackMigrations = function() {
+    return runExec(self._containers.api, 'python', 'manage.py', 'migrate', 'uliza', 'zero');
+  };
+
+  var runServer = function() {
+    return runExec(self._containers.api, {
+      Cmd: ['python', 'manage.py', 'runserver', '0.0.0.0:8000'] 
     });
   };
 
@@ -204,8 +203,7 @@ describe('123', function() {
           if (results.inspect.ExitCode) {
             retry();
           } else {
-            console.log('.');
-            console.log('Database server is accepting connections.');
+            console.log('\nDatabase server is accepting connections.');
             resolve();
           }
         });
@@ -214,8 +212,12 @@ describe('123', function() {
     });
   };
 
+  var separator = function() {
+    console.log('--------------------------------------------------------');
+  };
+
   before(function() { 
-    return new Promise(function(resolve, reject) { resolve(); })
+    return Promise.resolve()
     .then(createArchive('../../../django-api/', './.build/django_api.tar.gz'))
     .then(buildImage('django_api'))
     .then(createArchive('../../registration-middleware/', './.build/middleware.tar.gz'))
@@ -235,21 +237,27 @@ describe('123', function() {
   });
 
   after(function() { 
-    return stopContainer('db')()
-    .then(removeContainer('db'))
-    .then(stopContainer('middleware'))
-    .then(removeContainer('middleware'))
-    .then(stopContainer('api'))
-    .then(removeContainer('api'))
-    .catch(console.error);
+    //return Promise.resolve()
+    //.then(stopContainer('db'))
+    //.then(removeContainer('db'))
+    //.then(stopContainer('middleware'))
+    //.then(removeContainer('middleware'))
+    //.then(stopContainer('api'))
+    //.then(removeContainer('api'))
+    //.catch(console.error);
   });
 
   beforeEach(function() { 
-    return exec('python', 'manage.py', 'migrate');
+    return Promise.resolve()
+    .then(runMigrations)
+    .then(runServer)
+    .then(separator);
   });
 
   afterEach(function() { 
-    return exec('python', 'manage.py', 'migrate', 'uliza', 'zero');
+    return Promise.resolve()
+    .then(separator)
+    .then(rollbackMigrations);
   });
 
   it('should be ok', function() {});
