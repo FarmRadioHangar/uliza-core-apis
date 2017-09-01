@@ -17,13 +17,6 @@ chai.use(require('chai-http'));
 
 var docker = new Docker();
 
-function stripPrefix(s) {
-  if (s.length && '+' === s[0]) {
-    return s.substring(1);
-  }
-  return s;
-}
-
 function createMiddlewareContainer() {
   console.log('Create middleware container');
   return docker.createContainer({

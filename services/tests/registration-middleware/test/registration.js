@@ -2,6 +2,13 @@ var setup   = require('./integration');
 var request = require('supertest');
 var mocha   = require('mocha');
 
+function stripPrefix(s) {
+  if (s.length && '+' === s[0]) {
+    return s.substring(1);
+  }
+  return s;
+}
+
 describe('Response from new participant', function() {
 
   setup(this);
