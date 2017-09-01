@@ -5,6 +5,7 @@ var assert  = require('assert');
 var chai    = require('chai');
 var fs      = require('fs');
 var mocha   = require('mocha');
+var mysql   = require('mysql');
 var path    = require('path');
 var stream  = require('stream');
 var targz   = require('tar.gz');
@@ -114,7 +115,7 @@ function buildImage(tag) {
   }
 }
 
-module.exports = function(self) {
+var init = function(self) {
 
   self.timeout(4000000);
 
@@ -278,3 +279,17 @@ module.exports = function(self) {
   });
 
 }
+
+var db = mysql.createConnection({
+  host     : '0.0.0.0',
+  user     : 'root',
+  password : 'root',
+  database : 'api_core'
+});
+
+db.connect();
+
+module.exports = {
+  init: init,
+  db: db
+};
