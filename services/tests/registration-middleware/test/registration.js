@@ -100,8 +100,7 @@ describe('Response from new participant', function() {
     .then(query('SELECT * FROM uliza_participant_registration_status_log;'))
     .then(function(results) {
       results.length.should.equal(1);
-      var row = JSON.parse(results[0].data);
-      row.should.have.a.property('event_type').equal('REGISTRATION_CALL_SCHEDULED');
+      results[0].should.have.a.property('event_type').equal('REGISTRATION_CALL_SCHEDULED');
     });
   });
 
