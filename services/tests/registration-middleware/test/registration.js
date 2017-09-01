@@ -95,4 +95,14 @@ describe('Response from new participant', function() {
     });
   });
 
+  it('should create a participant_registration_status_log entry in the database', function() {
+    return runner()
+    .then(query('SELECT * FROM farmradio_api.participant_registration_status_log;'))
+    .then(function(results) {
+      results.length.should.equal(1);
+      var row = JSON.parse(results[0].data);
+      row.should.have.a.property('event_type').equal('REGISTRATION_CALL_SCHEDULED');
+    });
+  });
+
 });
