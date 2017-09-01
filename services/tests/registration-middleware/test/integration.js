@@ -1,14 +1,14 @@
 require('dotenv').config();
 
-var fs     = require('fs');
-var Docker = require('simple-dockerode');
-var assert = require('assert');
-var chai   = require('chai');
-var mocha  = require('mocha');
-var path   = require('path');
-var stream = require('stream');
-var util   = require('util');
-var targz  = require('tar.gz');
+var Docker  = require('simple-dockerode');
+var assert  = require('assert');
+var chai    = require('chai');
+var fs      = require('fs');
+var mocha   = require('mocha');
+var path    = require('path');
+var stream  = require('stream');
+var targz   = require('tar.gz');
+var util    = require('util');
 
 chai.should();
 chai.use(require('chai-things'));
@@ -16,6 +16,13 @@ chai.use(require('chai-also'));
 chai.use(require('chai-http'));
 
 var docker = new Docker();
+
+function stripPrefix(s) {
+  if (s.length && '+' === s[0]) {
+    return s.substring(1);
+  }
+  return s;
+}
 
 function createMiddlewareContainer() {
   console.log('Create middleware container');
@@ -114,11 +121,10 @@ function buildImage(tag) {
   }
 }
 
-describe('123', function() {
+module.exports = function(self) {
 
-  this.timeout(4000000);
+  self.timeout(4000000);
 
-  var self = this;
   self._containers = {};
 
   var saveContainer = function(name) {
@@ -175,16 +181,17 @@ describe('123', function() {
     });
   };
 
-  var makeMigrations = function() {
-    return runExec(self._containers.api, 'python', 'manage.py', 'makemigrations');
+  var migrate = function(app) {
+    return function() { 
+      return runExec(self._containers.api, 'python', 'manage.py', 'migrate', app); 
+    }
   };
 
   var runMigrations = function() {
-    return runExec(self._containers.api, 'python', 'manage.py', 'migrate');
-  };
-
-  var rollbackMigrations = function() {
-    return runExec(self._containers.api, 'python', 'manage.py', 'migrate', 'uliza', 'zero');
+    return Promise.resolve()
+    .then(migrate('auth'))
+    .then(migrate('contenttypes'))
+    .then(migrate('uliza'));
   };
 
   var runServer = function() {
@@ -193,10 +200,13 @@ describe('123', function() {
     });
   };
 
-  var pingMysql = function() {
+  var flushDb = function() {
+    return runExec(self._containers.api, 'python', 'manage.py', 'flush', '--noinput'); 
+  };
+
+  var ping = function(cmd, msg) {
     return new Promise(function(resolve, reject) {
       var options = {stdout: true, stderr: true};
-      var cmd = ['mysqladmin', 'ping', '-hdatabase', '-uroot', '-proot'];
       var retry = function() {
         self._containers.api.exec(cmd, options, 
         function(err, results) {
@@ -207,13 +217,23 @@ describe('123', function() {
           if (results.inspect.ExitCode) {
             retry();
           } else {
-            console.log('\nDatabase server is accepting connections.');
+            console.log('\n' + msg);
             resolve();
           }
         });
       }
       retry();
     });
+  };
+
+  var pingApi = function() {
+    return ping(['curl', 'http://localhost:8000/api/v1/participants'], 
+      'Django server is running.');
+  };
+
+  var pingMysql = function() {
+    return ping(['mysqladmin', 'ping', '-hdatabase', '-uroot', '-proot'], 
+      'Database server is accepting connections.');
   };
 
   var separator = function() {
@@ -236,36 +256,32 @@ describe('123', function() {
     .then(startContainer('api'))
     .then(startContainer('middleware' ))
     .then(pingMysql)                     // Wait for MySQL to accept connections
-    .then(makeMigrations)
+    .then(runMigrations)
+    .then(runServer)
+    .then(pingApi) 
     .catch(console.error);
   });
 
   after(function() { 
-    //return Promise.resolve()
-    //.then(stopContainer('db'))
-    //.then(removeContainer('db'))
-    //.then(stopContainer('middleware'))
-    //.then(removeContainer('middleware'))
-    //.then(stopContainer('api'))
-    //.then(removeContainer('api'))
-    //.catch(console.error);
+    return Promise.resolve()
+    .then(stopContainer('db'))
+    .then(removeContainer('db'))
+    .then(stopContainer('middleware'))
+    .then(removeContainer('middleware'))
+    .then(stopContainer('api'))
+    .then(removeContainer('api'))
+    .catch(console.error);
   });
 
   beforeEach(function() { 
     return Promise.resolve()
-    .then(runMigrations)
-    .then(runServer)
-    .then(separator);
+    .then(flushDb)
+    .then(separator)
+    .catch(console.error);
   });
 
   afterEach(function() { 
-    return Promise.resolve()
-    .then(separator)
-    .then(rollbackMigrations);
+    return Promise.resolve().then(separator);
   });
 
-  it('should be ok', function() {});
-
-  it('should be ok again', function() {});
-
-});
+}
