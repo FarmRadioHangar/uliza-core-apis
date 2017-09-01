@@ -223,7 +223,7 @@ var init = function(self) {
   };
 
   var pingApi = function() {
-    return ping(['curl', 'http://localhost:8000/api/v1/participants'], 
+    return ping(['curl', 'http://localhost:8000/api/v1'], 
       'Django server is running.');
   };
 
