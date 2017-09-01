@@ -29,7 +29,7 @@ function createMiddlewareContainer() {
     },
     'Env': [
       'PORT=3034',
-      'API_HOST=api'
+      'API_HOST=http://api:8000'
     ]
   });
 }
