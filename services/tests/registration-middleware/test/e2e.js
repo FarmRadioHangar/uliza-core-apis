@@ -26,7 +26,11 @@ function createMiddlewareContainer() {
     'HostConfig': {
       'Links': ['api'],
       'PortBindings': { '3034': [{'HostPort': '3034'}] }
-    }
+    },
+    'Env': [
+      'PORT=3034',
+      'API_HOST=api'
+    ]
   });
 }
 
