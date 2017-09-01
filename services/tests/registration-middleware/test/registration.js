@@ -1,4 +1,4 @@
-var setup   = require('./integration');
+var tests   = require('./integration');
 var request = require('supertest');
 var mocha   = require('mocha');
 
@@ -11,7 +11,7 @@ function stripPrefix(s) {
 
 describe('Response from new participant', function() {
 
-  setup(this);
+  tests.init(this);
 
   var data = {
     question_id: "127375", 
@@ -56,6 +56,16 @@ describe('Response from new participant', function() {
     .then(function(response) { 
       response.body.should.have.property('registration_call');
       response.body.registration_call.should.have.property('phone_number').equal(stripPrefix(data.subscriber_phone));
+    });
+  });
+
+  it('should create a voto_response_data entry in the database', function() {
+    return runner(response_001, function(response) {
+      return tests.db.query('SELECT * FROM uliza_voto_response_data;')
+      .then(function(results) {
+        results.rowCount.should.equal(1);
+        results.rows[0].data.should.deep.equal(response_001);
+      });
     });
   });
 
