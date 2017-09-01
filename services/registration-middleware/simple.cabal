@@ -57,6 +57,7 @@ executable simple-exe
                      , either ==4.4.1.1
                      , aeson  ==1.1.2.0
                      , bytestring ==0.10.8.1
+                     , dotenv ==0.3.4.0
                      , lens ==4.15.3
                      , lens-aeson ==1.0.1
                      , http-types ==0.9.1
