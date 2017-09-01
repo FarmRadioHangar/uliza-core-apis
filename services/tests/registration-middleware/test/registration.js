@@ -1,6 +1,7 @@
-var tests   = require('./integration');
-var request = require('supertest');
 var mocha   = require('mocha');
+var mysql   = require('mysql');
+var request = require('supertest');
+var tests   = require('./integration');
 
 function stripPrefix(s) {
   if (s.length && '+' === s[0]) {
@@ -9,9 +10,34 @@ function stripPrefix(s) {
   return s;
 }
 
+function query(sql) {
+  return function() {
+    return new Promise(function(resolve, reject) {
+      var db = mysql.createConnection({
+        host     : '0.0.0.0',
+        port     : 3316,
+        user     : 'root',
+        password : 'root',
+        database : 'api_core'
+      });
+      db.connect();
+      db.query(sql, function(error, results, fields) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+      db.end();
+    });
+  }
+}
+
 describe('Response from new participant', function() {
 
   tests.init(this);
+
+  var self = this;
 
   var data = {
     question_id: "127375", 
@@ -60,12 +86,12 @@ describe('Response from new participant', function() {
   });
 
   it('should create a voto_response_data entry in the database', function() {
-    return runner(response_001, function(response) {
-      return tests.db.query('SELECT * FROM uliza_voto_response_data;')
-      .then(function(results) {
-        results.rowCount.should.equal(1);
-        results.rows[0].data.should.deep.equal(response_001);
-      });
+    return runner()
+    .then(query('SELECT * FROM uliza_voto_response_data;'))
+    .then(function(results) {
+      results.length.should.equal(1);
+      var row = JSON.parse(results[0].data);
+      row.should.deep.equal(data);
     });
   });
 

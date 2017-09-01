@@ -5,7 +5,6 @@ var assert  = require('assert');
 var chai    = require('chai');
 var fs      = require('fs');
 var mocha   = require('mocha');
-var mysql   = require('mysql');
 var path    = require('path');
 var stream  = require('stream');
 var targz   = require('tar.gz');
@@ -41,6 +40,9 @@ function createDatabaseContainer() {
     'name': 'database',
     'Image': 'mysql',
     'ExposedPorts': { '3306': {} },
+    'HostConfig': {
+      'PortBindings': { '3306': [{'HostPort': '3316'}] }
+    },
     'Env': [ 
       'MYSQL_DATABASE=api_core',
       'MYSQL_ROOT_PASSWORD=root' 
@@ -60,8 +62,7 @@ function createApiContainer() {
     'Cmd': [ 'python', 'manage.py', 'runserver', '0.0.0.0:8000' ],
     'ExposedPorts': { '8000': {} },
     'HostConfig': {
-      'Links': ['database'],
-      'PortBindings': { '8000': [{'HostPort': '8000'}] }
+      'Links': ['database']
     },
     'Env': [
       'DEBUG="true"',
@@ -136,6 +137,7 @@ var init = function(self) {
 
   var stopContainer = function(name) { 
     return function() {
+      console.log('Stopping container ' + name);
       return self._containers[name].stop();
     }
   };
@@ -280,16 +282,6 @@ var init = function(self) {
 
 }
 
-var db = mysql.createConnection({
-  host     : '0.0.0.0',
-  user     : 'root',
-  password : 'root',
-  database : 'api_core'
-});
-
-db.connect();
-
 module.exports = {
-  init: init,
-  db: db
+  init: init
 };
