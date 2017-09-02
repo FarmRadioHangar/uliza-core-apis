@@ -5,6 +5,7 @@ var assert  = require('assert');
 var chai    = require('chai');
 var fs      = require('fs');
 var mocha   = require('mocha');
+var mysql   = require('mysql');
 var path    = require('path');
 var stream  = require('stream');
 var targz   = require('tar.gz');
@@ -116,11 +117,12 @@ function buildImage(tag) {
   }
 }
 
-var init = function(self) {
+var init = function(self, hook) {
 
   self.timeout(4000000);
 
   self._containers = {};
+  self._hook = hook;
 
   var saveContainer = function(name) {
     return function(container) { 
@@ -233,11 +235,28 @@ var init = function(self) {
   };
 
   var separator = function() {
-    console.log('--------------------------------------------------------');
+    console.log('------------------------------------------------------------------------------------');
+  };
+
+  self.query = function(sql) {
+    return function() {
+      return new Promise(function(resolve, reject) {
+        if (self._db) {
+          self._db.query(sql, function(error, results, fields) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(results);
+            }
+          });
+        }
+      });
+    }
   };
 
   before(function() { 
     return Promise.resolve()
+    .then(separator)
     .then(createArchive('../../../django-api/', './.build/django_api.tar.gz'))
     .then(buildImage('django_api'))
     .then(createArchive('../../registration-middleware/', './.build/middleware.tar.gz'))
@@ -272,12 +291,27 @@ var init = function(self) {
   beforeEach(function() { 
     return Promise.resolve()
     .then(flushDb)
+    .then(function() {
+      self._db = mysql.createConnection({
+        host     : '0.0.0.0',
+        port     : 3316,
+        user     : 'root',
+        password : 'root',
+        database : 'api_core'
+      });
+      self._db.connect();
+      if ('function' === typeof(self._hook)) {
+        return self._hook();
+      }
+    })
     .then(separator)
     .catch(console.error);
   });
 
   afterEach(function() { 
-    return Promise.resolve().then(separator);
+    return Promise.resolve().then(separator).then(function() {
+      self._db.end();
+    });
   });
 
 }
