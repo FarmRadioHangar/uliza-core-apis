@@ -40,7 +40,7 @@ main = do
 app :: MVar [Connection] -> Scotty.ScottyM ()
 app state = 
     Scotty.post "/responses" (runHandler votoResponse)
---    Scotty.post "/call_status_update" (runHandler callStatusUpdate)
+    Scotty.post "/call_status_updates" (runHandler callStatusUpdate)
 
 ws :: MVar [Connection] -> ServerApp
 ws state pending = do
