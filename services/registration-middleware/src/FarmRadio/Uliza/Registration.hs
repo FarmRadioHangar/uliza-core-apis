@@ -151,7 +151,7 @@ determineRegistrationStatus Participant{..} mcall = do
       -- Participant is not registered
       ( "NOT_REGISTERED" , Just diff ) 
         -- A call is already scheduled
-        | diff > 0    -> right PriorCallScheduled
+        | diff > 0             -> right PriorCallScheduled
         -- A registration call took place recently
         | diff > -timeTreshold -> right RecentCallMade
       -- No previous call was made, or last call was a while ago--let's schedule 
@@ -179,7 +179,7 @@ registerParticipant participant@Participant{ entityId = participantId, .. } = do
                           \participant id is null") participantId
 
     when ("REGISTERED" == registrationStatus) $ logWarning "already_registered" 
-          "Performing registration for already registered listener."
+          "Registering already registered listener."
 
     -- Update the participant's registration_status
     patchParticipant user $ object [("registration_status", "REGISTERED")]

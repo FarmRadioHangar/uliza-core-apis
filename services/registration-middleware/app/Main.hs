@@ -14,12 +14,13 @@ import Data.Text.Format                 ( Format, Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
+import FarmRadio.Voto.Client
 import Network.HTTP.Types
 import Network.Wai.Handler.Warp         ( run )
 import Network.Wai.Handler.WebSockets
 import Network.WebSockets               
-import System.Log.Logger
 import System.Environment
+import System.Log.Logger
 import Web.Scotty                       ( ScottyM, scotty, status )
 
 import qualified Data.ByteString.Lazy as BL
@@ -38,9 +39,10 @@ main = do
     run port server
 
 app :: MVar [Connection] -> Scotty.ScottyM ()
-app state = 
-    Scotty.post "/responses" (runHandler votoResponse)
-    Scotty.post "/call_status_updates" (runHandler callStatusUpdate)
+app state = do
+    Scotty.get  "/"                      root
+    Scotty.post "/responses"           $ runHandler votoResponse
+    Scotty.post "/call_status_updates" $ runHandler callStatusUpdate
 
 ws :: MVar [Connection] -> ServerApp
 ws state pending = do
@@ -72,12 +74,17 @@ errorResponse err = do
     status internalServerError500
     Scotty.json $ object [("error", String (hint err))]
 
+root :: Scotty.ActionM ()
+root = Scotty.text "<~ Uliza Registration Middleware ~>\n"
+
 votoResponse :: Value -> Api Value
 votoResponse request = do
 
-    -- Log raw VOTO survey response
+    -- Log raw VOTO webhook request object
     logDebugJSON "incoming_response" request
-    post "/voto_response_data" $ object [("data", String (toText request))]
+    post "/voto_webhook_log" $ object 
+      [ ("data"    , String (toText request))
+      , ("webhook" , "responses") ]
 
     -- Get or create participant
     participant <- getOrCreateParticipant (FromRequest request)
@@ -100,8 +107,6 @@ votoResponse request = do
           [ ("action", "REGISTRATION_CALL_SCHEDULED")
           , ("registration_call", toJSON call) ]
   where
-    toText :: Value -> Text
-    toText = decodeUtf8 . BL.toStrict . encode 
     noAction :: Text -> Api Value
     noAction message = do
       -- Request successfully processed, but no registration call was scheduled
@@ -109,24 +114,29 @@ votoResponse request = do
              \ A registration call was NOT scheduled. Reason: " 
             <> unpack message
       return $ object $ fmap String <$> [ ("message" , message) 
-                                        , ("action"  , "NONE") 
-                                        ]
-callStatusUpdate :: Value -> Api Value
-callStatusUpdate request = undefined
-
+                                        , ("action"  , "NONE") ]
 -- properties :: Value -> Maybe Value
 -- properties v = v ^? key "data" 
 --                   . key "subscriber" 
 --                   . key "properties" 
--- 
--- callStatusUpdate :: Value -> Api Value
--- callStatusUpdate request = do
---   logDebugJSON "incoming_call_status_update" request 
---   callComplete <- isCallComplete request
---   phone  <- maybeToEither BadRequestError (extractString "subscriber_phone" request)
---   votoId <- maybeToEither BadRequestError (extractInt "subscriber_id" request)
---   subscriber <- votoSubscriber votoId & liftIO
---   print subscriber & liftIO
+ 
+callStatusUpdate :: Value -> Api Value
+callStatusUpdate request = do
+
+    logDebugJSON "incoming_call_status_update" request 
+    post "/voto_webhook_log" $ object 
+      [ ("data"    , String (toText request))
+      , ("webhook" , "call_status_updates") ]
+
+    callComplete <- isCallComplete request
+
+    phone  <- maybeToEither BadRequestError (extractString "subscriber_phone" request)
+    votoId <- maybeToEither BadRequestError (extractInt "subscriber_id" request)
+    subscriber <- votoSubscriber votoId & liftIO
+    print subscriber & liftIO
+
+    return $ object []
+
 --   registered <- maybeToEither InternalServerError (join $ extractBool "registered" <$> properties subscriber) 
 --   if callComplete && registered
 --      then do
@@ -143,6 +153,9 @@ callStatusUpdate request = undefined
 --       return $ object 
 --         [ ("message" , "REGISTRATION_COMPLETE")
 --         , ("data"    , response) ]
+
+toText :: Value -> Text
+toText = decodeUtf8 . BL.toStrict . encode 
 
 hint :: ApiError -> Text
 hint (InternalServerError _)   = "INTERNAL_SERVER_ERROR"
