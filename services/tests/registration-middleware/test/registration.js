@@ -67,9 +67,9 @@ describe('Response from new participant', function() {
     });
   });
 
-  it('should create a voto_response_data entry in the database', function() {
+  it('should create a uliza_voto_webhook_log entry in the database', function() {
     return runner()
-    .then(self.query('SELECT * FROM uliza_voto_response_data;'))
+    .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
     .then(function(results) {
       results.length.should.equal(1);
       var row = JSON.parse(results[0].data);
