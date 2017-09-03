@@ -3,8 +3,10 @@ module Main where
 
 import Control.Concurrent
 import Control.Lens
+import Control.Monad                    ( join )
 import Control.Monad.IO.Class
 import Data.Aeson
+import Data.Aeson.Lens
 import Data.Either.Utils                ( maybeToEither )
 import Data.Maybe                       ( fromMaybe )
 import Data.Monoid                      ( (<>) )
@@ -51,8 +53,7 @@ ws state pending = do
     sendTextData conn ("Hello, client!" :: Text)
 
 runHandler :: (Value -> Api Value) -> Scotty.ActionM ()
-runHandler handler = 
-    decode <$> Scotty.body 
+runHandler handler = decode <$> Scotty.body 
     >>= liftIO . runApi . action
     >>= either errorResponse jsonResponse 
   where 
@@ -115,10 +116,10 @@ votoResponse request = do
             <> unpack message
       return $ object $ fmap String <$> [ ("message" , message) 
                                         , ("action"  , "NONE") ]
--- properties :: Value -> Maybe Value
--- properties v = v ^? key "data" 
---                   . key "subscriber" 
---                   . key "properties" 
+properties :: Value -> Maybe Value
+properties v = v ^? key "data" 
+                  . key "subscriber" 
+                  . key "properties" 
  
 callStatusUpdate :: Value -> Api Value
 callStatusUpdate request = do
@@ -133,26 +134,27 @@ callStatusUpdate request = do
     phone  <- maybeToEither BadRequestError (extractString "subscriber_phone" request)
     votoId <- maybeToEither BadRequestError (extractInt "subscriber_id" request)
     subscriber <- votoSubscriber votoId & liftIO
-    print subscriber & liftIO
 
-    return $ object []
+    registered <- maybeToEither 
+      (InternalServerError "A 'registered' property was not found in\
+      \ call status update.") 
+      (join $ extractBool "registered" <$> properties subscriber) 
 
---   registered <- maybeToEither InternalServerError (join $ extractBool "registered" <$> properties subscriber) 
---   if callComplete && registered
---      then do
---        getOrCreateParticipant (FromPhoneNumber phone)
---          >>= registerParticipant 
---          >>= send
---      else do
---        liftIO $ noticeM loggerNamespace $ "[no_action] Participant not registered." 
---        return $ object [("message", "NO_ACTION")]
---   where
---     send response = do
---       liftIO $ noticeM loggerNamespace $ "[registration_complete]\ 
---                                        \ Participant registration complete." 
---       return $ object 
---         [ ("message" , "REGISTRATION_COMPLETE")
---         , ("data"    , response) ]
+    if callComplete && registered 
+      then do
+        getOrCreateParticipant (FromPhoneNumber phone) 
+          >>= registerParticipant 
+          >>= sendResponse
+      else do
+        liftIO $ noticeM loggerNamespace $ "[no_action] Participant not registered." 
+        return $ object [("message", "NO_ACTION")]
+  where 
+    sendResponse response = do 
+      liftIO $ noticeM loggerNamespace $ "[registration_complete]\ 
+                                       \ Participant registration complete." 
+      return $ object 
+        [ ("message" , "REGISTRATION_COMPLETE")
+        , ("data"    , response) ]
 
 toText :: Value -> Text
 toText = decodeUtf8 . BL.toStrict . encode 
