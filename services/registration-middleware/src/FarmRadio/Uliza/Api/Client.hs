@@ -184,14 +184,16 @@ getWhere name prop value params = decode <$> get (resourceUrl name params')
     params' = (prop, value) : params
 
 -- | Look up a resource instance, parse the JSON response and return result.
-getResource :: (FromJSON a, ToJSON a) => String -> String -> Api (Maybe a)
-getResource name value = decode <$> get (resourceUrl (name <> "/" <> value) [])
+getResource :: (FromJSON a, ToJSON a) => String -> Int -> Api (Maybe a)
+getResource name pk = decode <$> get (resourceUrl url [])
+  where
+    url = name <> "/" <> show pk
 
 -- | Send a PATCH request acting on the resource identified by the provided id.
 patchResource :: String -> Int -> Value -> Api BL.ByteString
-patchResource name entityId = patch $ resourceUrl name params
+patchResource name pk = patch $ resourceUrl url []
   where
-    params = [ ("id", "eq." <> show entityId) ]
+    url = name <> "/" <> show pk
 
 extractBody :: Response BL.ByteString -> Api BL.ByteString
 extractBody response =
