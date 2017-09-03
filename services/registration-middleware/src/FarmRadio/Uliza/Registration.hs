@@ -38,7 +38,7 @@ getRegistrationCall Participant{..} = join <$> sequence call
 
 -- | Look up a 'RegistrationCall' by id.
 getRegistrationCallById :: Int -> Api (Maybe RegistrationCall)
-getRegistrationCallById pk = getResource "registration_calls" (show pk)
+getRegistrationCallById = getResource "registration_calls" 
 
 -- | Update a 'Participant'.
 patchParticipant :: Int -> Value -> Api ()
