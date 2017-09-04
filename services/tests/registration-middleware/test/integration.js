@@ -199,7 +199,12 @@ var init = function(self, hook) {
   };
 
   var flushDb = function() {
-    return runExec(self._containers.api, 'python', 'manage.py', 'flush', '--noinput'); 
+    return Promise.resolve()
+    .then(self.query('DELETE FROM uliza_participant_registration_status_log;'))
+    .then(self.query('DELETE FROM uliza_voto_webhook_log;'))
+    .then(self.query('DELETE FROM uliza_participants;'))
+    .then(self.query('DELETE FROM uliza_registration_calls;'))
+    .catch(console.error);
   };
 
   var ping = function(cmd, msg) {
@@ -234,10 +239,6 @@ var init = function(self, hook) {
       'Database server is accepting connections.');
   };
 
-  var separator = function() {
-    console.log('------------------------------------------------------------------------------------');
-  };
-
   self.query = function(sql) {
     return function() {
       return new Promise(function(resolve, reject) {
@@ -256,7 +257,6 @@ var init = function(self, hook) {
 
   before(function() { 
     return Promise.resolve()
-    .then(separator)
     .then(createArchive('../../../django-api/', './.build/django_api.tar.gz'))
     .then(buildImage('django_api'))
     .then(createArchive('../../registration-middleware/', './.build/middleware.tar.gz'))
@@ -290,7 +290,6 @@ var init = function(self, hook) {
 
   beforeEach(function() { 
     return Promise.resolve()
-    .then(flushDb)
     .then(function() {
       self._db = mysql.createConnection({
         host     : '0.0.0.0',
@@ -300,16 +299,18 @@ var init = function(self, hook) {
         database : 'api_core'
       });
       self._db.connect();
+    })
+    .then(flushDb)
+    .then(function() {
       if ('function' === typeof(self._hook)) {
         return self._hook();
       }
     })
-    .then(separator)
     .catch(console.error);
   });
 
   afterEach(function() { 
-    return Promise.resolve().then(separator).then(function() {
+    return Promise.resolve().then(function() {
       self._db.end();
     });
   });
