@@ -136,22 +136,21 @@ callStatusUpdate request = do
     subscriber <- votoSubscriber votoId & liftIO
 
     registered <- maybeToEither 
-      (InternalServerError "A 'registered' property was not found in\
-      \ call status update.") 
+      (InternalServerError "A 'registered' property was not found.") 
       (join $ extractBool "registered" <$> properties subscriber) 
 
     if callComplete && registered 
-      then do
+      then 
         getOrCreateParticipant (FromPhoneNumber phone) 
           >>= registerParticipant 
           >>= sendResponse
       else do
-        liftIO $ noticeM loggerNamespace $ "[no_action] Participant not registered." 
+        liftIO $ noticeM loggerNamespace "[no_action] Participant not registered." 
         return $ object [("message", "NO_ACTION")]
   where 
     sendResponse response = do 
-      liftIO $ noticeM loggerNamespace $ "[registration_complete]\ 
-                                       \ Participant registration complete." 
+      liftIO $ noticeM loggerNamespace "[registration_complete]\ 
+                                     \ Participant registration complete." 
       return $ object 
         [ ("message" , "REGISTRATION_COMPLETE")
         , ("data"    , response) ]
