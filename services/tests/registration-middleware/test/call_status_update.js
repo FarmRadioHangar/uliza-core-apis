@@ -35,6 +35,21 @@ describe('/call_status_updates', function() {
 
   });
 
+  describe('Bad request format', function() {
+
+    it('should return a status code 500', function() {
+      return request(process.env.REG_SERVICE_URL)
+      .post('/call_status_updates')
+      .set('Accept', 'application/json')
+      .send({})
+      .then(function(response) { 
+        response.should.have.header('Content-Type', /json/);
+        response.status.should.equal(500);
+      });
+    });
+
+  });
+
 });
 
 //var util  = require('util');
