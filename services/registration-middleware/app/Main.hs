@@ -14,6 +14,7 @@ import Data.Text                        ( Text, unpack )
 import Data.Text.Encoding               ( decodeUtf8 )
 import Data.Text.Format                 ( Format, Only(..), format )
 import Data.Text.Lazy                   ( toStrict )
+import Data.URLEncoded
 import FarmRadio.Uliza.Api.Client
 import FarmRadio.Uliza.Registration
 import FarmRadio.Voto.Client
@@ -124,6 +125,8 @@ properties v = v ^? key "data"
 callStatusUpdate :: Value -> Api Value
 callStatusUpdate request = do
 
+    print request & liftIO
+
     logDebugJSON "incoming_call_status_update" request 
     post "/voto_webhook_log" $ object 
       [ ("data"    , String (toText request))
@@ -133,6 +136,7 @@ callStatusUpdate request = do
 
     phone  <- maybeToEither BadRequestError (extractString "subscriber_phone" request)
     votoId <- maybeToEither BadRequestError (extractInt "subscriber_id" request)
+
     subscriber <- votoSubscriber votoId & liftIO
 
     registered <- maybeToEither 
