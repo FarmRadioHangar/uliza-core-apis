@@ -39,7 +39,7 @@ class ParticipantRegistrationStatusLog(models.Model):
         db_table = 'uliza_participant_registration_status_log'
 
 class VotoWebhookLog(models.Model):
-    webhook = models.CharField(max_length=100)
+    endpoint = models.CharField(max_length=100)
     data = models.TextField(null=True, blank=True)
     log_time = models.DateTimeField(auto_now_add=True)
 
