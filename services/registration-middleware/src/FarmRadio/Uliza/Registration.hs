@@ -1,196 +1,154 @@
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase      #-}
+{-# LANGUAGE TemplateHaskell #-}
 module FarmRadio.Uliza.Registration where
 
 import Control.Lens
-import Control.Monad
+import Control.Monad                    ( void )
 import Control.Monad.IO.Class
+import Control.Monad.State              ( StateT, evalStateT )
 import Control.Monad.Trans.Either
 import Data.Aeson
-import Data.Either.Utils  ( maybeToEither )
-import Data.Maybe         ( isJust, fromJust )
-import Data.Monoid        ( (<>) )
-import Data.Text
-import Data.Text.Encoding ( encodeUtf8 )
+import Data.Maybe                       ( fromMaybe )
+import Data.Monoid
 import Data.Time
-import Database.PostgreSQL.Simple.Time
-import FarmRadio.Uliza.Api.Client
-import FarmRadio.Uliza.Api.Utils
-import FarmRadio.Uliza.Registration.Participant      ( Participant(..) )
-import FarmRadio.Uliza.Registration.RegistrationCall ( RegistrationCall(..) )
+import Data.URLEncoded
+import Network.HTTP.Base                ( urlEncodeVars )
+import Network.WebSockets               ( Connection )
+import Network.Wreq
+import Network.Wreq.Session             ( Session )
+import Network.Wreq.Types
+import System.Log.Logger                ( Priority )
 
-import qualified FarmRadio.Uliza.Registration.RegistrationCall as RegistrationCall
-import qualified Data.Text as T
+import qualified Control.Monad.State as State
+import qualified Data.ByteString.Lazy as BL
+import qualified FarmRadio.Uliza.Api.Client as ApiClient
 
--- | Look up a 'Participant' by phone number.
-getParticipantByPhoneNumber :: String -> Api (Maybe Participant)
-getParticipantByPhoneNumber num = 
-    getWhere "participants" "phone_number" num [("limit", "1")]
-      >>= \case Just [one] -> return one
-                _          -> return Nothing
+data AppConfig = AppConfig
+  { _port            :: !Int
+  -- ^ Port that the server should bind to
+  , _ulizaApi        :: !String
+  -- ^ Uliza API base url
+  , _votoApi         :: !String
+  -- ^ VOTO API base url
+  , _logLevel        :: !Priority
+  -- ^ Verbosity level of the debug output
+  , _scheduleOffset  :: !NominalDiffTime
+  -- ^ Time to wait before scheduling a registration call (in seconds)
+  , _callMinDelay    :: !NominalDiffTime
+  -- ^ Minimum time that must elapse between registration calls (in seconds)
+  }
 
--- | Look up the most recent 'RegistrationCall' for a 'Participant' (if any).
-getRegistrationCall :: Participant -> Api (Maybe RegistrationCall)
-getRegistrationCall Participant{..} = join <$> sequence call
+makeLenses ''AppConfig
+
+data AppState = AppState
+  { _connections :: ![Connection]
+  -- ^ WebSocket connections
+  , _config      :: !AppConfig
+  -- ^ App configuration
+  , _session     :: !Session
+  -- ^ A Network.Wreq session that can handle multiple requests
+  , _requestBody :: !BL.ByteString
+  -- ^ Raw request body
+  , _params      :: !URLEncoded
+  -- ^ URL-encoded request data
+  , _wreqOptions :: !Options
+  -- ^ Network.Wreq connection options
+  }
+
+makeLenses ''AppState
+
+data RegistrationError
+  = UlizaApiError !String
+  -- ^ Error talking to Uliza API
+  | VotoApiError !String
+  -- ^ Error talking to VOTO API
+  | BadRequestError
+  -- ^ Bad request format
+  | InternalServerError !String
+  -- ^ Something went wrong during processing
+
+-- TODO
+-- (UnexpectedResponse _)
+-- (StatusCodeResponse code)
+-- ServerConnectionFailed
+-- AuthenticationError
+-- NotFoundError
+
+type RegistrationHandler = EitherT RegistrationError (StateT AppState IO)
+
+runRegistrationHandler :: RegistrationHandler a
+                       -> AppState
+                       -> IO (Either RegistrationError a)
+runRegistrationHandler = evalStateT . runEitherT
+
+ulizaApiPost :: (Postable a, ToJSON a, FromJSON b)
+             => String
+             -> a
+             -> RegistrationHandler (Maybe b)
+ulizaApiPost endpoint body = do
+    state <- State.get
+    url <- ulizaUrl endpoint
+    ApiClient.post (state ^. wreqOptions)
+                   (state ^. session)
+                   (resourceUrl url [])
+                   body & liftIO
+    >>= parseResponse
+
+-- | Identical to 'ulizaApiPost', except that the response is ignorded.
+ulizaApiPost_ :: (Postable a, ToJSON a)
+              => String
+              -> a
+              -> RegistrationHandler ()
+ulizaApiPost_ endpoint body = do
+    url <- ulizaUrl endpoint
+    void (ulizaApiPost url body :: RegistrationHandler (Maybe Value))
+
+ulizaApiGet :: FromJSON a
+            => String
+            -> [(String, String)]
+            -> RegistrationHandler (Maybe a)
+ulizaApiGet endpoint params = do
+    state <- State.get
+    url <- ulizaUrl endpoint
+    ApiClient.get (state ^. wreqOptions)
+                  (state ^. session)
+                  (resourceUrl url params) & liftIO
+    >>= parseResponse
+
+ulizaApiGetOne :: FromJSON a
+               => String
+               -> [(String, String)]
+               -> Int
+               -> RegistrationHandler (Maybe a)
+ulizaApiGetOne endpoint params pk =
+    one <$> ulizaApiGet (endpoint <> "/" <> show pk) queryParams
   where
-    call = getRegistrationCallById <$> registrationCallId 
+    queryParams = ("limit", "1") : params
+    one (Just [item]) = item
+    one _             = Nothing
 
--- | Look up a 'RegistrationCall' by id.
-getRegistrationCallById :: Int -> Api (Maybe RegistrationCall)
-getRegistrationCallById = getResource "registration_calls" 
+ulizaUrl :: String -> RegistrationHandler String
+ulizaUrl url = do
+    state <- State.get
+    return (state ^. config . ulizaApi <> url)
 
--- | Update a 'Participant'.
-patchParticipant :: Int -> Value -> Api ()
-patchParticipant = fmap fmap fmap void (patchResource "participants")
+resourceUrl :: String -> [(String, String)] -> String
+resourceUrl url = \case
+    []     -> url
+    params -> url <> "?" <> urlEncodeVars params
 
--- | Post a participant to the API.
-postParticipant :: Text -> Api (Maybe Participant)
-postParticipant phone = post_ "/participants" (object participant)
+parseResponse :: FromJSON a
+              => Response BL.ByteString
+              -> RegistrationHandler (Maybe a)
+parseResponse response =
+    case response ^. responseStatus . statusCode of
+      200 -> ok                          -- 200 OK
+      201 -> ok                          -- 201 CREATED
+      202 -> ok                          -- 202 ACCEPTED
+      204 -> ok                          -- 204 NO CONTENT
+--      401 -> left AuthenticationError
+--      404 -> left NotFoundError
+--      500 -> left $ InternalServerError (Data.ByteString.Lazy.Char8.unpack body)
+      err -> left (UlizaApiError "TODO")
   where
-    participant = [ ("phone_number"        , String phone)
-                  , ("registration_status" , "NOT_REGISTERED") ]
-
--- | Parse and translate the 'RegistrationCall' datetime field to 'UTCTime'.
-registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
-registrationCallScheduleTime RegistrationCall{..} = 
-    eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
-
----- | Post a registration call status change log entry to the API.
---createStatusChangeLogEntry :: Int -> Maybe Int -> Text -> Api () 
---createStatusChangeLogEntry user call event = 
---    void $ post "/participant_registration_status_log" (object entry)
---  where
---    entry = [ ("participant_id"       , number user) 
---            , ("registration_call_id" , maybe Null number call) 
---            , ("event_type"           , String event) ]
-
--- | Post registration call to the API.
-postRegistrationCall :: Text -> Text -> Api (Maybe RegistrationCall)
-postRegistrationCall phone stime = post_ "/registration_calls" (object call)
-  where
-    call = [ ("phone_number"   , String phone)
-           , ("scheduled_time" , String stime) ]
-
--- | Look up a participant 
-data LookUpParticipant
-   = FromRequest     !Value -- ^ from JSON request object 
-   | FromPhoneNumber !Text  -- ^ from phone number
-  deriving (Show)
-
--- | Look up or create a participant from request object or a phone number.
-getOrCreateParticipant :: LookUpParticipant -> Api Participant
-getOrCreateParticipant (FromRequest request) = do
-
-    -- Extract phone number from request 
-    phone <- maybeToEither BadRequestError (extractString "subscriber_phone" request) 
-
-    getOrCreateParticipant (FromPhoneNumber phone)
-
-getOrCreateParticipant (FromPhoneNumber phone) 
-  | T.null phone        = left BadRequestError 
-  -- ^ Phone number must not be null
-  | '+' == T.head phone = getOrCreateParticipant $ FromPhoneNumber $ T.tail phone
-  -- ^ Strip off leading '+' char
-  | otherwise           = do
-
-    -- Look up participant from subscriber's phone number
-    response <- getParticipantByPhoneNumber (unpack phone)
-
-    case response of
-
-      -- Participant exists: Done!  
-      Just participant -> do
-
-          logDebugJSON "participant_found" participant
-          right participant
-
-      -- Create a participant if one wasn't found
-      Nothing -> do
-
-          participant <- postParticipant phone
-          logDebugJSON "participant_created" participant
-          maybeToEither (UnexpectedResponse "postParticipant") participant
-
--- | Data type to represent a participant's registration status
-data RegistrationStatus 
-   = AlreadyRegistered       -- ^ The participant is already registered
-   | RegistrationDeclined    -- ^ Participant has declined to register
-   | PriorCallScheduled      -- ^ A registration call is already due
-   | RecentCallMade          -- ^ A call was recently made
-   | ScheduleCall !UTCTime   -- ^ Schedule a call at this time
-  deriving (Show)
-
--- | Determine a participant's registration status.
-determineRegistrationStatus :: Participant 
-                            -> Maybe RegistrationCall 
-                            -> Api RegistrationStatus
-determineRegistrationStatus Participant{..} mcall = do
-
-    -- Current time
-    now <- getCurrentTime & liftIO
-
-    -- Time of most recent registration call (or Nothing)
-    let lastCall = mcall >>= registrationCallScheduleTime
-
-        timeTreshold = 60*60*24*2
-
-        delay = 60*10
-
-    logDebugJSON "participant_last_call" $ case lastCall of
-      Nothing   -> "No previous registration call found for this participant."
-      Just time -> show time
-
-    logDebugJSON "participant_registration_status" registrationStatus
-
-    case (registrationStatus, diffUTCTime <$> lastCall <*> Just now) of
-      -- Participant is already registered
-      ( "REGISTERED"     , _ ) -> right AlreadyRegistered
-      -- Participant has previously declined to register
-      ( "DECLINED"       , _ ) -> right RegistrationDeclined
-      -- Participant is not registered
-      ( "NOT_REGISTERED" , Just diff ) 
-        -- A call is already scheduled
-        | diff > 0             -> right PriorCallScheduled
-        -- A registration call took place recently
-        | diff > -timeTreshold -> right RecentCallMade
-      -- No previous call was made, or last call was a while ago--let's schedule 
-      ( "NOT_REGISTERED" , _ ) -> right $ ScheduleCall (addUTCTime delay now)
-      -- Bad registration status
-      ( r, _ ) -> left $ InternalServerError ("Bad registration status: " 
-                                            <> show r)
-
--- | Schedule a registration call for the participant at the given time.
-scheduleRegistrationCall :: Participant -> UTCTime -> Api RegistrationCall
-scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
-
-    -- Post registration call to API 
-    regc  <- postRegistrationCall phoneNumber (utcToText time)
-         >>= maybeToEither (UnexpectedResponse "postRegistrationCall")
-
-    logNoticeJSON "registration_call_scheduled" regc
-
-    return regc
-
-registerParticipant :: Participant -> Api Value
-registerParticipant participant@Participant{ entityId = participantId, .. } = do
-
-    user <- maybeToEither (UnexpectedResponse "registerParticipant: \
-                          \participant id is null") participantId
-
-    when ("REGISTERED" == registrationStatus) $ logWarning "already_registered" 
-          "Registering already registered listener."
-
-    -- Update the participant's registration_status
-    patchParticipant user $ object [("registration_status", "REGISTERED")]
-
-    return (toJSON participant { registrationStatus = "REGISTERED" })
-
-isCallComplete :: Value -> Api Bool
-isCallComplete request = do
-
-    -- Extract delivery status
-    status <- maybeToEither BadRequestError 
-              (extractInt "delivery_status" request) 
-
-    return (6 == status)
+    ok = right $ decode (response ^. responseBody)
