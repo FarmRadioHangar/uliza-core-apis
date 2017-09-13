@@ -157,7 +157,8 @@ determineRegistrationStatus Participant{..} mcall = do
       -- No previous call was made, or last call was a while ago--let's schedule 
       ( "NOT_REGISTERED" , _ ) -> right $ ScheduleCall (addUTCTime delay now)
       -- Bad registration status
-      ( _                , _ ) -> left InternalServerError
+      ( r, _ ) -> left $ InternalServerError ("Bad registration status: " 
+                                            <> show r)
 
 -- | Schedule a registration call for the participant at the given time.
 scheduleRegistrationCall :: Participant -> UTCTime -> Api RegistrationCall

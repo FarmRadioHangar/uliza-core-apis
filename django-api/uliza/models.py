@@ -13,7 +13,7 @@ class Participant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'participants'
+        db_table = 'uliza_participants'
 
 class RegistrationCall(models.Model):
     phone_number = models.CharField(max_length=20)
@@ -21,7 +21,7 @@ class RegistrationCall(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'registration_calls'
+        db_table = 'uliza_registration_calls'
 
 registration_event_types = (
     ('REGISTRATION_CALL_SCHEDULED', 'A registration call was scheduled'),
@@ -36,10 +36,10 @@ class ParticipantRegistrationStatusLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'participant_registration_status_log'
+        db_table = 'uliza_participant_registration_status_log'
 
 class VotoResponseData(models.Model):
     data = models.TextField(null=True, blank=True)
 
     class Meta:
-        db_table = 'voto_response_data'
+        db_table = 'uliza_voto_response_data'

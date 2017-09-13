@@ -6,6 +6,7 @@ import Control.Lens
 import Control.Monad.IO.Class
 import Data.Aeson
 import Data.Either.Utils                ( maybeToEither )
+import Data.Maybe                       ( fromMaybe )
 import Data.Monoid                      ( (<>) )
 import Data.Text                        ( Text, unpack )
 import Data.Text.Encoding               ( decodeUtf8 )
@@ -18,18 +19,23 @@ import Network.Wai.Handler.Warp         ( run )
 import Network.Wai.Handler.WebSockets
 import Network.WebSockets               
 import System.Log.Logger
+import System.Environment
 import Web.Scotty                       ( ScottyM, scotty, status )
 
 import qualified Data.ByteString.Lazy as BL
 import qualified Web.Scotty as Scotty
+import qualified Configuration.Dotenv as Dotenv
 
 main :: IO ()
 main = do
+    Dotenv.loadFile False ".env"
     state <- newMVar []
     updateGlobalLogger loggerNamespace (setLevel DEBUG)
     httpServer <- Scotty.scottyApp (app state)
     let server = websocketsOr defaultConnectionOptions (ws state) httpServer
-    run 3034 server
+    port <- maybe 3034 read <$> lookupEnv "PORT" 
+    putStrLn ("Starting server on port " ++ show port)
+    run port server
 
 app :: MVar [Connection] -> Scotty.ScottyM ()
 app state = 
@@ -49,7 +55,8 @@ runHandler handler =
     >>= either errorResponse jsonResponse 
   where 
     action body = do
-      setBaseUrl "http://localhost:8000/api/v1" -- setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
+      host <- lookupEnv "API_HOST" & liftIO
+      setBaseUrl (fromMaybe "http://localhost:8000" host ++ "/api/v1")           -- setOauth2Token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIn0.SUkjmtzmR6xYenoihVFKMl_XTdmawTnQhsDSj7yeTH8"
       setHeader "Accept" ["application/json"]
       setHeader "User-Agent" ["Uliza VOTO Registration Middleware"]
       maybeToEither BadRequestError body >>= handler
@@ -138,7 +145,7 @@ callStatusUpdate request = undefined
 --         , ("data"    , response) ]
 
 hint :: ApiError -> Text
-hint InternalServerError       = "INTERNAL_SERVER_ERROR"
+hint (InternalServerError _)   = "INTERNAL_SERVER_ERROR"
 hint (UnexpectedResponse _)    = "UNEXPECTED_RESPONSE_FORMAT"
 hint (StatusCodeResponse code) = "STATUS_CODE_{}" & statusCodeResponse code 
 hint ServerConnectionFailed    = "SERVER_CONNECTION_FAILED"
@@ -150,7 +157,7 @@ statusCodeResponse :: Int -> Format -> Text
 statusCodeResponse code = toStrict . flip format (Only code) 
 
 logErrorMessage :: ApiError -> String
-logErrorMessage InternalServerError = "Server error."
+logErrorMessage (InternalServerError e) = "Server error: " <> e
 logErrorMessage (UnexpectedResponse what)
   = "An unexpected response was received from the API server. (" <> what <> ")"
 logErrorMessage (StatusCodeResponse code) 

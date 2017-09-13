@@ -68,7 +68,7 @@ import qualified Network.Wreq.Session      as Session
 import qualified Data.ByteString.Lazy.Char8 
 
 data ApiError 
-  = InternalServerError       
+  = InternalServerError String
   -- ^ Something went wrong during processing.
   | UnexpectedResponse String 
   -- ^ API response was inconsistent with the expected format.
@@ -95,7 +95,7 @@ runApi c = Session.withAPISession run `catch` httpException
 httpException :: HttpException -> IO (Either ApiError a)
 httpException = return . Left . \case 
     HttpExceptionRequest _ (ConnectionFailure _) -> ServerConnectionFailed
-    _                                            -> InternalServerError
+    e                                            -> InternalServerError (show e)
 
 -- | Extract value of type Text matching the given key from a JSON object.
 extractString :: AsValue s => Text -> s -> Maybe Text
@@ -202,14 +202,15 @@ extractBody response =
       204 -> ok                          -- 204 NO CONTENT
       401 -> left AuthenticationError
       404 -> left NotFoundError
-      500 -> left InternalServerError
-      err -> left (StatusCodeResponse err)
+      500 -> left $ InternalServerError (Data.ByteString.Lazy.Char8.unpack body)
+      err -> left $ StatusCodeResponse err
   where 
-    ok = right (response ^. responseBody)
+    ok   = right body
+    body = response ^. responseBody
 
 -- | Specify the API base url.
 setBaseUrl :: String -> Api ()
-setBaseUrl = lift . modify . set baseUrl 
+setBaseUrl url = logDebug "base_url" url >> lift (modify $ set baseUrl url)
 
 -- | Set an OAuth2.0 token (JWT) for authentication with API server.
 setOauth2Token :: ByteString -> Api ()

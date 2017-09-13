@@ -17,9 +17,7 @@ ADD log_app /django/log_app
 ADD uliza /django/uliza
 ADD manage.py /django/manage.py
 
-CMD rm -rf /django/uliza/migrations
-
-RUN pip install -r /django/requirements.txt
+RUN pip install --timeout 2000 -r /django/requirements.txt 
 
 RUN apt-get -y update && apt-get -y autoremove
 WORKDIR /django
