@@ -1,4 +1,8 @@
-module FarmRadio.Uliza.Api.Utils where
+module FarmRadio.Uliza.Api.Utils
+  ( toText
+  , eitherToMaybe
+  , utcToText
+  ) where
 
 import Data.ByteString.Builder          ( toLazyByteString )
 import Data.ByteString.Lazy             ( toStrict )
@@ -7,10 +11,10 @@ import Data.Text.Encoding               ( decodeUtf8 )
 import Data.Time.Clock
 import Database.PostgreSQL.Simple.Time
 
-import qualified Data.ByteString.Lazy as BL
+import qualified Data.ByteString.Lazy as Lazy
 
-toText :: BL.ByteString -> Text
-toText = decodeUtf8 . BL.toStrict
+toText :: Lazy.ByteString -> Text
+toText = decodeUtf8 . Data.ByteString.Lazy.toStrict
 
 eitherToMaybe :: Either a b -> Maybe b
 eitherToMaybe = either (const Nothing) Just
