@@ -2,6 +2,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module FarmRadio.Uliza.Registration where
 
+import Control.Exception.Safe
 import Control.Lens
 import Control.Monad                    ( void )
 import Control.Monad.IO.Class
@@ -13,6 +14,8 @@ import Data.Monoid
 import Data.Time
 import Data.URLEncoded
 import Network.HTTP.Base                ( urlEncodeVars )
+import Network.HTTP.Client              ( HttpExceptionContent(..)
+                                        , HttpException(..) )
 import Network.WebSockets               ( Connection )
 import Network.Wreq
 import Network.Wreq.Session             ( Session )
@@ -81,11 +84,19 @@ runRegistrationHandler :: RegistrationHandler a
                        -> IO (Either RegistrationError a)
 runRegistrationHandler = evalStateT . runEitherT
 
+newtype APIException = UlizaAPIException HttpException
+  deriving (Show, Typeable)
+
+instance Exception APIException
+
+ulizaApiException :: HttpException -> RegistrationHandler (Maybe a)
+ulizaApiException = throw . UlizaAPIException
+
 ulizaApiPost :: (Postable a, ToJSON a, FromJSON b)
              => String
              -> a
              -> RegistrationHandler (Maybe b)
-ulizaApiPost endpoint body = do
+ulizaApiPost endpoint body = handle ulizaApiException $ do
     state <- State.get
     url <- ulizaUrl endpoint
     ApiClient.post (state ^. wreqOptions)
@@ -99,9 +110,9 @@ ulizaApiPost_ :: (Postable a, ToJSON a)
               => String
               -> a
               -> RegistrationHandler ()
-ulizaApiPost_ endpoint body = do
-    url <- ulizaUrl endpoint
-    void (ulizaApiPost url body :: RegistrationHandler (Maybe Value))
+ulizaApiPost_ endpoint body = void post
+  where
+    post = ulizaApiPost endpoint body :: RegistrationHandler (Maybe Value)
 
 ulizaApiGet :: FromJSON a
             => String
@@ -120,12 +131,9 @@ ulizaApiGetOne :: FromJSON a
                -> [(String, String)]
                -> Int
                -> RegistrationHandler (Maybe a)
-ulizaApiGetOne endpoint params pk =
-    one <$> ulizaApiGet (endpoint <> "/" <> show pk) queryParams
+ulizaApiGetOne endpoint params pk = ulizaApiGet resource params
   where
-    queryParams = ("limit", "1") : params
-    one (Just [item]) = item
-    one _             = Nothing
+    resource = endpoint <> "/" <> show pk
 
 ulizaUrl :: String -> RegistrationHandler String
 ulizaUrl url = do

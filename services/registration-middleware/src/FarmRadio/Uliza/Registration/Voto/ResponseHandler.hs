@@ -1,4 +1,3 @@
-{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
 module FarmRadio.Uliza.Registration.Voto.ResponseHandler
@@ -25,23 +24,22 @@ import qualified Data.Text                            as Text
 import qualified Data.ByteString.Lazy.Char8           as B8
 import qualified Data.URLEncoded                      as URLEncoded
 
--- | Response handler for survey response webhook -- called by VOTO every time a
---   survey response is registered.
+-- | Response handler for survey response webhook -- triggered by VOTO every
+--   time a survey response is recorded.
 votoResponse :: RegistrationHandler Value
 votoResponse = do
     state <- get
-    url <- ulizaUrl "/voto_webhook_log"
     let body = state ^. requestBody
     -- Log raw VOTO webhook request object
     logDebug "incoming_response" (B8.unpack body) & liftIO
-    ulizaApiPost_ url $ object
+    ulizaApiPost_ "/voto_webhook_log" $ object
       [ ("data"     , String (toText body))
       , ("endpoint" , "responses") ]
     let subscriber = URLEncoded.lookup ("subscriber_phone" :: String)
                                        (state ^. params)
     phone <- maybeToEither BadRequestError subscriber
     -- If the phone number is not already associated with a participant in the
-    -- database, one is created
+    -- database, one is created here
     participant <- getOrCreateParticipant phone
     -- Find most recent registration call (if one exists) for this participant
     call <- getRegistrationCall participant
@@ -67,28 +65,19 @@ votoResponse = do
       return $ object $ fmap String <$> [ ("reason" , reason)
                                         , ("action" , "NONE") ]
 
-getParticipantByPhoneNumber :: String
-                            -- ^ Phone number
-                            -> RegistrationHandler (Maybe Participant)
-getParticipantByPhoneNumber phone =
-    ulizaApiGet "/participants" params >>= \case
-      Just [one] -> return one
-      _          -> return Nothing
-  where
-    params = [("limit", "1"), ("subscriber_phone", phone)]
-
 getOrCreateParticipant :: String -> RegistrationHandler Participant
 getOrCreateParticipant [] = left BadRequestError
 getOrCreateParticipant ('+':phone) = getOrCreateParticipant phone
 getOrCreateParticipant phone = do
     -- Look up participant from subscriber's phone number
-    response <- getParticipantByPhoneNumber phone
+    response <- ulizaApiGet "/participants" [ ("limit", "1")
+                                            , ("subscriber_phone", phone) ]
     case response of
-      Just participant -> do
+      Just [participant] -> do
         -- Participant exists: Done!
         logDebugJSON "participant_found" participant & liftIO
         right participant
-      Nothing -> do
+      _ -> do
         -- Create a participant if one wasn't found
         participant <- postParticipant phone
         logDebugJSON "participant_created" participant & liftIO
@@ -96,8 +85,7 @@ getOrCreateParticipant phone = do
   where
     err = UlizaApiError "getOrCreateParticipant: Unexpected response"
 
-postParticipant :: String
-                -- ^ Phone number
+postParticipant :: String -- ^ Phone number
                 -> RegistrationHandler (Maybe Participant)
 postParticipant phone = ulizaApiPost "/participants" (object participant)
   where
@@ -171,7 +159,7 @@ registrationCallScheduleTime RegistrationCall{..} =
 
 -- | Schedule a registration call for the participant at a given time.
 scheduleRegistrationCall :: Participant
-                         -- ^ The participant to whom the call is scheduled
+                         -- ^ A participant to whom the call is to be scheduled
                          -> UTCTime
                          -- ^ Time when the registration call is to be made
                          -> RegistrationHandler RegistrationCall

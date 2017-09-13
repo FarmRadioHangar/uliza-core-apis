@@ -12,7 +12,6 @@ import Data.Aeson
 import Data.Monoid
 import Data.Text
 import Data.URLEncoded
-
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Voto.ResponseHandler
 import FarmRadio.Uliza.Registration.Logger
@@ -29,8 +28,11 @@ import Web.Scotty                                     ( ScottyM
 import qualified Data.ByteString.Lazy.Char8           as B8
 import qualified Web.Scotty                           as Scotty
 
-httpException :: HttpException -> IO (Either RegistrationError a)
-httpException e = print e >> return (Left BadRequestError) -- TODO
+registrationHandlerException :: SomeException -> IO (Either RegistrationError a)
+registrationHandlerException e =
+    case fromException e of
+      Just (UlizaAPIException e) -> return $ Left $ UlizaApiError (show e)
+      Nothing                    -> throw e
 
 -- | HTTP server application
 app :: MVar AppState -> ScottyM ()
@@ -44,7 +46,7 @@ app state = do
       either errorResponse jsonResponse =<< do
         body <- Scotty.body
         encoded <- importString (B8.unpack body)
-        liftIO $ handle httpException $ readMVar state
+        liftIO $ handle registrationHandlerException $ readMVar state
           >>= runRegistrationHandler handler
           . set params encoded
           . set requestBody body
@@ -54,21 +56,24 @@ jsonResponse value = status ok200 >> Scotty.json value
 
 errorResponse :: RegistrationError -> Scotty.ActionM ()
 errorResponse err = do
-  liftIO $ logError "server_error" (errorLogMessage err)
+  liftIO $ logError "application_error" (errorLogMessage err)
   status internalServerError500
   Scotty.json $ object [("error", String (errorType err))]
 
 errorLogMessage :: RegistrationError -> String
-errorLogMessage (InternalServerError e) = "Server error: " <> e
-errorLogMessage (VotoApiError e) = "VOTO API error: " <> e
-errorLogMessage (UlizaApiError e) = "Uliza API error: " <> e
-errorLogMessage BadRequestError = "The request format was not recognized."
+errorLogMessage (InternalServerError e)
+  = "Server error while processing the request: " <> e
+errorLogMessage (VotoApiError e)
+  = "Error talking to the VOTO API: " <> e
+errorLogMessage (UlizaApiError e)
+  = "Error talking to the Uliza API: " <> e
+errorLogMessage BadRequestError
+  = "The request format is invalid."
 
+-- | A symbolic identifier used to describe the error in the HTTP JSON response.
 errorType :: RegistrationError -> Text
-errorType (InternalServerError _) = "INTERNAL_SERVER_ERROR"
-errorType (VotoApiError _)        = "VOTO_API_ERROR"
-errorType (UlizaApiError _)       = "ULIZA_API_ERROR"
-errorType BadRequestError         = "BAD_REQUEST_FORMAT"
+errorType BadRequestError = "BAD_REQUEST_FORMAT"
+errorType _               = "INTERNAL_SERVER_ERROR"
 
 -- | WebSocket server application
 wss :: MVar AppState -> ServerApp
