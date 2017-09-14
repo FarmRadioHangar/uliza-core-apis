@@ -12,7 +12,7 @@ import Network.Wreq.Session
 import Network.Wreq.Types
 
 import qualified Control.Monad.Trans.State   as State
-import qualified Data.ByteString.Lazy        as BL
+import qualified Data.ByteString.Lazy        as Lazy
 
 type Url = String
 
@@ -22,7 +22,7 @@ post :: (Postable a, ToJSON a)
      -> Session                        -- ^ Wreq session object
      -> Url                            -- ^ The url to send the request to
      -> a                              -- ^ Request body
-     -> IO (Response BL.ByteString)    -- ^ Response as a lazy 'ByteString'
+     -> IO (Response Lazy.ByteString)  -- ^ Response as a lazy 'ByteString'
 post options session url body = do
     logDebugJSON ("POST" <> " " <> url) body
     Network.Wreq.Session.postWith options session url body
@@ -31,7 +31,7 @@ post options session url body = do
 get :: Options                         -- ^ Wreq options
     -> Session                         -- ^ Wreq session object
     -> Url                             -- ^ The url to send the request to
-    -> IO (Response BL.ByteString)     -- ^ Response as a lazy 'ByteString'
+    -> IO (Response Lazy.ByteString)   -- ^ Response as a lazy 'ByteString'
 get options session url = do
     logDebug ("GET" <> " " <> url) ""
     Network.Wreq.Session.getWith options session url
