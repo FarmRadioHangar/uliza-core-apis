@@ -1,5 +1,6 @@
 module Main where
 
+import Configuration.Dotenv                ( onMissingFile )
 import Control.Concurrent
 import Control.Lens
 import Data.Maybe                          ( fromMaybe )
@@ -22,7 +23,8 @@ import qualified Configuration.Dotenv      as Dotenv
 import qualified Web.Scotty                as Scotty
 
 main :: IO ()
-main = Dotenv.loadFile False ".env" >> readConfig >>= runServer
+main = Dotenv.loadFile False ".env" `onMissingFile` pure ()
+    >> readConfig >>= runServer
 
 readConfig :: IO AppConfig
 readConfig = do
