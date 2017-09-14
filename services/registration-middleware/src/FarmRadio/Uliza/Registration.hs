@@ -1,6 +1,29 @@
 {-# LANGUAGE LambdaCase      #-}
 {-# LANGUAGE TemplateHaskell #-}
-module FarmRadio.Uliza.Registration where
+module FarmRadio.Uliza.Registration
+  ( AppState(..)
+  , AppConfig(..)
+  , APIException(..)
+  , RegistrationError(..)
+  , RegistrationHandler
+  , FarmRadio.Uliza.Registration.port
+  , FarmRadio.Uliza.Registration.ulizaApi
+  , FarmRadio.Uliza.Registration.votoApi
+  , FarmRadio.Uliza.Registration.logLevel
+  , FarmRadio.Uliza.Registration.scheduleOffset
+  , FarmRadio.Uliza.Registration.callMinDelay
+  , FarmRadio.Uliza.Registration.connections
+  , FarmRadio.Uliza.Registration.config
+  , FarmRadio.Uliza.Registration.session
+  , FarmRadio.Uliza.Registration.requestBody
+  , FarmRadio.Uliza.Registration.params
+  , FarmRadio.Uliza.Registration.wreqOptions
+  , ulizaApiPost
+  , ulizaApiPost_
+  , ulizaApiGet
+  , ulizaApiGetOne
+  , runRegistrationHandler
+  ) where
 
 import Control.Exception.Safe
 import Control.Lens
@@ -92,6 +115,7 @@ instance Exception APIException
 ulizaApiException :: HttpException -> RegistrationHandler (Maybe a)
 ulizaApiException = throw . UlizaAPIException
 
+-- | Send a POST request to the Uliza API and return the JSON response.
 ulizaApiPost :: (Postable a, ToJSON a, FromJSON b)
              => String
              -> a
@@ -114,6 +138,7 @@ ulizaApiPost_ endpoint body = void post
   where
     post = ulizaApiPost endpoint body :: RegistrationHandler (Maybe Value)
 
+-- | Send a GET request to the Uliza API and return the JSON response.
 ulizaApiGet :: FromJSON a
             => String
             -> [(String, String)]
