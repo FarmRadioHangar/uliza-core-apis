@@ -11,6 +11,7 @@ import Control.Monad.IO.Class
 import Data.Aeson
 import Data.Monoid
 import Data.Text
+import Data.Text.Encoding
 import Data.URLEncoded
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Voto.ResponseHandler
@@ -31,8 +32,10 @@ import qualified Web.Scotty                           as Scotty
 registrationHandlerException :: SomeException -> IO (Either RegistrationError a)
 registrationHandlerException e =
     case fromException e of
-      Just (UlizaAPIException e) -> return $ Left $ UlizaApiError (show e)
+      Just (UlizaAPIException e) -> left $ UlizaApiError (show e)
       Nothing                    -> throw e
+  where
+    left = return . Left
 
 -- | HTTP server application
 app :: MVar AppState -> ScottyM ()
@@ -56,9 +59,12 @@ jsonResponse value = status ok200 >> Scotty.json value
 
 errorResponse :: RegistrationError -> Scotty.ActionM ()
 errorResponse err = do
-  liftIO $ logError "application_error" (errorLogMessage err)
-  status internalServerError500
-  Scotty.json $ object [("error", String (errorType err))]
+    liftIO $ logError "application_error" (errorLogMessage err)
+    status errStatus
+    Scotty.json $ object [("error", message)]
+  where
+    errStatus = errorStatus err
+    message = String $ decodeUtf8 $ statusMessage errStatus
 
 errorLogMessage :: RegistrationError -> String
 errorLogMessage (InternalServerError e)
@@ -70,10 +76,9 @@ errorLogMessage (UlizaApiError e)
 errorLogMessage BadRequestError
   = "The request format is invalid."
 
--- | A symbolic identifier used to describe the error in the HTTP JSON response.
-errorType :: RegistrationError -> Text
-errorType BadRequestError = "BAD_REQUEST_FORMAT"
-errorType _               = "INTERNAL_SERVER_ERROR"
+errorStatus :: RegistrationError -> Status
+errorStatus BadRequestError = badRequest400
+errorStatus _               = internalServerError500
 
 -- | WebSocket server application
 wss :: MVar AppState -> ServerApp
