@@ -1,8 +1,9 @@
-var mocha   = require('mocha');
-var mysql   = require('mysql');
-var request = require('supertest');
-var tests   = require('./integration');
-var util    = require('util');
+var mocha    = require('mocha');
+var mysql    = require('mysql');
+var request  = require('supertest');
+var tests    = require('./integration');
+var util     = require('util');
+var qs       = require('qs')
 
 function stripPrefix(s) {
   if (s.length && '+' === s[0]) {
@@ -13,6 +14,16 @@ function stripPrefix(s) {
 
 function toDateString(d) {
   return d.toISOString().substring(0, 19).replace('T', ' ');
+}
+
+function serialize(obj) {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
 }
 
 var data = {
@@ -34,8 +45,9 @@ var data = {
 var runner = function() {
   return request(process.env.REG_SERVICE_URL)
   .post('/responses')
+  .set('Content-Type', 'application/x-www-form-urlencoded')
   .set('Accept', 'application/json')
-  .send(data);
+  .send(serialize(data));
 }
 
 describe('/responses', function() {
@@ -74,7 +86,7 @@ describe('/responses', function() {
       .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
       .then(function(results) {
         results.length.should.equal(1);
-        var row = JSON.parse(results[0].data);
+        var row = qs.parse(results[0].data);
         row.should.deep.equal(data);
       });
     });
@@ -128,7 +140,8 @@ describe('/responses', function() {
     it('should return ALREADY_REGISTERED', function() {
       return runner()
       .then(function(response) {
-        response.body.should.have.property('message').equal('ALREADY_REGISTERED');
+        console.log(response.body);
+        response.body.should.have.property('reason').equal('ALREADY_REGISTERED');
       });
     });
   
@@ -159,7 +172,7 @@ describe('/responses', function() {
     it('should return REGISTRATION_DECLINED', function() {
       return runner()
       .then(function(response) {
-        response.body.should.have.property('message').equal('REGISTRATION_DECLINED');
+        response.body.should.have.property('reason').equal('REGISTRATION_DECLINED');
       });
     });
   
@@ -195,7 +208,7 @@ describe('/responses', function() {
     it('should return PRIOR_CALL_SCHEDULED', function() {
       return runner()
       .then(function(response) {
-        response.body.should.have.property('message').equal('PRIOR_CALL_SCHEDULED');
+        response.body.should.have.property('reason').equal('PRIOR_CALL_SCHEDULED');
       });
     });
   
@@ -229,7 +242,7 @@ describe('/responses', function() {
     it('should return TOO_SOON', function() {
       return runner()
       .then(function(response) {
-        response.body.should.have.property('message').equal('TOO_SOON');
+        response.body.should.have.property('reason').equal('TOO_SOON');
       });
     });
   
@@ -265,7 +278,7 @@ describe('/responses', function() {
     it('should return TOO_SOON', function() {
       return runner()
       .then(function(response) {
-        response.body.should.have.property('message').equal('TOO_SOON');
+        response.body.should.have.property('reason').equal('TOO_SOON');
       });
     });
   
@@ -362,14 +375,15 @@ describe('/responses', function() {
   
   describe('Bad request format', function() {
   
-    it('should return a status code 500', function() {
+    it('should return a status code 400', function() {
       return request(process.env.REG_SERVICE_URL)
       .post('/responses')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
       .set('Accept', 'application/json')
       .send({})
       .then(function(response) {
         response.should.have.header('Content-Type', /json/);
-        response.status.should.equal(500);
+        response.status.should.equal(400);
       });
     });
   

@@ -30,7 +30,11 @@ function createMiddlewareContainer() {
     },
     'Env': [
       'PORT=3034',
-      'API_HOST=http://api:8000'
+      'LOG_LEVEL=DEBUG',
+      'VOTO_API_URL=https://go.votomobile.org/api/v1',
+      'ULIZA_API_URL=http://api:8000/api/v1',
+      'CALL_SCHEDULE_OFFSET=600',
+      'MIN_RESCHEDULE_DELAY=172800'
     ]
   });
 }
@@ -63,7 +67,8 @@ function createApiContainer() {
     'Cmd': [ 'python', 'manage.py', 'runserver', '0.0.0.0:8000' ],
     'ExposedPorts': { '8000': {} },
     'HostConfig': {
-      'Links': ['database']
+      'Links': ['database'],
+      'PortBindings': { '8000': [{'HostPort': '8000'}] }
     },
     'Env': [
       'DEBUG="true"',
