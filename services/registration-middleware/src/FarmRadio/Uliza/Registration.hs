@@ -118,7 +118,9 @@ ulizaApiException = throw . UlizaAPIException
 -- | Send a POST request to the Uliza API and return the JSON response.
 ulizaApiPost :: (Postable a, ToJSON a, FromJSON b)
              => String
+             -- ^ An Uliza API endpoint
              -> a
+             -- ^ The 'Postable' request body
              -> RegistrationHandler (Maybe b)
 ulizaApiPost endpoint body = handle ulizaApiException $ do
     state <- State.get
@@ -132,7 +134,9 @@ ulizaApiPost endpoint body = handle ulizaApiException $ do
 -- | Identical to 'ulizaApiPost', except that the response is ignorded.
 ulizaApiPost_ :: (Postable a, ToJSON a)
               => String
+              -- ^ An Uliza API endpoint
               -> a
+              -- ^ The 'Postable' request body
               -> RegistrationHandler ()
 ulizaApiPost_ endpoint body = void post
   where
@@ -141,7 +145,9 @@ ulizaApiPost_ endpoint body = void post
 -- | Send a GET request to the Uliza API and return the JSON response.
 ulizaApiGet :: FromJSON a
             => String
+            -- ^ An Uliza API endpoint
             -> [(String, String)]
+            -- ^ A list of query string parameters, as key-value pairs.
             -> RegistrationHandler (Maybe a)
 ulizaApiGet endpoint params = do
     state <- State.get
@@ -151,10 +157,15 @@ ulizaApiGet endpoint params = do
                   (resourceUrl url params) & liftIO
     >>= parseResponse
 
+-- | Send a GET request to the Uliza API and return the response in the form
+--   of a single JSON object.
 ulizaApiGetOne :: FromJSON a
                => String
+               -- ^ An Uliza API endpoint
                -> [(String, String)]
+               -- ^ A list of query string parameters, as key-value pairs.
                -> Int
+               -- ^ The resource id
                -> RegistrationHandler (Maybe a)
 ulizaApiGetOne endpoint params pk = ulizaApiGet resource params
   where
