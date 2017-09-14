@@ -140,7 +140,6 @@ describe('/responses', function() {
     it('should return ALREADY_REGISTERED', function() {
       return runner()
       .then(function(response) {
-        console.log(response.body);
         response.body.should.have.property('reason').equal('ALREADY_REGISTERED');
       });
     });
