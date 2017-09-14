@@ -49,26 +49,30 @@ import qualified Control.Monad.State as State
 import qualified Data.ByteString.Lazy as BL
 import qualified FarmRadio.Uliza.Api.Client as ApiClient
 
+-- | Configuration data picked up from the system's environment variables.
 data AppConfig = AppConfig
   { _port            :: !Int
-  -- ^ Port that the server should bind to
+  -- ^ (PORT) Port that the server should bind to
   , _ulizaApi        :: !String
-  -- ^ Uliza API base url
+  -- ^ (ULIZA_API_URL) Uliza API base url
   , _votoApi         :: !String
-  -- ^ VOTO API base url
+  -- ^ (VOTO_API_URL) VOTO API base url
   , _logLevel        :: !Priority
-  -- ^ Verbosity level of the debug output
+  -- ^ (LOG_LEVEL) Verbosity level of the debug output
   , _scheduleOffset  :: !NominalDiffTime
-  -- ^ Time to wait before scheduling a registration call (in seconds)
+  -- ^ (CALL_SCHEDULE_OFFSET) Time to wait before scheduling a registration call
+  --   (in seconds)
   , _callMinDelay    :: !NominalDiffTime
-  -- ^ Minimum time that must elapse between registration calls (in seconds)
+  -- ^ (MIN_RESCHEDULE_DELAY) Minimum time that must elapse between registration
+  --   calls (in seconds)
   }
 
 makeLenses ''AppConfig
 
+-- | Application state which must be accessible from within response handlers.
 data AppState = AppState
   { _connections :: ![Connection]
-  -- ^ WebSocket connections
+  -- ^ A list of active WebSocket connections
   , _config      :: !AppConfig
   -- ^ App configuration
   , _session     :: !Session
@@ -107,6 +111,7 @@ runRegistrationHandler :: RegistrationHandler a
                        -> IO (Either RegistrationError a)
 runRegistrationHandler = evalStateT . runEitherT
 
+-- | Type of exceptions that can occur inside a 'RegistrationHandler'.
 newtype APIException = UlizaAPIException HttpException
   deriving (Show, Typeable)
 
@@ -115,12 +120,10 @@ instance Exception APIException
 ulizaApiException :: HttpException -> RegistrationHandler (Maybe a)
 ulizaApiException = throw . UlizaAPIException
 
--- | Send a POST request to the Uliza API and return the JSON response.
+-- | Send a POST request to the Uliza API and return a JSON response.
 ulizaApiPost :: (Postable a, ToJSON a, FromJSON b)
-             => String
-             -- ^ An Uliza API endpoint
-             -> a
-             -- ^ The 'Postable' request body
+             => String -- ^ An Uliza API endpoint
+             -> a      -- ^ The 'Postable' request body
              -> RegistrationHandler (Maybe b)
 ulizaApiPost endpoint body = handle ulizaApiException $ do
     state <- State.get
@@ -133,21 +136,19 @@ ulizaApiPost endpoint body = handle ulizaApiException $ do
 
 -- | Identical to 'ulizaApiPost', except that the response is ignorded.
 ulizaApiPost_ :: (Postable a, ToJSON a)
-              => String
-              -- ^ An Uliza API endpoint
-              -> a
-              -- ^ The 'Postable' request body
-              -> RegistrationHandler ()
+              => String                 -- ^ An Uliza API endpoint
+              -> a                      -- ^ The 'Postable' request body
+              -> RegistrationHandler () -- ^ A unit value is returned
 ulizaApiPost_ endpoint body = void post
   where
     post = ulizaApiPost endpoint body :: RegistrationHandler (Maybe Value)
 
--- | Send a GET request to the Uliza API and return the JSON response.
+-- | Send a GET request to the Uliza API and return a JSON response.
 ulizaApiGet :: FromJSON a
             => String
             -- ^ An Uliza API endpoint
             -> [(String, String)]
-            -- ^ A list of query string parameters, as key-value pairs.
+            -- ^ A list of query string parameters as key-value pairs.
             -> RegistrationHandler (Maybe a)
 ulizaApiGet endpoint params = do
     state <- State.get
@@ -157,13 +158,13 @@ ulizaApiGet endpoint params = do
                   (resourceUrl url params) & liftIO
     >>= parseResponse
 
--- | Send a GET request to the Uliza API and return the response in the form
---   of a single JSON object.
+-- | Send a GET request to the Uliza API for a specific resouce instance, and
+--   return a JSON response, which must be an object.
 ulizaApiGetOne :: FromJSON a
                => String
                -- ^ An Uliza API endpoint
                -> [(String, String)]
-               -- ^ A list of query string parameters, as key-value pairs.
+               -- ^ A list of query string parameters as key-value pairs.
                -> Int
                -- ^ The resource id
                -> RegistrationHandler (Maybe a)

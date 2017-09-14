@@ -73,12 +73,10 @@ getOrCreateParticipant phone = do
     response <- ulizaApiGet "/participants" [ ("limit", "1")
                                             , ("subscriber_phone", phone) ]
     case response of
-      Just [participant] -> do
-        -- Participant exists: Done!
+      Just [participant] -> do -- Participant exists: Done!
         logDebugJSON "participant_found" participant & liftIO
         right participant
-      _ -> do
-        -- Create a participant if one wasn't found
+      _ -> do -- Create a participant if one wasn't found
         participant <- postParticipant phone
         logDebugJSON "participant_created" participant & liftIO
         maybeToEither err participant
@@ -143,7 +141,7 @@ determineRegistrationStatus Participant{..} mcall = do
       ( "DECLINED"       , _ ) -> right RegistrationDeclined
       -- Participant is not registered
       ( "NOT_REGISTERED" , Just diff )
-        -- A call is already scheduled
+        -- A call is already scheduled for this participant
         | diff > 0             -> right PriorCallScheduled
         -- A registration call took place recently
         | diff > -minDelay     -> right RecentCallMade
