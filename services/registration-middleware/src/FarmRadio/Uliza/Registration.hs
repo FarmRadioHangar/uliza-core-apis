@@ -69,7 +69,7 @@ data AppConfig = AppConfig
 
 makeLenses ''AppConfig
 
--- | Application state which must be accessible from within response handlers.
+-- | Application state which is accessible from within response handlers.
 data AppState = AppState
   { _connections :: ![Connection]
   -- ^ A list of active WebSocket connections
@@ -87,6 +87,7 @@ data AppState = AppState
 
 makeLenses ''AppState
 
+-- | An error that can occur while running a 'RegistrationHandler'.
 data RegistrationError
   = UlizaApiError !String
   -- ^ Error talking to Uliza API
