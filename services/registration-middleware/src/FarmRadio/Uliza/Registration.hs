@@ -128,7 +128,7 @@ ulizaApiPost :: (Postable a, ToJSON a, FromJSON b)
              -> RegistrationHandler (Maybe b)
 ulizaApiPost endpoint body = handle ulizaApiException $ do
     state <- State.get
-    url <- ulizaUrl endpoint
+    url <- ulizaEndpoint endpoint
     ApiClient.post (state ^. wreqOptions)
                    (state ^. session)
                    (resourceUrl url [])
@@ -151,15 +151,15 @@ ulizaApiGet :: FromJSON a
             -> [(String, String)]
             -- ^ A list of query string parameters as key-value pairs.
             -> RegistrationHandler (Maybe a)
-ulizaApiGet endpoint params = do
+ulizaApiGet ep params = do
     state <- State.get
-    url <- ulizaUrl endpoint
+    url <- ulizaEndpoint ep
     ApiClient.get (state ^. wreqOptions)
                   (state ^. session)
                   (resourceUrl url params) & liftIO
     >>= parseResponse
 
--- | Send a GET request to the Uliza API for a specific resouce instance, and
+-- | Send a GET request to the Uliza API for a specific resource instance, and
 --   return a JSON response, which must be an object.
 ulizaApiGetOne :: FromJSON a
                => String
@@ -173,8 +173,8 @@ ulizaApiGetOne endpoint params pk = ulizaApiGet resource params
   where
     resource = endpoint <> "/" <> show pk
 
-ulizaUrl :: String -> RegistrationHandler String
-ulizaUrl url = do
+ulizaEndpoint :: String -> RegistrationHandler String
+ulizaEndpoint url = do
     state <- State.get
     return (state ^. config . ulizaApi <> url)
 
@@ -192,6 +192,7 @@ parseResponse response =
       201 -> ok                          -- 201 CREATED
       202 -> ok                          -- 202 ACCEPTED
       204 -> ok                          -- 204 NO CONTENT
+--      400 -> left
 --      401 -> left AuthenticationError
 --      404 -> left NotFoundError
 --      500 -> left $ InternalServerError (Data.ByteString.Lazy.Char8.unpack body)

@@ -19,6 +19,7 @@ import FarmRadio.Uliza.Registration.Logger
 import Network.HTTP.Client                            ( HttpExceptionContent(..)
                                                       , HttpException(..) )
 import Network.HTTP.Types
+import Network.Wai                                    ( Request(pathInfo) )
 import Network.WebSockets                             ( ServerApp
                                                       , acceptRequest
                                                       , sendTextData )
@@ -43,6 +44,7 @@ app state = do
     Scotty.get  "/"                    undefined
     Scotty.post "/responses"           (runHandler votoResponse)
     Scotty.post "/call_status_updates" undefined
+    Scotty.notFound                    notFound
   where
     runHandler :: RegistrationHandler Value -> Scotty.ActionM ()
     runHandler handler =
@@ -53,6 +55,14 @@ app state = do
           >>= runRegistrationHandler handler
           . set params encoded
           . set requestBody body
+
+notFound :: Scotty.ActionM ()
+notFound = do
+    request <- Scotty.request
+    liftIO $ logError "application_error" $ "No such resource: "
+                   <> (unpack . intercalate "/") (pathInfo request)
+    status status404
+    Scotty.json $ object [("error", "NOT FOUND")]
 
 jsonResponse :: Value -> Scotty.ActionM ()
 jsonResponse value = status ok200 >> Scotty.json value
