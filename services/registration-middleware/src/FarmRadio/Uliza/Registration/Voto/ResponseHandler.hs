@@ -155,9 +155,9 @@ registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
 registrationCallScheduleTime RegistrationCall{..} =
     eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
 
--- | Schedule a registration call for the participant at a given time.
+-- | Schedule a registration call for a participant at a given time.
 scheduleRegistrationCall :: Participant
-                         -- ^ A participant to whom the call is to be scheduled
+                         -- ^ The participant to call
                          -> UTCTime
                          -- ^ Time when the registration call is to be made
                          -> RegistrationHandler RegistrationCall
