@@ -56,6 +56,7 @@ app state = do
           . set params encoded
           . set requestBody body
 
+-- | Send a 404 NOT FOUND response.
 notFound :: Scotty.ActionM ()
 notFound = do
     request <- Scotty.request
@@ -64,9 +65,11 @@ notFound = do
     status status404
     Scotty.json $ object [("error", "NOT FOUND")]
 
+-- | Send a normal 200 OK response.
 jsonResponse :: Value -> Scotty.ActionM ()
 jsonResponse value = status ok200 >> Scotty.json value
 
+-- | Send an error response, based on the 'RegistrationError' argument.
 errorResponse :: RegistrationError -> Scotty.ActionM ()
 errorResponse err = do
     liftIO $ logError "application_error" (errorLogMessage err)
