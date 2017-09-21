@@ -23,12 +23,17 @@ class ProgramSerializer(serializers.ModelSerializer):
 	
 
 class CountrySerializer(serializers.ModelSerializer):
+	station_name = serializers.CharField(source='radio_station.name',read_only=True)
+	program_name = serializers.CharField(source='program.name',read_only=True)
 
 	class Meta:
 			model = Country
 			fields = "__all__"
 
 class LogSerializer(serializers.ModelSerializer):
+	project = serializers.IntegerField(source='program.project.id',read_only=True)
+	program_name = serializers.CharField(source='program.name',read_only=True)
+	
 	class Meta:
 		model = Log
 		fields = "__all__"
