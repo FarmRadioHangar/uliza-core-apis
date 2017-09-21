@@ -20,7 +20,7 @@ class ProgramFilter(filters.FilterSet):
 
 	class Meta:
 		model = Program
-		fields = ['id', 'radio_station','end_date','start_date','radio_station__country',
+		fields = ['id', 'radio_station','end_date','start_date','radio_station__country', 'project',
 				  'end_date__lt','end_date__gte','start_date__gte','project__end_date__gte','end_date__gt','start_date__lt']
 
 
@@ -30,6 +30,17 @@ class ProgramGet(generics.ListCreateAPIView):
 	model = Program
 	serializer_class = ProgramSerializer
 	filter_class = ProgramFilter
+
+
+	def get_queryset(self):
+		"""
+		This view should return a list of all the purchases
+		for the currently authenticated user.
+		"""
+
+		queryset = Program.objects.all().select_related('project__id','radio_station__country','radio_station__name',).prefetch_related('access')
+
+		return queryset
 
 
 	def perform_create(self, serializer):
