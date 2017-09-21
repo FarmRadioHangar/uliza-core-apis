@@ -64,7 +64,7 @@ projects = patterns('log_app.views.vProject',
 urlpatterns = patterns('',
     url(r'radio_stations', include(radio_stations, 'radio_stations')),
     url(r'programs', include(programs, 'programs')),
-    url(r'administrators', include(administrators, 'administrators')),
+    url(r'staffs', include(administrators, 'administrators')),
     url(r'comments', include(comments, 'comments')),
     url(r'countries', include(countries, 'countries')),
     url(r'group_accounts', include(group_accounts, 'group_accounts')),
@@ -73,3 +73,11 @@ urlpatterns = patterns('',
     url(r'presenters', include(presenters, 'presenters')),
     url(r'projects', include(projects, 'projects')),
 )
+
+
+from api_core import settings
+if settings.DEBUG == True:
+    urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
+
+
+
