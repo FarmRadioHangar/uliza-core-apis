@@ -13,8 +13,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class ProgramSerializer(serializers.ModelSerializer):
-	station_name = serializers.CharField(source='radio_station.name',read_only=True)
-	project_name = serializers.CharField(source='project.name',read_only=True)
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
+	project__name = serializers.CharField(source='project.name',read_only=True)
 	country = serializers.CharField(source='radio_station.country.id',read_only=True)
 
 	class Meta:
@@ -23,8 +23,8 @@ class ProgramSerializer(serializers.ModelSerializer):
 	
 
 class CountrySerializer(serializers.ModelSerializer):
-	station_name = serializers.CharField(source='radio_station.name',read_only=True)
-	program_name = serializers.CharField(source='program.name',read_only=True)
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
+	program__name = serializers.CharField(source='program.name',read_only=True)
 
 	class Meta:
 			model = Country
@@ -32,7 +32,7 @@ class CountrySerializer(serializers.ModelSerializer):
 
 class LogSerializer(serializers.ModelSerializer):
 	project = serializers.IntegerField(source='program.project.id',read_only=True)
-	program_name = serializers.CharField(source='program.name',read_only=True)
+	program__name = serializers.CharField(source='program.name',read_only=True)
 	
 	class Meta:
 		model = Log
