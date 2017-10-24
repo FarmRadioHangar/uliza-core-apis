@@ -47,6 +47,14 @@ knowledge_partners = patterns('log_app.views.vKnowledgePartners',
 )
 
 logs = patterns('log_app.views.vLogs',
+        # Uploads
+    url( r'recording/delete/(?P<pk>\d+)','upload_delete', name ='recording_delete'),
+    url( r'recording/init/(?P<week>\d+)/(?P<program_id>\d+)','create_instance'),
+    url( r'recording/check/(?P<log_id>\d+)/(?P<filename>.*)','check_rec'),
+    url( r'recording/upload','upload', name = 'recording_upload' ),
+    url( r'recording/download/(?P<pk>\d+)','rec_download', name ='recording_download'),
+    url( r'recording/gdrive/(?P<pk>\d+)','open_with_drive', name ='open_with_drive'),
+
     url(r'/(?P<id>\d+)$', LogEntity.as_view()),
     url(r'$', LogGet.as_view()),
 )
