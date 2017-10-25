@@ -22,6 +22,7 @@ library
                      , FarmRadio.Uliza.Registration.RegistrationCall
                      , FarmRadio.Uliza.Registration.App
                      , FarmRadio.Uliza.Registration.Logger
+                     , FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
                      , FarmRadio.Uliza.Registration.Voto.ResponseHandler
   build-depends:       aeson ==1.1.2.0
                      , base >= 4.7 && < 5

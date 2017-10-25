@@ -15,6 +15,7 @@ import Data.Text.Encoding
 import Data.URLEncoded
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Voto.ResponseHandler
+import FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
 import FarmRadio.Uliza.Registration.Logger
 import Network.HTTP.Client                            ( HttpExceptionContent(..)
                                                       , HttpException(..) )
@@ -43,7 +44,7 @@ app :: MVar AppState -> ScottyM ()
 app state = do
     Scotty.get  "/"                    undefined
     Scotty.post "/responses"           (runHandler votoResponse)
-    Scotty.post "/call_status_updates" undefined
+    Scotty.post "/call_status_updates" (runHandler votoCallStatusUpdate)
     Scotty.notFound                    notFound
   where
     runHandler :: RegistrationHandler Value -> Scotty.ActionM ()
