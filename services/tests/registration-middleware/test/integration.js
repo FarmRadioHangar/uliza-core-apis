@@ -10,6 +10,7 @@ var path    = require('path');
 var stream  = require('stream');
 var targz   = require('tar.gz');
 var util    = require('util');
+var term    = require('terminal-kit').terminal ;  
 
 chai.should();
 chai.use(require('chai-things'));
@@ -43,7 +44,7 @@ function createDatabaseContainer() {
   console.log('Create mysql container');
   return docker.createContainer({
     'name': 'database',
-    'Image': 'mysql',
+    'Image': 'mysql:5.7',
     'ExposedPorts': { '3306': {} },
     'HostConfig': {
       'PortBindings': { '3306': [{'HostPort': '3316'}] }
@@ -117,6 +118,44 @@ function buildImage(tag) {
           end: true 
         });
         stream.on('end', resolve);
+      });
+    });
+  }
+}
+
+function pullImage(image) {
+  return function() {
+    return new Promise(function(resolve, reject) {
+      console.log('Pulling image ' + image);
+      term.saveCursor() ;  
+      var progress = {
+        status: '',
+        info: {}
+      };
+      docker.pull(image, function(err, stream) {
+        docker.modem.followProgress(stream, onFinished, onProgress);
+        function onFinished(err, output) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(output);
+        }
+        function onProgress(event) {
+          if (event.id) {
+            term.restoreCursor() ;  
+            term(progress.status);
+            progress.info[event.id] = event;
+            for (key in progress.info) {
+              var data = progress.info[key];
+              term(data.status);
+              term(data.progress);
+              term.eraseLineAfter();
+              term('\n');
+            }
+          } else {
+            progress.status = event.status;
+          }
+        }
       });
     });
   }
@@ -262,6 +301,9 @@ var init = function(self, hook) {
 
   before(function() { 
     return Promise.resolve()
+    .then(pullImage('python:2.7.12'))
+    .then(pullImage('haskell:8'))
+    .then(pullImage('mysql:5.7'))
     .then(createArchive('../../../django-api/', './.build/django_api.tar.gz'))
     .then(buildImage('django_api'))
     .then(createArchive('../../registration-middleware/', './.build/middleware.tar.gz'))
