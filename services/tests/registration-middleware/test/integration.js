@@ -148,6 +148,7 @@ function pullImage(image) {
             for (key in progress.info) {
               var data = progress.info[key];
               term(data.status);
+              term(' ');
               term(data.progress);
               term.eraseLineAfter();
               term('\n');
