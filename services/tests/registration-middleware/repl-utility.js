@@ -29,6 +29,12 @@ var testdata_0 = {
   date_received: "2017-07-24T18:13:51Z"
 };
 
+var testdata_1 = {
+  subscriber_phone: "255678647268",
+  subscriber_id: "3",
+  delivery_status: "6"
+};
+
 var responses = function(data) {
   request.post({
     headers: {
@@ -42,7 +48,22 @@ var responses = function(data) {
   });
 }
 
+var callStatusUpdates = function(data) {
+  request.post({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json'
+    },
+    url: process.env.REG_SERVICE_URL + '/call_status_updates',
+    body: serialize(data)
+  }, function(error, response, body) {
+    console.log(body);
+  });
+}
+
 module.exports = {
   responses: responses,
-  testdata_0: testdata_0
+  callStatusUpdates: callStatusUpdates,
+  testdata_0: testdata_0,
+  testdata_1: testdata_1
 };
