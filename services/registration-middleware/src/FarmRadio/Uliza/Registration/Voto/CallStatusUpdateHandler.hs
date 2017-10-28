@@ -6,4 +6,4 @@ import Data.Aeson
 import FarmRadio.Uliza.Registration
 
 votoCallStatusUpdate :: RegistrationHandler Value
-votoCallStatusUpdate = undefined
+votoCallStatusUpdate = return $ toJSON $ object []
