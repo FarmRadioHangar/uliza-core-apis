@@ -11,6 +11,7 @@ var data = {
 };
 
 var runner = function() {
+  //console.log(process.env.REG_SERVICE_URL);
   return request(process.env.REG_SERVICE_URL)
   .post('/call_status_updates')
   .set('Accept', 'application/json')
