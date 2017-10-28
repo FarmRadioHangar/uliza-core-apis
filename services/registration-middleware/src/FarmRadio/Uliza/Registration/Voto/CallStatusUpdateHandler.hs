@@ -16,6 +16,6 @@ votoCallStatusUpdate = do
     state <- get
     let body = state ^. requestBody
     -- Log raw VOTO webhook request object
-    logDebug "incoming_incoming_call_status_update" (B8.unpack body) & liftIO
+    logDebug "incoming_call_status_update" (B8.unpack body) & liftIO
 
     return $ toJSON $ object []
