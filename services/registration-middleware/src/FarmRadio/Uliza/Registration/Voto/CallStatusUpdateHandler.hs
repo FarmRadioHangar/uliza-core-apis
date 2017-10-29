@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
   ( votoCallStatusUpdate
   ) where
