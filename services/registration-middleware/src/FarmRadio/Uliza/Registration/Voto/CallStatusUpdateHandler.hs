@@ -8,14 +8,11 @@ import Control.Monad.IO.Class
 import Control.Monad.State
 import Data.Aeson
 import Data.Either.Utils                              ( maybeToEither )
-import Data.URLEncoded                                ( URLEncoded )
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
-import Text.Read                                      ( readMaybe )
 
 import qualified Data.ByteString.Lazy.Char8           as B8
-import qualified Data.URLEncoded                      as URLEncoded
 
 -- | Response handler for VOTO call status update webhook.
 votoCallStatusUpdate :: RegistrationHandler Value
@@ -41,7 +38,3 @@ isCallComplete = do
     status <- maybeToEither BadRequestError 
                             (extractInt "delivery_status" request)
     return (6 == status)
-
-extractInt :: String -> URLEncoded -> Maybe Int
-extractInt key encoded = join (readMaybe <$> URLEncoded.lookup key encoded)
-
