@@ -7,6 +7,7 @@ import Control.Lens
 import Control.Monad.IO.Class
 import Control.Monad.State
 import Data.Aeson
+import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
 
