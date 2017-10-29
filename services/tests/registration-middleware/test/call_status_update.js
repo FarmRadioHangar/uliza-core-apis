@@ -11,11 +11,12 @@ var data = {
 };
 
 var runner = function() {
-  //console.log(process.env.REG_SERVICE_URL);
+  console.log(process.env.REG_SERVICE_URL);
   return request(process.env.REG_SERVICE_URL)
   .post('/call_status_updates')
+  .set('Content-Type', 'application/x-www-form-urlencoded')
   .set('Accept', 'application/json')
-  .send(data);
+  .send(tests.serialize(data));
 }
 
 describe('/call_status_updates', function() {
@@ -41,6 +42,7 @@ describe('/call_status_updates', function() {
     it('should return a status code 500', function() {
       return request(process.env.REG_SERVICE_URL)
       .post('/call_status_updates')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
       .set('Accept', 'application/json')
       .send({})
       .then(function(response) { 
