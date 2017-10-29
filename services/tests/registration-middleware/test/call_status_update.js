@@ -3,7 +3,7 @@ var mysql   = require('mysql');
 var request = require('supertest');
 var tests   = require('./integration');
 var util    = require('util');
-var qs       = require('qs')
+var qs      = require('qs')
 
 var data = {
   subscriber_phone: "255678647268",
@@ -67,11 +67,11 @@ describe('/call_status_updates', function() {
 
     var runner = makeRunner(data_2);
 
-    it('should return a status code 500', function() {
+    it('should return a status code 400', function() {
       return runner()
       .then(function(response) { 
         response.should.have.header('Content-Type', /json/);
-        response.status.should.equal(500);
+        response.status.should.equal(400);
       });
     });
 
@@ -81,7 +81,7 @@ describe('/call_status_updates', function() {
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
-        row.should.deep.equal(data);
+        row.should.deep.equal(data_2);
       });
     });
 
@@ -89,17 +89,15 @@ describe('/call_status_updates', function() {
 
   describe('Bad request format', function() {
 
-    //it('should return a status code 500', function() {
-    //  return request(process.env.REG_SERVICE_URL)
-    //  .post('/call_status_updates')
-    //  .set('Content-Type', 'application/x-www-form-urlencoded')
-    //  .set('Accept', 'application/json')
-    //  .send({})
-    //  .then(function(response) { 
-    //    response.should.have.header('Content-Type', /json/);
-    //    response.status.should.equal(500);
-    //  });
-    //});
+    var runner = makeRunner({});
+
+    it('should return a status code 400', function() {
+      return runner()
+      .then(function(response) { 
+        response.should.have.header('Content-Type', /json/);
+        response.status.should.equal(400);
+      });
+    });
 
   });
 
