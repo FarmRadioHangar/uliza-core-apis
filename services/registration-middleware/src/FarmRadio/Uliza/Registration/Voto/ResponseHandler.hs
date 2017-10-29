@@ -150,7 +150,7 @@ determineRegistrationStatus Participant{..} mcall = do
       -- Bad registration status
       ( r, _ ) -> left $ InternalServerError ("Bad registration status: " <> show r)
 
--- | Parse and translate the 'RegistrationCall' datetime field to 'UTCTime'.
+-- | Parse and translate the 'RegistrationCall' datetime field to a 'UTCTime'.
 registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
 registrationCallScheduleTime RegistrationCall{..} =
     eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
