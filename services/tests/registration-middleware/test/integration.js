@@ -107,6 +107,17 @@ var init = function(self, hook) {
 
 }
 
+function serialize(obj) {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
+}
+
 module.exports = {
-  init: init
+  init: init,
+  serialize: serialize
 };

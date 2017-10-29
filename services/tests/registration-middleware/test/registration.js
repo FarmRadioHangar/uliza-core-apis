@@ -16,16 +16,6 @@ function toDateString(d) {
   return d.toISOString().substring(0, 19).replace('T', ' ');
 }
 
-function serialize(obj) {
-  var str = [];
-  for (var p in obj) {
-    if (obj.hasOwnProperty(p)) {
-      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-    }
-  }
-  return str.join('&');
-}
-
 var data = {
   question_id: "127375", 
   survey_id: "89324", 
@@ -47,7 +37,7 @@ var runner = function() {
   .post('/responses')
   .set('Content-Type', 'application/x-www-form-urlencoded')
   .set('Accept', 'application/json')
-  .send(serialize(data));
+  .send(tests.serialize(data));
 }
 
 describe('/responses', function() {
