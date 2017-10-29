@@ -1,3 +1,1 @@
-var up = require('./up');
-
-up();
+require('./up')();

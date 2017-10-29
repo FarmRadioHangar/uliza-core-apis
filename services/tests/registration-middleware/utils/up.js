@@ -56,43 +56,64 @@ function buildImage(tag) {
   }
 }
 
+function acquireImages() {
+  return docker.listImages()
+  .then(function(images) {
+    var cached = [].concat.apply([], images.map(function(image) { 
+      return image.RepoTags; 
+    }));
+    return Promise.all(['python:2.7.12', 'haskell:8', 'mysql:5.7']
+    .filter(function(name) { 
+      var found = -1 !== cached.indexOf(name)
+      if (found) {
+        console.log('Image ' + name + ' found.');
+      }
+      return !found; 
+    })
+    .map(function(name) { 
+      return pullImage(name); 
+    }));
+  });
+}
+
 function pullImage(image) {
-  return function() {
-    return new Promise(function(resolve, reject) {
-      console.log('Pulling image ' + image);
-      term.saveCursor() ;  
-      var progress = {
-        status: '',
-        info: {}
-      };
-      docker.pull(image, function(err, stream) {
-        docker.modem.followProgress(stream, onFinished, onProgress);
-        function onFinished(err, output) {
-          if (err) {
-            return reject(err);
-          }
-          resolve(output);
+  return new Promise(function(resolve, reject) {
+    console.log('Pulling image ' + image);
+    term.saveCursor() ;  
+    var progress = {
+      status: '',
+      info: {}
+    };
+    docker.pull(image, function(err, stream) {
+      if (err) {
+        return reject(err);
+      }
+      docker.modem.followProgress(stream, onFinished, onProgress);
+      function onFinished(err, output) {
+        if (err) {
+          return reject(err);
         }
-        function onProgress(event) {
-          if (event.id) {
-            term.restoreCursor() ;  
-            term(progress.status);
-            progress.info[event.id] = event;
-            for (key in progress.info) {
-              var data = progress.info[key];
-              term(data.status);
-              term(' ');
-              term(data.progress);
-              term.eraseLineAfter();
-              term('\n');
-            }
-          } else {
-            progress.status = event.status;
+        resolve(output);
+      }
+      function onProgress(event) {
+        if (event.id) {
+          term.restoreCursor() ;  
+          term(progress.status);
+          progress.info[event.id] = event;
+          for (key in progress.info) {
+            var data = progress.info[key];
+            term(data.status);
+            term(' ');
+            term(data.progress);
+            term.eraseLineAfter();
+            term('\n');
           }
+        } else {
+          progress.status = event.status;
         }
-      });
+      }
     });
-  }
+  });
 }
 
 function startContainer(name, opts) {
@@ -183,9 +204,7 @@ function runServer() {
 
 function up() {
   return Promise.resolve()
-  .then(pullImage('python:2.7.12'))
-  .then(pullImage('haskell:8'))
-  .then(pullImage('mysql:5.7'))
+  .then(acquireImages)
   .then(createArchive('../../../django-api/', './.build/django_api.tar.gz'))
   .then(buildImage('django_api'))
   .then(createArchive('../../registration-middleware/', './.build/middleware.tar.gz'))

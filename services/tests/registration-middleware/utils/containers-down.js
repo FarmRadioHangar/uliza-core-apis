@@ -1,4 +1,1 @@
-var down = require('./down');
-
-down();
-
+require('./down')();
