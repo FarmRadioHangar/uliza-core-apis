@@ -35,6 +35,18 @@ var testdata_1 = {
   delivery_status: "6"
 };
 
+var testdata_2 = {
+  subscriber_phone: "255678647268",
+  subscriber_id: "3",
+  delivery_status: "5"
+};
+
+var testdata_3 = {
+  subscriber_phone: "255678647268",
+  subscriber_id: "3",
+  delivery_status: "x"
+};
+
 var responses = function(data) {
   request.post({
     headers: {
@@ -65,5 +77,7 @@ module.exports = {
   responses: responses,
   callStatusUpdates: callStatusUpdates,
   testdata_0: testdata_0,
-  testdata_1: testdata_1
+  testdata_1: testdata_1,
+  testdata_2: testdata_2,
+  testdata_3: testdata_3
 };
