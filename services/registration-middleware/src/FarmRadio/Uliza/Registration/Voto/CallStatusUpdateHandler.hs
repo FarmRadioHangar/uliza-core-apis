@@ -1,6 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 module FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
   ( votoCallStatusUpdate
+
+  , getVotoSubscriber
+
   ) where
 
 import Control.Applicative                            ( (<|>) )
@@ -9,12 +12,14 @@ import Control.Monad.IO.Class
 import Control.Monad.State
 import Control.Monad.Trans.Either
 import Data.Aeson
+import Data.Aeson.Lens
 import Data.Either.Utils                              ( maybeToEither )
-import Data.URLEncoded                                ( URLEncoded )
 import Data.Maybe
+import Data.URLEncoded                                ( URLEncoded )
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
+import FarmRadio.Uliza.Registration.SubscriberDetails
 import Text.Read                                      ( readMaybe )
 
 import qualified Data.ByteString.Lazy.Char8           as B8
@@ -32,12 +37,32 @@ votoCallStatusUpdate = do
       , ("endpoint" , "call_status_updates") ]
 
     complete <- isCallComplete
-    phone    <- extract "subscriber_phone"
-    votoId   <- extract "subscriber_id"
 
-    subscriber <- getVotoSubscriber votoId & liftIO
+    if not complete
+      then 
+          return $ toJSON $ object
+            [ ("action", "NO_ACTION")
+            , ("reason", "CALL_NOT_COMPLETE") ]
+      else do
+          phone  <- extract "subscriber_phone" :: RegistrationHandler String
+          votoId <- extract "subscriber_id"
 
-    return $ toJSON $ object []
+          subscriber <- getVotoSubscriber votoId 
+
+          print subscriber & liftIO
+
+          return $ toJSON $ object []
+
+getVotoSubscriber :: Int -> RegistrationHandler (Maybe SubscriberDetails)
+getVotoSubscriber sid = do
+    res <- getSubscriber
+    let subscr = res ^? _Just . ix "data" . ix "subscriber" 
+    return $ case sequence (fromJSON <$> subscr) of
+      Error _ -> Nothing
+      Success a -> join (details <$> a)
+  where
+    getSubscriber :: RegistrationHandler (Maybe Value)
+    getSubscriber = votoApiGet "/subscribers" 
 
 extract :: (Read a) => String -> RegistrationHandler a
 extract key = get >>= maybeToEither BadRequestError . \state -> do
