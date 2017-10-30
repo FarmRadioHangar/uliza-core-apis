@@ -18,6 +18,28 @@ class Account(User):
 	class Meta:
 		proxy=True
 
+class Auth0User(models.Model):
+    username = models.CharField(_('username'), max_length=30, unique=True,
+        help_text=_('Required. 30 characters or fewer. Letters, digits and '
+                    '@/./+/-/_ only.'),
+        validators=[
+            validators.RegexValidator(r'^[\w.@+-]+$',
+                                      _('Enter a valid username. '
+                                        'This value may contain only letters, numbers '
+                                        'and @/./+/-/_ characters.'), 'invalid'),
+        ],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        })
+    password = models.CharField(_('password'), max_length=128)
+    role = models.CharField(max_length=50)
+    email = models.EmailField(_('email address'), blank=True)
+    is_super_user = models.BooleanField(_('super user'), default=False,
+        help_text=_('Designates whether the user can have access to multiple countries site.'))
+    notify_on_log_create = models.BooleanField(_('notify on new log'), default=False,
+        help_text=_('If the user prefers to get notification or not'))
+
+
 class Country(models.Model):
 	name = models.CharField(max_length=50)
 	country_code = models.CharField(max_length=3)
@@ -250,8 +272,8 @@ class Program(models.Model):
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=50)
 	
-	from datetime import datetime
-	start_date = models.DateTimeField(default=datetime.now())
+	from django.utils import timezone
+	start_date = models.DateTimeField(default=timezone.now)
 	end_date = models.DateField(null=True)
 
 	repeat_week_day = models.CharField(max_length=3,null=True,blank=True,choices=days)
