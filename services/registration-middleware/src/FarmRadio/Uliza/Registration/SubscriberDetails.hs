@@ -38,8 +38,8 @@ data SubscriberRawDetails = SubscriberRawDetails
     , rawLanguageId       :: !String
     , rawIsTestSubscriber :: !String
     , rawGroupIds         :: !String
-    , rawProperties       :: !Object }
-  deriving (Show, Eq)
+    , rawProperties       :: !Object 
+    }
 
 instance FromJSON SubscriberRawDetails where
   parseJSON = withObject "SubscriberRawDetails" $ \v -> SubscriberRawDetails

@@ -15,6 +15,7 @@ import Data.Aeson
 import Data.Aeson.Lens
 import Data.Either.Utils                              ( maybeToEither )
 import Data.Maybe
+import Data.Monoid
 import Data.URLEncoded                                ( URLEncoded )
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
@@ -36,22 +37,26 @@ votoCallStatusUpdate = do
       [ ("data"     , String (toText body))
       , ("endpoint" , "call_status_updates") ]
 
-    complete <- isCallComplete
+    complete   <- isCallComplete
+    phone      <- extract "subscriber_phone" :: RegistrationHandler String
+    votoId     <- extract "subscriber_id"
+    subscriber <- getVotoSubscriber votoId 
 
-    if not complete
-      then 
-          return $ toJSON $ object
-            [ ("action", "NO_ACTION")
-            , ("reason", "CALL_NOT_COMPLETE") ]
-      else do
-          phone  <- extract "subscriber_phone" :: RegistrationHandler String
-          votoId <- extract "subscriber_id"
+    print subscriber & liftIO
 
-          subscriber <- getVotoSubscriber votoId 
+    let registered = join $ lookup "registered" <$> properties <$> subscriber
 
-          print subscriber & liftIO
-
-          return $ toJSON $ object []
+    case (registered, complete) of
+      -- Call complete and subscriber registered
+      (Just "true", True) -> undefined
+      -- Call complete but 'registered' attribute not equal to 'true'
+      (_, True) -> noAction "No registered attribute" "REGISTERED_NOT_TRUE"
+      -- Call not complete
+      _ -> noAction  "Call not complete" "CALL_NOT_COMPLETE"
+  where 
+    noAction message reason = do
+      liftIO $ logNotice "no_action" ("Participant not registered: " <> message)
+      return $ toJSON $ object [("action", "NO_ACTION"), ("reason", reason)]
 
 getVotoSubscriber :: Int -> RegistrationHandler (Maybe SubscriberDetails)
 getVotoSubscriber sid = do
