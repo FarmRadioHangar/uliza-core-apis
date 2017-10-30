@@ -211,6 +211,24 @@ class Administrator(models.Model):
 		return self.user.username
 
 
+# Contact
+class Contact(models.Model):
+	user_id = models.CharField(null=True, max_length=100)
+	first_name = models.CharField(null=True, blank=True, max_length=30)
+	last_name = models.CharField(null=True, blank=True, max_length=30)
+	job_title = models.CharField(null=True,blank=True, max_length=100)
+	organization = models.CharField(null=True, blank=True, max_length=100)
+	phone_number = models.CharField(max_length=50,null=True,blank=True)
+	organization = models.CharField(max_length=64,null=True)
+	role = models.CharField(max_length=64,null=True)
+	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	country = models.ForeignKey('Country', null=True)
+
+
+	def __unicode__(self):
+		return self.first_name
+
+
 class Program(models.Model):
 	
 	days = (
@@ -233,7 +251,7 @@ class Program(models.Model):
 	uliza = models.CharField(null=True,blank=True,max_length=50)
 	
 	from datetime import datetime
-	start_date = models.DateTimeField()
+	start_date = models.DateTimeField(default=datetime.now())
 	end_date = models.DateField(null=True)
 
 	repeat_week_day = models.CharField(max_length=3,null=True,blank=True,choices=days)
