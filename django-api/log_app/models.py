@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from api_core.settings import GDRIVE_STORAGE
+from django.utils.translation import ugettext, ugettext_lazy as _
+from django.core import validators
 
 class Account(User):
 	def is_admin(self):
