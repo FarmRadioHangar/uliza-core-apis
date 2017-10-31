@@ -1,9 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
   ( votoCallStatusUpdate
-
-  , getVotoSubscriber
-
   ) where
 
 import Control.Applicative                            ( (<|>) )
