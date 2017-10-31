@@ -237,7 +237,7 @@ class Administrator(models.Model):
 
 # Contact
 class Contact(models.Model):
-	user_id = models.CharField(null=True, max_length=100)
+	email = models.EmailField(_('email address'), blank=True)
 	first_name = models.CharField(null=True, blank=True, max_length=30)
 	last_name = models.CharField(null=True, blank=True, max_length=30)
 	job_title = models.CharField(null=True,blank=True, max_length=100)
