@@ -57,9 +57,11 @@ instance FromJSON SubscriberRawDetails where
     <*> v .: "properties"
 
 boolDigit :: String -> Maybe Bool
-boolDigit "0" = Just False
-boolDigit "1" = Just True
-boolDigit _   = Nothing
+boolDigit "0"     = Just False
+boolDigit "false" = Just False
+boolDigit "1"     = Just True
+boolDigit "true"  = Just True
+boolDigit _       = Nothing
 
 extractProps :: Object -> [(String, String)]
 extractProps = catMaybes . fmap f . Map.toList
