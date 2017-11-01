@@ -1,0 +1,17 @@
+{
+  "name": "api",
+  "Image": "django_api",
+  "Cmd": [ "python", "manage.py", "runserver", "0.0.0.0:8000" ],
+  "ExposedPorts": { "8000": {} },
+  "HostConfig": {
+    "Links": ["database"],
+    "PortBindings": { "8000": [{"HostPort": "8000"}] }
+  },
+  "Env": [
+    "DEBUG=\"true\"",
+    "DATABASE_NAME=api_core",
+    "DATABASE_USER=root",
+    "DATABASE_PASSWORD=root",
+    "DATABASE_SERVICE_HOST=database"
+  ]
+}

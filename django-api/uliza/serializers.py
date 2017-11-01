@@ -19,9 +19,9 @@ class ParticipantRegistrationStatusLogSerializer(serializers.ModelSerializer):
         model = ParticipantRegistrationStatusLog
         fields = '__all__'
 
-class VotoResponseDataSerializer(serializers.ModelSerializer):
+class VotoWebhookLogSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = VotoResponseData
+        model = VotoWebhookLog
         fields = '__all__'
         

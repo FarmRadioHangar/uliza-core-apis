@@ -1,0 +1,16 @@
+{
+  "name": "database",
+  "Image": "mysql:5.7",
+  "ExposedPorts": { "3306": {} },
+  "HostConfig": {
+    "PortBindings": { "3306": [{"HostPort": "3316"}] }
+  },
+  "Env": [ 
+    "MYSQL_DATABASE=api_core",
+    "MYSQL_ROOT_PASSWORD=root" 
+  ],
+  "AttachStdin": false,
+  "AttachStdout": true,
+  "AttachStderr": true,
+  "Tty": true
+}

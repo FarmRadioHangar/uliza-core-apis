@@ -3,13 +3,11 @@ require('dotenv').config();
 var Docker  = require('simple-dockerode');
 var assert  = require('assert');
 var chai    = require('chai');
-var fs      = require('fs');
 var mocha   = require('mocha');
 var mysql   = require('mysql');
 var path    = require('path');
-var stream  = require('stream');
-var targz   = require('tar.gz');
-var util    = require('util');
+var up      = require('../utils/up');
+var down    = require('../utils/down');
 
 chai.should();
 chai.use(require('chai-things'));
@@ -18,105 +16,6 @@ chai.use(require('chai-http'));
 
 var docker = new Docker();
 
-function createMiddlewareContainer() {
-  console.log('Create middleware container');
-  return docker.createContainer({
-    'name': 'middleware',
-    'Image': 'registration_middleware',
-    'ExposedPorts': { '3034': {} },
-    'HostConfig': {
-      'Links': ['api'],
-      'PortBindings': { '3034': [{'HostPort': '3034'}] }
-    },
-    'Env': [
-      'PORT=3034',
-      'API_HOST=http://api:8000'
-    ]
-  });
-}
-
-function createDatabaseContainer() {
-  console.log('Create mysql container');
-  return docker.createContainer({
-    'name': 'database',
-    'Image': 'mysql',
-    'ExposedPorts': { '3306': {} },
-    'HostConfig': {
-      'PortBindings': { '3306': [{'HostPort': '3316'}] }
-    },
-    'Env': [ 
-      'MYSQL_DATABASE=api_core',
-      'MYSQL_ROOT_PASSWORD=root' 
-    ],
-    'AttachStdin': false,
-    'AttachStdout': true,
-    'AttachStderr': true,
-    'Tty': true
-  });
-}
-
-function createApiContainer() {
-  console.log('Create api container');
-  return docker.createContainer({
-    'name': 'api',
-    'Image': 'django_api',
-    'Cmd': [ 'python', 'manage.py', 'runserver', '0.0.0.0:8000' ],
-    'ExposedPorts': { '8000': {} },
-    'HostConfig': {
-      'Links': ['database']
-    },
-    'Env': [
-      'DEBUG="true"',
-      'DATABASE_NAME=api_core',
-      'DATABASE_USER=root',
-      'DATABASE_PASSWORD=root',
-      'DATABASE_SERVICE_HOST=database'
-    ]
-  });
-}
-
-function createArchive(path, archive) {
-  return function() {
-    return new Promise(function(resolve, reject) {
-      if (fs.existsSync(archive)) {
-        console.log('Archive found: ' + archive);
-        resolve(archive);
-      } else {
-        console.log('Creating tar archive: ' + archive);
-        targz({}, {fromBase: true}).compress(path, archive).then(function() { 
-          resolve(archive); 
-        }); 
-      }
-    });
-  }
-}
-
-function buildImage(tag) {
-  return function(archive) {
-    return new Promise(function(resolve, reject) {
-      var EchoStream = function() { 
-        stream.Writable.call(this); 
-      };
-      util.inherits(EchoStream, stream.Writable); 
-      EchoStream.prototype._write = function(chunk, encoding, done) { 
-        process.stdout.write(JSON.parse(chunk.toString()).stream);
-        done();
-      }
-      console.log('Building image ' + tag + ' from archive ' + archive);
-      docker.buildImage(archive, {t: tag}, function(err, stream) {
-       if (err) {
-          reject(err);
-        }
-        var writeStream = new EchoStream(); 
-        stream.pipe(writeStream, { 
-          end: true 
-        });
-        stream.on('end', resolve);
-      });
-    });
-  }
-}
-
 var init = function(self, hook) {
 
   self.timeout(4000000);
@@ -124,82 +23,13 @@ var init = function(self, hook) {
   self._containers = {};
   self._hook = hook;
 
-  var saveContainer = function(name) {
-    return function(container) { 
-      self._containers[name] = container; 
-    }
-  };
-
-  var startContainer = function(name, opts) {
-    return function() {
-      console.log('Starting container ' + name);
-      return self._containers[name].start(opts); 
-    }
-  };
-
-  var stopContainer = function(name) { 
-    return function() {
-      console.log('Stopping container ' + name);
-      return self._containers[name].stop();
-    }
-  };
-
-  var removeContainer = function(name) { 
-    return function() {
-      return self._containers[name].remove();
-    }
-  };
-
-  var runExec = function(container, opts) {
-    var opts = ('object' === typeof(opts)) ? opts : {
-      Cmd: Array.from(arguments).slice(1), 
-      AttachStdin: true, 
-      AttachStdout: true,
-      tty: true
-    };
-    return new Promise(function(resolve, reject) {
-      container.execRaw(opts, function(err, exec) {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        exec.start({
-          hijack: true, 
-          stdin: true
-        }, function(err, stream) {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          container.modem.demuxStream(stream, process.stdout, process.stderr);
-          process.stdin.pipe(stream);
-          stream.on('end', resolve);
-        });
-      });
-    });
-  };
-
-  var migrate = function(app) {
-    return function() { 
-      return runExec(self._containers.api, 'python', 'manage.py', 'migrate', app); 
-    }
-  };
-
-  var runMigrations = function() {
-    return Promise.resolve()
-    .then(migrate('auth'))
-    .then(migrate('contenttypes'))
-    .then(migrate('uliza'));
-  };
-
-  var runServer = function() {
-    return runExec(self._containers.api, {
-      Cmd: ['python', 'manage.py', 'runserver', '0.0.0.0:8000'] 
-    });
-  };
-
   var flushDb = function() {
-    return runExec(self._containers.api, 'python', 'manage.py', 'flush', '--noinput'); 
+    return Promise.resolve()
+    .then(self.query('DELETE FROM uliza_participant_registration_status_log;'))
+    .then(self.query('DELETE FROM uliza_voto_webhook_log;'))
+    .then(self.query('DELETE FROM uliza_participants;'))
+    .then(self.query('DELETE FROM uliza_registration_calls;'))
+    .catch(console.error);
   };
 
   var ping = function(cmd, msg) {
@@ -224,20 +54,6 @@ var init = function(self, hook) {
     });
   };
 
-  var pingApi = function() {
-    return ping(['curl', 'http://localhost:8000/api/v1'], 
-      'Django server is running.');
-  };
-
-  var pingMysql = function() {
-    return ping(['mysqladmin', 'ping', '-hdatabase', '-uroot', '-proot'], 
-      'Database server is accepting connections.');
-  };
-
-  var separator = function() {
-    console.log('------------------------------------------------------------------------------------');
-  };
-
   self.query = function(sql) {
     return function() {
       return new Promise(function(resolve, reject) {
@@ -255,42 +71,15 @@ var init = function(self, hook) {
   };
 
   before(function() { 
-    return Promise.resolve()
-    .then(separator)
-    .then(createArchive('../../../django-api/', './.build/django_api.tar.gz'))
-    .then(buildImage('django_api'))
-    .then(createArchive('../../registration-middleware/', './.build/middleware.tar.gz'))
-    .then(buildImage('registration_middleware'))
-    .then(createDatabaseContainer)
-    .then(saveContainer('db'))
-    .then(createApiContainer)
-    .then(saveContainer('api'))
-    .then(createMiddlewareContainer)
-    .then(saveContainer('middleware'))
-    .then(startContainer('db'))
-    .then(startContainer('api'))
-    .then(startContainer('middleware' ))
-    .then(pingMysql)                     // Wait for MySQL to accept connections
-    .then(runMigrations)
-    .then(runServer)
-    .then(pingApi) 
-    .catch(console.error);
+    return up();
   });
 
   after(function() { 
-    return Promise.resolve()
-    .then(stopContainer('db'))
-    .then(removeContainer('db'))
-    .then(stopContainer('middleware'))
-    .then(removeContainer('middleware'))
-    .then(stopContainer('api'))
-    .then(removeContainer('api'))
-    .catch(console.error);
+    return down();
   });
 
   beforeEach(function() { 
     return Promise.resolve()
-    .then(flushDb)
     .then(function() {
       self._db = mysql.createConnection({
         host     : '0.0.0.0',
@@ -300,22 +89,35 @@ var init = function(self, hook) {
         database : 'api_core'
       });
       self._db.connect();
+    })
+    .then(flushDb)
+    .then(function() {
       if ('function' === typeof(self._hook)) {
         return self._hook();
       }
     })
-    .then(separator)
     .catch(console.error);
   });
 
   afterEach(function() { 
-    return Promise.resolve().then(separator).then(function() {
+    return Promise.resolve().then(function() {
       self._db.end();
     });
   });
 
 }
 
+function serialize(obj) {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
+}
+
 module.exports = {
-  init: init
+  init: init,
+  serialize: serialize
 };
