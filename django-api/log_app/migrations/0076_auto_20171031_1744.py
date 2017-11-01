@@ -11,13 +11,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
+        migrations.AlterField(
             model_name='contact',
             name='user_id',
-        ),
-        migrations.AddField(
-            model_name='contact',
-            name='email',
-            field=models.EmailField(max_length=254, verbose_name='email address', blank=True),
+            field=models.CharField(max_length=120, null=True, blank=True),
         ),
     ]
