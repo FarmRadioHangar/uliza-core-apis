@@ -5,24 +5,6 @@ var tests   = require('./integration');
 var util    = require('util');
 var qs      = require('qs')
 
-var data = {
-  subscriber_phone: "255678647268",
-  subscriber_id: "3",
-  delivery_status: "6"
-};
-
-var data_1 = {
-  subscriber_phone: "255678647268",
-  subscriber_id: "3",
-  delivery_status: "5"
-};
-
-var data_2 = {
-  subscriber_phone: "255678647268",
-  subscriber_id: "3",
-  delivery_status: "x"
-};
-
 function makeRunner(data) {
   return function() {
     return request(process.env.REG_SERVICE_URL)
@@ -33,7 +15,11 @@ function makeRunner(data) {
   }
 }
 
-var runner = makeRunner(data);
+var runner = makeRunner({
+  subscriber_phone: "255678647268",
+  subscriber_id: "3",
+  delivery_status: "6"
+});
   
 describe('/call_status_updates', function() {
 
@@ -57,7 +43,43 @@ describe('/call_status_updates', function() {
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
-        row.should.deep.equal(data);
+        row.should.deep.equal({
+          subscriber_phone: "255678647268",
+          subscriber_id: "3",
+          delivery_status: "6"
+        });
+      });
+    });
+
+  });
+
+  describe('Call status update with delivery_status = 5', function() {
+
+    var runner = makeRunner({
+      subscriber_phone: "255678647268",
+      subscriber_id: "3",
+      delivery_status: "5"
+    });
+
+    it('should return a 200 OK JSON-formatted response', function() {
+      return runner()
+      .then(function(response) { 
+        response.should.have.header('Content-Type', /json/);
+        response.status.should.equal(200);
+      });
+    });
+
+    it('should create a uliza_voto_webhook_log entry in the database', function() {
+      return runner()
+      .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+        var row = qs.parse(results[0].data);
+        row.should.deep.equal({
+          subscriber_phone: "255678647268",
+          subscriber_id: "3",
+          delivery_status: "5"
+        });
       });
     });
 
@@ -65,7 +87,11 @@ describe('/call_status_updates', function() {
 
   describe('Call status update with delivery_status = x', function() {
 
-    var runner = makeRunner(data_2);
+    var runner = makeRunner({
+      subscriber_phone: "255678647268",
+      subscriber_id: "3",
+      delivery_status: "x"
+    });
 
     it('should return a status code 400', function() {
       return runner()
@@ -81,7 +107,11 @@ describe('/call_status_updates', function() {
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
-        row.should.deep.equal(data_2);
+        row.should.deep.equal({
+          subscriber_phone: "255678647268",
+          subscriber_id: "3",
+          delivery_status: "x"
+        });
       });
     });
 
