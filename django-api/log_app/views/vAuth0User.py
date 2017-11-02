@@ -14,7 +14,7 @@ class Auth0UserGet(generics.ListCreateAPIView):
     queryset = Auth0User.objects.all()
     model = Auth0User
     serializer_class = Auth0UserSerializer
-    filter_fields = ['id']
+    filter_fields = ['id','username']
 
 class Auth0UserEntity(generics.RetrieveUpdateAPIView):
     queryset = Auth0User.objects.all()
