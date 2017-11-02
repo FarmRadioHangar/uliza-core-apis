@@ -41,13 +41,17 @@ votoCallStatusUpdate = do
 
     print subscriber & liftIO
 
-    let registered = join $ lookup "registered" <$> properties <$> subscriber
+    let registered = join (lookup "registered" <$> properties <$> subscriber)
 
     case (registered, complete) of
       -- Call complete and subscriber registered
-      (Just "true", True) -> undefined
+      (Just "true", True) -> 
+          undefined
+          -- getOrCreateParticipant (xxx)
+          --   >>= registerParticipant
+          --   >>= sendResponse
       -- Call complete but 'registered' attribute not equal to 'true'
-      (_, True) -> noAction "No registered attribute" "REGISTERED_NOT_TRUE"
+      (_, True) -> noAction "No registered attribute" "ATTR_REGISTERED_NOT_SET"
       -- Call not complete
       _ -> noAction  "Call not complete" "CALL_NOT_COMPLETE"
   where 
