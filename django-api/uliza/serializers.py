@@ -8,6 +8,7 @@ from eav.models import Attribute
 
 class ParticipantSerializer(serializers.Serializer):
 
+    id = serializers.IntegerField()
     phone_number = serializers.CharField(max_length=100)
     registration_status = serializers.CharField(max_length=100)
     created_at = serializers.DateTimeField()
