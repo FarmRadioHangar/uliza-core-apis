@@ -7,6 +7,7 @@ import Control.Monad.State
 import Control.Monad.Trans.Either
 import Data.Aeson
 import Data.Either.Utils                              ( maybeToEither )
+import Data.Maybe                                     ( fromMaybe )
 import Data.Monoid
 import Data.Text                                      ( Text )
 import Data.Text.Encoding                             ( encodeUtf8 )
@@ -26,7 +27,7 @@ getOrCreateParticipant ('+':phone) = getOrCreateParticipant phone
 getOrCreateParticipant phone = do
     -- Look up participant from subscriber's phone number
     response <- ulizaApiGet "/participants" [ ("limit", "1")
-                                            , ("subscriber_phone", phone) ]
+                                            , ("phone_number", phone) ]
     case response of
       Just (participant:_) -> do -- Participant exists: Done!
         logDebugJSON "participant_found" participant & liftIO
@@ -95,15 +96,15 @@ type Attributes = [(Text, Text)]
 
 registerParticipant :: Maybe Attributes
                     -> Participant 
-                    -> RegistrationHandler (Maybe Participant)
+                    -> RegistrationHandler Value
 registerParticipant attributes Participant{ entityId = participantId, .. } = do
     user <- maybeToEither (InternalServerError "registerParticipant: \
                           \participant id is null") participantId
     when ("REGISTERED" == registrationStatus) $ liftIO $ logWarning 
         "already_registered" 
         "Registering already registered listener."
-    -- Update the participant's registration_status
-    ulizaApiPatch "/participants" user (object body) 
+    -- Update the participant's registration_status 
+    fromMaybe Null <$> ulizaApiPatch "/participants" user (object body)
   where
     body  = [ ("registration_status", String "REGISTERED")
             , ("attributes", object props) ] 
