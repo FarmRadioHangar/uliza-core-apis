@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from uliza.models import *
+from uliza.models import (Participant,
+                          RegistrationCall,
+                          ParticipantRegistrationStatusLog,
+                          VotoWebhookLog)
+from eav.models import Attribute
 
 
 class ParticipantSerializer(serializers.Serializer):
