@@ -49,6 +49,10 @@ class ContactSerializer(serializers.ModelSerializer):
 		model = Contact
 		fields = "__all__"
 
+class Auth0UserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Auth0User
+		fields = "__all__"
 
 class PresenterSerializer(serializers.ModelSerializer):
 	class Meta:

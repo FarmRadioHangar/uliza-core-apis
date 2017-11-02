@@ -4,6 +4,7 @@ from log_app.views.vPrograms import *
 from log_app.views.vAdministrators import *
 from log_app.views.vComments import *
 from log_app.views.vCountries import *
+from log_app.views.vAuth0User import *
 from log_app.views.vGroupAccounts import *
 from log_app.views.vContacts import *
 from log_app.views.vKnowledgePartners import *
@@ -87,6 +88,7 @@ urlpatterns = patterns('',
     url(r'staffs', include(administrators, 'administrators')),
     url(r'comments', include(comments, 'comments')),
     url(r'contacts', include(contacts, 'contacts')),
+    url(r'auth0_user', include(auth0_user, 'auth0_user')),
     url(r'countries', include(countries, 'countries')),
     url(r'group_accounts', include(group_accounts, 'group_accounts')),
     url(r'knowledge_partners', include(knowledge_partners, 'knowledge_partners')),
