@@ -14,6 +14,7 @@ import Data.Either.Utils                              ( maybeToEither )
 import Data.Maybe
 import Data.Monoid
 import Data.URLEncoded                                ( URLEncoded )
+import FarmRadio.Uliza.Api.Participant
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
@@ -35,7 +36,7 @@ votoCallStatusUpdate = do
       , ("endpoint" , "call_status_updates") ]
 
     complete   <- isCallComplete
-    phone      <- extract "subscriber_phone" :: RegistrationHandler String
+    phone      <- extract "subscriber_phone" 
     votoId     <- extract "subscriber_id"
     subscriber <- getVotoSubscriber votoId 
 
@@ -46,10 +47,9 @@ votoCallStatusUpdate = do
     case (registered, complete) of
       -- Call complete and subscriber registered
       (Just "true", True) -> 
-          undefined
-          -- getOrCreateParticipant (xxx)
-          --   >>= registerParticipant
-          --   >>= sendResponse
+          getOrCreateParticipant phone
+            >>= registerParticipant (properties <$> subscriber)
+            >>= sendResponse
       -- Call complete but 'registered' attribute not equal to 'true'
       (_, True) -> noAction "No registered attribute" "ATTR_REGISTERED_NOT_SET"
       -- Call not complete
@@ -58,6 +58,8 @@ votoCallStatusUpdate = do
     noAction message reason = do
       liftIO $ logNotice "no_action" ("Participant not registered: " <> message)
       return $ toJSON $ object [("action", "NO_ACTION"), ("reason", reason)]
+
+sendResponse = undefined
 
 getVotoSubscriber :: Int -> RegistrationHandler (Maybe SubscriberDetails)
 getVotoSubscriber sid = do
