@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module FarmRadio.Uliza.Registration.Voto.ResponseHandler
   ( votoResponse
   ) where

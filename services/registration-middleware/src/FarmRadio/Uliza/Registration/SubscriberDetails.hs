@@ -1,4 +1,5 @@
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards   #-}
 module FarmRadio.Uliza.Registration.SubscriberDetails 
   ( SubscriberDetails(..)
   , details
