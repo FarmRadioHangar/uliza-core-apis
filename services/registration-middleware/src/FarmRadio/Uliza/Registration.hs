@@ -18,6 +18,7 @@ module FarmRadio.Uliza.Registration
   , FarmRadio.Uliza.Registration.requestBody
   , FarmRadio.Uliza.Registration.params
   , FarmRadio.Uliza.Registration.wreqOptions
+  , ulizaApiPatch
   , ulizaApiPost
   , ulizaApiPost_
   , ulizaApiGet
@@ -144,6 +145,23 @@ ulizaApiPost_ :: (Postable a, ToJSON a)
 ulizaApiPost_ endpoint body = void post
   where
     post = ulizaApiPost endpoint body :: RegistrationHandler (Maybe Value)
+
+-- | Send a PATCH request to the Uliza API and return a JSON response.
+ulizaApiPatch :: (Postable a, ToJSON a, FromJSON b)
+              => String -- ^ An Uliza API endpoint
+              -> Int    -- ^ The resource id
+              -> a      -- ^ The 'Postable' request body
+              -> RegistrationHandler (Maybe b)
+ulizaApiPatch endpoint pk body = handle ulizaApiException $ do
+    state <- State.get
+    url <- ulizaEndpoint resource
+    ApiClient.patch (state ^. wreqOptions)
+                    (state ^. session)
+                    (resourceUrl url [])
+                    body & liftIO
+    >>= parseResponse
+  where
+    resource = endpoint <> "/" <> show pk
 
 -- | Send a GET request to the Uliza API and return a JSON response.
 ulizaApiGet :: FromJSON a
