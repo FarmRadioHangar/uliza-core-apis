@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
 module FarmRadio.Uliza.Api.Participant where
 
@@ -7,6 +8,7 @@ import Control.Monad.Trans.Either
 import Data.Aeson
 import Data.Either.Utils                              ( maybeToEither )
 import Data.Monoid
+import Data.Text                                      ( Text )
 import Data.Text.Encoding                             ( encodeUtf8 )
 import Data.Time
 import Database.PostgreSQL.Simple.Time
@@ -26,7 +28,7 @@ getOrCreateParticipant phone = do
     response <- ulizaApiGet "/participants" [ ("limit", "1")
                                             , ("subscriber_phone", phone) ]
     case response of
-      Just [participant] -> do -- Participant exists: Done!
+      Just (participant:_) -> do -- Participant exists: Done!
         logDebugJSON "participant_found" participant & liftIO
         right participant
       _ -> do -- Create a participant if one wasn't found
@@ -89,3 +91,20 @@ registrationCallScheduleTime :: RegistrationCall -> Maybe UTCTime
 registrationCallScheduleTime RegistrationCall{..} =
     eitherToMaybe $ parseUTCTime (encodeUtf8 scheduledTime)
 
+type Attributes = [(Text, Text)]
+
+registerParticipant :: Maybe Attributes
+                    -> Participant 
+                    -> RegistrationHandler (Maybe Participant)
+registerParticipant attributes Participant{ entityId = participantId, .. } = do
+    user <- maybeToEither (InternalServerError "registerParticipant: \
+                          \participant id is null") participantId
+    when ("REGISTERED" == registrationStatus) $ liftIO $ logWarning 
+        "already_registered" 
+        "Registering already registered listener."
+    -- Update the participant's registration_status
+    ulizaApiPatch "/participants" user (object body) 
+  where
+    body  = [ ("registration_status", String "REGISTERED")
+            , ("attributes", object props) ] 
+    props = (fmap . fmap) String (concat attributes)
