@@ -5,6 +5,7 @@ from log_app.views.vAdministrators import *
 from log_app.views.vComments import *
 from log_app.views.vCountries import *
 from log_app.views.vGroupAccounts import *
+from log_app.views.vContacts import *
 from log_app.views.vKnowledgePartners import *
 from log_app.views.vLogs import *
 from log_app.views.vPresenters import *
@@ -13,7 +14,7 @@ from log_app.views.vProjects import *
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)$', RadioStationEntity.as_view()),
     url(r'$', RadioStationGet.as_view()),
-    
+
 )
 
 programs = patterns('log_app.views.vPrograms',
@@ -46,6 +47,11 @@ knowledge_partners = patterns('log_app.views.vKnowledgePartners',
     url(r'$', KnowledgePartnerGet.as_view()),
 )
 
+auth0_user = patterns('log_app.views.vAuth0User',
+    url(r'/(?P<id>\d+)$', Auth0UserEntity.as_view()),
+    url(r'$', Auth0UserGet.as_view()),
+)
+
 logs = patterns('log_app.views.vLogs',
         # Uploads
     url( r'recording/delete/(?P<pk>\d+)','upload_delete', name ='recording_delete'),
@@ -64,9 +70,15 @@ presenters = patterns('log_app.views.vPresnter',
     url(r'$', PresenterGet.as_view()),
 )
 
+
+contacts = patterns('log_app.views.vContact',
+    url(r'/(?P<id>\d+)$', ContactEntity.as_view()),
+    url(r'$', ContactGet.as_view()),
+)
+
 projects = patterns('log_app.views.vProject',
-    url(r'/(?P<id>\d+)$', ProjectEntity.as_view()),
-    url(r'$', ProjectGet.as_view()),
+url(r'/(?P<id>\d+)$', ProjectEntity.as_view()),
+url(r'$', ProjectGet.as_view()),
 )
 
 urlpatterns = patterns('',
@@ -74,6 +86,7 @@ urlpatterns = patterns('',
     url(r'programs', include(programs, 'programs')),
     url(r'staffs', include(administrators, 'administrators')),
     url(r'comments', include(comments, 'comments')),
+    url(r'contacts', include(contacts, 'contacts')),
     url(r'countries', include(countries, 'countries')),
     url(r'group_accounts', include(group_accounts, 'group_accounts')),
     url(r'knowledge_partners', include(knowledge_partners, 'knowledge_partners')),
@@ -86,6 +99,3 @@ urlpatterns = patterns('',
 from api_core import settings
 if settings.DEBUG == True:
     urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
-
-
-

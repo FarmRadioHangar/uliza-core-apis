@@ -20,7 +20,7 @@ class ProgramSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Program
 		fields = "__all__"
-	
+
 
 class CountrySerializer(serializers.ModelSerializer):
 	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
@@ -33,7 +33,7 @@ class CountrySerializer(serializers.ModelSerializer):
 class LogSerializer(serializers.ModelSerializer):
 	project = serializers.IntegerField(source='program.project.id',read_only=True)
 	program__name = serializers.CharField(source='program.name',read_only=True)
-	
+
 	class Meta:
 		model = Log
 		fields = "__all__"
@@ -43,6 +43,11 @@ class CommentSerializer(serializers.ModelSerializer):
 		model = Comment
 		fields = "__all__"
 
+
+class ContactSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Contact
+		fields = "__all__"
 
 
 class PresenterSerializer(serializers.ModelSerializer):
