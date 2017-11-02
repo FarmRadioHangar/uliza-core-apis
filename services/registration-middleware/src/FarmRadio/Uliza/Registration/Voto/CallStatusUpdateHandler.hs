@@ -18,6 +18,7 @@ import FarmRadio.Uliza.Api.Participant
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
+import FarmRadio.Uliza.Registration.Participant
 import FarmRadio.Uliza.Registration.SubscriberDetails
 import Text.Read                                      ( readMaybe )
 
@@ -40,8 +41,6 @@ votoCallStatusUpdate = do
     votoId     <- extract "subscriber_id"
     subscriber <- getVotoSubscriber votoId 
 
-    print subscriber & liftIO
-
     let registered = join (lookup "registered" <$> properties <$> subscriber)
 
     case (registered, complete) of
@@ -59,7 +58,12 @@ votoCallStatusUpdate = do
       liftIO $ logNotice "no_action" ("Participant not registered: " <> message)
       return $ toJSON $ object [("action", "NO_ACTION"), ("reason", reason)]
 
-sendResponse = undefined
+sendResponse :: Value -> RegistrationHandler Value
+sendResponse response = do
+    liftIO $ logNotice "registration_complete" "Participant registration complete."
+    return $ object
+      [ ("message" , "REGISTRATION_COMPLETE")
+      , ("data"    , response) ]
 
 getVotoSubscriber :: Int -> RegistrationHandler (Maybe SubscriberDetails)
 getVotoSubscriber sid = do
