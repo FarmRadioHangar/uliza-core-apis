@@ -7,7 +7,7 @@ from django.core import validators
 class Account(User):
 	def is_admin(self):
 		j = Administrator.objects.filter(user=self)
-		
+
 		if(j):
 			return j[0]
 		else:
@@ -90,7 +90,7 @@ class Log(models.Model):
 	presenter = models.ForeignKey("Presenter",blank=True,null=True)
 	saved_by = models.ForeignKey(User,blank=True,null=True)
 	topic = models.CharField(max_length=30,null=True,blank=True)
-	
+
 	focus_statement = models.TextField(null=True,blank=True)
 	ict = models.TextField(blank=True,null=True)
 	duration = models.IntegerField(null=True,blank=True)
@@ -182,10 +182,10 @@ class Project(models.Model):
 		return self.name
 
 languages = (
-	('en-us', 'English'), 
-	('pt-mz', 'Portuguese'),  
-	('am-et', 'Amharic'),  
-	('fr-fr', 'Francais')  
+	('en-us', 'English'),
+	('pt-mz', 'Portuguese'),
+	('am-et', 'Amharic'),
+	('fr-fr', 'Francais')
 )
 
 class Presenter(models.Model):
@@ -238,6 +238,7 @@ class Administrator(models.Model):
 # Contact
 class Contact(models.Model):
 	user_id = models.CharField(null=True, blank=True, max_length=120)
+	radio_station = models.IntegerField(null=True, blank=True, default=None)
 	first_name = models.CharField(null=True, blank=True, max_length=30)
 	last_name = models.CharField(null=True, blank=True, max_length=30)
 	job_title = models.CharField(null=True,blank=True, max_length=100)
@@ -254,7 +255,7 @@ class Contact(models.Model):
 
 
 class Program(models.Model):
-	
+
 	days = (
 	    ('Mon', 'Monday'),
 	    ('Tue', 'Tuesday'),
@@ -273,7 +274,7 @@ class Program(models.Model):
 
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=50)
-	
+
 	from django.utils import timezone
 	start_date = models.DateTimeField(default=timezone.now)
 	end_date = models.DateField(null=True)
@@ -285,7 +286,7 @@ class Program(models.Model):
 	weeks = models.IntegerField()
 
 	access = models.ManyToManyField(User,blank=True)
-	
+
 	# Time track
 	last_updated_at = models.DateTimeField(auto_now=True)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -298,7 +299,7 @@ class Program(models.Model):
 		from django.utils import timezone
 		today = timezone.now()
 		start_date = self.start_date
-		
+
 		if today<start_date:
 			today = start_date
 		week = self.end_date - today.date()
@@ -327,4 +328,3 @@ class Program(models.Model):
 
 	def __unicode__(self):
 		return self.name
-
