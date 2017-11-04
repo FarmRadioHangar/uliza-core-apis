@@ -219,10 +219,10 @@ function up() {
   .then(startContainer('database'))
   .then(startContainer('api'))
   .then(startContainer('middleware' ))
-  //.then(pingMysql)                     // Wait for MySQL to accept connections
-  //.then(runMigrations)
-  //.then(runServer)
-  //.then(pingApi) 
+  .then(pingMysql)                     // Wait for MySQL to accept connections
+  .then(runMigrations)
+  .then(runServer)
+  .then(pingApi) 
   .catch(console.error);
 }
 
