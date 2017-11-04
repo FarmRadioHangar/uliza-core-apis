@@ -20,7 +20,7 @@ ADD manage.py /django/manage.py
 
 WORKDIR /django
 
-RUN sed -i '/-e\ git+git:\/\/github.com\/mvpdev\/django-eav.git#egg=django-eav/c\-e\ .\/django-eav/' requirements.txt 
+RUN sed -i '/-e\ git+git:\/\/github.com\/mvpdev\/django-eav.git#egg=django-eav/c\-e\ .\/django-eav/' requirements.txt && \
   git clone https://github.com/mvpdev/django-eav && \
   pip install --upgrade pip && \
   pip install --timeout 2000 -r requirements.txt 
