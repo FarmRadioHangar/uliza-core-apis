@@ -49,7 +49,7 @@ function buildImage(tag, path) {
             console.log('Building image ' + tag + ' from archive ' + archive);
             docker.buildImage(archive, {t: tag}, function(err, stream) {
              if (err) {
-                reject(err);
+                return reject(err);
               }
               var writeStream = new EchoStream(); 
               stream.pipe(writeStream, { 
@@ -219,10 +219,10 @@ function up() {
   .then(startContainer('database'))
   .then(startContainer('api'))
   .then(startContainer('middleware' ))
-  .then(pingMysql)                     // Wait for MySQL to accept connections
-  .then(runMigrations)
-  .then(runServer)
-  .then(pingApi) 
+  //.then(pingMysql)                     // Wait for MySQL to accept connections
+  //.then(runMigrations)
+  //.then(runServer)
+  //.then(pingApi) 
   .catch(console.error);
 }
 
