@@ -189,20 +189,10 @@ function runExec(container, opts) {
   });
 }
 
-//function migrate(app) {
-//  return function() { 
-//    return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate', app); 
-//  }
-//}
-
 function runMigrations() {
   return function() { 
     return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate'); 
   }
-  //return Promise.resolve()
-  //.then(migrate('auth'))
-  //.then(migrate('contenttypes'))
-  //.then(migrate('uliza'));
 }
 
 function runServer() {
