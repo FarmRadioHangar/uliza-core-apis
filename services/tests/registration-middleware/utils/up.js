@@ -64,7 +64,7 @@ function buildImage(tag, path) {
   }
 }
 
-function acquireImages() {
+function acquireBaseImages() {
   return docker.listImages()
   .then(function(images) {
     var cached = imageTags(images);
@@ -210,7 +210,7 @@ function runServer() {
 
 function up() {
   return Promise.resolve()
-  .then(acquireImages)
+  .then(acquireBaseImages)
   .then(buildImage('django_api', '../../../django-api/'))
   .then(buildImage('registration_middleware', '../../registration-middleware/'))
   .then(createContainer('mysql'))
