@@ -190,9 +190,7 @@ function runExec(container, opts) {
 }
 
 function runMigrations() {
-  return function() { 
-    return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate'); 
-  }
+  return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate'); 
 }
 
 function runServer() {
