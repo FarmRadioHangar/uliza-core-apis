@@ -189,17 +189,20 @@ function runExec(container, opts) {
   });
 }
 
-function migrate(app) {
-  return function() { 
-    return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate', app); 
-  }
-}
+//function migrate(app) {
+//  return function() { 
+//    return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate', app); 
+//  }
+//}
 
 function runMigrations() {
-  return Promise.resolve()
-  .then(migrate('auth'))
-  .then(migrate('contenttypes'))
-  .then(migrate('uliza'));
+  return function() { 
+    return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate'); 
+  }
+  //return Promise.resolve()
+  //.then(migrate('auth'))
+  //.then(migrate('contenttypes'))
+  //.then(migrate('uliza'));
 }
 
 function runServer() {
@@ -218,8 +221,9 @@ function up() {
   .then(createContainer('middleware'))
   .then(startContainer('database'))
   .then(startContainer('api'))
+  // Wait for MySQL to accept connections
+  .then(pingMysql)                     
   .then(startContainer('middleware' ))
-  .then(pingMysql)                     // Wait for MySQL to accept connections
   .then(runMigrations)
   .then(runServer)
   .then(pingApi) 
