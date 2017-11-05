@@ -2,23 +2,27 @@ from rest_framework import serializers
 from uliza.models import (Participant,
                           RegistrationCall,
                           ParticipantRegistrationStatusLog,
-                          VotoWebhookLog)
+                          VotoWebhookLog,
+                          registration_status)
 from eav.models import Attribute
 
 
 class ParticipantSerializer(serializers.Serializer):
 
-    id = serializers.IntegerField()
+    id = serializers.IntegerField(read_only=True)
     phone_number = serializers.CharField(max_length=100)
-    registration_status = serializers.CharField(max_length=100)
-    created_at = serializers.DateTimeField()
+    registration_status = serializers.ChoiceField(choices=registration_status)
+    created_at = serializers.DateTimeField(required=False)
     attributes = serializers.DictField(
             required=False,
             child=serializers.CharField()
     )
 
     def create(self, validated_data):
-        instance = Participant(**validated_data)
+        instance = Participant(
+                phone_number=validated_data.get('phone_number'),
+                registration_status=validated_data.get('registration_status')
+        )
         instance.save()
         return instance
 
