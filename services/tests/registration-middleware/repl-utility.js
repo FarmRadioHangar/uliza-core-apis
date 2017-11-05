@@ -79,5 +79,6 @@ module.exports = {
   testdata_0: testdata_0,
   testdata_1: testdata_1,
   testdata_2: testdata_2,
-  testdata_3: testdata_3
+  testdata_3: testdata_3,
+  serialize: serialize
 };
