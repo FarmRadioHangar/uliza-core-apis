@@ -1,9 +1,13 @@
+require('dotenv').config();
+
 var mocha   = require('mocha');
 var mysql   = require('mysql');
 var request = require('supertest');
 var tests   = require('./integration');
 var util    = require('util');
 var qs      = require('qs')
+var up      = require('../utils/up');
+var down    = require('../utils/down');
 
 function makeRunner(data) {
   return function() {
@@ -15,19 +19,76 @@ function makeRunner(data) {
   }
 }
 
-var runner = makeRunner({
-  subscriber_phone: "255678647268",
-  subscriber_id: "3",
-  delivery_status: "6"
-});
-  
 describe('/call_status_updates', function() {
 
   var self = this;
 
-  tests.init(this);
+  var query = function(sql) {
+    return function() {
+      return new Promise(function(resolve, reject) {
+        if (self._db) {
+          self._db.query(sql, function(error, results, fields) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(results);
+            }
+          });
+        }
+      });
+    }
+  };
+
+  var flushDb = function() {
+    return Promise.resolve()
+    .then(self._db.query('DELETE FROM uliza_participant_registration_status_log;'))
+    .then(self._db.query('DELETE FROM uliza_voto_webhook_log;'))
+    .then(self._db.query('DELETE FROM uliza_participants;'))
+    .then(self._db.query('DELETE FROM uliza_registration_calls;'))
+    .catch(console.error);
+  };
+
+  this.timeout(4000000);
+
+  before(up);
+
+  after(down);
+
+  beforeEach(function() { 
+    return Promise.resolve()
+    .then(function() {
+      self._db = mysql.createConnection({
+        host     : '0.0.0.0',
+        port     : 3316,
+        user     : 'root',
+        password : 'root',
+        database : 'api_core'
+      });
+      return self._db.connect();
+    })
+    .then(flushDb)
+//    .then(function() {
+//      if ('function' === typeof(self._hook)) {
+//        return self._hook();
+//      }
+//    })
+    .catch(console.error);
+  });
+
+  afterEach(function() { 
+    return Promise.resolve()
+    .then(function() {
+      self._db.end();
+    });
+  });
 
   describe('Call status update with delivery_status = 6', function() {
+
+    var runner = makeRunner({
+      subscriber_phone: "255678647268",
+      subscriber_id: "3",
+      delivery_status: "6"
+    });
 
     it('should return a 200 OK JSON-formatted response', function() {
       return runner()
@@ -39,7 +100,7 @@ describe('/call_status_updates', function() {
 
     it('should create a uliza_voto_webhook_log entry in the database', function() {
       return runner()
-      .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(query('SELECT * FROM uliza_voto_webhook_log;'))
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
@@ -71,7 +132,7 @@ describe('/call_status_updates', function() {
 
     it('should create a uliza_voto_webhook_log entry in the database', function() {
       return runner()
-      .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(query('SELECT * FROM uliza_voto_webhook_log;'))
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
@@ -103,7 +164,7 @@ describe('/call_status_updates', function() {
 
     it('should create a uliza_voto_webhook_log entry in the database', function() {
       return runner()
-      .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(query('SELECT * FROM uliza_voto_webhook_log;'))
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
