@@ -41,10 +41,10 @@ describe('/call_status_updates', function() {
 
   var flushDb = function() {
     return Promise.resolve()
-    .then(self._db.query('DELETE FROM uliza_participant_registration_status_log;'))
-    .then(self._db.query('DELETE FROM uliza_voto_webhook_log;'))
-    .then(self._db.query('DELETE FROM uliza_participants;'))
-    .then(self._db.query('DELETE FROM uliza_registration_calls;'))
+    .then(query('DELETE FROM uliza_participant_registration_status_log;'))
+    .then(query('DELETE FROM uliza_voto_webhook_log;'))
+    .then(query('DELETE FROM uliza_participants;'))
+    .then(query('DELETE FROM uliza_registration_calls;'))
     .catch(console.error);
   };
 
@@ -67,11 +67,6 @@ describe('/call_status_updates', function() {
       return self._db.connect();
     })
     .then(flushDb)
-//    .then(function() {
-//      if ('function' === typeof(self._hook)) {
-//        return self._hook();
-//      }
-//    })
     .catch(console.error);
   });
 
