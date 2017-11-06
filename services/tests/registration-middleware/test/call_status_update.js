@@ -1,13 +1,29 @@
 require('dotenv').config();
 
+var assert  = require('assert');
+var chai    = require('chai');
 var mocha   = require('mocha');
 var mysql   = require('mysql');
+var qs      = require('qs');
 var request = require('supertest');
-var tests   = require('./integration');
 var util    = require('util');
-var qs      = require('qs')
 var up      = require('../utils/up');
 var down    = require('../utils/down');
+
+chai.should();
+chai.use(require('chai-things'));
+chai.use(require('chai-also'));
+chai.use(require('chai-http'));
+
+function serialize(obj) {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
+}
 
 function makeRunner(data) {
   return function() {
@@ -15,7 +31,7 @@ function makeRunner(data) {
     .post('/call_status_updates')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Accept', 'application/json')
-    .send(tests.serialize(data));
+    .send(serialize(data));
   }
 }
 
