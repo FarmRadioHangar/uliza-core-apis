@@ -3,3 +3,4 @@ django-api/env
 *.pyc
 .DS_Store
 *.ini
+uwsgi.log
