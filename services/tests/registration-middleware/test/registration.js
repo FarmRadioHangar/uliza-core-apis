@@ -1,9 +1,29 @@
-var mocha    = require('mocha');
-var mysql    = require('mysql');
-var request  = require('supertest');
-var tests    = require('./integration');
-var util     = require('util');
-var qs       = require('qs')
+require('dotenv').config();
+
+var assert  = require('assert');
+var chai    = require('chai');
+var mocha   = require('mocha');
+var mysql   = require('mysql');
+var qs      = require('qs');
+var request = require('supertest');
+var util    = require('util');
+var up      = require('../utils/up');
+var down    = require('../utils/down');
+
+chai.should();
+chai.use(require('chai-things'));
+chai.use(require('chai-also'));
+chai.use(require('chai-http'));
+
+function serialize(obj) {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
+}
 
 function stripPrefix(s) {
   if (s.length && '+' === s[0]) {
@@ -37,14 +57,66 @@ var runner = function() {
   .post('/responses')
   .set('Content-Type', 'application/x-www-form-urlencoded')
   .set('Accept', 'application/json')
-  .send(tests.serialize(data));
+  .send(serialize(data));
 }
 
 describe('/responses', function() {
 
   var self = this;
 
-  tests.init(this);
+  var query = function(sql) {
+    return function() {
+      return new Promise(function(resolve, reject) {
+        if (self._db) {
+          self._db.query(sql, function(error, results, fields) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(results);
+            }
+          });
+        }
+      });
+    }
+  };
+
+  var flushDb = function() {
+    return Promise.resolve()
+    .then(query('DELETE FROM uliza_participant_registration_status_log;'))
+    .then(query('DELETE FROM uliza_voto_webhook_log;'))
+    .then(query('DELETE FROM uliza_participants;'))
+    .then(query('DELETE FROM uliza_registration_calls;'))
+    .catch(console.error);
+  };
+
+  this.timeout(4000000);
+
+  before(up);
+
+  after(down);
+
+  beforeEach(function() { 
+    return Promise.resolve()
+    .then(function() {
+      self._db = mysql.createConnection({
+        host     : '0.0.0.0',
+        port     : 3316,
+        user     : 'root',
+        password : 'root',
+        database : 'api_core'
+      });
+      return self._db.connect();
+    })
+    .then(flushDb)
+    .catch(console.error);
+  });
+
+  afterEach(function() { 
+    return Promise.resolve()
+    .then(function() {
+      self._db.end();
+    });
+  });
 
   describe('Response from new participant', function() {
   
@@ -73,7 +145,7 @@ describe('/responses', function() {
   
     it('should create a uliza_voto_webhook_log entry in the database', function() {
       return runner()
-      .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(query('SELECT * FROM uliza_voto_webhook_log;'))
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
@@ -83,7 +155,7 @@ describe('/responses', function() {
   
     it('should create a participant_registration_status_log entry in the database', function() {
       return runner()
-      .then(self.query('SELECT * FROM uliza_participant_registration_status_log;'))
+      .then(query('SELECT * FROM uliza_participant_registration_status_log;'))
       .then(function(results) {
         results.length.should.equal(1);
         results[0].should.have.a.property('event_type').equal('REGISTRATION_CALL_SCHEDULED');
@@ -93,13 +165,13 @@ describe('/responses', function() {
     it('should set the participant\'s registration_call_id', function() {
       var registrationCall = null;
       return runner()
-      .then(self.query('SELECT * FROM uliza_registration_calls;'))
+      .then(query('SELECT * FROM uliza_registration_calls;'))
       .then(function(results) {
         results.length.should.equal(1);
         registrationCall = results[0];
         registrationCall.should.be.an('object');
       })
-      .then(self.query(util.format(
+      .then(query(util.format(
         'SELECT * FROM uliza_participants WHERE phone_number=\'%s\';', 
         stripPrefix(data.subscriber_phone)
       )))
@@ -109,7 +181,7 @@ describe('/responses', function() {
         participant.registration_call_id.should.be.a('number');
         participant.registration_call_id.should.equal(registrationCall.id);
       })
-      .then(self.query('SELECT * FROM uliza_participant_registration_status_log;'))
+      .then(query('SELECT * FROM uliza_participant_registration_status_log;'))
       .then(function(results) {
         var logEntry = results[0];
         logEntry.registration_call_id.should.be.a('number');
@@ -123,8 +195,8 @@ describe('/responses', function() {
   
     beforeEach(function() {
       return Promise.resolve()
-      .then(self.query('INSERT INTO uliza_registration_calls (phone_number, scheduled_time, created_at) VALUES (\'255678647268\', \'2017-07-24 18:13:51\', \'2017-07-24 18:03:51\');'))
-      .then(self.query('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'REGISTERED\', LAST_INSERT_ID(), \'2017-07-24 18:04:51\');'));
+      .then(query('INSERT INTO uliza_registration_calls (phone_number, scheduled_time, created_at) VALUES (\'255678647268\', \'2017-07-24 18:13:51\', \'2017-07-24 18:03:51\');'))
+      .then(query('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'REGISTERED\', LAST_INSERT_ID(), \'2017-07-24 18:04:51\');'));
     });
 
     it('should return ALREADY_REGISTERED', function() {
@@ -138,11 +210,11 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_registration_calls;'))
+        .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) { 
           results.length.should.equal(1); 
         })
-        .then(self.query('SELECT * FROM uliza_participants;'))
+        .then(query('SELECT * FROM uliza_participants;'))
         .then(function(results) { 
           results.length.should.equal(1); 
         });
@@ -155,7 +227,7 @@ describe('/responses', function() {
   
     beforeEach(function() {
       return Promise.resolve()
-      .then(self.query('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'DECLINED\', NULL, \'2017-07-24 18:03:51\');'));
+      .then(query('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'DECLINED\', NULL, \'2017-07-24 18:03:51\');'));
     });
   
     it('should return REGISTRATION_DECLINED', function() {
@@ -169,11 +241,11 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_registration_calls;'))
+        .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) { 
           results.length.should.equal(0); 
         })
-        .then(self.query('SELECT * FROM uliza_participants;'))
+        .then(query('SELECT * FROM uliza_participants;'))
         .then(function(results) { 
           results.length.should.equal(1); 
         });
@@ -190,8 +262,8 @@ describe('/responses', function() {
       d.setMinutes(d.getMinutes() + 20);
       var scheduledAt = toDateString(d);
       return Promise.resolve()
-      .then(self.query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, scheduledAt)))
-      .then(self.query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, scheduledAt)))
+      .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
     it('should return PRIOR_CALL_SCHEDULED', function() {
@@ -205,11 +277,11 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_registration_calls;'))
+        .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           results.length.should.equal(1); 
         })
-        .then(self.query('SELECT * FROM uliza_participants;'))
+        .then(query('SELECT * FROM uliza_participants;'))
         .then(function(results) {
           results.length.should.equal(1); 
         });
@@ -224,8 +296,8 @@ describe('/responses', function() {
       var d = new Date();
       var createdAt = toDateString(d);
       return Promise.resolve()
-      .then(self.query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, createdAt)))
-      .then(self.query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, createdAt)))
+      .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
     it('should return TOO_SOON', function() {
@@ -239,11 +311,11 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_registration_calls;'))
+        .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           results.length.should.equal(1); 
         })
-        .then(self.query('SELECT * FROM uliza_participants;'))
+        .then(query('SELECT * FROM uliza_participants;'))
         .then(function(results) {
           results.length.should.equal(1); 
         })
@@ -260,8 +332,8 @@ describe('/responses', function() {
       d.setMinutes(d.getMinutes() - 60*24*1);
       var scheduledAt = toDateString(d);
       return Promise.resolve()
-      .then(self.query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, scheduledAt)))
-      .then(self.query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, scheduledAt)))
+      .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
     it('should return TOO_SOON', function() {
@@ -275,11 +347,11 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_registration_calls;'))
+        .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           results.length.should.equal(1); 
         })
-        .then(self.query('SELECT * FROM uliza_participants;'))
+        .then(query('SELECT * FROM uliza_participants;'))
         .then(function(results) {
           results.length.should.equal(1); 
         })
@@ -296,8 +368,8 @@ describe('/responses', function() {
       d.setMinutes(d.getMinutes() - 60*24*2);
       var scheduledAt = toDateString(d);
       return Promise.resolve()
-      .then(self.query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, scheduledAt)))
-      .then(self.query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time) VALUES (\'255678647268\', \'%s\', \'%s\');', createdAt, scheduledAt)))
+      .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
     it('should return a scheduled call with the participant\'s phone number', function() {
@@ -311,7 +383,7 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_participant_registration_status_log;'))
+        .then(query('SELECT * FROM uliza_participant_registration_status_log;'))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].should.have.a.property('event_type').equal('REGISTRATION_CALL_SCHEDULED');
@@ -323,7 +395,7 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_registration_calls;'))
+        .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           results.length.should.equal(2);
         });
@@ -335,13 +407,13 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_registration_calls;'))
+        .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           registrationCall = results[1];
           registrationCall.should.be.an('object');
           return ;
         })
-        .then(self.query(util.format(
+        .then(query(util.format(
           'SELECT * FROM uliza_participants WHERE phone_number=\'%s\';', 
           stripPrefix(data.subscriber_phone)
         )))
@@ -351,7 +423,7 @@ describe('/responses', function() {
           participant.registration_call_id.should.be.a('number');
           participant.registration_call_id.should.equal(registrationCall.id);
         })
-        .then(self.query('SELECT * FROM uliza_participant_registration_status_log;'))
+        .then(query('SELECT * FROM uliza_participant_registration_status_log;'))
         .then(function(results) {
           var logEntry = results[0];
           logEntry.registration_call_id.should.be.a('number');
@@ -384,7 +456,7 @@ describe('/responses', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
-        .then(self.query('SELECT * FROM uliza_participants;'))
+        .then(query('SELECT * FROM uliza_participants;'))
         .then(function(results) {
           var participant = results[0];
           participant.phone_number.should.equal(stripPrefix(data.subscriber_phone));
