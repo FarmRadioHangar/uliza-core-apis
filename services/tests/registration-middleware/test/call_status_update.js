@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 var assert  = require('assert');
 var chai    = require('chai');
 var mocha   = require('mocha');
@@ -27,7 +25,7 @@ function serialize(obj) {
 
 function makeRunner(data) {
   return function() {
-    return request(process.env.REG_SERVICE_URL)
+    return request('http://0.0.0.0:3034')
     .post('/call_status_updates')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Accept', 'application/json')

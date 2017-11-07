@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 var assert  = require('assert');
 var chai    = require('chai');
 var mocha   = require('mocha');
@@ -53,7 +51,7 @@ var data = {
 };
 
 var runner = function() {
-  return request(process.env.REG_SERVICE_URL)
+  return request('http://0.0.0.0:3034')
   .post('/responses')
   .set('Content-Type', 'application/x-www-form-urlencoded')
   .set('Accept', 'application/json')
@@ -441,7 +439,7 @@ describe('/responses', function() {
   describe('Bad request format', function() {
   
     it('should return a status code 400', function() {
-      return request(process.env.REG_SERVICE_URL)
+      return request('http://0.0.0.0:3034')
       .post('/responses')
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .set('Accept', 'application/json')
