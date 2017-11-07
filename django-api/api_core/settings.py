@@ -27,7 +27,7 @@ SECRET_KEY = '^+7=!#%326^+lvo^89%gh2kde^zs35^o7&xxyc$boif18mxsc6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 env.read_envfile()
 # Application definition
