@@ -8,15 +8,13 @@
     "chai-http": "^3.0.0",
     "chai-things": "^0.2.0",
     "dockerode": "^2.5.0",
-    "dockerode-build": "^1.1.6",
     "dotenv": "^4.0.0",
     "mocha": "^3.5.0",
     "mysql": "^2.14.1",
-    "pump": "^1.0.2",
     "simple-dockerode": "^0.2.0",
     "supertest": "^3.0.0",
+    "tar-fs": "^1.16.0",
     "terminal-kit": "^1.14.0",
-    "unique-filename": "^1.1.0",
     "util": "^0.10.3"
   }
 }
