@@ -32,22 +32,20 @@ function buildImage(tag, path) {
           resolve();
         } else {
           var tarStream = tar.pack(path);
-          var EchoStream = function() { 
-            stream.Writable.call(this); 
-          };
-          util.inherits(EchoStream, stream.Writable); 
-          EchoStream.prototype._write = function(chunk, encoding, done) { 
-            process.stdout.write(JSON.parse(chunk.toString()).stream);
-            done();
-          }
+          //var EchoStream = function() { 
+          //  stream.Writable.call(this); 
+          //};
+          //util.inherits(EchoStream, stream.Writable); 
+          //EchoStream.prototype._write = function(chunk, encoding, done) { 
+          //  process.stdout.write(JSON.parse(chunk.toString()).stream);
+          //  done();
+          //}
           docker.buildImage(tarStream, {t: tag}, function(error, output) {
             if (error) {
               return reject(error);
             }
-            var writeStream = new EchoStream(); 
-            output.pipe(writeStream, { 
-              end: true 
-            });
+            //var writeStream = new EchoStream(); 
+            output.pipe(process.stdout);
             output.on('end', resolve);
           });
         }
