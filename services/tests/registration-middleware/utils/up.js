@@ -1,11 +1,13 @@
 var Docker = require('simple-dockerode');
+var build  = require('dockerode-build');
 var fs     = require('fs');
-var stream = require('stream');
-var targz  = require('tar.gz');
-var term   = require('terminal-kit').terminal ;  
-var util   = require('util');
 var os     = require('os');
+var path   = require('path');
+var pump   = require('pump');
+var stream = require('stream');
+var term   = require('terminal-kit').terminal ;  
 var unique = require('unique-filename');
+var util   = require('util');
 
 var docker = new Docker();
 
@@ -23,45 +25,24 @@ function imageTags(images) {
 }
 
 function buildImage(tag, path) {
-  return function() {
-    return new Promise(function(resolve, reject) {
-      return docker.listImages()
-      .then(function(images) {
-        var cached = imageTags(images),
-            latest = tag + ':latest';
-        if (-1 !== cached.indexOf(latest)) {
-          console.log('Image found: ' + latest);
+  return new Promise(function(resolve, reject) {
+    return docker.listImages()
+    .then(function(images) {
+      var cached = imageTags(images), latest = tag + ':latest';
+      if (-1 !== cached.indexOf(latest)) {
+        console.log('Image found: ' + latest);
+        resolve();
+      } else {
+        var archive = unique(os.tmpdir(), 'tmp-' + latest); 
+        pump(build(path, {t: tag}), process.stdout, function(err) {
+          if (err) {
+            return reject(err.message);
+          }
           resolve();
-        } else {
-          var archive = unique(os.tmpdir(), 'tmp-' + latest); 
-          console.log('Writing tar archive to ' + archive);
-          targz({}, {fromBase: true})
-          .compress(path, archive)
-          .then(function() { 
-            var EchoStream = function() { 
-              stream.Writable.call(this); 
-            };
-            util.inherits(EchoStream, stream.Writable); 
-            EchoStream.prototype._write = function(chunk, encoding, done) { 
-              process.stdout.write(JSON.parse(chunk.toString()).stream);
-              done();
-            }
-            console.log('Building image ' + tag + ' from archive ' + archive);
-            docker.buildImage(archive, {t: tag}, function(err, stream) {
-             if (err) {
-                return reject(err);
-              }
-              var writeStream = new EchoStream(); 
-              stream.pipe(writeStream, { 
-                end: true 
-              });
-              stream.on('end', resolve);
-            });
-          });
-        }
-      });
+        });
+      }
     });
-  }
+  });
 }
 
 function acquireBaseImages() {

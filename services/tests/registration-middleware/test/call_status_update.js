@@ -66,9 +66,13 @@ describe('/call_status_updates', function() {
 
   this.timeout(4000000);
 
-  before(up);
+  before(function() {
+    return up();
+  });
 
-  after(down);
+  after(function() {
+    return down();
+  });
 
   beforeEach(function() { 
     return Promise.resolve()
