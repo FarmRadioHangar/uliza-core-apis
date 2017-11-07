@@ -1,12 +1,9 @@
 var Docker = require('simple-dockerode');
-var build  = require('dockerode-build');
 var fs     = require('fs');
-var os     = require('os');
 var path   = require('path');
-var pump   = require('pump');
 var stream = require('stream');
+var tar    = require('tar-fs');
 var term   = require('terminal-kit').terminal ;  
-var unique = require('unique-filename');
 var util   = require('util');
 
 var docker = new Docker();
@@ -25,24 +22,38 @@ function imageTags(images) {
 }
 
 function buildImage(tag, path) {
-  return new Promise(function(resolve, reject) {
-    return docker.listImages()
-    .then(function(images) {
-      var cached = imageTags(images), latest = tag + ':latest';
-      if (-1 !== cached.indexOf(latest)) {
-        console.log('Image found: ' + latest);
-        resolve();
-      } else {
-        var archive = unique(os.tmpdir(), 'tmp-' + latest); 
-        pump(build(path, {t: tag}), process.stdout, function(err) {
-          if (err) {
-            return reject(err.message);
-          }
+  return function() {
+    return new Promise(function(resolve, reject) {
+      return docker.listImages()
+      .then(function(images) {
+        var cached = imageTags(images), latest = tag + ':latest';
+        if (-1 !== cached.indexOf(latest)) {
+          console.log('Image found: ' + latest);
           resolve();
-        });
-      }
+        } else {
+          var tarStream = tar.pack(path);
+          var EchoStream = function() { 
+            stream.Writable.call(this); 
+          };
+          util.inherits(EchoStream, stream.Writable); 
+          EchoStream.prototype._write = function(chunk, encoding, done) { 
+            process.stdout.write(JSON.parse(chunk.toString()).stream);
+            done();
+          }
+          docker.buildImage(tarStream, {t: tag}, function(error, output) {
+            if (error) {
+              return reject(error);
+            }
+            var writeStream = new EchoStream(); 
+            output.pipe(writeStream, { 
+              end: true 
+            });
+            output.on('end', resolve);
+          });
+        }
+      });
     });
-  });
+  }
 }
 
 function acquireBaseImages() {
@@ -184,18 +195,19 @@ function up() {
   return Promise.resolve()
   .then(acquireBaseImages)
   .then(buildImage('django_api', '../../../django-api/'))
-  .then(buildImage('registration_middleware', '../../registration-middleware/'))
-  .then(createContainer('mysql'))
-  .then(createContainer('api'))
-  .then(createContainer('middleware'))
-  .then(startContainer('database'))
-  .then(startContainer('api'))
-  // Wait for MySQL to accept connections
-  .then(pingMysql)                     
-  .then(startContainer('middleware' ))
-  .then(runMigrations)
-  .then(runServer)
-  .then(pingApi) 
+  .then(buildImage('xxx', './'))
+  //.then(buildImage('registration_middleware', '../../registration-middleware/'))
+  //.then(createContainer('mysql'))
+  //.then(createContainer('api'))
+  //.then(createContainer('middleware'))
+  //.then(startContainer('database'))
+  //.then(startContainer('api'))
+  //// Wait for MySQL to accept connections
+  //.then(pingMysql)                     
+  //.then(startContainer('middleware' ))
+  //.then(runMigrations)
+  //.then(runServer)
+  //.then(pingApi) 
   .catch(console.error);
 }
 
