@@ -250,5 +250,3 @@ parseVotoResponse response =
       err -> left (VotoApiError "TODO")
   where
     ok = right $ decode (response ^. responseBody)
-
-
