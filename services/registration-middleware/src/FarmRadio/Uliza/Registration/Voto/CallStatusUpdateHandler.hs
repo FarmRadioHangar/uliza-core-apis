@@ -74,7 +74,7 @@ getVotoSubscriber sid = do
       Success a -> join (details <$> a)
   where
     getSubscriber :: RegistrationHandler (Maybe Value)
-    getSubscriber = votoApiGet "/subscribers" 
+    getSubscriber = votoApiGet ("/subscribers/" <> show sid)
 
 extract :: (Read a) => String -> RegistrationHandler a
 extract key = get >>= maybeToEither BadRequestError . \state -> do
