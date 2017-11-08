@@ -232,4 +232,23 @@ votoApiGet ep = do
     ApiClient.get (state ^. wreqOptions)
                   (state ^. session)
                   (resourceUrl url []) & liftIO
-    >>= parseUlizaResponse
+    >>= parseVotoResponse
+
+parseVotoResponse :: FromJSON a
+                  => Response BL.ByteString
+                  -> RegistrationHandler (Maybe a)
+parseVotoResponse response =
+    case response ^. responseStatus . statusCode of
+      200 -> ok                          -- 200 OK
+      201 -> ok                          -- 201 CREATED
+      202 -> ok                          -- 202 ACCEPTED
+      204 -> ok                          -- 204 NO CONTENT
+--      400 -> left
+--      401 -> left AuthenticationError
+--      404 -> left NotFoundError
+--      500 -> left $ InternalServerError (Data.ByteString.Lazy.Char8.unpack body)
+      err -> left (VotoApiError "TODO")
+  where
+    ok = right $ decode (response ^. responseBody)
+
+
