@@ -24,7 +24,6 @@ data SubscriberDetails = SubscriberDetails
     , startDate        :: !String
     , languageId       :: !Int
     , groupIds         :: ![Int]
-    -- , properties       :: ![(String, String)] }
     , properties       :: ![(Text, Text)] }
   deriving (Show, Eq)
 
