@@ -16,7 +16,8 @@ class ParticipantSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField(required=False)
     attributes = serializers.DictField(
             required=False,
-            child=serializers.CharField()
+            child=serializers.CharField(),
+            source='attributes_eav_dict'
     )
 
     def create(self, validated_data):
