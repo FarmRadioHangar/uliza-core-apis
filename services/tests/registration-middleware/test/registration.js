@@ -8,6 +8,10 @@ var util    = require('util');
 var up      = require('../utils/up');
 var down    = require('../utils/down');
 
+var REG_SERVICE_URL = 'http://0.0.0.0:3034';
+var DB_HOST         = '0.0.0.0';
+var DB_PORT         = 3316;
+
 chai.should();
 chai.use(require('chai-things'));
 chai.use(require('chai-also'));
@@ -51,7 +55,7 @@ var data = {
 };
 
 var runner = function() {
-  return request('http://0.0.0.0:3034')
+  return request(REG_SERVICE_URL)
   .post('/responses')
   .set('Content-Type', 'application/x-www-form-urlencoded')
   .set('Accept', 'application/json')
@@ -101,8 +105,8 @@ describe('/responses', function() {
     return Promise.resolve()
     .then(function() {
       self._db = mysql.createConnection({
-        host     : '0.0.0.0',
-        port     : 3316,
+        host     : DB_HOST,
+        port     : DB_PORT,
         user     : 'root',
         password : 'root',
         database : 'api_core'
@@ -439,7 +443,7 @@ describe('/responses', function() {
   describe('Bad request format', function() {
   
     it('should return a status code 400', function() {
-      return request('http://0.0.0.0:3034')
+      return request(REG_SERVICE_URL)
       .post('/responses')
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .set('Accept', 'application/json')

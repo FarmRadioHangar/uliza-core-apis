@@ -8,6 +8,10 @@ var util    = require('util');
 var up      = require('../utils/up');
 var down    = require('../utils/down');
 
+var REG_SERVICE_URL = 'http://0.0.0.0:3034';
+var DB_HOST         = '0.0.0.0';
+var DB_PORT         = 3316;
+
 chai.should();
 chai.use(require('chai-things'));
 chai.use(require('chai-also'));
@@ -25,7 +29,7 @@ function serialize(obj) {
 
 function makeRunner(data) {
   return function() {
-    return request('http://0.0.0.0:3034')
+    return request(REG_SERVICE_URL)
     .post('/call_status_updates')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Accept', 'application/json')
@@ -76,8 +80,8 @@ describe('/call_status_updates', function() {
     return Promise.resolve()
     .then(function() {
       self._db = mysql.createConnection({
-        host     : '0.0.0.0',
-        port     : 3316,
+        host     : DB_HOST,
+        port     : DB_PORT,
         user     : 'root',
         password : 'root',
         database : 'api_core'
