@@ -19,6 +19,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/subscribers/:id', function(req, res) {
+  console.log(req.query);
   res.json({ 
     "status": 200, 
     "code": 1000, 
