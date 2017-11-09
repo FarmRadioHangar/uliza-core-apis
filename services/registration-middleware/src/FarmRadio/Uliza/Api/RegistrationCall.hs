@@ -13,6 +13,13 @@ import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
 import FarmRadio.Uliza.Registration.Participant
 import FarmRadio.Uliza.Registration.RegistrationCall
+import FarmRadio.Uliza.Registration.Voto.CallScheduleResponse
+
+scheduleVotoCall :: RegistrationHandler (Maybe CallScheduleResponse)
+scheduleVotoCall = do
+    votoApiPost "/outgoing_calls" (object call)
+  where
+    call = [ ("send_to_phones" , String "") ]
 
 postRegistrationCall :: Text -- ^ Phone number
                      -> Text -- ^ Schedule time
@@ -22,14 +29,15 @@ postRegistrationCall phone time = ulizaApiPost "/registration_calls" (object cal
     call = [ ("phone_number"   , String phone)
            , ("scheduled_time" , String time) ]
 
--- | Look up the most recent 'RegistrationCall' for a participant.
+-- | Request the most recent 'RegistrationCall' for a participant from the
+--   Uliza API.
 getRegistrationCall :: Participant
                     -> RegistrationHandler (Maybe RegistrationCall)
 getRegistrationCall Participant{..} = join <$> sequence call
   where
     call = getRegistrationCallById <$> registrationCallId
 
--- | Look up a 'RegistrationCall' by id.
+-- | Request the 'RegistrationCall' with the given id from the Uliza API.
 getRegistrationCallById :: Int -> RegistrationHandler (Maybe RegistrationCall)
 getRegistrationCallById = ulizaApiGetOne "/registration_calls" []
 
@@ -39,7 +47,10 @@ scheduleRegistrationCall :: Participant
                          -> UTCTime
                          -- ^ Time when the registration call is to be made
                          -> RegistrationHandler RegistrationCall
-scheduleRegistrationCall Participant{ entityId = participantId, .. } time =
+scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
+    -- Schedule an outgoing call with VOTO
+    response <- scheduleVotoCall
+    print response & liftIO 
     -- Post registration call to Uliza API
     postRegistrationCall phoneNumber (utcToText time)
     >>= maybeToEither err
