@@ -11,6 +11,7 @@ var down    = require('../utils/down');
 var REG_SERVICE_URL = 'http://0.0.0.0:3034';
 var DB_HOST         = '0.0.0.0';
 var DB_PORT         = 3316;
+var ULIZA_API_URL   = 'http://0.0.0.0:8000/api/v1';
 
 chai.should();
 chai.use(require('chai-things'));
@@ -173,6 +174,21 @@ describe('/call_status_updates', function() {
         response.body.should.have.property('data'); 
         var participant = response.body.data;
         participant.should.have.property('registration_status').equal('REGISTERED');
+      });
+    });
+
+    it('should have assigned registration attributes to the participant', function() {
+      return runner()
+      .then(request(ULIZA_API_URL).get('/participants?phone_number=255678647268').set('Accept', 'application/json').send())
+      .then(function(response) { 
+        response.body.should.have.property('data'); 
+        var participant = response.body.data;
+        participant.should.have.property('attributes');
+        participant.attributes.should.be.an('object');
+        participant.attributes.should.have.property('location').equal('Arusha');
+        participant.attributes.should.have.property('gender').equal('Female');
+        participant.attributes.should.have.property('occupation').equal('Farmer');
+        participant.attributes.should.not.have.property('shoe_size');
       });
     });
 
