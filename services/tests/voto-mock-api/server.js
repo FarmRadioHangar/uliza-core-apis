@@ -63,8 +63,7 @@ router.get('/subscribers/:id', function(req, res) {
     }, 
     "message": "Subscriber details fetched successfully", 
     "more_info": "", 
-    "pagination": null, 
-    "url": "https://go.votomobile.org/api/v1/subscribers/373751?api_key=ce919f9c9f6f6dc9a17b6adb6" 
+    "pagination": null
   });   
 });
 
