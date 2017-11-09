@@ -51,11 +51,14 @@ scheduleRegistrationCall :: Participant
 scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
     -- Schedule an outgoing call with VOTO
     response <- scheduleVotoCall phoneNumber
+    maybeToEither votoErr response
+
     print response & liftIO 
     -- Post registration call to Uliza API
     postRegistrationCall phoneNumber (utcToText time)
-    >>= maybeToEither err
+    >>= maybeToEither ulizaErr
     >>= \call -> logNoticeJSON "registration_call_scheduled" call & liftIO
      >> return call
   where
-    err = UlizaApiError "scheduleRegistrationCall: Unexpected response"
+    ulizaErr = UlizaApiError "scheduleRegistrationCall: Unexpected response"
+    votoErr  = undefined -- VotoApiError "scheduleRegistrationCall: Unexpected response"
