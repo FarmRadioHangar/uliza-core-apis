@@ -84,22 +84,29 @@ describe('/responses', function() {
 
   var flushDb = function() {
     return Promise.resolve()
-    .then(query('DELETE FROM uliza_participant_registration_status_log;'))
-    .then(query('DELETE FROM uliza_voto_webhook_log;'))
-    .then(query('DELETE FROM uliza_participants;'))
-    .then(query('DELETE FROM uliza_registration_calls;'))
+    .then(query('SET FOREIGN_KEY_CHECKS=0;'))
+    .then(query('TRUNCATE TABLE uliza_participant_registration_status_log;'))
+    .then(query('TRUNCATE TABLE uliza_voto_webhook_log;'))
+    .then(query('TRUNCATE TABLE uliza_participants;'))
+    .then(query('TRUNCATE TABLE uliza_registration_calls;'))
+    .then(query('TRUNCATE TABLE eav_attribute;'))
+    .then(query('TRUNCATE TABLE eav_enumgroup;'))
+    .then(query('TRUNCATE TABLE eav_enumgroup_enums;'))
+    .then(query('TRUNCATE TABLE eav_enumvalue;'))
+    .then(query('TRUNCATE TABLE eav_value;'))
+    .then(query('SET FOREIGN_KEY_CHECKS=1;'))
     .catch(console.error);
   };
 
   this.timeout(4000000);
 
-  before(function() {
-    return up();
-  });
+  //before(function() {
+  //  return up();
+  //});
 
-  after(function() {
-    return down();
-  });
+  //after(function() {
+  //  return down();
+  //});
 
   beforeEach(function() { 
     return Promise.resolve()
