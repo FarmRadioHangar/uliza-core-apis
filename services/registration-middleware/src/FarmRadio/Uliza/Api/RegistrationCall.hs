@@ -15,11 +15,12 @@ import FarmRadio.Uliza.Registration.Participant
 import FarmRadio.Uliza.Registration.RegistrationCall
 import FarmRadio.Uliza.Registration.Voto.CallScheduleResponse
 
-scheduleVotoCall :: RegistrationHandler (Maybe CallScheduleResponse)
-scheduleVotoCall = do
+scheduleVotoCall :: Text -- ^ Phone number
+                 -> RegistrationHandler (Maybe CallScheduleResponse)
+scheduleVotoCall phone = do
     votoApiPost "/outgoing_calls" (object call)
   where
-    call = [ ("send_to_phones" , String "") ]
+    call = [ ("send_to_phones" , String phone) ]
 
 postRegistrationCall :: Text -- ^ Phone number
                      -> Text -- ^ Schedule time
@@ -49,7 +50,7 @@ scheduleRegistrationCall :: Participant
                          -> RegistrationHandler RegistrationCall
 scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
     -- Schedule an outgoing call with VOTO
-    response <- scheduleVotoCall
+    response <- scheduleVotoCall phoneNumber
     print response & liftIO 
     -- Post registration call to Uliza API
     postRegistrationCall phoneNumber (utcToText time)
