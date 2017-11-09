@@ -1,4 +1,5 @@
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards   #-}
 module FarmRadio.Uliza.Registration.SubscriberDetails 
   ( SubscriberDetails(..)
   , details
@@ -23,7 +24,7 @@ data SubscriberDetails = SubscriberDetails
     , startDate        :: !String
     , languageId       :: !Int
     , groupIds         :: ![Int]
-    , properties       :: ![(String, String)] }
+    , properties       :: ![(Text, Text)] }
   deriving (Show, Eq)
 
 data SubscriberRawDetails = SubscriberRawDetails
@@ -63,10 +64,10 @@ boolDigit "1"     = Just True
 boolDigit "true"  = Just True
 boolDigit _       = Nothing
 
-extractProps :: Object -> [(String, String)]
+extractProps :: Object -> [(Text, Text)]
 extractProps = catMaybes . fmap f . Map.toList
   where
-    f (a, String b) = Just (unpack a, unpack b)
+    f (a, String b) = Just (a, b)
     f _ = Nothing
 
 details :: SubscriberRawDetails -> Maybe SubscriberDetails

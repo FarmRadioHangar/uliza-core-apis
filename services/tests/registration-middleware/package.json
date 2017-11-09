@@ -13,8 +13,8 @@
     "mysql": "^2.14.1",
     "simple-dockerode": "^0.2.0",
     "supertest": "^3.0.0",
-    "tar.gz": "^1.0.5",
-    "util": "^0.10.3",
-    "terminal-kit": "^1.14.0"
+    "tar-fs": "^1.16.0",
+    "terminal-kit": "^1.14.0",
+    "util": "^0.10.3"
   }
 }

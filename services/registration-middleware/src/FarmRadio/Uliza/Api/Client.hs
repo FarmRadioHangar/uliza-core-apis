@@ -1,6 +1,7 @@
 module FarmRadio.Uliza.Api.Client
   ( FarmRadio.Uliza.Api.Client.get
   , FarmRadio.Uliza.Api.Client.post
+  , FarmRadio.Uliza.Api.Client.patch
   ) where
 
 import Control.Lens
@@ -26,6 +27,17 @@ post :: (Postable a, ToJSON a)
 post options session url body = do
     logDebugJSON ("POST" <> " " <> url) body
     Network.Wreq.Session.postWith options session url body
+
+-- | Send a PATCH request to the provided url and return the response.
+patch :: (Postable a, ToJSON a)
+      => Options                        -- ^ Wreq options
+      -> Session                        -- ^ Wreq session object
+      -> Url                            -- ^ The url to send the request to
+      -> a                              -- ^ Request body
+      -> IO (Response Lazy.ByteString)  -- ^ Response as a lazy 'ByteString'
+patch options session url body = do
+    logDebugJSON ("PATCH" <> " " <> url) body
+    Network.Wreq.Session.customPayloadMethodWith "PATCH" options session url body
 
 -- | Send a GET request to the provided url and return the response.
 get :: Options                         -- ^ Wreq options

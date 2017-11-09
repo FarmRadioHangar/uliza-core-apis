@@ -14,9 +14,11 @@ import Data.Either.Utils                              ( maybeToEither )
 import Data.Maybe
 import Data.Monoid
 import Data.URLEncoded                                ( URLEncoded )
+import FarmRadio.Uliza.Api.Participant
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
+import FarmRadio.Uliza.Registration.Participant
 import FarmRadio.Uliza.Registration.SubscriberDetails
 import Text.Read                                      ( readMaybe )
 
@@ -35,25 +37,33 @@ votoCallStatusUpdate = do
       , ("endpoint" , "call_status_updates") ]
 
     complete   <- isCallComplete
-    phone      <- extract "subscriber_phone" :: RegistrationHandler String
+    phone      <- extract "subscriber_phone" 
     votoId     <- extract "subscriber_id"
     subscriber <- getVotoSubscriber votoId 
 
-    print subscriber & liftIO
-
-    let registered = join $ lookup "registered" <$> properties <$> subscriber
+    let registered = join (lookup "registered" <$> properties <$> subscriber)
 
     case (registered, complete) of
       -- Call complete and subscriber registered
-      (Just "true", True) -> undefined
+      (Just "true", True) -> 
+          getOrCreateParticipant phone
+            >>= registerParticipant (properties <$> subscriber)
+            >>= sendResponse
       -- Call complete but 'registered' attribute not equal to 'true'
-      (_, True) -> noAction "No registered attribute" "REGISTERED_NOT_TRUE"
+      (_, True) -> noAction "No registered attribute" "ATTR_REGISTERED_NOT_SET"
       -- Call not complete
       _ -> noAction  "Call not complete" "CALL_NOT_COMPLETE"
   where 
     noAction message reason = do
       liftIO $ logNotice "no_action" ("Participant not registered: " <> message)
       return $ toJSON $ object [("action", "NO_ACTION"), ("reason", reason)]
+
+sendResponse :: Value -> RegistrationHandler Value
+sendResponse response = do
+    liftIO $ logNotice "registration_complete" "Participant registration complete."
+    return $ object
+      [ ("message" , "REGISTRATION_COMPLETE")
+      , ("data"    , response) ]
 
 getVotoSubscriber :: Int -> RegistrationHandler (Maybe SubscriberDetails)
 getVotoSubscriber sid = do
@@ -64,7 +74,7 @@ getVotoSubscriber sid = do
       Success a -> join (details <$> a)
   where
     getSubscriber :: RegistrationHandler (Maybe Value)
-    getSubscriber = votoApiGet "/subscribers" 
+    getSubscriber = votoApiGet ("/subscribers/" <> show sid)
 
 extract :: (Read a) => String -> RegistrationHandler a
 extract key = get >>= maybeToEither BadRequestError . \state -> do

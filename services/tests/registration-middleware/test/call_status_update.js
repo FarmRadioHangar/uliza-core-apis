@@ -1,47 +1,111 @@
+var assert  = require('assert');
+var chai    = require('chai');
 var mocha   = require('mocha');
 var mysql   = require('mysql');
+var qs      = require('qs');
 var request = require('supertest');
-var tests   = require('./integration');
 var util    = require('util');
-var qs      = require('qs')
+var up      = require('../utils/up');
+var down    = require('../utils/down');
 
-var data = {
-  subscriber_phone: "255678647268",
-  subscriber_id: "3",
-  delivery_status: "6"
-};
+var REG_SERVICE_URL = 'http://0.0.0.0:3034';
+var DB_HOST         = '0.0.0.0';
+var DB_PORT         = 3316;
 
-var data_1 = {
-  subscriber_phone: "255678647268",
-  subscriber_id: "3",
-  delivery_status: "5"
-};
+chai.should();
+chai.use(require('chai-things'));
+chai.use(require('chai-also'));
+chai.use(require('chai-http'));
 
-var data_2 = {
-  subscriber_phone: "255678647268",
-  subscriber_id: "3",
-  delivery_status: "x"
-};
+function serialize(obj) {
+  var str = [];
+  for (var p in obj) {
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+    }
+  }
+  return str.join('&');
+}
 
 function makeRunner(data) {
   return function() {
-    return request(process.env.REG_SERVICE_URL)
+    return request(REG_SERVICE_URL)
     .post('/call_status_updates')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Accept', 'application/json')
-    .send(tests.serialize(data));
+    .send(serialize(data));
   }
 }
 
-var runner = makeRunner(data);
-  
 describe('/call_status_updates', function() {
 
   var self = this;
 
-  tests.init(this);
+  var query = function(sql) {
+    return function() {
+      return new Promise(function(resolve, reject) {
+        if (self._db) {
+          self._db.query(sql, function(error, results, fields) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(results);
+            }
+          });
+        }
+      });
+    }
+  };
+
+  var flushDb = function() {
+    return Promise.resolve()
+    .then(query('DELETE FROM uliza_participant_registration_status_log;'))
+    .then(query('DELETE FROM uliza_voto_webhook_log;'))
+    .then(query('DELETE FROM uliza_participants;'))
+    .then(query('DELETE FROM uliza_registration_calls;'))
+    .catch(console.error);
+  };
+
+  this.timeout(4000000);
+
+  before(function() {
+    return up();
+  });
+
+  after(function() {
+    return down();
+  });
+
+  beforeEach(function() { 
+    return Promise.resolve()
+    .then(function() {
+      self._db = mysql.createConnection({
+        host     : DB_HOST,
+        port     : DB_PORT,
+        user     : 'root',
+        password : 'root',
+        database : 'api_core'
+      });
+      return self._db.connect();
+    })
+    .then(flushDb)
+    .catch(console.error);
+  });
+
+  afterEach(function() { 
+    return Promise.resolve()
+    .then(function() {
+      self._db.end();
+    });
+  });
 
   describe('Call status update with delivery_status = 6', function() {
+
+    var runner = makeRunner({
+      subscriber_phone: "255678647268",
+      subscriber_id: "3",
+      delivery_status: "6"
+    });
 
     it('should return a 200 OK JSON-formatted response', function() {
       return runner()
@@ -53,11 +117,47 @@ describe('/call_status_updates', function() {
 
     it('should create a uliza_voto_webhook_log entry in the database', function() {
       return runner()
-      .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(query('SELECT * FROM uliza_voto_webhook_log;'))
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
-        row.should.deep.equal(data);
+        row.should.deep.equal({
+          subscriber_phone: "255678647268",
+          subscriber_id: "3",
+          delivery_status: "6"
+        });
+      });
+    });
+
+  });
+
+  describe('Call status update with delivery_status = 5', function() {
+
+    var runner = makeRunner({
+      subscriber_phone: "255678647268",
+      subscriber_id: "3",
+      delivery_status: "5"
+    });
+
+    it('should return a 200 OK JSON-formatted response', function() {
+      return runner()
+      .then(function(response) { 
+        response.should.have.header('Content-Type', /json/);
+        response.status.should.equal(200);
+      });
+    });
+
+    it('should create a uliza_voto_webhook_log entry in the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+        var row = qs.parse(results[0].data);
+        row.should.deep.equal({
+          subscriber_phone: "255678647268",
+          subscriber_id: "3",
+          delivery_status: "5"
+        });
       });
     });
 
@@ -65,7 +165,11 @@ describe('/call_status_updates', function() {
 
   describe('Call status update with delivery_status = x', function() {
 
-    var runner = makeRunner(data_2);
+    var runner = makeRunner({
+      subscriber_phone: "255678647268",
+      subscriber_id: "3",
+      delivery_status: "x"
+    });
 
     it('should return a status code 400', function() {
       return runner()
@@ -77,11 +181,15 @@ describe('/call_status_updates', function() {
 
     it('should create a uliza_voto_webhook_log entry in the database', function() {
       return runner()
-      .then(self.query('SELECT * FROM uliza_voto_webhook_log;'))
+      .then(query('SELECT * FROM uliza_voto_webhook_log;'))
       .then(function(results) {
         results.length.should.equal(1);
         var row = qs.parse(results[0].data);
-        row.should.deep.equal(data_2);
+        row.should.deep.equal({
+          subscriber_phone: "255678647268",
+          subscriber_id: "3",
+          delivery_status: "x"
+        });
       });
     });
 

@@ -17,12 +17,12 @@ function removeContainer(name) {
 
 function down() {
   return Promise.resolve()
-  .then(stopContainer('database'))
-  .then(removeContainer('database'))
   .then(stopContainer('middleware'))
   .then(removeContainer('middleware'))
   .then(stopContainer('api'))
   .then(removeContainer('api'))
+  .then(stopContainer('database'))
+  .then(removeContainer('database'))
   .catch(console.error);
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "middleware",
-  "Image": "registration_middleware",
+  "Image": "farmradio/registration_service",
   "ExposedPorts": { "3034": {} },
   "HostConfig": {
     "Links": ["api"],

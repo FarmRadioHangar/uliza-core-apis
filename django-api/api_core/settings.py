@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
+from envparse import env
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -25,9 +27,8 @@ SECRET_KEY = '^+7=!#%326^+lvo^89%gh2kde^zs35^o7&xxyc$boif18mxsc6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
-from envparse import env
 env.read_envfile()
 # Application definition
 
@@ -42,7 +43,8 @@ INSTALLED_APPS = (
     'eav',
     'rest_framework',
     'uliza',
-    'log_app'
+    'log_app',
+    'shell_plus'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -91,8 +93,9 @@ DATABASES = {
 }
 
 GOOGLE_DRIVE_STORAGE = {
-    'service_account':{
-        'email': '483337829320-cb6pjf723llvsmjlk1iptv5n4ins06eb@developer.gserviceaccount.com',
+    'service_account': {
+        'email': '483337829320-cb6pjf723llvsmjlk1iptv5n4ins06eb@developer\
+                 .gserviceaccount.com',
         'private_key_file_path': 'fri-log-665598a2cc6b.p12'
     }
 
@@ -101,6 +104,7 @@ GOOGLE_DRIVE_STORAGE = {
 STATIC_URL = '/static/'
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -125,7 +129,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-    
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.JSONRenderer',

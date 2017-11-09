@@ -16,6 +16,9 @@ class Participant(models.Model):
     registration_call = models.ForeignKey('RegistrationCall', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def attributes_eav_dict(self):
+        return self.eav.get_values_dict()
+
     class Meta:
         db_table = 'uliza_participants'
 

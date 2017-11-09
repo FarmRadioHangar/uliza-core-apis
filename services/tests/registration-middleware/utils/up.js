@@ -1,7 +1,8 @@
 var Docker = require('simple-dockerode');
 var fs     = require('fs');
+var path   = require('path');
 var stream = require('stream');
-var targz  = require('tar.gz');
+var tar    = require('tar-fs');
 var term   = require('terminal-kit').terminal ;  
 var util   = require('util');
 
@@ -14,54 +15,57 @@ function createContainer(config) {
   }
 }
 
-function createArchive(path, archive) {
-  return function() {
-    return new Promise(function(resolve, reject) {
-      if (fs.existsSync(archive)) {
-        console.log('Archive found: ' + archive);
-        resolve(archive);
-      } else {
-        console.log('Creating tar archive: ' + archive);
-        targz({}, {fromBase: true}).compress(path, archive).then(function() { 
-          resolve(archive); 
-        }); 
-      }
-    });
-  }
+function imageTags(images) {
+  return [].concat.apply([], images.map(function(image) { 
+    return image.RepoTags; 
+  }));
 }
 
-function buildImage(tag) {
-  return function(archive) {
+function buildImage(tag, path) {
+  return function() {
     return new Promise(function(resolve, reject) {
-      var EchoStream = function() { 
-        stream.Writable.call(this); 
-      };
-      util.inherits(EchoStream, stream.Writable); 
-      EchoStream.prototype._write = function(chunk, encoding, done) { 
-        process.stdout.write(JSON.parse(chunk.toString()).stream);
-        done();
-      }
-      console.log('Building image ' + tag + ' from archive ' + archive);
-      docker.buildImage(archive, {t: tag}, function(err, stream) {
-       if (err) {
-          reject(err);
+      return docker.listImages()
+      .then(function(images) {
+        var cached = imageTags(images), latest = tag + ':latest';
+        if (-1 !== cached.indexOf(latest)) {
+          console.log('Image found: ' + latest);
+          resolve();
+        } else {
+          var tarStream = tar.pack(path);
+          var EchoStream = function() { 
+            stream.Writable.call(this); 
+          };
+          util.inherits(EchoStream, stream.Writable); 
+          EchoStream.prototype._write = function(chunk, encoding, done) { 
+            var obj;
+            try {
+              obj = JSON.parse(chunk.toString())
+            } catch (e) {
+              return done();
+            }
+            if (obj && obj.stream) {
+              process.stdout.write(obj.stream);
+            }
+            done();
+          }
+          docker.buildImage(tarStream, {t: tag}, function(error, output) {
+            if (error) {
+              return reject(error);
+            }
+            var writeStream = new EchoStream(); 
+            output.pipe(writeStream);
+            output.on('end', resolve);
+          });
         }
-        var writeStream = new EchoStream(); 
-        stream.pipe(writeStream, { 
-          end: true 
-        });
-        stream.on('end', resolve);
       });
     });
   }
 }
 
-function acquireImages() {
+function acquireBaseImages() {
   return docker.listImages()
   .then(function(images) {
-    var cached = [].concat.apply([], images.map(function(image) { 
-      return image.RepoTags; 
-    }));
+    var cached = imageTags(images);
     return Promise.all(['python:2.7.12', 'haskell:8', 'mysql:5.7']
     .filter(function(name) { 
       var found = -1 !== cached.indexOf(name)
@@ -183,17 +187,8 @@ function runExec(container, opts) {
   });
 }
 
-function migrate(app) {
-  return function() { 
-    return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate', app); 
-  }
-}
-
 function runMigrations() {
-  return Promise.resolve()
-  .then(migrate('auth'))
-  .then(migrate('contenttypes'))
-  .then(migrate('uliza'));
+  return runExec(docker.getContainer('api'), 'python', 'manage.py', 'migrate'); 
 }
 
 function runServer() {
@@ -204,18 +199,17 @@ function runServer() {
 
 function up() {
   return Promise.resolve()
-  .then(acquireImages)
-  .then(createArchive('../../../django-api/', './.build/django_api.tar.gz'))
-  .then(buildImage('django_api'))
-  .then(createArchive('../../registration-middleware/', './.build/middleware.tar.gz'))
-  .then(buildImage('registration_middleware'))
+  .then(acquireBaseImages)
+  .then(buildImage('farmradio/uliza_api', '../../../django-api/'))
+  .then(buildImage('farmradio/registration_service', '../../registration-middleware/'))
   .then(createContainer('mysql'))
   .then(createContainer('api'))
   .then(createContainer('middleware'))
   .then(startContainer('database'))
   .then(startContainer('api'))
+  // Wait for MySQL to accept connections
+  .then(pingMysql)                     
   .then(startContainer('middleware' ))
-  .then(pingMysql)                     // Wait for MySQL to accept connections
   .then(runMigrations)
   .then(runServer)
   .then(pingApi) 
