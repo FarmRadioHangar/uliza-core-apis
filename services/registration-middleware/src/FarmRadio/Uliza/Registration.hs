@@ -25,6 +25,7 @@ module FarmRadio.Uliza.Registration
   , ulizaApiGet
   , ulizaApiGetOne
   , votoApiGet
+  , votoApiPost
   , runRegistrationHandler
   ) where
 
@@ -171,7 +172,8 @@ ulizaApiGet :: FromJSON a
             -> [(String, String)]
             -- ^ A list of query string parameters as key-value pairs.
             -> RegistrationHandler (Maybe a)
-ulizaApiGet ep params = do
+ulizaApiGet ep params = handle ulizaApiException $ do
+
     state <- State.get
     url <- ulizaEndpoint ep
     ApiClient.get (state ^. wreqOptions)
@@ -226,7 +228,7 @@ parseUlizaResponse response =
     ok = right $ decode (response ^. responseBody)
 
 votoApiGet :: FromJSON a => String -> RegistrationHandler (Maybe a)
-votoApiGet ep = do
+votoApiGet ep = {- handle votoApiException $ -} do
     state <- State.get
     url <- votoEndpoint ep
     ApiClient.get (state ^. wreqOptions)
@@ -234,10 +236,23 @@ votoApiGet ep = do
                   (resourceUrl url []) & liftIO
     >>= parseVotoResponse
 
+votoApiPost :: (Postable a, ToJSON a, FromJSON b)
+            => String 
+            -> a
+            -> RegistrationHandler (Maybe b)
+votoApiPost endpoint body = {- handle votoApiException $ -} do
+    state <- State.get
+    url <- votoEndpoint endpoint
+    ApiClient.post (state ^. wreqOptions)
+                   (state ^. session)
+                   (resourceUrl url [])
+                   body & liftIO
+    >>= parseUlizaResponse
+
 parseVotoResponse :: FromJSON a
                   => Response BL.ByteString
                   -> RegistrationHandler (Maybe a)
-parseVotoResponse response =
+parseVotoResponse response = 
     case response ^. responseStatus . statusCode of
       200 -> ok                          -- 200 OK
       201 -> ok                          -- 201 CREATED
