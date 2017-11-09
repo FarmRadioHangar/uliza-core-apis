@@ -179,7 +179,10 @@ describe('/call_status_updates', function() {
 
     it('should have assigned registration attributes to the participant', function() {
       return runner()
-      .then(request(ULIZA_API_URL).get('/participants?phone_number=255678647268').set('Accept', 'application/json').send())
+      .then(request(ULIZA_API_URL)
+        .get('/participants?phone_number=255678647268')
+        .set('Accept', 'application/json')
+        .send())
       .then(function(response) { 
         response.body.should.have.property('data'); 
         var participant = response.body.data;
