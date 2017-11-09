@@ -1,3 +1,4 @@
 .docker
 api_core/settings.py
 .env
+env
