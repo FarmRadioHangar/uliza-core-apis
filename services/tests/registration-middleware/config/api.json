@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "Image": "django_api",
+  "Image": "farmradio/uliza_api",
   "Cmd": [ "python", "manage.py", "runserver", "0.0.0.0:8000" ],
   "ExposedPorts": { "8000": {} },
   "HostConfig": {
