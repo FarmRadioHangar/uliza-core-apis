@@ -7,7 +7,7 @@ certifi==2017.7.27.1
 cffi==1.10.0
 chardet==3.0.4
 cryptography==1.8.1
--e git://github.com/mvpdev/django-eav.git@ac6dcc80c307f6217a9060d2f26aaec9cbd500fc#egg=django_eav-master
+-e ./django-eav/
 django-filter==1.0.4
 django-jfu==2.0.9
 django-shell-plus==1.1.7
