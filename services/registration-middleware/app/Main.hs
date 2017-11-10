@@ -31,6 +31,7 @@ readConfig = do
     port     <- lookupEnv "PORT"
     ulizaApi <- lookupEnv "ULIZA_API_URL"
     votoApi  <- lookupEnv "VOTO_API_URL"
+    votoKey  <- lookupEnv "VOTO_API_KEY" -- @TODO: Fail if key is missing?
     logLevel <- lookupEnv "LOG_LEVEL"
     offset   <- lookupEnv "CALL_SCHEDULE_OFFSET"
     delay    <- lookupEnv "MIN_RESCHEDULE_DELAY"
@@ -39,6 +40,7 @@ readConfig = do
       , _logLevel       = fromMaybe DEBUG (read <$> logLevel)
       , _ulizaApi       = fromMaybe "http://localhost:8000/api/v1" ulizaApi
       , _votoApi        = fromMaybe "https://go.votomobile.org/api/v1" votoApi
+      , _votoApiKey     = fromMaybe "" votoApi
       , _scheduleOffset = fromMaybe (60*10) (fromIntegral . read <$> offset)
       , _callMinDelay   = fromMaybe (60*60*24*2) (fromIntegral . read <$> delay) }
 
