@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var assert  = require('assert');
 var chai    = require('chai');
 var mocha   = require('mocha');
@@ -8,9 +10,12 @@ var util    = require('util');
 var up      = require('../utils/up');
 var down    = require('../utils/down');
 
-var REG_SERVICE_URL = 'http://0.0.0.0:3034';
-var DB_HOST         = '0.0.0.0';
-var DB_PORT         = 3316;
+var REG_SERVICE_URL = process.env.REG_SERVICE_URL || 'http://0.0.0.0:3034';
+var DB_HOST         = process.env.DB_HOST || '0.0.0.0';
+var DB_PORT         = process.env.DB_PORT || 3316;
+var ULIZA_API_URL   = 'http://0.0.0.0:8000/api/v1';
+var VOTO_API_URL    = 'http://0.0.0.0:8089/api/v1';
+var VOTO_API_KEY    = process.env.VOTO_API_KEY || 'xxxxxxxxxxxxxxxxxxxxxxxxx'
 
 chai.should();
 chai.use(require('chai-things'));
@@ -202,6 +207,29 @@ describe('/responses', function() {
       })
     });
   
+    it('should schedule a call with VOTO', function() {
+      var votoId = null;
+      return runner()
+      .then(query('SELECT * FROM uliza_registration_calls;'))
+      .then(function(results) {
+        votoId = results[0].voto_id;
+        return votoId;
+      })
+      .then(function(id) {
+        return request(VOTO_API_URL)
+        .get('/outgoing_calls/' + id + '?api_key=' + VOTO_API_KEY)
+        .set('Content-Type', 'application/json')
+        .send();
+      })
+      .then(function(response) {
+        response.status.should.equal(200);
+        response.body.should.have.property('data');
+        response.body.data.should.have.property('outgoing_call');
+        var call = response.body.data.outgoing_call;
+        call.id.should.equal(String(votoId));
+      });
+    });
+
   });
   
   describe('Response from an already registered participant', function() {

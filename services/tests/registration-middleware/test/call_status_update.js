@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var assert  = require('assert');
 var chai    = require('chai');
 var mocha   = require('mocha');
@@ -8,10 +10,12 @@ var util    = require('util');
 var up      = require('../utils/up');
 var down    = require('../utils/down');
 
-var REG_SERVICE_URL = 'http://0.0.0.0:3034';
-var DB_HOST         = '0.0.0.0';
-var DB_PORT         = 3316;
+var REG_SERVICE_URL = process.env.REG_SERVICE_URL || 'http://0.0.0.0:3034';
+var DB_HOST         = process.env.DB_HOST || '0.0.0.0';
+var DB_PORT         = process.env.DB_PORT || 3316;
 var ULIZA_API_URL   = 'http://0.0.0.0:8000/api/v1';
+var VOTO_API_URL    = 'http://0.0.0.0:8089/api/v1';
+var VOTO_API_KEY    = process.env.VOTO_API_KEY || 'xxxxxxxxxxxxxxxxxxxxxxxxx';
 
 chai.should();
 chai.use(require('chai-things'));
