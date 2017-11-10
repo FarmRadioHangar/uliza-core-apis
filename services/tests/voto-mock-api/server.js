@@ -70,12 +70,17 @@ router.get('/subscribers/:id', function(req, res) {
 
 // https://go.votomobile.org/apidoc/outgoing_calls.html#create-an-outgoing-call
 router.post('/outgoing_calls', function(req, res) {
+  //res.json({
+  //  "status": 200,
+  //  "message": "Outgoing call qeued successfully",
+  //  "data": {
+  //    id: 2345554
+  //  }
+  //});
   res.json({
     "status": 200,
     "message": "Outgoing call qeued successfully",
-    "data": {
-      id: 2345554
-    }
+    "data": 2345554 
   });
 });
 
