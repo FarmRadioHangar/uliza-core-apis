@@ -40,7 +40,7 @@ readConfig = do
       , _logLevel       = fromMaybe DEBUG (read <$> logLevel)
       , _ulizaApi       = fromMaybe "http://localhost:8000/api/v1" ulizaApi
       , _votoApi        = fromMaybe "https://go.votomobile.org/api/v1" votoApi
-      , _votoApiKey     = fromMaybe "" votoApi
+      , _votoApiKey     = fromMaybe "" votoKey
       , _scheduleOffset = fromMaybe (60*10) (fromIntegral . read <$> offset)
       , _callMinDelay   = fromMaybe (60*60*24*2) (fromIntegral . read <$> delay) }
 
