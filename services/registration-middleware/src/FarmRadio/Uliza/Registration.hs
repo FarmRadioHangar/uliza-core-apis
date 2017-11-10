@@ -10,6 +10,7 @@ module FarmRadio.Uliza.Registration
   , FarmRadio.Uliza.Registration.port
   , FarmRadio.Uliza.Registration.ulizaApi
   , FarmRadio.Uliza.Registration.votoApi
+  , FarmRadio.Uliza.Registration.votoApiKey
   , FarmRadio.Uliza.Registration.logLevel
   , FarmRadio.Uliza.Registration.scheduleOffset
   , FarmRadio.Uliza.Registration.callMinDelay
@@ -61,6 +62,8 @@ data AppConfig = AppConfig
   -- ^ (ULIZA_API_URL) Uliza API base url
   , _votoApi         :: !String
   -- ^ (VOTO_API_URL) VOTO API base url
+  , _votoApiKey      :: !String
+  -- ^ (VOTO_API_KEy) VOTO API key
   , _logLevel        :: !Priority
   -- ^ (LOG_LEVEL) Verbosity level of the debug output
   , _scheduleOffset  :: !NominalDiffTime
