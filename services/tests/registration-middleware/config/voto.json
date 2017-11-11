@@ -1,0 +1,9 @@
+{
+  "name": "voto",
+  "Image": "farmradio/voto_mock_api",
+  "Cmd": [ "node", "server.js" ],
+  "ExposedPorts": { "8089": {} },
+  "HostConfig": {
+    "PortBindings": { "8089": [{"HostPort": "8089"}] }
+  }
+}
