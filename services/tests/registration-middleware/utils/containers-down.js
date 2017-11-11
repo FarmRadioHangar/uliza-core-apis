@@ -1,10 +1,10 @@
 var $ = require('./docker');
 
 return Promise.resolve()
-.then($.stopContainer('voto'))
-.then($.removeContainer('voto'))
 .then($.stopContainer('middleware'))
 .then($.removeContainer('middleware'))
+.then($.stopContainer('voto'))
+.then($.removeContainer('voto'))
 .then($.stopContainer('api'))
 .then($.removeContainer('api'))
 .then($.stopContainer('database'))
