@@ -3,13 +3,13 @@
   "Image": "farmradio/registration_service",
   "ExposedPorts": { "3034": {} },
   "HostConfig": {
-    "Links": ["api"],
+    "Links": ["api", "voto"],
     "PortBindings": { "3034": [{"HostPort": "3034"}] }
   },
   "Env": [
     "PORT=3034",
     "LOG_LEVEL=DEBUG",
-    "VOTO_API_URL=https://go.votomobile.org/api/v1",
+    "VOTO_API_URL=http://voto/api/v1",
     "ULIZA_API_URL=http://api:8000/api/v1",
     "CALL_SCHEDULE_OFFSET=600",
     "MIN_RESCHEDULE_DELAY=172800"
