@@ -7,8 +7,8 @@ var mysql   = require('mysql');
 var qs      = require('qs');
 var request = require('supertest');
 var util    = require('util');
-var up      = require('../utils/up');
-var down    = require('../utils/down');
+var up      = require('../utils/containers-up');
+var down    = require('../utils/containers-down');
 
 var REG_SERVICE_URL = process.env.REG_SERVICE_URL || 'http://0.0.0.0:3034';
 var DB_HOST         = process.env.DB_HOST || '0.0.0.0';
