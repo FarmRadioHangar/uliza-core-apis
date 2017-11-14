@@ -3,6 +3,7 @@ from uliza.models import (Participant,
                           RegistrationCall,
                           ParticipantRegistrationStatusLog,
                           VotoWebhookLog,
+                          VotoSurveyRegistrationTree,
                           registration_status)
 from eav.models import Attribute
 
@@ -65,4 +66,11 @@ class VotoWebhookLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VotoWebhookLog
+        fields = '__all__'
+
+
+class VotoSurveyRegistrationTreeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = VotoSurveyRegistrationTree
         fields = '__all__'
