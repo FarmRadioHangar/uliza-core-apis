@@ -28,12 +28,12 @@ votoResponse = do
     ulizaApiPost_ "/voto_webhook_log" $ object
       [ ("data"     , String (toText body))
       , ("endpoint" , "responses") ]
-    phone <- extract "subscriber_phone"
---    survey <- extract "survery_id"
+    phone  <- extract "subscriber_phone"
+    survey <- extract "survey_id" :: RegistrationHandler Int
 
     liftIO $ print "-------------------------------------"
     liftIO $ logNotice "subscriber_phone" (show phone)
---    liftIO $ logNotice "survey_id" (show survey)
+    liftIO $ logNotice "survey_id" (show survey)
     liftIO $ print "-------------------------------------"
 
     -- If the phone number is not already associated with a participant in the
