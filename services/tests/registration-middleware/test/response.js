@@ -94,6 +94,7 @@ describe('/responses', function() {
     .then(query('TRUNCATE TABLE uliza_voto_webhook_log;'))
     .then(query('TRUNCATE TABLE uliza_participants;'))
     .then(query('TRUNCATE TABLE uliza_registration_calls;'))
+    .then(query('TRUNCATE TABLE uliza_voto_survey_registration_tree;'))
     .then(query('TRUNCATE TABLE eav_attribute;'))
     .then(query('TRUNCATE TABLE eav_enumgroup;'))
     .then(query('TRUNCATE TABLE eav_enumgroup_enums;'))
@@ -126,6 +127,16 @@ describe('/responses', function() {
       return self._db.connect();
     })
     .then(flushDb)
+    .then(function() {
+      return request(ULIZA_API_URL)
+      .post('/voto_survey_registration_tree')
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
+      .send({
+        voto_survey_id: 89324,
+        voto_tree_id: 19278
+      })
+    })
     .catch(console.error);
   });
 
