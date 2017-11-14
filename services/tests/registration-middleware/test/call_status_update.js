@@ -69,6 +69,7 @@ describe('/call_status_updates', function() {
     .then(query('TRUNCATE TABLE uliza_voto_webhook_log;'))
     .then(query('TRUNCATE TABLE uliza_participants;'))
     .then(query('TRUNCATE TABLE uliza_registration_calls;'))
+    .then(query('TRUNCATE TABLE uliza_voto_survey_registration_tree;'))
     .then(query('TRUNCATE TABLE eav_attribute;'))
     .then(query('TRUNCATE TABLE eav_enumgroup;'))
     .then(query('TRUNCATE TABLE eav_enumgroup_enums;'))
