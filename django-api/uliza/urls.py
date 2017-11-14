@@ -26,7 +26,7 @@ voto_webhook_log = patterns(
 
 voto_survey_registration_tree = patterns(
     'uliza.views.VotoSurveyRegistrationTree',
-    url(r'/(?P<id>\d+)$', VotoSurveyRegistrationTreeInstance.as_view()),
+    url(r'/(?P<voto_survey_id>\d+)$', VotoSurveyRegistrationTreeInstance.as_view()),
     url(r'$', VotoSurveyRegistrationTreeDefault.as_view()),
 )
 
