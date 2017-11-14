@@ -28,31 +28,36 @@ module FarmRadio.Uliza.Registration
   , votoApiGet
   , votoApiPost
   , runRegistrationHandler
+  , extract
   ) where
 
+import Control.Applicative                    ( (<|>) )
 import Control.Exception.Safe
 import Control.Lens
-import Control.Monad                    ( void )
+import Control.Monad                          ( void )
 import Control.Monad.IO.Class
-import Control.Monad.State              ( StateT, evalStateT )
+import Control.Monad.State                    ( StateT, evalStateT )
 import Control.Monad.Trans.Either
 import Data.Aeson
-import Data.Maybe                       ( fromMaybe, fromJust )
+import Data.Either.Utils                      ( maybeToEither )
+import Data.Maybe                             ( fromMaybe, fromJust )
 import Data.Monoid
 import Data.Time
 import Data.URLEncoded
-import Network.HTTP.Base                ( urlEncodeVars )
-import Network.HTTP.Client              ( HttpExceptionContent(..)
-                                        , HttpException(..) )
-import Network.WebSockets               ( Connection )
-import Network.Wreq
-import Network.Wreq.Session             ( Session )
-import Network.Wreq.Types
-import System.Log.Logger                ( Priority )
+import Network.HTTP.Base                      ( urlEncodeVars )
+import Network.HTTP.Client                    ( HttpExceptionContent(..)
+                                              , HttpException(..) )
+import Network.WebSockets                     ( Connection )
+import Network.Wreq                    hiding ( params )
+import Network.Wreq.Session                   ( Session )
+import Network.Wreq.Types                     ( Postable )
+import System.Log.Logger                      ( Priority )
+import Text.Read                              ( readMaybe )
 
-import qualified Control.Monad.State as State
-import qualified Data.ByteString.Lazy as BL
-import qualified FarmRadio.Uliza.Api.Client as ApiClient
+import qualified Control.Monad.State          as State
+import qualified Data.ByteString.Lazy         as BL
+import qualified Data.URLEncoded              as URLEncoded
+import qualified FarmRadio.Uliza.Api.Client   as ApiClient
 
 -- | Configuration data picked up from the system's environment variables.
 data AppConfig = AppConfig
@@ -268,3 +273,8 @@ parseVotoResponse response =
       err -> left (VotoApiError "TODO")
   where
     ok = right $ decode (response ^. responseBody)
+
+extract :: (Read a) => String -> RegistrationHandler a
+extract key = State.get >>= maybeToEither BadRequestError . \state -> do
+    val <- URLEncoded.lookup key (state ^. params)
+    readMaybe val <|> readMaybe (show val)

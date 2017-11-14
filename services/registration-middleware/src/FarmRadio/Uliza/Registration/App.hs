@@ -31,7 +31,8 @@ import Web.Scotty                                     ( ScottyM
 import qualified Data.ByteString.Lazy.Char8           as B8
 import qualified Web.Scotty                           as Scotty
 
-registrationHandlerException :: SomeException -> IO (Either RegistrationError a)
+registrationHandlerException :: SomeException 
+                             -> IO (Either RegistrationError a)
 registrationHandlerException e =
     case fromException e of
       Just (UlizaAPIException e) -> left $ UlizaApiError (show e)

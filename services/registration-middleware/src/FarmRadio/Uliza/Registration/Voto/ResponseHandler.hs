@@ -31,13 +31,23 @@ votoResponse = do
       , ("endpoint" , "responses") ]
     let subscriber = URLEncoded.lookup ("subscriber_phone" :: String)
                                        (state ^. params)
+--    let survey = URLEncoded.lookup ("survey_id" :: String) (state ^. params)
     phone <- maybeToEither BadRequestError subscriber
+--    sid   <- maybeToEither BadRequestError survey
+
+    --
+    liftIO $ print "-------------------------------------"
+    liftIO $ logNotice "subscriber_phone" (show phone)
+--    liftIO $ logNotice "survey_id" (show sid)
+    liftIO $ print "-------------------------------------"
+    --
+
     -- If the phone number is not already associated with a participant in the
     -- database, one is created here
     participant <- getOrCreateParticipant phone
     -- Find most recent registration call (if one exists) for this participant
     call <- getRegistrationCall participant
-    -- Determine participant's registration status
+    -- Determine the participant's registration status
     status <- determineRegistrationStatus participant call
     -- Take some action, then log and respond
     case status of
