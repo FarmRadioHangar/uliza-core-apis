@@ -5,6 +5,7 @@ query="SET FOREIGN_KEY_CHECKS=0; \
        TRUNCATE TABLE uliza_voto_webhook_log; \
        TRUNCATE TABLE uliza_participants; \
        TRUNCATE TABLE uliza_registration_calls; \
+       TRUNCATE TABLE uliza_voto_survey_registration_tree; \
        TRUNCATE TABLE eav_attribute; \
        TRUNCATE TABLE eav_enumgroup; \
        TRUNCATE TABLE eav_enumgroup_enums; \
