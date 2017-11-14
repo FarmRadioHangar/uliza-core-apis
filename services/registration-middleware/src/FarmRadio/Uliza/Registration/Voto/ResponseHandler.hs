@@ -36,6 +36,10 @@ votoResponse = do
     liftIO $ logNotice "survey_id" (show survey)
     liftIO $ print "-------------------------------------"
 
+    tree <- getSurveyTreeAssociation survey
+    liftIO $ print tree
+    liftIO $ print "-------------------------------------"
+
     -- If the phone number is not already associated with a participant in the
     -- database, one is created here
     participant <- getOrCreateParticipant phone
