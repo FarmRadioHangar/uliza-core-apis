@@ -13,6 +13,7 @@ import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
 import FarmRadio.Uliza.Registration.Participant
 import FarmRadio.Uliza.Registration.RegistrationCall
+import FarmRadio.Uliza.Registration.SurveyTreePair
 import FarmRadio.Uliza.Registration.Voto.CallScheduleResponse
 import TextShow
 
@@ -53,6 +54,9 @@ getRegistrationCall Participant{..} = join <$> sequence call
 -- | Request the 'RegistrationCall' with the given id from the Uliza API.
 getRegistrationCallById :: Int -> RegistrationHandler (Maybe RegistrationCall)
 getRegistrationCallById = ulizaApiGetOne "/registration_calls" []
+
+getSurveyTreeAssociation :: Int -> RegistrationHandler (Maybe SurveyTreePair)
+getSurveyTreeAssociation = ulizaApiGetOne "/voto_survey_registration_tree" []
 
 -- | Schedule a registration call for a participant at the given time.
 scheduleRegistrationCall :: Participant
