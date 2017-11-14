@@ -28,6 +28,7 @@ library
                      , FarmRadio.Uliza.Api.Participant
                      , FarmRadio.Uliza.Api.RegistrationCall
                      , FarmRadio.Uliza.Registration.SubscriberDetails
+                     , FarmRadio.Uliza.Registration.SurveyTreePair
   build-depends:       aeson ==1.1.2.0
                      , base >= 4.7 && < 5
                      , bytestring ==0.10.8.1
