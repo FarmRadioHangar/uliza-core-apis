@@ -14,7 +14,7 @@ import Network.Wai.Handler.Warp            ( defaultSettings
                                            , setBeforeMainLoop )
 import Network.Wai.Handler.WebSockets
 import Network.WebSockets                  ( defaultConnectionOptions )
-import Network.Wreq                        ( defaults )
+import Network.Wreq                        ( defaults, checkResponse )
 import Network.Wreq.Session
 import System.Environment                  ( lookupEnv )
 import System.Log.Logger
@@ -53,7 +53,7 @@ runServer config = withAPISession $ \session -> do
       , _session     = session
       , _requestBody = mempty
       , _params      = mempty
-      , _wreqOptions = defaults }
+      , _wreqOptions = defaults & checkResponse .~ Just (const $ const $ pure ()) }
     server <- Scotty.scottyApp (app state)
     let app = websocketsOr defaultConnectionOptions (wss state) server
     runSettings settings app
