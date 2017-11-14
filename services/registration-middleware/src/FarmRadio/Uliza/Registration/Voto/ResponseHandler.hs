@@ -16,7 +16,6 @@ import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
 
 import qualified Data.ByteString.Lazy.Char8           as B8
-import qualified Data.URLEncoded                      as URLEncoded
 
 -- | Response handler for survey response webhook -- triggered by VOTO every
 --   time a survey response is recorded.
@@ -29,18 +28,13 @@ votoResponse = do
     ulizaApiPost_ "/voto_webhook_log" $ object
       [ ("data"     , String (toText body))
       , ("endpoint" , "responses") ]
-    let subscriber = URLEncoded.lookup ("subscriber_phone" :: String)
-                                       (state ^. params)
---    let survey = URLEncoded.lookup ("survey_id" :: String) (state ^. params)
-    phone <- maybeToEither BadRequestError subscriber
---    sid   <- maybeToEither BadRequestError survey
+    phone <- extract "subscriber_phone"
+--    survey <- extract "survery_id"
 
-    --
     liftIO $ print "-------------------------------------"
     liftIO $ logNotice "subscriber_phone" (show phone)
---    liftIO $ logNotice "survey_id" (show sid)
+--    liftIO $ logNotice "survey_id" (show survey)
     liftIO $ print "-------------------------------------"
-    --
 
     -- If the phone number is not already associated with a participant in the
     -- database, one is created here
