@@ -267,6 +267,7 @@ parseVotoResponse response =
       201 -> ok                          -- 201 CREATED
       202 -> ok                          -- 202 ACCEPTED
       204 -> ok                          -- 204 NO CONTENT
+      404 -> right Nothing               -- 404 NOT FOUND
 --      400 -> left
 --      401 -> left AuthenticationError
 --      404 -> left NotFoundError
