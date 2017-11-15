@@ -33,7 +33,7 @@ scheduleVotoCall phone treeId = do
     call key = [ ("send_to_phones" , String phone) 
                , ("tree_id"        , String (showt treeId))
                , ("api_key"        , String key) 
-               , ("webhook_url"    , "https://hymbrslwdx.localtunnel.me/call_status_updates")
+               , ("webhook_url"    , "http://5dd02a7f.ngrok.io/call_status_updates")
                , ("webhook_method" , "POST") ]
 
 -- | Create the registration call in Uliza.
