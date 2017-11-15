@@ -26,7 +26,8 @@ class Participant(models.Model):
 class RegistrationCall(models.Model):
     phone_number = models.CharField(max_length=20)
     scheduled_time = models.DateTimeField()
-    voto_id = models.IntegerField(null=True)
+    voto_id = models.IntegerField()
+    voto_tree_id = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
