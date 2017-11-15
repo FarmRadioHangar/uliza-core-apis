@@ -236,7 +236,8 @@ describe('/responses', function() {
       .then(function(results) {
         var registrationCall = results[0];
         registrationCall.voto_tree_id.should.equal(19278);
-        return registrationCall.voto_id;
+        votoId = registrationCall.voto_id
+        return votoId;
       })
       .then(function(id) {
         return request(VOTO_API_URL)
