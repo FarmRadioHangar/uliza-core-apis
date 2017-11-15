@@ -49,11 +49,7 @@ votoResponse = do
       ( _, RecentCallMade )       -> noop "TOO_SOON"
       ( Nothing, _ )              -> noop "NO_REGISTRATION_TREE"
       ( Just SurveyTreePair{..}, ScheduleCall time ) -> do
-
-        liftIO $ print "-------------------------------------"
-        liftIO $ print tree
-        liftIO $ print "-------------------------------------"
-
+        logDebugJSON "survery_registration_tree" SurveyTreePair{..} & liftIO
         call <- scheduleRegistrationCall participant time votoTreeId
         return $ toJSON $ object
           [ ("action", "REGISTRATION_CALL_SCHEDULED")
