@@ -20,16 +20,18 @@ import TextShow
 -- | Post request to VOTO's API to schedule a registration call.
 scheduleVotoCall :: Text 
                  -- ^ Phone number
+                 -> Int  
+                 -- ^ Tree id
                  -> RegistrationHandler (Maybe CallScheduleResponse)
                  -- ^ Return the VOTO response
-scheduleVotoCall phone = do
+scheduleVotoCall phone treeId = do
     state <- get
     let payload = object $ call (state ^. config . votoApiKey & pack)
     logDebugJSON "voto_call_scheduled" payload & liftIO
     votoApiPost "/outgoing_calls" payload
   where
     call key = [ ("send_to_phones" , String phone) 
-               , ("tree_id"        , String "19278")    -- @TODO: temp
+               , ("tree_id"        , String (show treeId))
                , ("api_key"        , String key) ]
 
 -- | Create the registration call in Uliza.
