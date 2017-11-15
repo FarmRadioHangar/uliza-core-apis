@@ -31,7 +31,7 @@ scheduleVotoCall phone treeId = do
     votoApiPost "/outgoing_calls" payload
   where
     call key = [ ("send_to_phones" , String phone) 
-               , ("tree_id"        , String (show treeId))
+               , ("tree_id"        , String (showt treeId))
                , ("api_key"        , String key) ]
 
 -- | Create the registration call in Uliza.
