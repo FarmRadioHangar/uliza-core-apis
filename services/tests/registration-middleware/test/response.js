@@ -191,6 +191,17 @@ describe('/responses', function() {
       });
     });
   
+    it('should insert the participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+        var participant = results[0];
+        participant.phone_number.should.equal(stripPrefix(data.subscriber_phone));
+        participant.registration_status.should.equal('NOT_REGISTERED');
+      })
+    });
+
     it('should set the participant\'s registration_call_id', function() {
       var registrationCall = null;
       return runner()
@@ -265,14 +276,18 @@ describe('/responses', function() {
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) { 
           results.length.should.equal(1); 
-        })
-        .then(query('SELECT * FROM uliza_participants;'))
-        .then(function(results) { 
-          results.length.should.equal(1); 
         });
       });
     });
   
+    it('should not insert a new participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+      });
+    });
+
   });
   
   describe('Response from a participant who has declided to be registered', function() {
@@ -296,14 +311,18 @@ describe('/responses', function() {
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) { 
           results.length.should.equal(0); 
-        })
-        .then(query('SELECT * FROM uliza_participants;'))
-        .then(function(results) { 
-          results.length.should.equal(1); 
         });
       });
     });
   
+    it('should not insert a new participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+      });
+    });
+
   });
   
   describe('Response from a participant for whom a registration call is already due', function() {
@@ -332,14 +351,18 @@ describe('/responses', function() {
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           results.length.should.equal(1); 
-        })
-        .then(query('SELECT * FROM uliza_participants;'))
-        .then(function(results) {
-          results.length.should.equal(1); 
         });
       });
     });
   
+    it('should not insert a new participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+      });
+    });
+
   });
   
   describe('Response from a participant for whom a registration call happened recently', function() {
@@ -366,14 +389,18 @@ describe('/responses', function() {
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           results.length.should.equal(1); 
-        })
-        .then(query('SELECT * FROM uliza_participants;'))
-        .then(function(results) {
-          results.length.should.equal(1); 
-        })
+        });
       });
     });
   
+    it('should not insert a new participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+      });
+    });
+
   });
   
   describe('Response from a participant for whom the most recent call took place 1 day ago', function() {
@@ -402,14 +429,18 @@ describe('/responses', function() {
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
           results.length.should.equal(1); 
-        })
-        .then(query('SELECT * FROM uliza_participants;'))
-        .then(function(results) {
-          results.length.should.equal(1); 
-        })
+        });
       });
     });
   
+    it('should not insert a new participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+      });
+    });
+
   });
   
   describe('Response from a participant for whom the most recent call took place more than 2 days ago', function() {
@@ -443,6 +474,17 @@ describe('/responses', function() {
       });
     });
   
+    it('should insert the participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+        var participant = results[0];
+        participant.phone_number.should.equal(stripPrefix(data.subscriber_phone));
+        participant.registration_status.should.equal('NOT_REGISTERED');
+      })
+    });
+
     it('should create a new registration call in the database', function() {
       return runner()
       .then(function(response) {
@@ -488,6 +530,71 @@ describe('/responses', function() {
   
   describe('Response belonging to survey with no associated registration tree', function() {
   
+    var data = {
+      question_id: "127375", 
+      survey_id: "123123123", 
+      voto_id: "44", 
+      response_type: "1", 
+      content_type: "1", 
+      poll_id: "213", 
+      delivery_log_id: "832", 
+      choice_id: "1", 
+      subscriber_id: "232", 
+      subscriber_phone: "+255678647268", 
+      question_title: "Who was the first man to set foot on the moon?", 
+      choice_name: "Neil Armstrong", 
+      date_received: "2017-07-24T18:13:51Z"
+    };
+
+    var runner = function() {
+      return request(REG_SERVICE_URL)
+      .post('/responses')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Accept', 'application/json')
+      .send(serialize(data));
+    }
+
+    it('should return a 200 OK JSON-formatted response', function() {
+      return runner()
+      .then(function(response) { 
+        response.should.have.header('Content-Type', /json/);
+        response.status.should.equal(200);
+      });
+    });
+
+    it('should insert the participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+        var participant = results[0];
+        participant.phone_number.should.equal(stripPrefix(data.subscriber_phone));
+        participant.registration_status.should.equal('NOT_REGISTERED');
+      })
+    });
+
+    //it('should return XXX_XXX', function() {
+    //  return runner()
+    //  .then(function(response) {
+    //    response.body.should.have.property('reason').equal('XXX_XXX');
+    //  });
+    //});
+  
+    //it('should not create any registration call', function() {
+    //  return runner()
+    //  .then(function(response) {
+    //    return Promise.resolve()
+    //    .then(query('SELECT * FROM uliza_registration_calls;'))
+    //    .then(function(results) {
+    //      results.length.should.equal(1); 
+    //    })
+    //    .then(query('SELECT * FROM uliza_participants;'))
+    //    .then(function(results) {
+    //      results.length.should.equal(0); 
+    //    })
+    //  });
+    //});
+
   });
 
   describe('Bad request format', function() {
@@ -527,7 +634,7 @@ describe('/responses', function() {
         .equal(stripPrefix(data.subscriber_phone));
       });
     });
-  
+
   });
 
 });
