@@ -42,6 +42,7 @@ import Data.Aeson
 import Data.Either.Utils                      ( maybeToEither )
 import Data.Maybe                             ( fromMaybe, fromJust )
 import Data.Monoid
+import Data.Text                              ( pack )
 import Data.Time
 import Data.URLEncoded
 import Network.HTTP.Base                      ( urlEncodeVars )
@@ -240,9 +241,10 @@ votoApiGet :: FromJSON a => String -> RegistrationHandler (Maybe a)
 votoApiGet ep = {- handle votoApiException $ -} do
     state <- State.get
     url <- votoEndpoint ep
+    let key = state ^. config . votoApiKey 
     ApiClient.get (state ^. wreqOptions)
                   (state ^. session)
-                  (resourceUrl url []) & liftIO
+                  (resourceUrl url [("api_key", key)]) & liftIO 
     >>= parseVotoResponse
 
 votoApiPost :: (Postable a, ToJSON a, FromJSON b)
@@ -252,9 +254,10 @@ votoApiPost :: (Postable a, ToJSON a, FromJSON b)
 votoApiPost endpoint body = {- handle votoApiException $ -} do
     state <- State.get
     url <- votoEndpoint endpoint
+    let key = state ^. config . votoApiKey 
     ApiClient.post (state ^. wreqOptions)
                    (state ^. session)
-                   (resourceUrl url [])
+                   (resourceUrl url [("api_key", key)])
                    body & liftIO
     >>= parseUlizaResponse
 

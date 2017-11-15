@@ -26,15 +26,13 @@ scheduleVotoCall :: Text
                  -- ^ Return the VOTO response
 scheduleVotoCall phone treeId = do
     state <- get
-    let payload = object $ call (state ^. config . votoApiKey & pack)
-    logDebugJSON "voto_call_scheduled" payload & liftIO
-    votoApiPost "/outgoing_calls" payload
+    logDebugJSON "voto_call_scheduled" call & liftIO
+    votoApiPost "/outgoing_calls" call
   where
-    call key = [ ("send_to_phones" , String phone) 
-               , ("tree_id"        , String (showt treeId))
-               , ("api_key"        , String key) 
-               , ("webhook_url"    , "http://5dd02a7f.ngrok.io/call_status_updates")
-               , ("webhook_method" , "POST") ]
+    call = object [ ("send_to_phones" , String phone) 
+                  , ("tree_id"        , String (showt treeId))
+                  , ("webhook_url"    , "http://5dd02a7f.ngrok.io/call_status_updates")
+                  , ("webhook_method" , "POST") ]
 
 -- | Create the registration call in Uliza.
 createRegistrationCall :: Text -- ^ Phone number
