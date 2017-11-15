@@ -486,6 +486,10 @@ describe('/responses', function() {
   
   });
   
+  describe('Response belonging to survey with no associated registration tree', function() {
+  
+  });
+
   describe('Bad request format', function() {
   
     it('should return a status code 400', function() {
