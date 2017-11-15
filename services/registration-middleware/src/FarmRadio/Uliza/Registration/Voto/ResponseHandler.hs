@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards   #-}
 module FarmRadio.Uliza.Registration.Voto.ResponseHandler
   ( votoResponse
   ) where
@@ -14,6 +15,7 @@ import FarmRadio.Uliza.Api.RegistrationCall
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
+import FarmRadio.Uliza.Registration.SurveyTreePair
 
 import qualified Data.ByteString.Lazy.Char8           as B8
 
@@ -29,17 +31,7 @@ votoResponse = do
       [ ("data"     , String (toText body))
       , ("endpoint" , "responses") ]
     phone  <- extract "subscriber_phone"
-    survey <- extract "survey_id" :: RegistrationHandler Int
-
-    liftIO $ print "-------------------------------------"
-    liftIO $ logNotice "subscriber_phone" (show phone)
-    liftIO $ logNotice "survey_id" (show survey)
-    liftIO $ print "-------------------------------------"
-
-    tree <- getSurveyTreeAssociation survey
-    liftIO $ print tree
-    liftIO $ print "-------------------------------------"
-
+    survey <- extract "survey_id" 
     -- If the phone number is not already associated with a participant in the
     -- database, one is created here
     participant <- getOrCreateParticipant phone
@@ -47,13 +39,21 @@ votoResponse = do
     call <- getRegistrationCall participant
     -- Determine the participant's registration status
     status <- determineRegistrationStatus participant call
+    -- Get the registration tree associated with this survey (if one exists)
+    tree <- getSurveyTreeAssociation survey
     -- Take some action, then log and respond
-    case status of
-      AlreadyRegistered    -> noop "ALREADY_REGISTERED"
-      RegistrationDeclined -> noop "REGISTRATION_DECLINED"
-      PriorCallScheduled   -> noop "PRIOR_CALL_SCHEDULED"
-      RecentCallMade       -> noop "TOO_SOON"
-      ScheduleCall time    -> do
+    case (tree, status) of
+      ( _, AlreadyRegistered )    -> noop "ALREADY_REGISTERED"
+      ( _, RegistrationDeclined ) -> noop "REGISTRATION_DECLINED"
+      ( _, PriorCallScheduled )   -> noop "PRIOR_CALL_SCHEDULED"
+      ( _, RecentCallMade )       -> noop "TOO_SOON"
+      ( Nothing, _ )              -> noop "NO_REGISTRATION_TREE"
+      ( Just SurveyTreePair{..}, ScheduleCall time ) -> do
+
+        liftIO $ print "-------------------------------------"
+        liftIO $ print tree
+        liftIO $ print "-------------------------------------"
+
         call <- scheduleRegistrationCall participant time
         return $ toJSON $ object
           [ ("action", "REGISTRATION_CALL_SCHEDULED")
