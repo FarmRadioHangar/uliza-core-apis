@@ -35,13 +35,16 @@ scheduleVotoCall phone = do
 -- | Create the registration call in Uliza.
 createRegistrationCall :: Text -- ^ Phone number
                        -> Int  -- ^ VOTO call id
+                       -> Int  -- ^ VOTO tree id
                        -> Text -- ^ Schedule time
                        -> RegistrationHandler (Maybe RegistrationCall)
-createRegistrationCall phone votoId time = ulizaApiPost "/registration_calls" (object call)
+createRegistrationCall phone votoId votoTreeId time = 
+    ulizaApiPost "/registration_calls" (object call)
   where
     call = [ ("phone_number"   , String phone)
            , ("scheduled_time" , String time) 
-           , ("voto_id"        , String (showt votoId)) ]
+           , ("voto_id"        , String (showt votoId)) 
+           , ("voto_tree_id"   , String (showt votoTreeId)) ]
 
 -- | Request the most recent 'RegistrationCall' for the provided participant 
 --   from the Uliza API.
