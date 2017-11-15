@@ -234,11 +234,9 @@ describe('/responses', function() {
       return runner()
       .then(query('SELECT * FROM uliza_registration_calls;'))
       .then(function(results) {
-        //
-        // @TODO: check tree id
-        //
-        votoId = results[0].voto_id;
-        return votoId;
+        var registrationCall = results[0];
+        registrationCall.voto_tree_id.should.equal(19278);
+        return registrationCall.voto_id;
       })
       .then(function(id) {
         return request(VOTO_API_URL)
@@ -589,13 +587,6 @@ describe('/responses', function() {
       .then(function(results) {
         results.length.should.equal(0); 
       });
-      //.then(function(response) {
-      //  return Promise.resolve()
-      //  .then(query('SELECT * FROM uliza_registration_calls;'))
-      //  .then(function(results) {
-      //    results.length.should.equal(0); 
-      //  });
-      //});
     });
 
   });
