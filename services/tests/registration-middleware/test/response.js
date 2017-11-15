@@ -234,6 +234,9 @@ describe('/responses', function() {
       return runner()
       .then(query('SELECT * FROM uliza_registration_calls;'))
       .then(function(results) {
+        //
+        // @TODO: check tree id
+        //
         votoId = results[0].voto_id;
         return votoId;
       })
@@ -573,27 +576,27 @@ describe('/responses', function() {
       })
     });
 
-    //it('should return XXX_XXX', function() {
-    //  return runner()
-    //  .then(function(response) {
-    //    response.body.should.have.property('reason').equal('XXX_XXX');
-    //  });
-    //});
+    it('should return NO_REGISTRATION_TREE', function() {
+      return runner()
+      .then(function(response) {
+        response.body.should.have.property('reason').equal('NO_REGISTRATION_TREE');
+      });
+    });
   
-    //it('should not create any registration call', function() {
-    //  return runner()
-    //  .then(function(response) {
-    //    return Promise.resolve()
-    //    .then(query('SELECT * FROM uliza_registration_calls;'))
-    //    .then(function(results) {
-    //      results.length.should.equal(1); 
-    //    })
-    //    .then(query('SELECT * FROM uliza_participants;'))
-    //    .then(function(results) {
-    //      results.length.should.equal(0); 
-    //    })
-    //  });
-    //});
+    it('should not create any registration call', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_registration_calls;'))
+      .then(function(results) {
+        results.length.should.equal(0); 
+      });
+      //.then(function(response) {
+      //  return Promise.resolve()
+      //  .then(query('SELECT * FROM uliza_registration_calls;'))
+      //  .then(function(results) {
+      //    results.length.should.equal(0); 
+      //  });
+      //});
+    });
 
   });
 
