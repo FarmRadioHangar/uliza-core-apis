@@ -54,7 +54,7 @@ votoResponse = do
         liftIO $ print tree
         liftIO $ print "-------------------------------------"
 
-        call <- scheduleRegistrationCall participant time
+        call <- scheduleRegistrationCall participant time votoTreeId
         return $ toJSON $ object
           [ ("action", "REGISTRATION_CALL_SCHEDULED")
           , ("registration_call", toJSON call) ]

@@ -68,14 +68,17 @@ scheduleRegistrationCall :: Participant
                          -- ^ The participant to call
                          -> UTCTime
                          -- ^ Time when the registration call is to be made
+                         -> Int  
+                         -- ^ VOTO tree id
                          -> RegistrationHandler RegistrationCall
                          -- ^ Return the details of the scheduled call
-scheduleRegistrationCall Participant{ entityId = participantId, .. } time = do
+scheduleRegistrationCall Participant{ entityId = participantId, .. }
+                         time treeId = do
     -- Schedule an outgoing call with VOTO
-    scheduleVotoCall phoneNumber >>= maybeToEither votoErr 
+    scheduleVotoCall phoneNumber treeId >>= maybeToEither votoErr 
     -- Post registration call to Uliza API
     >>= \CallScheduleResponse{..} -> 
-          createRegistrationCall phoneNumber callId (utcToText time)
+          createRegistrationCall phoneNumber callId treeId (utcToText time) 
     >>= maybeToEither ulizaErr
     >>= \call -> logNoticeJSON "registration_call_scheduled" call & liftIO
      >> return call
