@@ -32,7 +32,9 @@ scheduleVotoCall phone treeId = do
   where
     call key = [ ("send_to_phones" , String phone) 
                , ("tree_id"        , String (showt treeId))
-               , ("api_key"        , String key) ]
+               , ("api_key"        , String key) 
+               , ("webhook_url"    , "https://hymbrslwdx.localtunnel.me/call_status_updates")
+               , ("webhook_method" , "POST") ]
 
 -- | Create the registration call in Uliza.
 createRegistrationCall :: Text -- ^ Phone number
