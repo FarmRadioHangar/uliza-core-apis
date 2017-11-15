@@ -258,7 +258,7 @@ describe('/responses', function() {
   
     beforeEach(function() {
       return Promise.resolve()
-      .then(query('INSERT INTO uliza_registration_calls (phone_number, scheduled_time, created_at, voto_id) VALUES (\'255678647268\', \'2017-07-24 18:13:51\', \'2017-07-24 18:03:51\', NULL);'))
+      .then(query('INSERT INTO uliza_registration_calls (phone_number, scheduled_time, created_at, voto_id, voto_tree_id) VALUES (\'255678647268\', \'2017-07-24 18:13:51\', \'2017-07-24 18:03:51\', 2345554, 19278);'))
       .then(query('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'REGISTERED\', LAST_INSERT_ID(), \'2017-07-24 18:04:51\');'));
     });
 
@@ -333,7 +333,7 @@ describe('/responses', function() {
       d.setMinutes(d.getMinutes() + 20);
       var scheduledAt = toDateString(d);
       return Promise.resolve()
-      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id) VALUES (\'255678647268\', \'%s\', \'%s\', NULL);', createdAt, scheduledAt)))
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, scheduledAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
@@ -371,7 +371,7 @@ describe('/responses', function() {
       var d = new Date();
       var createdAt = toDateString(d);
       return Promise.resolve()
-      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id) VALUES (\'255678647268\', \'%s\', \'%s\', NULL);', createdAt, createdAt)))
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, createdAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
@@ -411,7 +411,7 @@ describe('/responses', function() {
       d.setMinutes(d.getMinutes() - 60*24*1);
       var scheduledAt = toDateString(d);
       return Promise.resolve()
-      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id) VALUES (\'255678647268\', \'%s\', \'%s\', NULL);', createdAt, scheduledAt)))
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, scheduledAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
@@ -451,7 +451,7 @@ describe('/responses', function() {
       d.setMinutes(d.getMinutes() - 60*24*2);
       var scheduledAt = toDateString(d);
       return Promise.resolve()
-      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id) VALUES (\'255678647268\', \'%s\', \'%s\', NULL);', createdAt, scheduledAt)))
+      .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, scheduledAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\');', createdAt)));
     });
   
