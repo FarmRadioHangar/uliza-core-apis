@@ -31,7 +31,7 @@ scheduleVotoCall phone treeId = do
   where
     call = object [ ("send_to_phones" , String phone) 
                   , ("tree_id"        , String (showt treeId))
-                  , ("webhook_url"    , "http://5dd02a7f.ngrok.io/call_status_updates")
+                  , ("webhook_url"    , "http://aff2984f.ngrok.io/call_status_updates")
                   , ("webhook_method" , "POST") ]
 
 -- | Create the registration call in Uliza.
