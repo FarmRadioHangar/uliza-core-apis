@@ -3,6 +3,7 @@ from uliza.models import (Participant,
                           RegistrationCall,
                           ParticipantRegistrationStatusLog,
                           VotoWebhookLog,
+                          VotoSurveyRegistrationTree,
                           registration_status)
 from eav.models import Attribute
 
@@ -36,7 +37,7 @@ class ParticipantSerializer(serializers.Serializer):
         instance.created_at = validated_data.get(
                 'created_at', instance.created_at)
 
-        attrs = validated_data.get('attributes')
+        attrs = validated_data.get('attributes_eav_dict')
         if attrs is not None:
             for i, (key, value) in enumerate(attrs.iteritems()):
                 if not Attribute.objects.filter(name=key).exists():
@@ -65,4 +66,11 @@ class VotoWebhookLogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VotoWebhookLog
+        fields = '__all__'
+
+
+class VotoSurveyRegistrationTreeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = VotoSurveyRegistrationTree
         fields = '__all__'

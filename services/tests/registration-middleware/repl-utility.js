@@ -29,6 +29,22 @@ var testdata_0 = {
   date_received: "2017-07-24T18:13:51Z"
 };
 
+var testdata_4 = {
+  question_id: "127375", 
+  survey_id: "89324", 
+  voto_id: "44", 
+  response_type: "1", 
+  content_type: "1", 
+  poll_id: "213", 
+  delivery_log_id: "832", 
+  choice_id: "1", 
+  subscriber_id: "232", 
+  subscriber_phone: "+256784224203", 
+  question_title: "Who was the first man to set foot on the moon?", 
+  choice_name: "Neil Armstrong", 
+  date_received: "2017-07-24T18:13:51Z"
+};
+
 var testdata_1 = {
   subscriber_phone: "255678647268",
   subscriber_id: "3",
@@ -80,5 +96,6 @@ module.exports = {
   testdata_1: testdata_1,
   testdata_2: testdata_2,
   testdata_3: testdata_3,
+  testdata_4: testdata_4,
   serialize: serialize
 };

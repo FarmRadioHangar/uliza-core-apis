@@ -16,13 +16,12 @@ ADD requirements.txt /django/requirements.txt
 ADD api_core /django/api_core
 ADD log_app /django/log_app
 ADD uliza /django/uliza
+ADD django-eav /django/django-eav
 ADD manage.py /django/manage.py
 
 WORKDIR /django
 
-RUN sed -i '/-e\ git:\/\/github.com\/mvpdev\/django*/c\-e\ .\/django-eav/' requirements.txt && \
-  git clone https://github.com/mvpdev/django-eav && \
-  pip install --upgrade pip && \
+RUN pip install --upgrade pip && \
   pip install --timeout 2000 -r requirements.txt 
 
 EXPOSE 8000

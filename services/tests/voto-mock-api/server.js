@@ -18,6 +18,7 @@ router.get('/', function(req, res) {
   });   
 });
 
+// https://go.votomobile.org/apidoc/subscribers.html#list-subscriber-details
 router.get('/subscribers/:id', function(req, res) {
   console.log(req.query);
   res.json({ 
@@ -63,9 +64,63 @@ router.get('/subscribers/:id', function(req, res) {
     }, 
     "message": "Subscriber details fetched successfully", 
     "more_info": "", 
-    "pagination": null, 
-    "url": "https://go.votomobile.org/api/v1/subscribers/373751?api_key=ce919f9c9f6f6dc9a17b6adb6" 
+    "pagination": null
   });   
+});
+
+// https://go.votomobile.org/apidoc/outgoing_calls.html#create-an-outgoing-call
+router.post('/outgoing_calls', function(req, res) {
+  //res.json({
+  //  "status": 200,
+  //  "message": "Outgoing call qeued successfully",
+  //  "data": {
+  //    id: 2345554
+  //  }
+  //});
+  res.json({
+    "status": 200,
+    "message": "Outgoing call qeued successfully",
+    "data": 2345554 
+  });
+});
+
+// https://go.votomobile.org/apidoc/outgoing_calls.html#list-details-of-an-outgoing-call
+router.get('/outgoing_calls/:id', function(req, res) {
+  res.json({
+    "status": 200,
+    "code": 1000,
+    "data": {
+      "outgoing_call": {
+        "id": "2345554",
+        "schedule_type": "1",
+        "send_to_all": "1",
+        "has_sms": "1",
+        "has_voice": "0",
+        "message_id": null,
+        "survey_id": "202385",
+        "tree_id": null,
+        "poll_id": "233077",
+        "routine_days": null,
+        "scheduled_date": "2014-09-15",
+        "queued_on": "2014-09-15 14:02:21",
+        "retry_attempts_short": "3",
+        "retry_attempts_long": "1",
+        "retry_delay_short": "1",
+        "retry_delay_long": "60",
+        "retry_count_short": "0",
+        "retry_count_long": "0",
+        "created_at": "2014-09-15 14:02:21",
+        "updated_at": "2015-09-15 18:50:36",
+        "webhook": {
+          "url": "https://someapi.io/webhooks/requests",
+          "method": "POST",
+          "secret": "my-app-secret"
+        }
+      }
+    },
+    "message": "Outgoing Call Details Fetched successfully",
+    "more_info": ""
+  });
 });
 
 app.use('/api/v1', router);

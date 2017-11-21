@@ -10,6 +10,7 @@ module FarmRadio.Uliza.Registration
   , FarmRadio.Uliza.Registration.port
   , FarmRadio.Uliza.Registration.ulizaApi
   , FarmRadio.Uliza.Registration.votoApi
+  , FarmRadio.Uliza.Registration.votoApiKey
   , FarmRadio.Uliza.Registration.logLevel
   , FarmRadio.Uliza.Registration.scheduleOffset
   , FarmRadio.Uliza.Registration.callMinDelay
@@ -25,32 +26,39 @@ module FarmRadio.Uliza.Registration
   , ulizaApiGet
   , ulizaApiGetOne
   , votoApiGet
+  , votoApiPost
   , runRegistrationHandler
+  , extract
   ) where
 
+import Control.Applicative                    ( (<|>) )
 import Control.Exception.Safe
 import Control.Lens
-import Control.Monad                    ( void )
+import Control.Monad                          ( void )
 import Control.Monad.IO.Class
-import Control.Monad.State              ( StateT, evalStateT )
+import Control.Monad.State                    ( StateT, evalStateT )
 import Control.Monad.Trans.Either
 import Data.Aeson
-import Data.Maybe                       ( fromMaybe, fromJust )
+import Data.Either.Utils                      ( maybeToEither )
+import Data.Maybe                             ( fromMaybe, fromJust )
 import Data.Monoid
+import Data.Text                              ( pack )
 import Data.Time
 import Data.URLEncoded
-import Network.HTTP.Base                ( urlEncodeVars )
-import Network.HTTP.Client              ( HttpExceptionContent(..)
-                                        , HttpException(..) )
-import Network.WebSockets               ( Connection )
-import Network.Wreq
-import Network.Wreq.Session             ( Session )
-import Network.Wreq.Types
-import System.Log.Logger                ( Priority )
+import Network.HTTP.Base                      ( urlEncodeVars )
+import Network.HTTP.Client                    ( HttpExceptionContent(..)
+                                              , HttpException(..) )
+import Network.WebSockets                     ( Connection )
+import Network.Wreq                    hiding ( params )
+import Network.Wreq.Session                   ( Session )
+import Network.Wreq.Types                     ( Postable )
+import System.Log.Logger                      ( Priority )
+import Text.Read                              ( readMaybe )
 
-import qualified Control.Monad.State as State
-import qualified Data.ByteString.Lazy as BL
-import qualified FarmRadio.Uliza.Api.Client as ApiClient
+import qualified Control.Monad.State          as State
+import qualified Data.ByteString.Lazy         as BL
+import qualified Data.URLEncoded              as URLEncoded
+import qualified FarmRadio.Uliza.Api.Client   as ApiClient
 
 -- | Configuration data picked up from the system's environment variables.
 data AppConfig = AppConfig
@@ -60,6 +68,8 @@ data AppConfig = AppConfig
   -- ^ (ULIZA_API_URL) Uliza API base url
   , _votoApi         :: !String
   -- ^ (VOTO_API_URL) VOTO API base url
+  , _votoApiKey      :: !String
+  -- ^ (VOTO_API_KEy) VOTO API key
   , _logLevel        :: !Priority
   -- ^ (LOG_LEVEL) Verbosity level of the debug output
   , _scheduleOffset  :: !NominalDiffTime
@@ -171,7 +181,8 @@ ulizaApiGet :: FromJSON a
             -> [(String, String)]
             -- ^ A list of query string parameters as key-value pairs.
             -> RegistrationHandler (Maybe a)
-ulizaApiGet ep params = do
+ulizaApiGet ep params = handle ulizaApiException $ do
+
     state <- State.get
     url <- ulizaEndpoint ep
     ApiClient.get (state ^. wreqOptions)
@@ -217,6 +228,7 @@ parseUlizaResponse response =
       201 -> ok                          -- 201 CREATED
       202 -> ok                          -- 202 ACCEPTED
       204 -> ok                          -- 204 NO CONTENT
+      404 -> right Nothing               -- 404 NOT FOUND
 --      400 -> left
 --      401 -> left AuthenticationError
 --      404 -> left NotFoundError
@@ -226,23 +238,39 @@ parseUlizaResponse response =
     ok = right $ decode (response ^. responseBody)
 
 votoApiGet :: FromJSON a => String -> RegistrationHandler (Maybe a)
-votoApiGet ep = do
+votoApiGet ep = {- handle votoApiException $ -} do
     state <- State.get
     url <- votoEndpoint ep
+    let key = state ^. config . votoApiKey 
     ApiClient.get (state ^. wreqOptions)
                   (state ^. session)
-                  (resourceUrl url []) & liftIO
+                  (resourceUrl url [("api_key", key)]) & liftIO 
     >>= parseVotoResponse
+
+votoApiPost :: (Postable a, ToJSON a, FromJSON b)
+            => String 
+            -> a
+            -> RegistrationHandler (Maybe b)
+votoApiPost endpoint body = {- handle votoApiException $ -} do
+    state <- State.get
+    url <- votoEndpoint endpoint
+    let key = state ^. config . votoApiKey 
+    ApiClient.post (state ^. wreqOptions)
+                   (state ^. session)
+                   (resourceUrl url [("api_key", key)])
+                   body & liftIO
+    >>= parseUlizaResponse
 
 parseVotoResponse :: FromJSON a
                   => Response BL.ByteString
                   -> RegistrationHandler (Maybe a)
-parseVotoResponse response =
+parseVotoResponse response = 
     case response ^. responseStatus . statusCode of
       200 -> ok                          -- 200 OK
       201 -> ok                          -- 201 CREATED
       202 -> ok                          -- 202 ACCEPTED
       204 -> ok                          -- 204 NO CONTENT
+      404 -> right Nothing               -- 404 NOT FOUND
 --      400 -> left
 --      401 -> left AuthenticationError
 --      404 -> left NotFoundError
@@ -250,3 +278,8 @@ parseVotoResponse response =
       err -> left (VotoApiError "TODO")
   where
     ok = right $ decode (response ^. responseBody)
+
+extract :: (Read a) => String -> RegistrationHandler a
+extract key = State.get >>= maybeToEither BadRequestError . \state -> do
+    val <- URLEncoded.lookup key (state ^. params)
+    readMaybe val <|> readMaybe (show val)

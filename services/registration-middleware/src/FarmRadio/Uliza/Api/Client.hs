@@ -26,7 +26,9 @@ post :: (Postable a, ToJSON a)
      -> IO (Response Lazy.ByteString)  -- ^ Response as a lazy 'ByteString'
 post options session url body = do
     logDebugJSON ("POST" <> " " <> url) body
-    Network.Wreq.Session.postWith options session url body
+    resp <- Network.Wreq.Session.postWith options session url body
+    logDebug ("raw_response") (show $ resp ^. responseBody)
+    return resp
 
 -- | Send a PATCH request to the provided url and return the response.
 patch :: (Postable a, ToJSON a)
@@ -37,7 +39,9 @@ patch :: (Postable a, ToJSON a)
       -> IO (Response Lazy.ByteString)  -- ^ Response as a lazy 'ByteString'
 patch options session url body = do
     logDebugJSON ("PATCH" <> " " <> url) body
-    Network.Wreq.Session.customPayloadMethodWith "PATCH" options session url body
+    resp <- Network.Wreq.Session.customPayloadMethodWith "PATCH" options session url body
+    logDebug ("raw_response") (show $ resp ^. responseBody)
+    return resp
 
 -- | Send a GET request to the provided url and return the response.
 get :: Options                         -- ^ Wreq options
@@ -46,4 +50,6 @@ get :: Options                         -- ^ Wreq options
     -> IO (Response Lazy.ByteString)   -- ^ Response as a lazy 'ByteString'
 get options session url = do
     logDebug ("GET" <> " " <> url) ""
-    Network.Wreq.Session.getWith options session url
+    resp <- Network.Wreq.Session.getWith options session url
+    logDebug ("raw_response") (show $ resp ^. responseBody)
+    return resp

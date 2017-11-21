@@ -72,7 +72,7 @@ function acquireBaseImages() {
   return docker.listImages()
   .then(function(images) {
     var cached = imageTags(images);
-    return Promise.all(['python:2.7.12', 'haskell:8', 'mysql:5.7']
+    return Promise.all(['python:2.7.12', 'haskell:8', 'mysql:5.7', 'node:6']
     .filter(function(name) { 
       var found = -1 !== cached.indexOf(name)
       if (found) {

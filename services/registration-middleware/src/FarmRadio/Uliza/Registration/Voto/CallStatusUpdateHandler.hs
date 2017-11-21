@@ -3,7 +3,6 @@ module FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
   ( votoCallStatusUpdate
   ) where
 
-import Control.Applicative                            ( (<|>) )
 import Control.Lens
 import Control.Monad.IO.Class
 import Control.Monad.State
@@ -13,17 +12,14 @@ import Data.Aeson.Lens
 import Data.Either.Utils                              ( maybeToEither )
 import Data.Maybe
 import Data.Monoid
-import Data.URLEncoded                                ( URLEncoded )
 import FarmRadio.Uliza.Api.Participant
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
 import FarmRadio.Uliza.Registration.Participant
 import FarmRadio.Uliza.Registration.SubscriberDetails
-import Text.Read                                      ( readMaybe )
 
 import qualified Data.ByteString.Lazy.Char8           as B8
-import qualified Data.URLEncoded                      as URLEncoded
 
 -- | Response handler for VOTO call status update webhook.
 votoCallStatusUpdate :: RegistrationHandler Value
@@ -75,11 +71,6 @@ getVotoSubscriber sid = do
   where
     getSubscriber :: RegistrationHandler (Maybe Value)
     getSubscriber = votoApiGet ("/subscribers/" <> show sid)
-
-extract :: (Read a) => String -> RegistrationHandler a
-extract key = get >>= maybeToEither BadRequestError . \state -> do
-    val <- URLEncoded.lookup key (state ^. params)
-    readMaybe val <|> readMaybe (show val)
 
 isCallComplete :: RegistrationHandler Bool
 isCallComplete = (== 6) <$> extract "delivery_status"
