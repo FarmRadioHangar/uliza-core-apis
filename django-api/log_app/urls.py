@@ -98,6 +98,6 @@ urlpatterns = patterns('',
 )
 
 
-from api_core import settings
-if settings.DEBUG == True:
-    urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
+# from api_core import settings
+# if settings.DEBUG == True:
+#     urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
