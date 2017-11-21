@@ -13,22 +13,27 @@ class ProjectSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class ProgramSerializer(serializers.ModelSerializer):
-	station_name = serializers.CharField(source='radio_station.name',read_only=True)
-	project_name = serializers.CharField(source='project.name',read_only=True)
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
+	project__name = serializers.CharField(source='project.name',read_only=True)
 	country = serializers.CharField(source='radio_station.country.id',read_only=True)
 
 	class Meta:
 		model = Program
 		fields = "__all__"
-	
+
 
 class CountrySerializer(serializers.ModelSerializer):
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
+	program__name = serializers.CharField(source='program.name',read_only=True)
 
 	class Meta:
 			model = Country
 			fields = "__all__"
 
 class LogSerializer(serializers.ModelSerializer):
+	project = serializers.IntegerField(source='program.project.id',read_only=True)
+	program__name = serializers.CharField(source='program.name',read_only=True)
+
 	class Meta:
 		model = Log
 		fields = "__all__"
@@ -39,6 +44,15 @@ class CommentSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 
+class ContactSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Contact
+		fields = "__all__"
+
+class Auth0UserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Auth0User
+		fields = "__all__"
 
 class PresenterSerializer(serializers.ModelSerializer):
 	class Meta:
