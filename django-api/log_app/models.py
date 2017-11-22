@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from api_core.settings import GDRIVE_STORAGE
+from django.utils.translation import ugettext, ugettext_lazy as _
+from django.core import validators
 
 class Account(User):
 	def is_admin(self):
 		j = Administrator.objects.filter(user=self)
-		
+
 		if(j):
 			return j[0]
 		else:
@@ -17,6 +19,28 @@ class Account(User):
 		return programs.count()
 	class Meta:
 		proxy=True
+
+class Auth0User(models.Model):
+    username = models.CharField(_('username'), max_length=30, unique=True,
+        help_text=_('Required. 30 characters or fewer. Letters, digits and '
+                    '@/./+/-/_ only.'),
+        validators=[
+            validators.RegexValidator(r'^[\w.@+-]+$',
+                                      _('Enter a valid username. '
+                                        'This value may contain only letters, numbers '
+                                        'and @/./+/-/_ characters.'), 'invalid'),
+        ],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        })
+    password = models.CharField(_('password'), max_length=128)
+    role = models.CharField(max_length=50)
+    email = models.EmailField(_('email address'), blank=True)
+    is_super_user = models.BooleanField(_('super user'), default=False,
+        help_text=_('Designates whether the user can have access to multiple countries site.'))
+    notify_on_log_create = models.BooleanField(_('notify on new log'), default=False,
+        help_text=_('If the user prefers to get notification or not'))
+
 
 class Country(models.Model):
 	name = models.CharField(max_length=50)
@@ -66,7 +90,7 @@ class Log(models.Model):
 	presenter = models.ForeignKey("Presenter",blank=True,null=True)
 	saved_by = models.ForeignKey(User,blank=True,null=True)
 	topic = models.CharField(max_length=30,null=True,blank=True)
-	
+
 	focus_statement = models.TextField(null=True,blank=True)
 	ict = models.TextField(blank=True,null=True)
 	duration = models.IntegerField(null=True,blank=True)
@@ -158,10 +182,10 @@ class Project(models.Model):
 		return self.name
 
 languages = (
-	('en-us', 'English'), 
-	('pt-mz', 'Portuguese'),  
-	('am-et', 'Amharic'),  
-	('fr-fr', 'Francais')  
+	('en-us', 'English'),
+	('pt-mz', 'Portuguese'),
+	('am-et', 'Amharic'),
+	('fr-fr', 'Francais')
 )
 
 class Presenter(models.Model):
@@ -211,8 +235,27 @@ class Administrator(models.Model):
 		return self.user.username
 
 
+# Contact
+class Contact(models.Model):
+	user_id = models.CharField(null=True, blank=True, max_length=120)
+	radio_station = models.IntegerField(null=True, blank=True, default=None)
+	first_name = models.CharField(null=True, blank=True, max_length=30)
+	last_name = models.CharField(null=True, blank=True, max_length=30)
+	job_title = models.CharField(null=True,blank=True, max_length=100)
+	organization = models.CharField(null=True, blank=True, max_length=100)
+	phone_number = models.CharField(max_length=50,null=True,blank=True)
+	organization = models.CharField(max_length=64,null=True)
+	role = models.CharField(max_length=64,null=True)
+	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	country = models.ForeignKey('Country', null=True)
+
+
+	def __unicode__(self):
+		return self.first_name
+
+
 class Program(models.Model):
-	
+
 	days = (
 	    ('Mon', 'Monday'),
 	    ('Tue', 'Tuesday'),
@@ -231,9 +274,9 @@ class Program(models.Model):
 
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=50)
-	
-	from datetime import datetime
-	start_date = models.DateTimeField()
+
+	from django.utils import timezone
+	start_date = models.DateTimeField(default=timezone.now)
 	end_date = models.DateField(null=True)
 
 	repeat_week_day = models.CharField(max_length=3,null=True,blank=True,choices=days)
@@ -243,7 +286,7 @@ class Program(models.Model):
 	weeks = models.IntegerField()
 
 	access = models.ManyToManyField(User,blank=True)
-	
+
 	# Time track
 	last_updated_at = models.DateTimeField(auto_now=True)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -256,7 +299,7 @@ class Program(models.Model):
 		from django.utils import timezone
 		today = timezone.now()
 		start_date = self.start_date
-		
+
 		if today<start_date:
 			today = start_date
 		week = self.end_date - today.date()
@@ -285,4 +328,3 @@ class Program(models.Model):
 
 	def __unicode__(self):
 		return self.name
-

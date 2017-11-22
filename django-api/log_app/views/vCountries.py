@@ -11,7 +11,7 @@ class CountryGet(generics.ListCreateAPIView):
     queryset = Country.objects.all()
     model = Country
     serializer_class = CountrySerializer
-    filter_fields = ['id']
+    filter_fields = ['id','country_code']
 
 class CountryEntity(generics.RetrieveUpdateAPIView):
 
