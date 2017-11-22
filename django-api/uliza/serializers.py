@@ -15,6 +15,7 @@ class ParticipantSerializer(serializers.Serializer):
     registration_status = serializers.ChoiceField(choices=registration_status)
     registration_call = serializers.PrimaryKeyRelatedField(read_only=True)
     created_at = serializers.DateTimeField(required=False)
+    location = serializers.CharField(max_length=100, required=False)
     attributes = serializers.DictField(
             required=False,
             child=serializers.CharField(),
@@ -24,7 +25,8 @@ class ParticipantSerializer(serializers.Serializer):
     def create(self, validated_data):
         instance = Participant(
                 phone_number=validated_data.get('phone_number'),
-                registration_status=validated_data.get('registration_status')
+                registration_status=validated_data.get('registration_status'),
+                location=validated_data.get('location')
         )
         instance.save()
         return instance

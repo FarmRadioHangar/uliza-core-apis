@@ -15,9 +15,7 @@ class Participant(models.Model):
                                            choices=registration_status)
     registration_call = models.ForeignKey('RegistrationCall', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    location = models.CharField(max_length=20,
-                                null=True,
-                                default='NULL')
+    location = models.CharField(max_length=100, null=True)
 
     def attributes_eav_dict(self):
         return self.eav.get_values_dict()
