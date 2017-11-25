@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from uliza.views.Participants import (
         Participants,
         ParticipantsInstance)
@@ -12,33 +12,28 @@ from uliza.views.VotoSurveyRegistrationTree import (
         VotoSurveyRegistrationTreeCollection,
         VotoSurveyRegistrationTreeInstance)
 
-participants = patterns(
-    'uliza.views.Participants',
+participants = [
     url(r'/(?P<id>\d+)$', ParticipantsInstance.as_view()),
     url(r'$', Participants.as_view()),
-)
+]
 
-registration_calls = patterns(
-    'uliza.views.RegistrationCalls',
+registration_calls = [
     url(r'/(?P<id>\d+)$', RegistrationCallsInstance.as_view()),
     url(r'$', RegistrationCalls.as_view()),
-)
+]
 
-voto_webhook_log = patterns(
-    'uliza.views.VotoWebhookLog',
+voto_webhook_log = [
     url(r'/(?P<id>\d+)$', VotoWebhookLogInstance.as_view()),
     url(r'$', VotoWebhookLogCollection.as_view()),
-)
+]
 
-voto_survey_registration_tree = patterns(
-    'uliza.views.VotoSurveyRegistrationTree',
+voto_survey_registration_tree = [
     url(r'/(?P<voto_survey_id>\d+)$',
         VotoSurveyRegistrationTreeInstance.as_view()),
     url(r'$', VotoSurveyRegistrationTreeCollection.as_view()),
-)
+]
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'participants', include(participants, 'participants')),
     url(r'registration_calls', include(registration_calls,
         'registration_calls')),
@@ -47,4 +42,4 @@ urlpatterns = patterns(
         voto_survey_registration_tree,
         'voto_survey_registration_tree'
     ))
-)
+]
