@@ -53,7 +53,28 @@ docker run \
   --name ulizatests_middleware \
   farmradio/registration_service
 
-
 docker exec -it ulizatests_api python manage.py migrate
+
+function get_port () {
+  docker ps \
+      --format "{{.Ports}}" \
+      --filter "name=$1" | sed -n 's/[^:]*:\([0-9]*\).*/\1/p' 
+}
+
+OUT="\
+REG_SERVICE_URL=http://0.0.0.0:$(get_port ulizatests_middleware)\n\
+DB_HOST=0.0.0.0\n\
+DB_PORT=$(get_port ulizatests_db)\n\
+VOTO_API_URL=http://0.0.0.0:$(get_port ulizatests_voto)/api/v1\n\
+VOTO_API_KEY=XXX_TEST_KEY_XXX"
+
+echo -e "---------------------------------------------------\
+ \n$OUT\n---------------------------------------------------\n"
+
+read -r -p "Write above contents to .env? [y/N] " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+then
+    echo -e $OUT > .env
+fi
 
 docker ps
