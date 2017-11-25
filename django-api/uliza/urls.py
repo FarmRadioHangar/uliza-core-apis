@@ -6,10 +6,10 @@ from uliza.views.RegistrationCalls import (
         RegistrationCalls,
         RegistrationCallsInstance)
 from uliza.views.VotoWebhookLog import (
-        VotoWebhookLogDefault,
+        VotoWebhookLogCollection,
         VotoWebhookLogInstance)
 from uliza.views.VotoSurveyRegistrationTree import (
-        VotoSurveyRegistrationTreeDefault,
+        VotoSurveyRegistrationTreeCollection,
         VotoSurveyRegistrationTreeInstance)
 
 participants = patterns(
@@ -27,14 +27,14 @@ registration_calls = patterns(
 voto_webhook_log = patterns(
     'uliza.views.VotoWebhookLog',
     url(r'/(?P<id>\d+)$', VotoWebhookLogInstance.as_view()),
-    url(r'$', VotoWebhookLogDefault.as_view()),
+    url(r'$', VotoWebhookLogCollection.as_view()),
 )
 
 voto_survey_registration_tree = patterns(
     'uliza.views.VotoSurveyRegistrationTree',
     url(r'/(?P<voto_survey_id>\d+)$',
         VotoSurveyRegistrationTreeInstance.as_view()),
-    url(r'$', VotoSurveyRegistrationTreeDefault.as_view()),
+    url(r'$', VotoSurveyRegistrationTreeCollection.as_view()),
 )
 
 urlpatterns = patterns(
