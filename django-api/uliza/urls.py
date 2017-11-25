@@ -1,10 +1,16 @@
 from django.conf.urls import patterns, include, url
-from rest_framework.urlpatterns import format_suffix_patterns
-from uliza import views
-from uliza.views.Participants import *
-from uliza.views.RegistrationCalls import *
-from uliza.views.VotoWebhookLog import *
-from uliza.views.VotoSurveyRegistrationTree import *
+from uliza.views.Participants import (
+        Participants,
+        ParticipantsInstance)
+from uliza.views.RegistrationCalls import (
+        RegistrationCalls,
+        RegistrationCallsInstance)
+from uliza.views.VotoWebhookLog import (
+        VotoWebhookLogDefault,
+        VotoWebhookLogInstance)
+from uliza.views.VotoSurveyRegistrationTree import (
+        VotoSurveyRegistrationTreeDefault,
+        VotoSurveyRegistrationTreeInstance)
 
 participants = patterns(
     'uliza.views.Participants',
@@ -26,7 +32,8 @@ voto_webhook_log = patterns(
 
 voto_survey_registration_tree = patterns(
     'uliza.views.VotoSurveyRegistrationTree',
-    url(r'/(?P<voto_survey_id>\d+)$', VotoSurveyRegistrationTreeInstance.as_view()),
+    url(r'/(?P<voto_survey_id>\d+)$',
+        VotoSurveyRegistrationTreeInstance.as_view()),
     url(r'$', VotoSurveyRegistrationTreeDefault.as_view()),
 )
 
