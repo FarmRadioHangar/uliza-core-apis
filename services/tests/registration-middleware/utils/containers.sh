@@ -51,7 +51,7 @@ docker run \
   -p "0:3034" \
   -e "PORT=3034" \
   -e "LOG_LEVEL=DEBUG" \
-  -e "VOTO_API_URL=http://ulizatest_voto:8089/api/v1" \
+  -e "VOTO_API_URL=http://ulizatests_voto:8089/api/v1" \
   -e "ULIZA_API_URL=http://ulizatests_api:8000/api/v1" \
   -e "CALL_SCHEDULE_OFFSET=600" \
   -e "MIN_RESCHEDULE_DELAY=172800" \
