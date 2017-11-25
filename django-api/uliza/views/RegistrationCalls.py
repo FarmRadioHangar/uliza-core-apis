@@ -1,6 +1,10 @@
 from rest_framework import generics
-from uliza.models import Participant, RegistrationCall, ParticipantRegistrationStatusLog
+from uliza.models import (
+        Participant,
+        RegistrationCall,
+        ParticipantRegistrationStatusLog)
 from uliza.serializers import RegistrationCallSerializer
+
 
 class RegistrationCalls(generics.ListCreateAPIView):
 
@@ -17,9 +21,10 @@ class RegistrationCalls(generics.ListCreateAPIView):
             participant.save()
             log_entry = ParticipantRegistrationStatusLog(
                     registration_call=call,
-                    participant=participant, 
+                    participant=participant,
                     event_type='REGISTRATION_CALL_SCHEDULED')
             log_entry.save()
+
 
 class RegistrationCallsInstance(generics.RetrieveUpdateAPIView):
 
