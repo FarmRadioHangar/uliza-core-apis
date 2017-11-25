@@ -3,7 +3,7 @@ from uliza.models import VotoSurveyRegistrationTree
 from uliza.serializers import VotoSurveyRegistrationTreeSerializer
 
 
-class VotoSurveyRegistrationTreeDefault(generics.ListCreateAPIView):
+class VotoSurveyRegistrationTreeCollection(generics.ListCreateAPIView):
 
     queryset = VotoSurveyRegistrationTree.objects.all()
     model = VotoSurveyRegistrationTree
