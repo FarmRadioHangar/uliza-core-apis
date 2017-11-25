@@ -69,7 +69,7 @@ function get_port () {
       --filter "name=$1" | sed -n 's/[^:]*:\([0-9]*\).*/\1/p' 
 }
 
-# Create ENV variables for tests
+# Collect ENV variables for tests
 OUT="\
 REG_SERVICE_URL=http://0.0.0.0:$(get_port ulizatests_middleware)\n\
 DB_HOST=0.0.0.0\n\
