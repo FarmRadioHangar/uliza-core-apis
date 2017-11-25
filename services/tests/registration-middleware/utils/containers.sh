@@ -53,4 +53,7 @@ docker run \
   --name ulizatests_middleware \
   farmradio/registration_service
 
+
+docker exec -it ulizatests_api python manage.py migrate
+
 docker ps
