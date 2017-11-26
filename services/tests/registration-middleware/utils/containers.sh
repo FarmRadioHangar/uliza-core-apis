@@ -92,3 +92,6 @@ fi
 
 # List running containers
 docker ps
+
+# API
+# docker ps --filter "name=ulizatests_api" --format "{{.Ports}}" | sed -n 's/\([0-9.:]*\).*/\1/p'

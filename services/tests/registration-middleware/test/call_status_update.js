@@ -97,7 +97,7 @@ describe('/call_status_updates', function() {
         port     : DB_PORT,
         user     : 'root',
         password : 'root',
-        database : 'api_core'
+        database : 'uliza_core'
       });
       return self._db.connect();
     })
