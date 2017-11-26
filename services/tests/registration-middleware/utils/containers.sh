@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Remove containers left over from earlier sessions
+# Remove any containers left over from earlier sessions
 docker rm --force $(docker ps -aq --filter "name=ulizatests_*") 2> /dev/null
 
 # Create and run mysql container
@@ -61,7 +61,8 @@ docker run \
   farmradio/registration_service
 
 # Apply database migrations
-docker exec -it ulizatests_api python manage.py migrate
+docker exec -it ulizatests_api ./django.sh makemigrations
+docker exec -it ulizatests_api ./django.sh migrate
 
 function get_port () {
   docker ps \
