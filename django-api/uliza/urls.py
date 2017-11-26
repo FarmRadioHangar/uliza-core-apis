@@ -13,22 +13,22 @@ from uliza.views.VotoSurveyRegistrationTree import (
         VotoSurveyRegistrationTreeInstance)
 
 participants = [
-    url(r'/(?P<id>\d+)$', ParticipantsInstance.as_view()),
+    url(r'(?P<id>\d+)$', ParticipantsInstance.as_view()),
     url(r'$', Participants.as_view()),
 ]
 
 registration_calls = [
-    url(r'/(?P<id>\d+)$', RegistrationCallsInstance.as_view()),
+    url(r'(?P<id>\d+)$', RegistrationCallsInstance.as_view()),
     url(r'$', RegistrationCalls.as_view()),
 ]
 
 voto_webhook_log = [
-    url(r'/(?P<id>\d+)$', VotoWebhookLogInstance.as_view()),
+    url(r'(?P<id>\d+)$', VotoWebhookLogInstance.as_view()),
     url(r'$', VotoWebhookLogCollection.as_view()),
 ]
 
 voto_survey_registration_tree = [
-    url(r'/(?P<voto_survey_id>\d+)$',
+    url(r'(?P<voto_survey_id>\d+)$',
         VotoSurveyRegistrationTreeInstance.as_view()),
     url(r'$', VotoSurveyRegistrationTreeCollection.as_view()),
 ]
