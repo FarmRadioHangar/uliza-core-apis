@@ -6,7 +6,7 @@ docker rm --force $(docker ps -aq --filter "name=ulizatests_*") 2> /dev/null
 # Create and run mysql container
 docker run \
   -d \
-  -e "MYSQL_DATABASE=api_core" \
+  -e "MYSQL_DATABASE=uliza_core" \
   -e "MYSQL_ROOT_PASSWORD=root" \
   -p"0:3306" \
   --name ulizatests_db \
@@ -35,7 +35,7 @@ docker run \
   -d \
   -e "DEBUG=true" \
   -e "DB_ENGINE=django.db.backends.mysql" \
-  -e "DB_NAME=api_core" \
+  -e "DB_NAME=uliza_core" \
   -e "DB_USER=root" \
   -e "DB_PASSWORD=root" \
   -e "DB_SERVICE_HOST=ulizatests_db" \
