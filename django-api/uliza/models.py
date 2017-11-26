@@ -10,6 +10,10 @@ registration_status = (
 
 @register_eav()
 class Participant(models.Model):
+    """
+    A mobile phone subscriber who have participated in a poll; uniquely
+    identified by their phone number.
+    """
     phone_number = models.CharField(max_length=20)
     registration_status = models.CharField(max_length=100,
                                            choices=registration_status)
@@ -25,6 +29,9 @@ class Participant(models.Model):
 
 
 class RegistrationCall(models.Model):
+    """
+    A scheduled VOTO call associated with a registration tree.
+    """
     phone_number = models.CharField(max_length=20)
     scheduled_time = models.DateTimeField()
     voto_call_id = models.IntegerField()
@@ -43,6 +50,9 @@ registration_event_types = (
 
 
 class ParticipantRegistrationStatusLog(models.Model):
+    """
+    Registration status change log for :model:`Participant`s.
+    """
     participant = models.ForeignKey('Participant')
     registration_call = models.ForeignKey('RegistrationCall', null=True)
     event_type = models.CharField(max_length=100,
