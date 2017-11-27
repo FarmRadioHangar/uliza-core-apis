@@ -8,7 +8,7 @@ docker run \
   -d \
   -e "MYSQL_DATABASE=uliza_core" \
   -e "MYSQL_ROOT_PASSWORD=root" \
-  -p"0:3306" \
+  -p "0:3306" \
   --name ulizatests_db \
   mysql:5.7
 
