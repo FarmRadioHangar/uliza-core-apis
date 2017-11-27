@@ -64,7 +64,7 @@ ROOT_URLCONF = 'api_core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'uliza', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
