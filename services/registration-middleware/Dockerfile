@@ -1,6 +1,10 @@
 FROM haskell:8
 
-COPY . /home/
+ADD app /home/app
+ADD Setup.hs /home/Setup.hs
+ADD simple.cabal /home/simple.cabal
+ADD src /home/src
+ADD test /home/test
 
 WORKDIR /home
 
