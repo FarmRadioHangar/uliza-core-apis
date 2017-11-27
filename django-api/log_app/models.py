@@ -4,22 +4,6 @@ from api_core.settings import GDRIVE_STORAGE
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.core import validators
 
-class Account(User):
-	def is_admin(self):
-		j = Administrator.objects.filter(user=self)
-
-		if(j):
-			return j[0]
-		else:
-			return False
-	def access_programs(self):
-		admin = Administrator.objects.filter(user=self)
-		programs = Program.objects.filter(radio_station__country = admin[0].country)
-
-		return programs.count()
-	class Meta:
-		proxy=True
-
 class Auth0User(models.Model):
     username = models.CharField(_('username'), max_length=30, unique=True,
         help_text=_('Required. 30 characters or fewer. Letters, digits and '
