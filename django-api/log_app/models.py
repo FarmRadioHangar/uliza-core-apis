@@ -269,7 +269,7 @@ class Program(models.Model):
 
 	weeks = models.IntegerField()
 
-	access = models.ManyToManyField(User,blank=True)
+	access = models.ManyToManyField(Contact,blank=True)
 
 	# Time track
 	last_updated_at = models.DateTimeField(auto_now=True)
