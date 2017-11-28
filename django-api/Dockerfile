@@ -13,7 +13,8 @@ RUN virtualenv env && \
     pip install --upgrade pip && \
     pip install -r requirements.txt && \
     django-admin startproject core_api . && \
-    python manage.py startapp uliza
+    python manage.py startapp uliza && \
+    chmod +x django.sh
 
 ADD docker /django
 ADD uliza /django/uliza
