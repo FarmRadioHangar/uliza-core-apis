@@ -11,6 +11,7 @@ from uliza.views.VotoWebhookLog import (
 from uliza.views.VotoSurveyRegistrationTree import (
         VotoSurveyRegistrationTreeCollection,
         VotoSurveyRegistrationTreeInstance)
+from uliza.views.APIRoot import APIRoot
 
 participants = [
     url(r'^(?P<id>\d+)$', ParticipantsInstance.as_view()),
@@ -34,6 +35,7 @@ voto_survey_registration_tree = [
 ]
 
 urlpatterns = [
+    url(r'^$', APIRoot.as_view()),
     url(r'^participants/', include(participants, 'participants')),
     url(r'^registration_calls/', include(registration_calls,
         'registration_calls')),

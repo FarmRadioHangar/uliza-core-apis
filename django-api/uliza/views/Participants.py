@@ -5,10 +5,10 @@ from uliza.serializers import ParticipantSerializer
 
 class Participants(generics.ListCreateAPIView):
     """
-    get:
+    GET:
     Return a list of existing participants.
 
-    post:
+    POST:
     Create a new participant instance.
     """
 
@@ -20,13 +20,13 @@ class Participants(generics.ListCreateAPIView):
 
 class ParticipantsInstance(generics.RetrieveUpdateAPIView):
     """
-    get:
+    GET:
     Return a single participant, identified by the id parameter.
 
-    put:
+    PUT:
     Update the participant identified by the id parameter.
 
-    patch:
+    PATCH:
     Perform a partial update of the participant identified by the id parameter.
     """
 
