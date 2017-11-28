@@ -4,6 +4,13 @@ from uliza.serializers import ParticipantSerializer
 
 
 class Participants(generics.ListCreateAPIView):
+    """
+    get:
+    Return a list of existing participants.
+
+    post:
+    Create a new participant instance.
+    """
 
     queryset = Participant.objects.all()
     model = Participant
@@ -12,6 +19,16 @@ class Participants(generics.ListCreateAPIView):
 
 
 class ParticipantsInstance(generics.RetrieveUpdateAPIView):
+    """
+    get:
+    Return a single participant, identified by the id parameter.
+
+    put:
+    Update the participant identified by the id parameter.
+
+    patch:
+    Perform a partial update of the participant identified by the id parameter.
+    """
 
     queryset = Participant.objects.all()
     model = Participant
