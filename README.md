@@ -1,3 +1,3 @@
 # farm-radio-api
 
-![](uliza-core-apis/browsable_api.png)
+![](https://raw.githubusercontent.com/FarmRadioHangar/uliza-core-apis/master/browsable_api.png)
