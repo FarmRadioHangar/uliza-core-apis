@@ -12,9 +12,9 @@ var down    = require('../utils/containers-down');
 
 var REG_SERVICE_URL = process.env.REG_SERVICE_URL || 'http://0.0.0.0:3034';
 var DB_HOST         = process.env.DB_HOST || '0.0.0.0';
-var DB_PORT         = process.env.DB_PORT || 3316;
-var ULIZA_API_URL   = 'http://0.0.0.0:8000/api/v1';
-var VOTO_API_URL    = 'http://0.0.0.0:8089/api/v1';
+var DB_PORT         = process.env.DB_PORT || 3306;
+var ULIZA_API_URL   = process.env.ULIZA_API_URL || 'http://0.0.0.0:8000/api/v1';
+var VOTO_API_URL    = process.env.VOTO_API_URL || 'http://0.0.0.0:8089/api/v1';
 var VOTO_API_KEY    = process.env.VOTO_API_KEY || 'xxxxxxxxxxxxxxxxxxxxxxxxx';
 
 chai.should();
@@ -97,7 +97,7 @@ describe('/call_status_updates', function() {
         port     : DB_PORT,
         user     : 'root',
         password : 'root',
-        database : 'api_core'
+        database : 'uliza_core'
       });
       return self._db.connect();
     })

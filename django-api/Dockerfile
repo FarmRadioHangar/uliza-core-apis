@@ -3,14 +3,7 @@ ENV LANG C.UTF-8
 
 RUN mkdir /django
 
-RUN apt-get -y update && \
-  apt-get install -y \
-  python \
-  python-dev \
-  python-pip \
-  python-psycopg2 \
-  mysql-client \
-  git
+RUN apt-get -y update && apt-get install -y mysql-client 
 
 ADD requirements.txt /django/requirements.txt
 ADD api_core /django/api_core
@@ -21,9 +14,8 @@ ADD manage.py /django/manage.py
 
 WORKDIR /django
 
-RUN pip install --upgrade pip && \
-  pip install --timeout 2000 -r requirements.txt 
+RUN pip install --upgrade pip && pip install -r requirements.txt 
 
 EXPOSE 8000
 
-CMD gunicorn -b :8000 django.wsgi
+CMD python manage.py runserver 0.0.0.0:8000

@@ -2,3 +2,4 @@
 api_core/settings.py
 .env
 env
+npm-debug.log

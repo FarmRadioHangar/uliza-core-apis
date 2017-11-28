@@ -45,7 +45,7 @@ createRegistrationCall phone votoId votoTreeId time =
   where
     call = [ ("phone_number"   , String phone)
            , ("scheduled_time" , String time) 
-           , ("voto_id"        , String (showt votoId)) 
+           , ("voto_call_id"   , String (showt votoId)) 
            , ("voto_tree_id"   , String (showt votoTreeId)) ]
 
 -- | Request the most recent 'RegistrationCall' for the provided participant 
