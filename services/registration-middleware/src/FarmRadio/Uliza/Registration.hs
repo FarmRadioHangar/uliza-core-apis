@@ -207,12 +207,12 @@ ulizaApiGetOne endpoint params pk = ulizaApiGet resource params
 ulizaEndpoint :: String -> RegistrationHandler String
 ulizaEndpoint url = do
     state <- State.get
-    return (state ^. config . ulizaApi <> url)
+    return (state^.config.ulizaApi <> "/" <> url <> "/")
 
 votoEndpoint :: String -> RegistrationHandler String
 votoEndpoint url = do
     state <- State.get
-    return (state ^. config . votoApi <> url)
+    return (state^.config.votoApi <> "/" <> url <> "/")
 
 resourceUrl :: String -> [(String, String)] -> String
 resourceUrl url = \case

@@ -27,7 +27,7 @@ scheduleVotoCall :: Text
 scheduleVotoCall phone treeId = do
     state <- get
     logDebugJSON "voto_call_scheduled" call & liftIO
-    votoApiPost "/outgoing_calls" call
+    votoApiPost "outgoing_calls" call
   where
     call = object [ ("send_to_phones" , String phone) 
                   , ("tree_id"        , String (showt treeId))
@@ -41,7 +41,7 @@ createRegistrationCall :: Text -- ^ Phone number
                        -> Text -- ^ Schedule time
                        -> RegistrationHandler (Maybe RegistrationCall)
 createRegistrationCall phone votoId votoTreeId time = 
-    ulizaApiPost "/registration_calls" (object call)
+    ulizaApiPost "registration_calls" (object call)
   where
     call = [ ("phone_number"   , String phone)
            , ("scheduled_time" , String time) 
@@ -58,10 +58,10 @@ getRegistrationCall Participant{..} = join <$> sequence call
 
 -- | Request the 'RegistrationCall' with the given id from the Uliza API.
 getRegistrationCallById :: Int -> RegistrationHandler (Maybe RegistrationCall)
-getRegistrationCallById = ulizaApiGetOne "/registration_calls" []
+getRegistrationCallById = ulizaApiGetOne "registration_calls" []
 
 getSurveyTreeAssociation :: Int -> RegistrationHandler (Maybe SurveyTreePair)
-getSurveyTreeAssociation = ulizaApiGetOne "/voto_survey_registration_tree" []
+getSurveyTreeAssociation = ulizaApiGetOne "voto_survey_registration_tree" []
 
 -- | Schedule a registration call for a participant at the given time.
 scheduleRegistrationCall :: Participant
@@ -73,7 +73,7 @@ scheduleRegistrationCall :: Participant
                          -> RegistrationHandler RegistrationCall
                          -- ^ Return the details of the scheduled call
 scheduleRegistrationCall Participant{ entityId = participantId, .. }
-                         time treeId = do
+                         time treeId = 
     -- Schedule an outgoing call with VOTO
     scheduleVotoCall phoneNumber treeId >>= maybeToEither votoErr 
     -- Post registration call to Uliza API

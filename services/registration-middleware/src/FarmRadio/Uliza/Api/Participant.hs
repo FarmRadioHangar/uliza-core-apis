@@ -26,8 +26,8 @@ getOrCreateParticipant [] = left BadRequestError
 getOrCreateParticipant ('+':phone) = getOrCreateParticipant phone
 getOrCreateParticipant phone = do
     -- Look up participant from subscriber's phone number
-    response <- ulizaApiGet "/participants" [ ("limit", "1")
-                                            , ("phone_number", phone) ]
+    response <- ulizaApiGet "participants" [ ("limit", "1")
+                                           , ("phone_number", phone) ]
     case response of
       Just (participant:_) -> do -- Participant exists: Done!
         logDebugJSON "participant_found" participant & liftIO
@@ -41,7 +41,7 @@ getOrCreateParticipant phone = do
 
 postParticipant :: String -- ^ Phone number
                 -> RegistrationHandler (Maybe Participant)
-postParticipant phone = ulizaApiPost "/participants" (object participant)
+postParticipant phone = ulizaApiPost "participants" (object participant)
   where
     participant = [ ("phone_number"        , String (Text.pack phone))
                   , ("registration_status" , "NOT_REGISTERED") ]
@@ -104,7 +104,7 @@ registerParticipant attributes Participant{ entityId = participantId, .. } = do
         "already_registered" 
         "Registering already registered listener."
     -- Update the participant's registration_status 
-    fromMaybe Null <$> ulizaApiPatch "/participants" user (object body)
+    fromMaybe Null <$> ulizaApiPatch "participants" user (object body)
   where
     body  = [ ("registration_status", String "REGISTERED")
             , ("attributes", object props) ] 
