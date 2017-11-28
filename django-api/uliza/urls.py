@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^registration_calls/', include(registration_calls,
         'registration_calls')),
     url(r'^voto_webhook_log/', include(voto_webhook_log, 'voto_webhook_log')),
-    url(r'^voto_survey_registration_tree$', include(
+    url(r'^voto_survey_registration_tree/', include(
         voto_survey_registration_tree,
         'voto_survey_registration_tree'
     ))
