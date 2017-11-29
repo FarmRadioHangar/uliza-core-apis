@@ -78,8 +78,9 @@ fi
 docker run "${args[@]}" farmradio/registration_service
 
 # Apply database migrations
-docker exec -it ulizatestsapi ./django.sh makemigrations && \
-  docker exec -it ulizatestsapi ./django.sh migrate
+docker exec -it ulizatestsdb mysql -uroot -proot -e"USE uliza_core; DROP TABLE IF EXISTS django_migrations;"
+docker exec -it ulizatestsapi ./django.sh makemigrations 
+docker exec -it ulizatestsapi ./django.sh migrate
 
 function get_port () {
   docker ps \
