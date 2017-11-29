@@ -102,7 +102,8 @@ GOOGLE_DRIVE_STORAGE = {
 
 }
 
-STATIC_URL = '/static/'
+STATIC_URL = '/public/'
+STATIC_ROOT = 'public'
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
