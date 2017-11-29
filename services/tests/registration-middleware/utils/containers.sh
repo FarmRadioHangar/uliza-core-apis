@@ -67,6 +67,7 @@ args=(
 if [ "$LIVE_API" = true ] ; then
 args+=(
   -e "VOTO_API_URL=https://go.votomobile.org/api/v1" 
+  -e "VOTO_API_KEY=$2"
 )
 else
 args+=(
