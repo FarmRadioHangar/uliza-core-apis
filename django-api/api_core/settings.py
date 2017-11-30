@@ -95,8 +95,8 @@ DATABASES = {
 
 GOOGLE_DRIVE_STORAGE = {
     'service_account': {
-        'email': '483337829320-cb6pjf723llvsmjlk1iptv5n4ins06eb@developer\
-                 .gserviceaccount.com',
+        'email': ('483337829320-cb6pjf723llvsmjlk1iptv5n4ins06eb@developer'
+                  '.gserviceaccount.com'),
         'private_key_file_path': 'fri-log-665598a2cc6b.p12'
     }
 
