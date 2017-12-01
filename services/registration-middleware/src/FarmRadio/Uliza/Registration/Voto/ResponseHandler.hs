@@ -27,7 +27,7 @@ votoResponse = do
     let body = state ^. requestBody
     -- Log raw VOTO webhook request object
     logDebug "incoming_response" (B8.unpack body) & liftIO
-    ulizaApiPost_ "/voto_webhook_log" $ object
+    ulizaApiPost_ "voto_webhook_log" $ object
       [ ("data"     , String (toText body))
       , ("endpoint" , "responses") ]
     phone  <- extract "subscriber_phone"

@@ -71,8 +71,27 @@ class VotoWebhookLogSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class VotoSurveyRegistrationTreeSerializer(serializers.ModelSerializer):
+class VotoSurveyRegistrationTreeSerializer(serializers.Serializer):
 
-    class Meta:
-        model = VotoSurveyRegistrationTree
-        fields = '__all__'
+    id = serializers.IntegerField(read_only=True)
+    voto_survey_id = serializers.IntegerField()
+    voto_tree_id = serializers.IntegerField()
+
+    def create(self, validated_data):
+        instance = VotoSurveyRegistrationTree(
+                voto_survey_id=validated_data.get('voto_survey_id'),
+                voto_tree_id=validated_data.get('voto_tree_id')
+        )
+        instance.save()
+        return instance
+
+    def update(self, instance, validated_data):
+        instance.voto_tree_id = validated_data.get(
+                'voto_tree_id', instance.voto_tree_id)
+        instance.save()
+        return instance
+
+    def validate_voto_survey_id(self, value):
+        if self.instance and value != self.instance.voto_survey_id:
+            raise serializers.ValidationError('voto_survey_id is read only')
+        return value

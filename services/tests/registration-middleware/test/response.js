@@ -129,7 +129,7 @@ describe('/responses', function() {
     .then(flushDb)
     .then(function() {
       return request(ULIZA_API_URL)
-      .post('/voto_survey_registration_tree')
+      .post('/voto_survey_registration_tree/')
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json')
       .send({

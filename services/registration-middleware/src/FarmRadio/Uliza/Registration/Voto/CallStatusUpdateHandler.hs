@@ -28,7 +28,7 @@ votoCallStatusUpdate = do
     let body = state ^. requestBody
     -- Log raw VOTO webhook request object
     logDebug "incoming_call_status_update" (B8.unpack body) & liftIO
-    ulizaApiPost_ "/voto_webhook_log" $ object
+    ulizaApiPost_ "voto_webhook_log" $ object
       [ ("data"     , String (toText body))
       , ("endpoint" , "call_status_updates") ]
 
@@ -70,7 +70,7 @@ getVotoSubscriber sid = do
       Success a -> join (details <$> a)
   where
     getSubscriber :: RegistrationHandler (Maybe Value)
-    getSubscriber = votoApiGet ("/subscribers/" <> show sid)
+    getSubscriber = votoApiGet ("subscribers/" <> show sid)
 
 isCallComplete :: RegistrationHandler Bool
 isCallComplete = (== 6) <$> extract "delivery_status"
