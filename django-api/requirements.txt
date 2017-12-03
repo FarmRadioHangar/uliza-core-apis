@@ -52,3 +52,4 @@ uWSGI==2.0.15
 virtualenv==15.1.0
 virtualenv-clone==0.2.6
 -e ./django-eav/
+django-cors-headers==2.1.0
