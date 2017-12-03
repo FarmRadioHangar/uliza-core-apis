@@ -36,7 +36,7 @@ class LogGet(generics.ListCreateAPIView):
 	model = Log
 	serializer_class = LogSerializer
 	filter_class = LogFilter
-	
+
 	pagination_class = LargeResultsSetPagination
 	filter_backends = (filters.OrderingFilter, DjangoFilterBackend,)
 	ordering_fields = ('week','id','created_at')
@@ -86,7 +86,6 @@ from jfu.http import upload_receive, UploadResponse, JFUResponse
 from django.http import HttpResponse
 
 @require_POST
-@csrf_exempt
 def upload( request ):
 	log_id = request.POST['log_id']
 	file = upload_receive( request )
@@ -123,9 +122,9 @@ def upload( request ):
 
 	content_range = request.META.get(content_range_header, '')
 	match = content_range_pattern.match(content_range)
-	
+
 	total = int(match.group('total'))
-	
+
 	if(total == instance.recording_backup.size):
 		instance.recording_saved = True
 		instance.rename()
@@ -143,7 +142,7 @@ def upload( request ):
 	    'thumbnailUrl': settings.MEDIA_URL + basename,
 	    '_id': instance.pk,
 
-	    'deleteUrl': settings.SUB_SITE+'logs/recording/delete/'+str(instance.id),
+	    'deleteUrl': settings.SUB_SITE+'/logs/recording/delete/'+str(instance.id),
 	    'deleteType': "POST",
 	}
 
@@ -176,7 +175,7 @@ def open_with_drive(request,pk):
 		log.save()
 
 		return redirect(log.recording.url)
-		
+
 	return HttpResponse('<h2>404 Not found</h2>',status=404)
 
 def rec_download(request,pk):
@@ -189,11 +188,11 @@ def rec_download(request,pk):
 		download = '/media/'+str(basename)
 
 		return redirect(download)
-		
+
 		# response = HttpResponse(content_type = mimetype, status=206)
-		# response['Content-Length'] = os.path.getsize(download)  
+		# response['Content-Length'] = os.path.getsize(download)
 		# response['Content-Disposition'] = 'attachment; filename='+str(basename)
-		
+
 		return response
 	else:
 		return HttpResponse('<h2>404</h2>')
@@ -207,7 +206,7 @@ def check_rec(request,log_id,filename):
 
 	if(os.path.isfile(filepath)):
 		return HttpResponse(os.path.getsize(filepath))
-	
+
 	return JFUResponse( request, False )
 
 def create_instance(request,week,program_id):
@@ -219,15 +218,15 @@ def create_instance(request,week,program_id):
 	# else:
 	# 	presenter = Presenter.objects.filter(user__id = request.user.id)
 	# 	if presenter:
-	# 		user = presenter[0].user				
+	# 		user = presenter[0].user
 	# 	else:
 	# 		group = Group_account.objects.get(user__id = request.user.id)
 	# 		user = group.user
 
-	# 	a_programs = Program.objects.filter(access = user)	
+	# 	a_programs = Program.objects.filter(access = user)
 	from log_app.models import Program
 
-	try:					
+	try:
 		program = Program.objects.get(pk=program_id)
 	except Exception, e:
 		request.session['error_msg'] = 'Access error'
@@ -246,7 +245,7 @@ def delete( request, pk ):
 		return HttpResponse('<h2>400 - Log not found</h2>',status=400)
 
 	if(not admin and not instance.postpone):
-		return HttpResponse('<h2>403 - Forbidden</h2>',status=403)		
+		return HttpResponse('<h2>403 - Forbidden</h2>',status=403)
 
 	try:
 		import os
@@ -261,7 +260,7 @@ def delete( request, pk ):
 		weeks = datetime.timedelta(weeks = 1)
 		instance.program.end_date = instance.program.end_date - weeks
 		instance.program.save()
-	
+
 	instance.delete()
 
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
