@@ -122,7 +122,7 @@ CORS_ALLOW_HEADERS = (
 SUB_SITE = ''
 STATIC_URL = '/public/'
 STATIC_ROOT = 'public'
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = 'media/'
 MEDIA_URL = '/media/'
 
 # Internationalization
