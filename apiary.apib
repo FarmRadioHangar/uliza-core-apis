@@ -331,6 +331,96 @@ For guidelines and examples, see [White House Web API Standards](https://github.
 
 ## Questions [/questions]
 
+### List all questions [GET /questions{?limit,offset}]
+
++ Parameters
+
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+    
+    + Headers
+    
+            Location: /questions
+    
+    + Body
+    
+            {
+                "metadata": {
+                    "resultset": {
+                        "count": 2,
+                        "offset": 0,
+                        "limit": 25
+                    }
+                },
+                "results": [
+                    {
+                        "id": 1,
+                        "url": "https://www.android-examples.com/wp-content/uploads/2016/04/Thunder-rumble.mp3",
+                        "text": "This is a sample question",
+                        "questionerId": 1,
+                        "expertId": 2,
+                        "topics":[
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "url": "",
+                        "text": "This is a sample question with no audio",
+                        "questionerId": 3,
+                        "expertId": 2,
+                        "topics":[
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "url": "https://www.android-examples.com/wp-content/uploads/2016/04/Thunder-rumble.mp3",
+                        "text": "",
+                        "questionerId": 2,
+                        "expertId": 2,
+                        "topics":[
+                        ]
+                    }
+                ]
+            }
+
+
+### Retrieve questions for a specific id [GET /questions/{id}]
+
++ Parameters
+
+    + id (number) - The question id
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /questions/1
+
+    + Body
+    
+            {
+                "metadata": {
+                    "resultset": {
+                        "count": 1,
+                        "offset": 0,
+                        "limit": 25
+                    }
+                },
+                "results": [
+                    {
+                        "id": 1,
+                        "url": "https://www.android-examples.com/wp-content/uploads/2016/04/Thunder-rumble.mp3",
+                        "text": "This is a sample question",
+                        "questionerId": 1,
+                        "expertId": 2,
+                        "topics":[
+                        ]
+                    }
+                ]
+            }
+
 ## Voxboxes [/voxboxes]
 
 ### Publish a SIP address [POST /voxboxes]
