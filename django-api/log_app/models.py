@@ -221,6 +221,12 @@ class Administrator(models.Model):
 
 # Contact
 class Contact(models.Model):
+	roles = (
+	    ('staff', 'Staff'),
+	    ('consultant', 'Consultant'),
+	    ('broadcaster', 'Broadcaster'),
+	    ('project_partner', 'Project Partner'),
+	)
 	user_id = models.CharField(null=True, blank=True, max_length=120)
 	radio_station = models.IntegerField(null=True, blank=True, default=None)
 	first_name = models.CharField(null=True, blank=True, max_length=30)
@@ -229,7 +235,7 @@ class Contact(models.Model):
 	organization = models.CharField(null=True, blank=True, max_length=100)
 	phone_number = models.CharField(max_length=50,null=True,blank=True)
 	organization = models.CharField(max_length=64,null=True)
-	role = models.CharField(max_length=64,null=True)
+	role = models.CharField(max_length=64,null=True,choices=roles)
 	language = models.CharField(max_length=6,default='en-us',choices=languages)
 	country = models.ForeignKey('Country', null=True)
 
