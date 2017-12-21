@@ -11,7 +11,7 @@ class ContactGet(generics.ListCreateAPIView):
     queryset = Contact.objects.all()
     model = Contact
     serializer_class = ContactSerializer
-    filter_fields = ['id','user_id']
+    filter_fields = ['id','user_id','role','country']
 
 class ContactEntity(generics.RetrieveUpdateAPIView):
 
