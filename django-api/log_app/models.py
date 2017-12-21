@@ -229,6 +229,7 @@ class Contact(models.Model):
 	    ('consultant', 'Consultant'),
 	    ('broadcaster', 'Broadcaster'),
 	    ('project_partner', 'Project Partner'),
+	    ('knowledge_partner', 'Knowledge Partner'),
 	)
 	user_id = models.CharField(null=True, blank=True, max_length=120)
 	radio_station = models.IntegerField(null=True, blank=True, default=None)
