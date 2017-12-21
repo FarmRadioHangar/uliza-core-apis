@@ -141,12 +141,15 @@ class Log(models.Model):
 			self.save()
 
 class Comment(models.Model):
-	content = models.TextField()
-	log = models.ForeignKey('Log')
-	user = models.ForeignKey(User)
+    content = models.TextField()
+    log = models.ForeignKey('Log')
+    user = models.ForeignKey(User)
+    # tomporary
+    contact = models.ForeignKey('Contact',null=True)
+    # user_id = models.CharField(null=True, blank=True, max_length=120)
 
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Project(models.Model):
