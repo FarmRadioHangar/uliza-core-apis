@@ -234,6 +234,7 @@ class Contact(models.Model):
 	job_title = models.CharField(null=True,blank=True, max_length=100)
 	organization = models.CharField(null=True, blank=True, max_length=100)
 	phone_number = models.CharField(max_length=50,null=True,blank=True)
+	email = models.EmailField(max_length=50,null=True,blank=True)
 	organization = models.CharField(max_length=64,null=True)
 	role = models.CharField(max_length=64,null=True,choices=roles)
 	language = models.CharField(max_length=6,default='en-us',choices=languages)
