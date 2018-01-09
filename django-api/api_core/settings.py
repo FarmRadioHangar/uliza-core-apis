@@ -176,8 +176,6 @@ cert = '-----BEGIN CERTIFICATE-----\n' + \
         jwks['keys'][0]['x5c'][0] + \
         '\n-----END CERTIFICATE-----'
 
-print(cert)
-
 certificate = load_pem_x509_certificate(cert.encode('ascii'), default_backend())
 publickey = certificate.public_key()
 
