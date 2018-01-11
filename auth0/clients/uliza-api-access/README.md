@@ -1,6 +1,6 @@
-# Node.js web app login and API access
+# Uliza API access
 
-This sample demonstrates how to use Auth0 to implement the [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1) in a Node.js application. In this authentication flow, the browser receives an Authorization Code from Auth0 (the Authorization Server). After receiving this code, the application will interact with Auth0 and exchange it for an `access_token`. The application then uses this token to call the API on behalf of the user (the Resource Owner).
+This sample demonstrates how to use Auth0 to access the Uliza API (http://dev.uliza.fm/api/v1/), by implementing the [Authorization Code Grant](https://tools.ietf.org/html/rfc6749#section-4.1) in a Node.js application. In this authentication flow, the browser receives an Authorization Code from Auth0 (known as the Authorization Server in OAuth2.0 terminology). Subsequent to receiving this code, the application will interact with Auth0 and exchange the code for an `access_token`. The application then uses this token to call the Uliza API on behalf of the user (the Resource Owner).
 
 ## Prerequisites
 
