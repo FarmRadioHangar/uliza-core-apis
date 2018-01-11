@@ -29,13 +29,4 @@ class Auth0JWTScopePermission(permissions.BasePermission):
         unverified_claims = jwt.get_unverified_claims(token)
         token_scopes = unverified_claims["scope"].split()
         scope = access + ':' + view.jwt_scope_namespace
-        print scope
-        print token_scopes
-        print scope in token_scopes
         return scope in token_scopes
-
-        # import pdb; pdb.set_trace()
-        # return True
-        # ip_addr = request.META['REMOTE_ADDR']
-        # blacklisted = Blacklist.objects.filter(ip_addr=ip_addr).exists()
-        # return not blacklisted
