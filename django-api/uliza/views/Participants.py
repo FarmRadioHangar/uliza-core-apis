@@ -16,6 +16,7 @@ class Participants(generics.ListCreateAPIView):
     model = Participant
     serializer_class = ParticipantSerializer
     filter_fields = ['phone_number']
+    jwt_scope_namespace = 'participants'
 
 
 class ParticipantsInstance(generics.RetrieveUpdateAPIView):
