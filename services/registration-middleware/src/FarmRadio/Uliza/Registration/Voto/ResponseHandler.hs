@@ -24,7 +24,7 @@ import qualified Data.ByteString.Lazy.Char8           as B8
 getTreeId :: Int -> RegistrationHandler (Maybe Int)
 getTreeId survey = do
     state <- get
-    case URLEncoded.lookup ("tree" :: String) (state ^. params) of
+    case URLEncoded.lookup ("tree_id" :: String) (state ^. params) of
       Just t -> return (readMaybe t)
       Nothing -> do
         tree <- getSurveyTreeAssociation survey
