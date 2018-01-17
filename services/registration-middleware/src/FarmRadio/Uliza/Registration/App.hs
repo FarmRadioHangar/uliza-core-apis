@@ -30,6 +30,7 @@ import Web.Scotty                                     ( ScottyM
 
 import qualified Data.ByteString.Lazy.Char8           as B8
 import qualified Web.Scotty                           as Scotty
+import qualified Data.Text.Lazy                       as LT
 
 registrationHandlerException :: SomeException 
                              -> IO (Either RegistrationError a)
@@ -52,7 +53,9 @@ app state = do
     runHandler handler =
       either errorResponse jsonResponse =<< do
         body <- Scotty.body
-        encoded <- importString (B8.unpack body)
+        pars <- Scotty.params
+        let encoded = importList (bimap LT.unpack LT.unpack <$> pars)
+        --encoded <- importString (B8.unpack body)
         liftIO $ handle registrationHandlerException $ readMVar state
           >>= runRegistrationHandler handler
           . set params encoded
