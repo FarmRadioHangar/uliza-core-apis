@@ -103,6 +103,12 @@ registerParticipant attributes Participant{ entityId = participantId, .. } = do
     when ("REGISTERED" == registrationStatus) $ liftIO $ logWarning 
         "already_registered" 
         "Registering already registered listener."
+
+    -- TODO: Look up VOTO delivery log for this call
+    --
+    -- TODO: Fetch interactions from
+    -- e.g. api/v1/trees/19278/delivery_logs/187231730/
+
     -- Update the participant's registration_status 
     fromMaybe Null <$> ulizaApiPatch "participants" user (object body)
   where
