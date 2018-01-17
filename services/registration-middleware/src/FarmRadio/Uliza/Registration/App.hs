@@ -4,9 +4,11 @@ module FarmRadio.Uliza.Registration.App
   , wss
   ) where
 
-import Control.Exception.Safe
+import Control.Arrow                                  ( (***) )
 import Control.Concurrent
+import Control.Exception.Safe
 import Control.Lens
+import Control.Monad                                  ( join )
 import Control.Monad.IO.Class
 import Data.Aeson
 import Data.Monoid
@@ -14,9 +16,9 @@ import Data.Text
 import Data.Text.Encoding
 import Data.URLEncoded
 import FarmRadio.Uliza.Registration
-import FarmRadio.Uliza.Registration.Voto.ResponseHandler
-import FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
 import FarmRadio.Uliza.Registration.Logger
+import FarmRadio.Uliza.Registration.Voto.CallStatusUpdateHandler
+import FarmRadio.Uliza.Registration.Voto.ResponseHandler
 import Network.HTTP.Client                            ( HttpExceptionContent(..)
                                                       , HttpException(..) )
 import Network.HTTP.Types
@@ -54,8 +56,7 @@ app state = do
       either errorResponse jsonResponse =<< do
         body <- Scotty.body
         pars <- Scotty.params
-        let encoded = importList (bimap LT.unpack LT.unpack <$> pars)
-        --encoded <- importString (B8.unpack body)
+        let encoded = importList (join (***) LT.unpack <$> pars)
         liftIO $ handle registrationHandlerException $ readMVar state
           >>= runRegistrationHandler handler
           . set params encoded
