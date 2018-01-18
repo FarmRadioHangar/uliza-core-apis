@@ -37,6 +37,7 @@ class RegistrationCall(models.Model):
     voto_call_id = models.IntegerField()
     voto_tree_id = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    interactions = models.TextField(null=True)
 
     class Meta:
         db_table = 'uliza_registration_calls'
