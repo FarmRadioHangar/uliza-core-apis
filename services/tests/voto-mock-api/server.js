@@ -84,6 +84,101 @@ router.post('/outgoing_calls', function(req, res) {
   });
 });
 
+// https://go.votomobile.org/apidoc/trees_results.html#get-tree-interactions-responses-for-one-delivery-log
+router.get('/trees/:tree_id/delivery_logs/:log_id', function(req, res) {
+  res.json({
+    "status": 200,
+    "code": 1000,
+    "data": {
+      "delivery_log": {
+        "id": "183243779",
+        "subscriber_id": "125279980",
+        "outgoing_call_id": "2023285",
+        "incoming_call_id": null,
+        "queued_on": "2017-11-10 09:22:11",
+        "delivery_status": "7",
+        "seconds_completed": "25.1",
+        "start_timestamp": "2017-11-10 16:31:30",
+        "end_timestamp": "2017-11-10 16:31:55",
+        "content_type": "1",
+        "language_id": "201194",
+        "hangup_cause": "NORMAL_CLEARING"
+      },
+      "tree": {
+        "id": "19278",
+        "starting_block_id": "7855893",
+        "num_blocks":"37"
+      },
+      "interactions": [
+        {
+          "block_interaction_id": "342717997",
+          "block_id": "7855893",
+          "block_type": "Edit Group Membership",
+          "number_of_repeats": "0",
+          "entry_at": "2017-11-10 16:31:30",
+          "exit_at": "2017-11-10 16:31:30"
+        },
+        {
+          "block_interaction_id": "342717998",
+          "block_id": "7855865",
+          "block_type": "Message",
+          "number_of_repeats": "0",
+          "entry_at": "2017-11-10 16:31:30",
+          "exit_at": "2017-11-10 16:31:55",
+          "title": "Introduction"
+        }
+      ]
+    },
+    "message": "Delivery Log 183243779 Tree 19278 Interactions Fetched Successfully",
+    "more_info": "",
+    "pagination": null
+  })
+});
+
+// https://go.votomobile.org/apidoc/delivery_logs.html#get-delivery-logs-for-an-outgoing-call
+router.get('/outgoing_calls/:id/delivery_logs', function(req, res) {
+  res.json({
+    "status": 200,
+    "code": 1000,
+    "data": {
+      "delivery_logs": [
+        {
+          "id": "187231730",
+          "incoming_call_id": null,
+          "outgoing_call_id": "2034316",
+          "seconds_completed": "185.02",
+          "message_seconds_total": null,
+          "retried_times": null,
+          "start_timestamp": "2017-11-17 13:38:56",
+          "end_timestamp": "2017-11-17 13:42:01",
+          "message_start_timestamp": null,
+          "message_end_timestamp": null,
+          "message_percent_listened": null,
+          "survey_questions_answered": "0",
+          "survey_questions_total": null,
+          "total_call_attempts": "1",
+          "last_call_attempt": "2017-11-17 13:38:46",
+          "survey_id": null,
+          "message_id": null,
+          "tree_id": "19278",
+          "subscriber_id": "125279980",
+          "language_id": "201194",
+          "phone": "256784224203",
+          "survey": null,
+          "message": null,
+          "subscriber": {
+            "id": "125279980",
+            "phone": "256784224203",
+            "language_id": "201194",
+            "delivery_logs": "https://go.votomobile.org/api/v1/subscribers/125279980/delivery_logs"
+          }
+        }
+      ]
+    },
+    "message": "Delivery logs fetched successfully."
+  });
+});
+
 // https://go.votomobile.org/apidoc/outgoing_calls.html#list-details-of-an-outgoing-call
 router.get('/outgoing_calls/:id', function(req, res) {
   res.json({
