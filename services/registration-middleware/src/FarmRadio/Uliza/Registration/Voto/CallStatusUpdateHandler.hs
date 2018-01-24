@@ -37,7 +37,7 @@ votoCallStatusUpdate = do
     votoId     <- extract "subscriber_id"
     subscriber <- getVotoSubscriber votoId 
 
-    let registered = join (lookup "registered" <$> properties <$> subscriber)
+    let registered = join (lookup "registered" . properties <$> subscriber)
 
     case (registered, complete) of
       -- Call complete and subscriber registered
