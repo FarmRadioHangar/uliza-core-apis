@@ -104,7 +104,7 @@ describe('/call_status_updates', function() {
     .then(flushDb)
     .then(function() {
       return request(REG_SERVICE_URL)
-      .post('/responses')
+      .post('/responses?tree_id=19278')
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .set('Accept', 'application/json')
       .send(serialize({
