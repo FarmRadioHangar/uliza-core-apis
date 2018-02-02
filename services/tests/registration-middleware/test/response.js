@@ -44,18 +44,18 @@ function toDateString(d) {
 }
 
 var data = {
-  question_id: "127375", 
-  survey_id: "89324", 
-  voto_id: "44", 
-  response_type: "1", 
-  content_type: "1", 
-  poll_id: "213", 
-  delivery_log_id: "832", 
-  choice_id: "1", 
-  subscriber_id: "232", 
-  subscriber_phone: "+255678647268", 
-  question_title: "Who was the first man to set foot on the moon?", 
-  choice_name: "Neil Armstrong", 
+  question_id: "127375",
+  survey_id: "89324",
+  voto_id: "44",
+  response_type: "1",
+  content_type: "1",
+  poll_id: "213",
+  delivery_log_id: "832",
+  choice_id: "1",
+  subscriber_id: "232",
+  subscriber_phone: "+255678647268",
+  question_title: "Who was the first man to set foot on the moon?",
+  choice_name: "Neil Armstrong",
   date_received: "2017-07-24T18:13:51Z"
 };
 
@@ -114,7 +114,7 @@ describe('/responses', function() {
   //  return down();
   //});
 
-  beforeEach(function() { 
+  beforeEach(function() {
     return Promise.resolve()
     .then(function() {
       self._db = mysql.createConnection({
@@ -140,7 +140,7 @@ describe('/responses', function() {
     .catch(console.error);
   });
 
-  afterEach(function() { 
+  afterEach(function() {
     return Promise.resolve()
     .then(function() {
       self._db.end();
@@ -148,30 +148,30 @@ describe('/responses', function() {
   });
 
   describe('Response from new participant', function() {
-  
+
     it('should return a 200 OK JSON-formatted response', function() {
       return runner()
-      .then(function(response) { 
+      .then(function(response) {
         response.should.have.header('Content-Type', /json/);
         response.status.should.equal(200);
       });
     });
-  
+
     it('should return a REGISTRATION_CALL_SCHEDULED response', function() {
       return runner()
-      .then(function(response) { 
+      .then(function(response) {
         response.body.should.have.property('action').equal('REGISTRATION_CALL_SCHEDULED');
       });
     });
-  
+
     it('should return a scheduled call with the participant\'s phone number', function() {
       return runner()
-      .then(function(response) { 
+      .then(function(response) {
         response.body.should.have.property('registration_call');
         response.body.registration_call.should.have.property('phone_number').equal(stripPrefix(data.subscriber_phone));
       });
     });
-  
+
     it('should create a uliza_voto_webhook_log entry in the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_voto_webhook_log;'))
@@ -181,7 +181,7 @@ describe('/responses', function() {
         row.should.deep.equal(data);
       });
     });
-  
+
     it('should create a participant_registration_status_log entry in the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participant_registration_status_log;'))
@@ -190,7 +190,7 @@ describe('/responses', function() {
         results[0].should.have.a.property('event_type').equal('REGISTRATION_CALL_SCHEDULED');
       });
     });
-  
+
     it('should insert the participant into the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participants;'))
@@ -212,7 +212,7 @@ describe('/responses', function() {
         registrationCall.should.be.an('object');
       })
       .then(query(util.format(
-        'SELECT * FROM uliza_participants WHERE phone_number=\'%s\';', 
+        'SELECT * FROM uliza_participants WHERE phone_number=\'%s\';',
         stripPrefix(data.subscriber_phone)
       )))
       .then(function(results) {
@@ -228,7 +228,7 @@ describe('/responses', function() {
         logEntry.registration_call_id.should.equal(registrationCall.id);
       })
     });
-  
+
     it('should schedule a call with VOTO', function() {
       var votoId = null;
       return runner()
@@ -255,9 +255,9 @@ describe('/responses', function() {
     });
 
   });
-  
+
   describe('Response from an already registered participant', function() {
-  
+
     beforeEach(function() {
       return Promise.resolve()
       .then(query('INSERT INTO uliza_registration_calls (phone_number, scheduled_time, created_at, voto_call_id, voto_tree_id) VALUES (\'255678647268\', \'2017-07-24 18:13:51\', \'2017-07-24 18:03:51\', 2345554, 19278);'))
@@ -270,18 +270,18 @@ describe('/responses', function() {
         response.body.should.have.property('reason').equal('ALREADY_REGISTERED');
       });
     });
-  
+
     it('should not create any registration call', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
         .then(query('SELECT * FROM uliza_registration_calls;'))
-        .then(function(results) { 
-          results.length.should.equal(1); 
+        .then(function(results) {
+          results.length.should.equal(1);
         });
       });
     });
-  
+
     it('should not insert a new participant into the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participants;'))
@@ -291,32 +291,32 @@ describe('/responses', function() {
     });
 
   });
-  
+
   describe('Response from a participant who has declided to be registered', function() {
-  
+
     beforeEach(function() {
       return Promise.resolve()
       .then(query('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at, location) VALUES (\'255678647268\', \'DECLINED\', NULL, \'2017-07-24 18:03:51\', NULL);'));
     });
-  
+
     it('should return REGISTRATION_DECLINED', function() {
       return runner()
       .then(function(response) {
         response.body.should.have.property('reason').equal('REGISTRATION_DECLINED');
       });
     });
-  
+
     it('should not create any registration call', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
         .then(query('SELECT * FROM uliza_registration_calls;'))
-        .then(function(results) { 
-          results.length.should.equal(0); 
+        .then(function(results) {
+          results.length.should.equal(0);
         });
       });
     });
-  
+
     it('should not insert a new participant into the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participants;'))
@@ -326,9 +326,9 @@ describe('/responses', function() {
     });
 
   });
-  
+
   describe('Response from a participant for whom a registration call is already due', function() {
-  
+
     beforeEach(function() {
       var d = new Date();
       var createdAt = toDateString(d);
@@ -338,25 +338,25 @@ describe('/responses', function() {
       .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_call_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, scheduledAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at, location) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\', NULL);', createdAt)));
     });
-  
+
     it('should return PRIOR_CALL_SCHEDULED', function() {
       return runner()
       .then(function(response) {
         response.body.should.have.property('reason').equal('PRIOR_CALL_SCHEDULED');
       });
     });
-  
+
     it('should not create any registration call', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
-          results.length.should.equal(1); 
+          results.length.should.equal(1);
         });
       });
     });
-  
+
     it('should not insert a new participant into the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participants;'))
@@ -366,9 +366,9 @@ describe('/responses', function() {
     });
 
   });
-  
+
   describe('Response from a participant for whom a registration call happened recently', function() {
-  
+
     beforeEach(function() {
       var d = new Date();
       var createdAt = toDateString(d);
@@ -376,25 +376,25 @@ describe('/responses', function() {
       .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_call_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, createdAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at, location) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\', NULL);', createdAt)));
     });
-  
+
     it('should return TOO_SOON', function() {
       return runner()
       .then(function(response) {
         response.body.should.have.property('reason').equal('TOO_SOON');
       });
     });
-  
+
     it('should not create any registration call', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
-          results.length.should.equal(1); 
+          results.length.should.equal(1);
         });
       });
     });
-  
+
     it('should not insert a new participant into the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participants;'))
@@ -404,9 +404,9 @@ describe('/responses', function() {
     });
 
   });
-  
+
   describe('Response from a participant for whom the most recent call took place 1 day ago', function() {
-  
+
     beforeEach(function() {
       var d = new Date();
       var createdAt = toDateString(d);
@@ -416,25 +416,25 @@ describe('/responses', function() {
       .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_call_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, scheduledAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at, location) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\', NULL);', createdAt)));
     });
-  
+
     it('should return TOO_SOON', function() {
       return runner()
       .then(function(response) {
         response.body.should.have.property('reason').equal('TOO_SOON');
       });
     });
-  
+
     it('should not create any registration call', function() {
       return runner()
       .then(function(response) {
         return Promise.resolve()
         .then(query('SELECT * FROM uliza_registration_calls;'))
         .then(function(results) {
-          results.length.should.equal(1); 
+          results.length.should.equal(1);
         });
       });
     });
-  
+
     it('should not insert a new participant into the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participants;'))
@@ -444,9 +444,9 @@ describe('/responses', function() {
     });
 
   });
-  
+
   describe('Response from a participant for whom the most recent call took place more than 2 days ago', function() {
-  
+
     beforeEach(function() {
       var d = new Date();
       var createdAt = toDateString(d);
@@ -456,14 +456,14 @@ describe('/responses', function() {
       .then(query(util.format('INSERT INTO uliza_registration_calls (phone_number, created_at, scheduled_time, voto_call_id, voto_tree_id) VALUES (\'255678647268\', \'%s\', \'%s\', 2345554, 19278);', createdAt, scheduledAt)))
       .then(query(util.format('INSERT INTO uliza_participants (phone_number, registration_status, registration_call_id, created_at, location) VALUES (\'255678647268\', \'NOT_REGISTERED\', LAST_INSERT_ID(), \'%s\', NULL);', createdAt)));
     });
-  
+
     it('should return a scheduled call with the participant\'s phone number', function() {
       return runner()
       .then(function(response) {
         response.body.registration_call.should.have.property('phone_number').equal(stripPrefix(data.subscriber_phone));
       });
     });
-  
+
     it('should create a participant_registration_status_log entry in the database', function() {
       return runner()
       .then(function(response) {
@@ -475,7 +475,7 @@ describe('/responses', function() {
         });
       });
     });
-  
+
     it('should insert the participant into the database', function() {
       return runner()
       .then(query('SELECT * FROM uliza_participants;'))
@@ -497,7 +497,7 @@ describe('/responses', function() {
         });
       });
     });
-  
+
     it('should update the participant\'s registration_call_id', function() {
       var registrationCall = null;
       return runner()
@@ -510,7 +510,7 @@ describe('/responses', function() {
           return ;
         })
         .then(query(util.format(
-          'SELECT * FROM uliza_participants WHERE phone_number=\'%s\';', 
+          'SELECT * FROM uliza_participants WHERE phone_number=\'%s\';',
           stripPrefix(data.subscriber_phone)
         )))
         .then(function(results) {
@@ -527,24 +527,24 @@ describe('/responses', function() {
         });
       });
     });
-  
+
   });
-  
+
   describe('Response belonging to survey with no associated registration tree', function() {
-  
+
     var data = {
-      question_id: "127375", 
-      survey_id: "123123123", 
-      voto_id: "44", 
-      response_type: "1", 
-      content_type: "1", 
-      poll_id: "213", 
-      delivery_log_id: "832", 
-      choice_id: "1", 
-      subscriber_id: "232", 
-      subscriber_phone: "+255678647268", 
-      question_title: "Who was the first man to set foot on the moon?", 
-      choice_name: "Neil Armstrong", 
+      question_id: "127375",
+      survey_id: "123123123",
+      voto_id: "44",
+      response_type: "1",
+      content_type: "1",
+      poll_id: "213",
+      delivery_log_id: "832",
+      choice_id: "1",
+      subscriber_id: "232",
+      subscriber_phone: "+255678647268",
+      question_title: "Who was the first man to set foot on the moon?",
+      choice_name: "Neil Armstrong",
       date_received: "2017-07-24T18:13:51Z"
     };
 
@@ -558,7 +558,7 @@ describe('/responses', function() {
 
     it('should return a 200 OK JSON-formatted response', function() {
       return runner()
-      .then(function(response) { 
+      .then(function(response) {
         response.should.have.header('Content-Type', /json/);
         response.status.should.equal(200);
       });
@@ -581,19 +581,94 @@ describe('/responses', function() {
         response.body.should.have.property('reason').equal('NO_REGISTRATION_TREE');
       });
     });
-  
+
     it('should not create any registration call', function() {
       return runner()
       .then(query('SELECT * FROM uliza_registration_calls;'))
       .then(function(results) {
-        results.length.should.equal(0); 
+        results.length.should.equal(0);
+      });
+    });
+
+  });
+
+  describe('Registration tree id passed as webhook request parameter', function() {
+
+    var data = {
+      question_id: "127375",
+      survey_id: "123123123",
+      voto_id: "44",
+      response_type: "1",
+      content_type: "1",
+      poll_id: "213",
+      delivery_log_id: "832",
+      choice_id: "1",
+      subscriber_id: "232",
+      subscriber_phone: "+255678647268",
+      question_title: "Who was the first man to set foot on the moon?",
+      choice_name: "Neil Armstrong",
+      date_received: "2017-07-24T18:13:51Z"
+    };
+
+    var treeId = 19278;
+
+    var runner = function() {
+      return request(REG_SERVICE_URL)
+      .post('/responses?tree_id=' + treeId)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Accept', 'application/json')
+      .send(serialize(data));
+    }
+
+    it('should return a 200 OK JSON-formatted response', function() {
+      return runner()
+      .then(function(response) {
+        response.should.have.header('Content-Type', /json/);
+        response.status.should.equal(200);
+      });
+    });
+
+    it('should return a scheduled call with the participant\'s phone number', function() {
+      return runner()
+      .then(function(response) {
+        response.body.registration_call.should.have.property('phone_number').equal(stripPrefix(data.subscriber_phone));
+      });
+    });
+
+    it('should insert the participant into the database', function() {
+      return runner()
+      .then(query('SELECT * FROM uliza_participants;'))
+      .then(function(results) {
+        results.length.should.equal(1);
+        var participant = results[0];
+        participant.phone_number.should.equal(stripPrefix(data.subscriber_phone));
+        participant.registration_status.should.equal('NOT_REGISTERED');
+      })
+    });
+
+    it('should return a REGISTRATION_CALL_SCHEDULED response', function() {
+      return runner()
+      .then(function(response) {
+        response.body.should.have.property('action').equal('REGISTRATION_CALL_SCHEDULED');
+      });
+    });
+
+    it('should create a new registration call in the database', function() {
+      return runner()
+      .then(function(response) {
+        return Promise.resolve()
+        .then(query('SELECT * FROM uliza_registration_calls;'))
+        .then(function(results) {
+          results.length.should.equal(1);
+          results[0].should.have.a.property('voto_tree_id').equal(treeId);
+        });
       });
     });
 
   });
 
   describe('Bad request format', function() {
-  
+
     it('should return a status code 400', function() {
       return request(REG_SERVICE_URL)
       .post('/responses')
@@ -605,11 +680,11 @@ describe('/responses', function() {
         response.status.should.equal(400);
       });
     });
-  
+
   });
-  
+
   describe('Phone number with + prefix', function() {
-  
+
     it('should be normalized before inserted into database', function() {
       return runner()
       .then(function(response) {
@@ -621,7 +696,7 @@ describe('/responses', function() {
         });
       });
     });
-  
+
     it('should appear without + in response', function() {
       return runner()
       .then(function(response) {

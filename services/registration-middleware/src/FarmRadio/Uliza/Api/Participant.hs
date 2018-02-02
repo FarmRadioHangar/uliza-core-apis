@@ -6,13 +6,15 @@ import Control.Lens
 import Control.Monad.State
 import Control.Monad.Trans.Either
 import Data.Aeson
+import Data.Aeson.Lens
 import Data.Either.Utils                              ( maybeToEither )
-import Data.Maybe                                     ( fromMaybe )
+import Data.Maybe                                     ( fromMaybe, fromJust )
 import Data.Monoid
 import Data.Text                                      ( Text )
-import Data.Text.Encoding                             ( encodeUtf8 )
+import Data.Text.Encoding                             ( decodeUtf8, encodeUtf8 )
 import Data.Time
 import Database.PostgreSQL.Simple.Time
+import FarmRadio.Uliza.Api.RegistrationCall
 import FarmRadio.Uliza.Api.Utils
 import FarmRadio.Uliza.Registration
 import FarmRadio.Uliza.Registration.Logger
@@ -94,6 +96,27 @@ registrationCallScheduleTime RegistrationCall{..} =
 
 type Attributes = [(Text, Text)]
 
+fetchInteractions :: Int -> RegistrationHandler (Maybe Value)
+fetchInteractions pid = do
+    -- Get registration call from Uliza
+    call <- getRegistrationCallById pid
+    RegistrationCall{..} <- maybeToEither (InternalServerError 
+        "Invalid registration call id.") call
+    -- Look up VOTO delivery logs for this call
+    logs <- join $ maybeToEither (InternalServerError "Could not fetch delivery logs.") <$> getDeliveryLogs votoCallId
+    logId <- maybeToEither (InternalServerError "No delivery log.") 
+                (logs^?key "data".key "delivery_logs"._Array.ix 0.ix "id"._String)
+    res <- join $ maybeToEither (InternalServerError "Could not get tree interactions.") <$> treeInteractions (Text.unpack logId) votoTreeId
+    let itacs = toText (encode (res ^? key "data" . key "interactions"))
+    ulizaApiPatch "registration_calls" pid $ object [ ("interactions", String itacs) ] 
+  where
+    getDeliveryLogs :: Int -> RegistrationHandler (Maybe Value)
+    getDeliveryLogs callId = 
+      votoApiGet ("outgoing_calls/" <> show callId <> "/delivery_logs") 
+    treeInteractions :: String -> Int -> RegistrationHandler (Maybe Value)
+    treeInteractions log tree =
+      votoApiGet ("trees/" <> show tree <> "/delivery_logs/" <> log) 
+
 registerParticipant :: Maybe Attributes
                     -> Participant 
                     -> RegistrationHandler Value
@@ -103,6 +126,7 @@ registerParticipant attributes Participant{ entityId = participantId, .. } = do
     when ("REGISTERED" == registrationStatus) $ liftIO $ logWarning 
         "already_registered" 
         "Registering already registered listener."
+    fetchInteractions user
     -- Update the participant's registration_status 
     fromMaybe Null <$> ulizaApiPatch "participants" user (object body)
   where
