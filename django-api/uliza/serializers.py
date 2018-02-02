@@ -13,7 +13,6 @@ class ParticipantSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     phone_number = serializers.CharField(max_length=100)
     registration_status = serializers.ChoiceField(choices=registration_status)
-    registration_call = serializers.PrimaryKeyRelatedField(read_only=True)
     created_at = serializers.DateTimeField(required=False)
     location = serializers.CharField(max_length=100, required=False)
     attributes = serializers.DictField(

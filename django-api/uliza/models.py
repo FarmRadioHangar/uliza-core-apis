@@ -17,7 +17,6 @@ class Participant(models.Model):
     phone_number = models.CharField(max_length=20)
     registration_status = models.CharField(max_length=100,
                                            choices=registration_status)
-    registration_call = models.ForeignKey('RegistrationCall', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     location = models.CharField(max_length=100, null=True)
 
