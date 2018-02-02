@@ -5,7 +5,7 @@ class RadioStationSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = RadioStation
-		fields = "__all__"
+		fields = ('id', 'name', 'city', 'phone_number', 'email', 'website', 'manager', 'tower_location', 'tower_height', 'transmission_power', 'transmission_gain', 'lattitude', 'longitude', 'frequency', 'telerivet_project_code', 'last_updated_at', 'created_at', 'country')
 
 class ProjectSerializer(serializers.ModelSerializer):
 	class Meta:
