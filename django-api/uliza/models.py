@@ -36,6 +36,7 @@ class RegistrationCall(models.Model):
     scheduled_time = models.DateTimeField()
     voto_call_id = models.IntegerField()
     voto_tree_id = models.IntegerField()
+    participant = models.ForeignKey(Participant)
     created_at = models.DateTimeField(auto_now_add=True)
     interactions = models.TextField(null=True)
 
