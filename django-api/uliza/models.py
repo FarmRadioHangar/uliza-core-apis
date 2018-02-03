@@ -31,16 +31,15 @@ class RegistrationCall(models.Model):
     """
     A scheduled VOTO call associated with a registration tree.
     """
-    phone_number = models.CharField(max_length=20)
     scheduled_time = models.DateTimeField()
     voto_call_id = models.IntegerField()
     voto_tree_id = models.IntegerField()
     participant = models.ForeignKey(Participant)
     created_at = models.DateTimeField(auto_now_add=True)
-    interactions = models.TextField(null=True)
 
     class Meta:
         db_table = 'uliza_registration_calls'
+        indexes = [models.Index(fields=['voto_call_id'])]
 
 
 registration_event_types = (
@@ -50,32 +49,14 @@ registration_event_types = (
 )
 
 
-class ParticipantRegistrationStatusLog(models.Model):
+class ParticipantRegistrationStatusEvent(models.Model):
     """
     Registration status change log for :model:`Participant`s.
     """
     participant = models.ForeignKey('Participant')
-    registration_call = models.ForeignKey('RegistrationCall', null=True)
     event_type = models.CharField(max_length=100,
                                   choices=registration_event_types)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'uliza_participant_registration_status_log'
-
-
-class VotoWebhookLog(models.Model):
-    endpoint = models.CharField(max_length=100)
-    data = models.TextField(null=True, blank=True)
-    log_time = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'uliza_voto_webhook_log'
-
-
-class VotoSurveyRegistrationTree(models.Model):
-    voto_survey_id = models.IntegerField(null=True, unique=True)
-    voto_tree_id = models.IntegerField(null=True)
-
-    class Meta:
-        db_table = 'uliza_voto_survey_registration_tree'
+        db_table = 'uliza_participant_registration_status_events'
