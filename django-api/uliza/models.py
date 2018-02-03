@@ -32,14 +32,13 @@ class RegistrationCall(models.Model):
     A scheduled VOTO call associated with a registration tree.
     """
     scheduled_time = models.DateTimeField()
-    voto_call_id = models.IntegerField()
+    voto_call_id = models.IntegerField(db_index=True)
     voto_tree_id = models.IntegerField()
     participant = models.ForeignKey(Participant)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'uliza_registration_calls'
-        indexes = [models.Index(fields=['voto_call_id'])]
 
 
 registration_event_types = (
