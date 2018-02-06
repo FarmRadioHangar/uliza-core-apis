@@ -224,30 +224,33 @@ class Administrator(models.Model):
 
 # Contact
 class Contact(models.Model):
-	roles = (
-	    ('staff', 'Staff'),
-	    ('consultant', 'Consultant'),
-	    ('broadcaster', 'Broadcaster'),
-	    ('project_partner', 'Project Partner'),
-	    ('knowledge_partner', 'Knowledge Partner'),
-	)
-	user_id = models.CharField(null=True, blank=True, max_length=120)
-	radio_station = models.IntegerField(null=True, blank=True, default=None)
-	first_name = models.CharField(null=True, blank=True, max_length=30)
-	last_name = models.CharField(null=True, blank=True, max_length=30)
-	job_title = models.CharField(null=True,blank=True, max_length=100)
-	organization = models.CharField(null=True, blank=True, max_length=100)
-	phone_number = models.CharField(max_length=50,null=True,blank=True)
-	email = models.EmailField(max_length=50,null=True,blank=True)
-	organization = models.CharField(max_length=64,null=True)
-	role = models.CharField(max_length=64,null=True,choices=roles)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
-	country = models.ForeignKey('Country', null=True)
+    roles = (
+        ('staff', 'Staff'),
+        ('consultant', 'Consultant'),
+        ('broadcaster', 'Broadcaster'),
+        ('project_partner', 'Project Partner'),
+        ('knowledge_partner', 'Knowledge Partner'),
+    )
+    user_id = models.CharField(null=True, blank=True, max_length=120)
+    radio_station = models.IntegerField(null=True, blank=True, default=None)
+    first_name = models.CharField(null=True, blank=True, max_length=30)
+    last_name = models.CharField(null=True, blank=True, max_length=30)
+    job_title = models.CharField(null=True,blank=True, max_length=100)
+    organization = models.CharField(null=True, blank=True, max_length=100)
+    phone_number = models.CharField(max_length=50,null=True,blank=True)
+    email = models.EmailField(max_length=50,null=True,blank=True)
+    role = models.CharField(max_length=64,null=True,choices=roles)
+    language = models.CharField(max_length=6,default='en',choices=languages)
+    country = models.ForeignKey('Country', null=True)
 
+    is_superuser = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
-	def __unicode__(self):
-		return self.first_name
+    notify_on_log_create = models.BooleanField(default=False)
 
+    def __unicode__(self):
+    	return self.first_name
 
 class Program(models.Model):
 
