@@ -169,10 +169,10 @@ class Project(models.Model):
 		return self.name
 
 languages = (
-	('en-us', 'English'),
-	('pt-mz', 'Portuguese'),
-	('am-et', 'Amharic'),
-	('fr-fr', 'Francais')
+	('en', 'English'),
+	('pt', 'Portuguese'),
+	('am', 'Amharic'),
+	('fr', 'Francais')
 )
 
 class Presenter(models.Model):
@@ -181,7 +181,7 @@ class Presenter(models.Model):
 	radio_station = models.ForeignKey(RadioStation,null=True)
 	phone_number = models.CharField(max_length=50,null=True,blank=True,unique=True)
 	role = models.CharField(max_length=64,null=True)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 
 	def __unicode__(self):
 		return self.user.username
@@ -190,7 +190,7 @@ class Group_account(models.Model):
 	user = models.ForeignKey(User)
 	radio_station = models.ForeignKey(RadioStation,null=True)
 	members = models.ManyToManyField('Presenter',blank=True)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 
 	def __unicode__(self):
 		return self.user.username
@@ -202,7 +202,7 @@ class Knowledge_partner(models.Model):
 	phone_number = models.CharField(max_length=50,null=True,blank=True,unique=True)
 	organization = models.CharField(max_length=64,null=True)
 	role = models.CharField(max_length=64,null=True)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 	country = models.ForeignKey('Country', null=True)
 
 
@@ -216,7 +216,7 @@ class Administrator(models.Model):
 	notify_signup = models.BooleanField(default=True)
 	notify_log_submission = models.BooleanField(default=True)
 	notify_daily_schedule = models.BooleanField(default=False)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 
 	def __unicode__(self):
 		return self.user.username
