@@ -27,7 +27,7 @@ class LogFilter(filters.FilterSet):
 
 	class Meta:
 		model = Log
-		fields = ['id','week','program','program__radio_station__country','postpone','week__lte','id__lt']
+		fields = ['id','week','program','program__radio_station__country','postpone','week__lte','id__lt','saved_by']
 
 class LogGet(generics.ListCreateAPIView):
 
