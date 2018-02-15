@@ -6,6 +6,32 @@ from rest_framework.views import APIView
 from log_app.models import Contact
 from log_app.serializers import ContactSerializer
 
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['PATCH'])
+def update_access(request,id):
+    """
+    Update the list of programs the contact is allowed to access
+    """
+    from log_app.models import Contact,Program
+
+    contact = Contact.objects.get(pk=id)
+    programs = Program.objects.filter(radio_station=contact.radio_station)
+    access = request.data['access'].split(',')
+
+    for p in programs:
+
+    	if str(p.pk) in access:
+    		p.access.add(contact.id)
+        else:
+    		p.access.remove(contact.id)
+
+        p.save()
+
+    return Response(access, status=status.HTTP_200_OK)
+
 class ContactGet(generics.ListCreateAPIView):
 
     queryset = Contact.objects.all()
@@ -18,4 +44,3 @@ class ContactEntity(generics.RetrieveUpdateAPIView):
     queryset = Contact.objects.all()
     model = Contact
     serializer_class = ContactSerializer
-    lookup_field = 'id'
