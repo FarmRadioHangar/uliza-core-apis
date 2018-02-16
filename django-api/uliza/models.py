@@ -27,15 +27,26 @@ class Participant(models.Model):
         db_table = 'uliza_participants'
 
 
+call_status = (
+    ('SCHEDULED', 'Scheduled'),
+    ('COMPLETE', 'Complete')
+)
+
+
 class RegistrationCall(models.Model):
     """
     A scheduled VOTO call associated with a registration tree.
     """
-    scheduled_time = models.DateTimeField()
-    voto_call_id = models.IntegerField(db_index=True)
+    schedule_time = models.DateTimeField(null=True)
+    voto_call_id = models.IntegerField(unique=True, null=True)
     voto_tree_id = models.IntegerField()
+    voto_survey_call_id = models.IntegerField()
     participant = models.ForeignKey(Participant)
+    phone_number = models.CharField(max_length=20)
+    interactions = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    call_status = models.CharField(max_length=100,
+                                   choices=call_status)
 
     class Meta:
         db_table = 'uliza_registration_calls'
