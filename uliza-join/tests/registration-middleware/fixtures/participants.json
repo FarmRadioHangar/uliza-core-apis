@@ -1,0 +1,35 @@
+{
+  "table": "uliza_participants",
+  "data": [ 
+    {
+      "id": 1,
+      "phone_number": "255127386549",
+      "registration_status": "NOT_REGISTERED",
+      "created_at": "2018-02-06 12:27:02.372419"
+    },
+    {
+      "id": 2,
+      "phone_number": "256692185743",
+      "registration_status": "NOT_REGISTERED",
+      "created_at": "2018-02-06 12:27:02.372419"
+    },
+    {
+      "id": 3,
+      "phone_number": "256479132865",
+      "registration_status": "REGISTERED",
+      "created_at": "2018-02-06 12:27:02.372419"
+    },
+    {
+      "id": 4,
+      "phone_number": "256849561372",
+      "registration_status": "DECLINED",
+      "created_at": "2018-02-06 12:27:02.372419"
+    },
+    {
+      "id": 5,
+      "phone_number": "255641327895",
+      "registration_status": "REGISTERED",
+      "created_at": "2018-02-06 12:27:02.372419"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "table": "uliza_registration_calls",
+  "data": [ 
+    {
+      "id": 1,
+      "schedule_time": "2018-02-06 12:27:02.372419",
+      "voto_call_id": "2345554",
+      "voto_tree_id": "1",
+      "voto_survey_call_id": 5,
+      "participant_id": 1,
+      "phone_number": "255127386549",
+      "created_at": "2018-02-06 12:27:02.372419",
+      "call_status": "SCHEDULED"
+    },
+    {
+      "id": 2,
+      "schedule_time": "2018-02-06 12:27:02.372419",
+      "voto_call_id": "724",
+      "voto_tree_id": "1",
+      "voto_survey_call_id": 105,
+      "participant_id": 2,
+      "phone_number": "256692185743",
+      "created_at": "2018-02-06 12:27:02.372419",
+      "call_status": "SCHEDULED"
+    },
+    {
+      "id": 3,
+      "schedule_time": "2018-02-06 12:27:02.372419",
+      "voto_call_id": "777",
+      "voto_tree_id": "1",
+      "voto_survey_call_id": 205,
+      "participant_id": 3,
+      "phone_number": "256479132865",
+      "created_at": "2018-02-06 12:27:02.372419",
+      "call_status": "SCHEDULED"
+    },
+    {
+      "id": 4,
+      "schedule_time": null,
+      "voto_call_id": null,
+      "voto_tree_id": "1",
+      "voto_survey_call_id": 305,
+      "participant_id": 2,
+      "phone_number": "256692185743",
+      "created_at": "2018-02-06 12:27:02.372419",
+      "call_status": "SCHEDULED"
+    }
+  ]
+}

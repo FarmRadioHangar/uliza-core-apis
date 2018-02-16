@@ -1,0 +1,13 @@
+{
+  "name": "uliza-registration-middleware",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chalk": "^2.3.0",
+    "dotenv": "^5.0.0",
+    "express": "^4.16.2",
+    "moment": "^2.20.1",
+    "request": "^2.83.0",
+    "request-json": "^0.6.2"
+  }
+}
