@@ -507,11 +507,9 @@ router.post('/call_status_updates', function(req, res) {
 app.use(router);
 app.listen(SERVER_PORT);
 
-console.log('-----------------------------------------------------------------');
 console.log(
   chalk.bold.yellow(
-    'Uliza Join registration server accepting connections on port '
+    'Uliza Join registration server listening on port '
     + SERVER_PORT
   )
 );
-console.log('-----------------------------------------------------------------');
