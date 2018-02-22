@@ -10,6 +10,8 @@ var DB_USER = process.env.DB_USER || 'root';
 var DB_NAME = process.env.DB_NAME || 'api_core';
 var DB_PASS = process.env.DB_PASSWORD || 'root';
 
+CONNECTION_ERROR = 'Database connection failed. Is database server running and listening on port ' + DB_PORT + '?';
+
 function serialize(obj) {
   var str = [];
   for (var prop in obj) {
@@ -91,5 +93,6 @@ module.exports = {
   query: query,
   truncate: truncate,
   loadFixtures: loadFixtures,
-  stripPrefix: stripPrefix
+  stripPrefix: stripPrefix,
+  CONNECTION_ERROR: CONNECTION_ERROR
 };
