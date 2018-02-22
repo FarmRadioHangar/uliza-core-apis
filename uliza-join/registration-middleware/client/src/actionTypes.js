@@ -1,0 +1,12 @@
+export const ASSIGN_LOCATION_ASYNC_BEGIN = 'ASSIGN_LOCATION_ASYNC_BEGIN';
+export const ASSIGN_LOCATION_ERROR       = 'ASSIGN_LOCATION_ERROR';
+export const ASSIGN_LOCATION_SUCCESS     = 'ASSIGN_LOCATION_SUCCESS';
+export const CHANGE_TAB                  = 'CHANGE_TAB';
+export const FETCH_CALLS_ASYNC_BEGIN     = 'FETCH_CALLS_ASYNC_BEGIN';
+export const FETCH_CALLS_ERROR           = 'FETCH_CALLS_ERROR';
+export const FETCH_CALLS_SUCCESS         = 'FETCH_CALLS_SUCCESS';
+export const GET_CALL_ERROR              = 'GET_CALL_ERROR';
+export const GET_CALL_SUCCESS            = 'GET_CALL_SUCCESS';
+export const SET_LOCATION                = 'SET_LOCATION';
+export const SET_MAP_CENTER              = 'SET_MAP_CENTER';
+export const SET_SEARCH_QUERY            = 'SET_SEARCH_QUERY';
