@@ -1,15 +1,22 @@
 from django.http import Http404
 from rest_framework import generics
-from uliza.models import (
-        RegistrationCall,
-        # ParticipantRegistrationStatusEvent
-        )
+from uliza.models import (RegistrationCall)
 from uliza.serializers import RegistrationCallSerializer
 
 
 class RegistrationCalls(generics.ListCreateAPIView):
 
     queryset = RegistrationCall.objects.all()
+    model = RegistrationCall
+    serializer_class = RegistrationCallSerializer
+
+
+class RegistrationCallsMissingLocation(generics.ListCreateAPIView):
+
+    queryset = RegistrationCall.objects.filter(
+            call_status='COMPLETE',
+            participant__location=None
+    )
     model = RegistrationCall
     serializer_class = RegistrationCallSerializer
 
