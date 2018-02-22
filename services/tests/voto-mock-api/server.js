@@ -12,7 +12,7 @@ var port = process.env.PORT || 8089;
 
 var router = express.Router();
 
-router.get('/', function(req, res) {
+app.post('/', function(req, res) {
   res.json({ 
     message: 'Okay!' 
   });   
@@ -80,7 +80,7 @@ router.post('/outgoing_calls', function(req, res) {
   res.json({
     "status": 200,
     "message": "Outgoing call qeued successfully",
-    "data": 2345554 
+    "data": 2345555 
   });
 });
 
@@ -216,6 +216,10 @@ router.get('/outgoing_calls/:id', function(req, res) {
     "message": "Outgoing Call Details Fetched successfully",
     "more_info": ""
   });
+});
+
+router.get('/languages', function(req, res) {
+  res.json({status: 200, code: 1000, data: { languages: [ { id: "201194", name: "English", abbreviation: "EN" }, { id: "203161", name: "Rukiiga", abbreviation: "RU" }, { id: "203162", name: "Luo", abbreviation: "LU" }, { id: "203163", name: "Luganda", abbreviation: "LG" } ] }, message: "Languages fetched successfully ", more_info: "", pagination: null, url: "https://go.votomobile.org/api/v1/languages?api_key=7dc05a5fb33f9251977e206b3"});
 });
 
 app.use('/api/v1', router);
