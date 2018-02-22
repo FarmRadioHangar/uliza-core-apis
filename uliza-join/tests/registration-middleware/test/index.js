@@ -24,6 +24,31 @@ function jsonRequest(uri) {
 
 describe('Uliza Join registration service', function() {
 
+  before(function() {
+    return new Promise(function(resolve, reject) {
+      return utils.query('SHOW TABLES;')()
+      .catch(function(err) {
+        reject(Error(utils.CONNECTION_ERROR));
+      })
+      .then(function() {
+        return jsonRequest('/');
+      })
+      .catch(function(err) {
+        reject(Error('Failed connecting to registration server on ' + REG_SERVICE_URL));
+      })
+      .then(function(response) {
+        return request(ULIZA_API_URL)
+        .get('/')
+        .set('Accept', 'application/json')
+        .send();
+      })
+      .catch(function(err) {
+        reject(Error('Failed connecting to Uliza API on ' + ULIZA_API_URL));
+      })
+      .then(resolve);
+    });
+  });
+
   after(utils.disconnect);
 
   describe('Response', function() {
@@ -742,6 +767,14 @@ describe('Uliza Join registration service', function() {
       });
 
     });
+
+//    describe('Phone number with + prefix', function() {
+//
+//    it('should be normalized before inserted into database', function() {
+  //
+//    it('should appear without + in response', function() {
+  //
+//    });
 
   });
 
