@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from uliza.models import (Participant,
                           RegistrationCall,
-                          # ParticipantRegistrationStatusLog,
-                          # VotoWebhookLog,
-                          # VotoSurveyRegistrationTree,
                           registration_status)
 from eav.models import Attribute
 
@@ -37,6 +34,7 @@ class ParticipantSerializer(serializers.Serializer):
                 'registration_status', instance.registration_status)
         instance.created_at = validated_data.get(
                 'created_at', instance.created_at)
+        instance.location = validated_data.get('location', instance.location)
 
         attrs = validated_data.get('attributes_eav_dict')
         if attrs is not None:
@@ -54,43 +52,3 @@ class RegistrationCallSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegistrationCall
         fields = '__all__'
-
-
-# class ParticipantRegistrationStatusLogSerializer(serializers.ModelSerializer):
-#
-#     class Meta:
-#         model = ParticipantRegistrationStatusLog
-#         fields = '__all__'
-
-
-# class VotoWebhookLogSerializer(serializers.ModelSerializer):
-# 
-#     class Meta:
-#         model = VotoWebhookLog
-#         fields = '__all__'
-
-
-# class VotoSurveyRegistrationTreeSerializer(serializers.Serializer):
-# 
-#     id = serializers.IntegerField(read_only=True)
-#     voto_survey_id = serializers.IntegerField()
-#     voto_tree_id = serializers.IntegerField()
-# 
-#     def create(self, validated_data):
-#         instance = VotoSurveyRegistrationTree(
-#                 voto_survey_id=validated_data.get('voto_survey_id'),
-#                 voto_tree_id=validated_data.get('voto_tree_id')
-#         )
-#         instance.save()
-#         return instance
-# 
-#     def update(self, instance, validated_data):
-#         instance.voto_tree_id = validated_data.get(
-#                 'voto_tree_id', instance.voto_tree_id)
-#         instance.save()
-#         return instance
-# 
-#     def validate_voto_survey_id(self, value):
-#         if self.instance and value != self.instance.voto_survey_id:
-#             raise serializers.ValidationError('voto_survey_id is read only')
-#         return value
