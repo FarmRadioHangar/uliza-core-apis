@@ -6,16 +6,18 @@ var express     = require('express');
 var requestJson = require('request-json');
 var moment      = require('moment');
 var url         = require('url');
+var path        = require('path');
 
 var app = express();
 
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
+app.use(express.static('client/dist'));
 
 var SERVER_PORT   
   = process.env.PORT          || 8091;
 var ULIZA_API_URL 
-  = process.env.ULIZA_API_URL || 'http://0.0.0.0:8000/api/v1/';
+  = process.env.ULIZA_API_URL || 'http://dev.uliza.fm/api/v1/';
 var VOTO_API_URL  
   = process.env.VOTO_API_URL  || 'https://go.votomobile.org/api/v1/';
 var VOTO_API_KEY  
@@ -29,12 +31,6 @@ var client = requestJson.createClient(ULIZA_API_URL);
 var voto   = requestJson.createClient(VOTO_API_URL);
 
 voto.headers['api_key'] = VOTO_API_KEY;
-
-router.get('/', function(req, res) {
-  res.json({
-    message: 'Uliza Join Registration Service'
-  });
-});
 
 /* Server error exceptions */
 
@@ -77,11 +73,13 @@ function ulizaError(error) {
 }
 
 function rejectNonStandard(uri) {
-  var part = uri.split('?')[0];
-  if ('/' !== part.substr(-1)) {
-    throw internalServerError(
-      'Error: No trailing slash on uri \'' + ULIZA_API_URL + part + '\''
-    );
+  if ('' !== uri) {
+    var part = uri.split('?')[0];
+    if ('/' !== part.substr(-1)) {
+      throw internalServerError(
+        'Error: No trailing slash on uri \'' + ULIZA_API_URL + part + '\''
+      );
+    }
   }
 }
 
@@ -121,8 +119,12 @@ function isOk(code) {
   return '2' === (code + '')[0];
 }
 
-function validate(code, allowed) {
+function validate(response, allowed) {
+  var code = response.all.statusCode;
   if (!isOk(code) && -1 == allowed.indexOf(code)) {
+    console.error(chalk.redBright(
+      response.body.message || response.body
+    ));
     throw badGateway(
       'serverNon200Response',
       'Server returned a ' + code + ' status code.'
@@ -147,7 +149,7 @@ function ulizaRequest(uri, respCodes, method, data) {
     }
   })
   .then(function(response) {
-    validate(response.all.statusCode, respCodes || []);
+    validate(response, respCodes || []);
     return response;
   });
 }
@@ -182,7 +184,7 @@ function votoRequest(uri, respCodes, method, data) {
     }
   })
   .then(function(response) {
-    validate(response.all.statusCode, respCodes || []);
+    validate(response, respCodes || []);
     if (isOk(response.all.statusCode) && !response.body.data) {
       console.error(chalk.redBright('[voto_error] ') 
         + 'Missing property \'data\' in VOTO response.' 
@@ -415,6 +417,7 @@ function registerParticipant(subscriber, req) {
 router.post('/responses', function(req, res) {
   return Promise.resolve()
   .then(function() {
+    console.log('====================');
     console.log(chalk.cyan('[voto_response_hook] ') + JSON.stringify(req.body));
     requireQueryParam(req, 'tree_id');
     requireBodyField(req, 'subscriber_phone');
@@ -453,6 +456,7 @@ router.post('/responses', function(req, res) {
 router.post('/call_status_updates', function(req, res) {
   return Promise.resolve()
   .then(function() {
+    console.log('=========================');
     console.log(chalk.cyan('[voto_call_status_update] ') 
       + JSON.stringify(req.body));
     requireBodyField(req, 'outgoing_call_id');
@@ -504,12 +508,27 @@ router.post('/call_status_updates', function(req, res) {
   });
 });
 
-app.use(router);
-app.listen(SERVER_PORT);
-
-console.log(
-  chalk.bold.yellow(
-    'Uliza Join registration server listening on port '
-    + SERVER_PORT
-  )
-);
+ulizaGet('')
+.catch(function(error) {
+  console.error('Failed connecting to Uliza API on ' + ULIZA_API_URL + '.');
+  process.exit(1);
+})
+.then(function() {
+  console.log('Uliza API connection OK.');
+  return votoGet('languages/');
+})
+.catch(function(error) {
+  console.error('Failed connecting to VOTO API on ' + VOTO_API_URL + '.');
+  process.exit(1);
+})
+.then(function() {
+  console.log('VOTO API connection OK.');
+  app.use(router);
+  app.listen(SERVER_PORT);
+  console.log(
+    chalk.bold.yellow(
+      'Uliza Join registration server listening on port '
+      + SERVER_PORT
+    )
+  );
+});
