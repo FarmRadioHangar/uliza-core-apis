@@ -34,7 +34,7 @@ class App extends React.Component {
           <Navbar.Header>
             <Navbar.Brand>
               <a href='/'>
-                Uliza Registration
+                Uliza Join
               </a>
             </Navbar.Brand>
           </Navbar.Header>
