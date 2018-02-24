@@ -12,10 +12,17 @@ class Participants(generics.ListCreateAPIView):
     Create a new participant instance.
     """
 
-    queryset = Participant.objects.all()
-    model = Participant
     serializer_class = ParticipantSerializer
-    filter_fields = ['phone_number']
+
+    def get_queryset(self):
+        queryset = Participant.objects.all()
+        phone_number = self.request.query_params.get('phone_number', None)
+        if phone_number is not None:
+            normalized = phone_number
+            if len(normalized) and normalized[0] != '+':
+                normalized = '+' + normalized
+            queryset = queryset.filter(phone_number=normalized)
+        return queryset
 
 
 class ParticipantsInstance(generics.RetrieveUpdateAPIView):
@@ -51,9 +58,9 @@ class ParticipantsInstance(generics.RetrieveUpdateAPIView):
         #         log_entry.save()
         serializer.save()
 
-    def event_type(self, status):
-        if status == 'REGISTERED':
-            return 'REGISTRATION_COMPLETE'
-        elif status == 'DECLINED':
-            return 'REGISTRATION_DECLINED'
-        return None
+    # def event_type(self, status):
+    #     if status == 'REGISTERED':
+    #         return 'REGISTRATION_COMPLETE'
+    #     elif status == 'DECLINED':
+    #         return 'REGISTRATION_DECLINED'
+    #     return None

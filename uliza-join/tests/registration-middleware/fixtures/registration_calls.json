@@ -8,7 +8,7 @@
       "voto_tree_id": "1",
       "voto_survey_call_id": 5,
       "participant_id": 1,
-      "phone_number": "255127386549",
+      "phone_number": "+255127386549",
       "created_at": "2018-02-06 12:27:02.372419",
       "call_status": "SCHEDULED"
     },
@@ -19,7 +19,7 @@
       "voto_tree_id": "1",
       "voto_survey_call_id": 105,
       "participant_id": 2,
-      "phone_number": "256692185743",
+      "phone_number": "+256692185743",
       "created_at": "2018-02-06 12:27:02.372419",
       "call_status": "SCHEDULED"
     },
@@ -30,7 +30,7 @@
       "voto_tree_id": "1",
       "voto_survey_call_id": 205,
       "participant_id": 3,
-      "phone_number": "256479132865",
+      "phone_number": "+256479132865",
       "created_at": "2018-02-06 12:27:02.372419",
       "call_status": "SCHEDULED"
     },
@@ -41,7 +41,7 @@
       "voto_tree_id": "1",
       "voto_survey_call_id": 305,
       "participant_id": 2,
-      "phone_number": "256692185743",
+      "phone_number": "+256692185743",
       "created_at": "2018-02-06 12:27:02.372419",
       "call_status": "SCHEDULED"
     }

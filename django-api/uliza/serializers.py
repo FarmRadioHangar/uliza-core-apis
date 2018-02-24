@@ -3,9 +3,26 @@ from uliza.models import (Participant,
                           RegistrationCall,
                           registration_status)
 from eav.models import Attribute
+from django.core.exceptions import ValidationError
+import phonenumbers
 
 
-class ParticipantSerializer(serializers.Serializer):
+class PhoneNumberValidator:
+
+    def validate_phone_number(self, value):
+        if len(value) and value[0] != '+':
+            value = '+' + value
+        try:
+            number = phonenumbers.parse(value)
+        except phonenumbers.NumberParseException:
+            raise ValidationError('Bad phone number')
+        return phonenumbers.format_number(
+                number,
+                phonenumbers.PhoneNumberFormat.E164
+        )
+
+
+class ParticipantSerializer(serializers.Serializer, PhoneNumberValidator):
 
     id = serializers.IntegerField(read_only=True)
     phone_number = serializers.CharField(max_length=100)
@@ -47,7 +64,9 @@ class ParticipantSerializer(serializers.Serializer):
         return instance
 
 
-class RegistrationCallSerializer(serializers.ModelSerializer):
+class RegistrationCallSerializer(
+        serializers.ModelSerializer,
+        PhoneNumberValidator):
 
     class Meta:
         model = RegistrationCall

@@ -80,11 +80,10 @@ function loadFixtures() {
   return Promise.all(Array.prototype.concat.apply([], inserts));
 }
 
-function stripPrefix(s) {
-  if (s.length && '+' === s[0]) {
-    return s.substring(1);
+function normalizePhoneNumber(s) {
+  if (s.length && '+' !== s[0]) {
+    return '+' + s;
   }
-  return s;
 }
 
 module.exports = {
@@ -93,6 +92,6 @@ module.exports = {
   query: query,
   truncate: truncate,
   loadFixtures: loadFixtures,
-  stripPrefix: stripPrefix,
+  normalizePhoneNumber: normalizePhoneNumber,
   CONNECTION_ERROR: CONNECTION_ERROR
 };

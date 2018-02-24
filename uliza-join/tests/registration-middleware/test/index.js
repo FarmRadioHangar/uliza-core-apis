@@ -109,7 +109,7 @@ describe('Uliza Join registration service', function() {
           response.body.should.have.property('registration_call');
           response.body.registration_call
           .should.have.property('phone_number')
-          .equal(utils.stripPrefix(participant.subscriber_phone));
+          .equal(utils.normalizePhoneNumber(participant.subscriber_phone));
         });
       });
   
@@ -117,11 +117,11 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_participants WHERE phone_number = ?;';
         return jsonRequest('/responses?tree_id=1') 
         .send(utils.serialize(participant))
-        .then(utils.query(sql, participant.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(participant.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].phone_number.should.equal(
-            utils.stripPrefix(participant.subscriber_phone)
+            utils.normalizePhoneNumber(participant.subscriber_phone)
           );
           results[0].registration_status.should.equal('NOT_REGISTERED');
         })
@@ -136,7 +136,7 @@ describe('Uliza Join registration service', function() {
         })
         .then(function(results) {
           results[0].phone_number.should.equal(
-            utils.stripPrefix(participant.subscriber_phone)
+            utils.normalizePhoneNumber(participant.subscriber_phone)
           );
         });
       });
@@ -161,7 +161,7 @@ describe('Uliza Join registration service', function() {
         var participantId;
         return jsonRequest('/responses?tree_id=1') 
         .send(utils.serialize(participant))
-        .then(utils.query(sql, participant.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(participant.subscriber_phone)))
         .then(function(results) {
           var sql = 'SELECT * FROM uliza_registration_calls WHERE participant_id = ?;';
           participantId = results[0].id;
@@ -397,7 +397,7 @@ describe('Uliza Join registration service', function() {
           response.body.should.have.property('registration_call');
           response.body.registration_call
           .should.have.property('phone_number')
-          .equal(utils.stripPrefix(participant.subscriber_phone));
+          .equal(utils.normalizePhoneNumber(participant.subscriber_phone));
         });
       });
   
@@ -408,11 +408,11 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_participants WHERE phone_number = ?;';
         return jsonRequest('/responses?tree_id=1') 
         .send(utils.serialize(participant))
-        .then(utils.query(sql, participant.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(participant.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].phone_number.should.equal(
-            utils.stripPrefix(participant.subscriber_phone)
+            utils.normalizePhoneNumber(participant.subscriber_phone)
           );
           results[0].registration_status.should.equal('NOT_REGISTERED');
         })
@@ -492,6 +492,76 @@ describe('Uliza Join registration service', function() {
  
     });
 
+    describe('Well-formed phone number', function() {
+
+      var participant = {
+        subscriber_phone: '+256123123123',
+        outgoing_call_id: '1',
+        delivery_status: '3'
+      };
+
+      it('should not change before inserted into database', function() {
+        var sql = 'SELECT * FROM uliza_participants WHERE phone_number = ?;';
+        return jsonRequest('/responses?tree_id=1') 
+        .send(utils.serialize(participant))
+        .then(utils.query(sql, participant.subscriber_phone))
+        .then(function(results) {
+          results.length.should.equal(1);
+        });
+      });
+
+    });
+
+    describe('Phone number without + prefix', function() {
+
+      var participant = {
+        subscriber_phone: '256123123123',
+        outgoing_call_id: '1',
+        delivery_status: '3'
+      };
+
+      it('should be normalized before inserted into database', function() {
+        var sql = 'SELECT * FROM uliza_participants WHERE phone_number = ?;';
+        return jsonRequest('/responses?tree_id=1') 
+        .send(utils.serialize(participant))
+        .then(utils.query(sql, utils.normalizePhoneNumber(participant.subscriber_phone)))
+        .then(function(results) {
+          results.length.should.equal(1);
+        });
+      });
+
+      it('should appear with + in response', function() {
+        return jsonRequest('/responses?tree_id=1') 
+        .send(utils.serialize(participant))
+        .then(function(response) {
+          response.body.registration_call.should.have.property('phone_number')
+          .equal(utils.normalizePhoneNumber(participant.subscriber_phone));
+        });
+      });
+
+    });
+
+    describe('Phone number with spaces', function() {
+
+      var participant = {
+        subscriber_phone: '256 777 423 221',
+        outgoing_call_id: '1',
+        delivery_status: '3'
+      };
+
+      it('should be normalized before inserted into database', function() {
+        var sql = 'SELECT * FROM uliza_participants WHERE phone_number = "+256777423221";';
+        return jsonRequest('/responses?tree_id=1') 
+        .send(utils.serialize(participant))
+        .then(utils.query(sql))
+        .then(function(results) {
+          results.length.should.equal(1);
+          results[0].phone_number.should.equal('+256777423221');
+        });
+      });
+
+    });
+
   });
 
   describe('Call status update', function() {
@@ -563,7 +633,7 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_participants WHERE phone_number = ?;';
         return jsonRequest('/call_status_updates') 
         .send(utils.serialize(update))
-        .then(utils.query(sql, update.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(update.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].should.have.property('registration_status')
@@ -605,7 +675,7 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_registration_calls JOIN uliza_participants ON uliza_participants.id = uliza_registration_calls.participant_id WHERE uliza_participants.phone_number = ?;';
         return jsonRequest('/call_status_updates') 
         .send(utils.serialize(update))
-        .then(utils.query(sql, update.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(update.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].should.have.property('interactions');
@@ -641,7 +711,7 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_participants WHERE phone_number = ?;';
         return jsonRequest('/call_status_updates') 
         .send(utils.serialize(update))
-        .then(utils.query(sql, update.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(update.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].should.have.property('registration_status')
@@ -653,7 +723,7 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_registration_calls JOIN uliza_participants ON uliza_participants.id = uliza_registration_calls.participant_id WHERE uliza_participants.phone_number = ?;';
         return jsonRequest('/call_status_updates') 
         .send(utils.serialize(update))
-        .then(utils.query(sql, update.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(update.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].should.have.property('call_status')
@@ -665,7 +735,7 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_registration_calls JOIN uliza_participants ON uliza_participants.id = uliza_registration_calls.participant_id WHERE uliza_participants.phone_number = ?;';
         return jsonRequest('/call_status_updates') 
         .send(utils.serialize(update))
-        .then(utils.query(sql, update.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(update.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].should.have.property('interactions');
@@ -701,7 +771,7 @@ describe('Uliza Join registration service', function() {
         var sql = 'SELECT * FROM uliza_participants WHERE phone_number = ?;';
         return jsonRequest('/call_status_updates') 
         .send(utils.serialize(update))
-        .then(utils.query(sql, update.subscriber_phone))
+        .then(utils.query(sql, utils.normalizePhoneNumber(update.subscriber_phone)))
         .then(function(results) {
           results.length.should.equal(1);
           results[0].should.have.property('registration_status')
@@ -767,14 +837,6 @@ describe('Uliza Join registration service', function() {
       });
 
     });
-
-//    describe('Phone number with + prefix', function() {
-//
-//    it('should be normalized before inserted into database', function() {
-  //
-//    it('should appear without + in response', function() {
-  //
-//    });
 
   });
 
