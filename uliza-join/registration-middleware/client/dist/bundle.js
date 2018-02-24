@@ -11212,6 +11212,8 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: 'render',
     value: function render() {
+      var phoneNumberInput = void 0,
+          passwordInput = void 0;
       return _react2.default.createElement(
         'div',
         null,
@@ -11227,7 +11229,7 @@ var App = function (_React$Component) {
               _react2.default.createElement(
                 'a',
                 { href: '/' },
-                'Uliza Registration'
+                'Uliza Join'
               )
             )
           ),
@@ -11236,6 +11238,67 @@ var App = function (_React$Component) {
         _react2.default.createElement(
           _reactBootstrap.Grid,
           { style: { marginTop: '68px' } },
+          _react2.default.createElement(
+            _reactBootstrap.Row,
+            null,
+            _react2.default.createElement(
+              _reactBootstrap.Form,
+              { inline: true },
+              _react2.default.createElement(
+                _reactBootstrap.FormGroup,
+                { controlId: 'survey-phone-number' },
+                _react2.default.createElement(
+                  _reactBootstrap.ControlLabel,
+                  null,
+                  'Phone number'
+                ),
+                ' ',
+                _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', inputRef: function inputRef(ref) {
+                    phoneNumberInput = ref;
+                  } })
+              ),
+              ' ',
+              _react2.default.createElement(
+                _reactBootstrap.FormGroup,
+                { controlId: 'survey-password' },
+                _react2.default.createElement(
+                  _reactBootstrap.ControlLabel,
+                  null,
+                  'Password'
+                ),
+                ' ',
+                _react2.default.createElement(_reactBootstrap.FormControl, { type: 'password', inputRef: function inputRef(ref) {
+                    passwordInput = ref;
+                  } })
+              ),
+              ' ',
+              _react2.default.createElement(
+                _reactBootstrap.Button,
+                { type: 'submit', onClick: function onClick(e) {
+                    e.preventDefault();
+                    fetch(window.location + 'schedule_survey/', {
+                      headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                      },
+                      method: 'POST',
+                      body: JSON.stringify({
+                        number: phoneNumberInput.value,
+                        password: passwordInput.value
+                      })
+                    }).then(function (response) {
+                      return response.json();
+                    }).then(function (json) {
+                      console.log(json);
+                    });
+                    phoneNumberInput.value = '';
+                    passwordInput.value = '';
+                  } },
+                'Schedule test survey call'
+              )
+            ),
+            _react2.default.createElement('hr', null)
+          ),
           _react2.default.createElement(
             _reactBootstrap.Row,
             null,
@@ -30299,7 +30362,7 @@ module.exports = Fuse;
 /* 190 */
 /***/ (function(module, exports) {
 
-module.exports = [{"name":"Kampala","lat":0.347596,"lng":32.58252},{"name":"Paris","lat":48.856614,"lng":2.352222},{"name":"Juba","lat":4.859363,"lng":31.57125},{"name":"Gulu","lat":2.7724,"lng":32.2881},{"name":"Jinja","lat":0.447857,"lng":33.202612},{"name":"Malaba","lat":0.636206,"lng":34.278276},{"name":"Arua","lat":3.03033,"lng":30.907304},{"name":"Entebbe","lat":0.051184,"lng":32.463708},{"name":"Lira","lat":2.258083,"lng":32.887407},{"name":"Tororo","lat":0.678227,"lng":34.186567},{"name":"Mbarara","lat":-0.60716,"lng":30.654502}]
+module.exports = [{"name":"Kampala","lat":0.347596,"lng":32.58252},{"name":"Paris","lat":48.856614,"lng":2.352222},{"name":"Juba","lat":4.859363,"lng":31.57125},{"name":"Gulu","lat":2.7724,"lng":32.2881},{"name":"Jinja","lat":0.447857,"lng":33.202612},{"name":"Malaba","lat":0.636206,"lng":34.278276},{"name":"Arua","lat":3.03033,"lng":30.907304},{"name":"Entebbe","lat":0.051184,"lng":32.463708},{"name":"Lira","lat":2.258083,"lng":32.887407},{"name":"Tororo","lat":0.678227,"lng":34.186567},{"name":"Mbarara","lat":-0.60716,"lng":30.654502},{"name":"Mahagi","lat":2.3054728,"lng":30.97615989999997}]
 
 /***/ }),
 /* 191 */
