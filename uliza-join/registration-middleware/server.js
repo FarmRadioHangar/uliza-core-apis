@@ -22,6 +22,7 @@ var VOTO_API_URL
   = process.env.VOTO_API_URL  || 'https://go.votomobile.org/api/v1/';
 var VOTO_API_KEY  
   = process.env.VOTO_API_KEY;
+var TEST_SURVEY_PASSWORD = process.env.TEST_SURVEY_PASSWORD;
 
 var MIN_RESCHEDULE_DELAY = process.env.MIN_RESCHEDULE_DELAY || 172800;
 var CALL_SCHEDULE_OFFSET = process.env.CALL_SCHEDULE_OFFSET || 600;
@@ -506,6 +507,30 @@ router.post('/call_status_updates', function(req, res) {
     res.json(response);
     console.error(chalk.redBright(JSON.stringify(response)));
   });
+});
+
+router.post('/schedule_survey', function(req, res) {
+  requireBodyField(req, 'number');
+  requireBodyField(req, 'password');
+  if (TEST_SURVEY_PASSWORD === req.body.password) {
+    votoPost('outgoing_calls/', {
+      send_to_phones: req.body.number,
+      survey_id: '210929',
+      webhook_url: url.format({
+        protocol: 'https',
+        host: req.get('host'),
+        pathname: 'responses',
+        query: {
+          'tree_id': 22391
+        }
+      }),
+      webhook_method: 'POST'
+    }).then(function(response) {
+      res.json(response.json);
+    });
+  } else {
+    res.json({message: 'INVALID_PASSWORD'});
+  }
 });
 
 ulizaGet('')
