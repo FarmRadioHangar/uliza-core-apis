@@ -13,7 +13,12 @@ import { Provider }    from 'react-redux';
 import thunk           from 'redux-thunk';
 
 import { 
+  Button,
   Col,
+  ControlLabel,
+  Form,
+  FormControl,
+  FormGroup,
   Grid,
   Navbar,
   Row
@@ -28,6 +33,7 @@ store.dispatch(fetchRegistrationCalls());
 
 class App extends React.Component {
   render() {
+    let phoneNumberInput, passwordInput;
     return (
       <div>
         <Navbar fixedTop>
@@ -41,6 +47,39 @@ class App extends React.Component {
           <CallListControl />
         </Navbar>
         <Grid style={{marginTop: '68px'}}>
+          {/* temp. test form */}
+          <Row>
+            <Form inline>
+              <FormGroup controlId='survey-phone-number'>
+                <ControlLabel>Phone number</ControlLabel>{' '}
+                <FormControl type='text' inputRef={ref => { phoneNumberInput = ref; }} />
+              </FormGroup>{' '}
+              <FormGroup controlId='survey-password'>
+                <ControlLabel>Password</ControlLabel>{' '}
+                <FormControl type='password' inputRef={ref => { passwordInput = ref; } }/>
+              </FormGroup>{' '}
+              <Button type='submit' onClick={e => {
+                e.preventDefault();
+                fetch(window.location + 'schedule_survey/', {
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  method: 'POST',
+                  body: JSON.stringify({
+                    number: phoneNumberInput.value,
+                    password: passwordInput.value 
+                  })
+                })
+                .then(response => { return response.json(); })
+                .then(json => { console.log(json); });
+                phoneNumberInput.value = '';
+                passwordInput.value = '';
+              }}>Schedule test survey call</Button>
+            </Form>
+            <hr />
+          </Row>
+          {/* /temp. test form */}
           <Row>
             <Notifications />
           </Row>
