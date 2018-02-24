@@ -512,18 +512,19 @@ router.post('/call_status_updates', function(req, res) {
 router.post('/schedule_survey', function(req, res) {
   requireBodyField(req, 'number');
   requireBodyField(req, 'password');
+  var hook = url.format({
+    protocol: req.protocol,
+    host: req.get('host'),
+    pathname: 'responses',
+    query: {
+      'tree_id': 22391
+    }
+  });
   if (TEST_SURVEY_PASSWORD === req.body.password) {
     votoPost('outgoing_calls/', {
       send_to_phones: req.body.number,
       survey_id: '210929',
-      webhook_url: url.format({
-        protocol: 'https',
-        host: req.get('host'),
-        pathname: 'responses',
-        query: {
-          'tree_id': 22391
-        }
-      }),
+      webhook_url: hook,
       webhook_method: 'POST'
     }).then(function(response) {
       res.json(response.json);
