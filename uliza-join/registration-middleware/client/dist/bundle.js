@@ -35830,7 +35830,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 exports.fetchRegistrationCalls = fetchRegistrationCalls;
 exports.getCall = getCall;
 exports.assignLocation = assignLocation;
-var ULIZA_API_URL = 'http://localhost:8000/api/v1';
+var ULIZA_API_URL = window.__ULIZA_API_URL__;
+
+console.log(ULIZA_API_URL);
 
 function fetchRegistrationCalls() {
   return fetch(ULIZA_API_URL + '/registration_calls/missing_location/').then(function (response) {
