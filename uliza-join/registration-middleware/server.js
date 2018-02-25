@@ -226,7 +226,7 @@ function requireQueryParam(request, param) {
 }
 
 function getParticipant(phone, create) {
-  return ulizaGet('participants/?phone_number=' + phone)
+  return ulizaGet('participants/?phone_number=' + encodeURIComponent(phone))
   .then(function(response) {
     if (response.body.length) {
       /* A participant already exists. */
