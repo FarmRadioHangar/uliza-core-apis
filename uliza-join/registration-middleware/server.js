@@ -534,6 +534,13 @@ router.post('/schedule_survey', function(req, res) {
   }
 });
 
+router.get('/', function(req, res) {
+  var url = process.env.ULIZA_API_URL || 'http://dev.uliza.fm/api/v1';
+  res.render('index.ejs', {
+    ulizaUrl: url.replace(/\/$/, '')
+  });
+});
+
 ulizaGet('')
 .catch(function(error) {
   console.error('Failed connecting to Uliza API on ' + ULIZA_API_URL + '.');
