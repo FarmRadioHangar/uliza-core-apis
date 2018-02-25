@@ -1,4 +1,6 @@
-const ULIZA_API_URL = 'http://localhost:8000/api/v1';
+const ULIZA_API_URL = window.__ULIZA_API_URL__;
+
+console.log(ULIZA_API_URL);
 
 export function fetchRegistrationCalls() {
   return fetch(`${ULIZA_API_URL}/registration_calls/missing_location/`)
