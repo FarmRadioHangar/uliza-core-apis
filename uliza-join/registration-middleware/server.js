@@ -535,9 +535,8 @@ router.post('/schedule_survey', function(req, res) {
 });
 
 router.get('/', function(req, res) {
-  var url = process.env.ULIZA_API_URL || 'http://dev.uliza.fm/api/v1';
   res.render('index.ejs', {
-    ulizaUrl: url.replace(/\/$/, '')
+    ulizaUrl: ULIZA_API_URL.replace(/\/$/, '')
   });
 });
 
