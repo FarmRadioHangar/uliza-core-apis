@@ -47700,7 +47700,7 @@ var CallListControl = function CallListControl(_ref) {
           _react2.default.createElement(
             _reactBootstrap.Navbar.Text,
             null,
-            'No registration calls.'
+            'No pending registration calls.'
           ),
           _react2.default.createElement(
             _reactBootstrap.Navbar.Form,
