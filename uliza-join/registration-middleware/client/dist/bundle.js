@@ -11243,7 +11243,12 @@ var App = function (_React$Component) {
             null,
             _react2.default.createElement(
               _reactBootstrap.Form,
-              { inline: true },
+              { inline: true, style: { padding: '20px', border: '1px solid #a8a8a8' } },
+              _react2.default.createElement(
+                _reactBootstrap.ControlLabel,
+                { style: { marginRight: '20px' } },
+                'DEMO CALL:'
+              ),
               _react2.default.createElement(
                 _reactBootstrap.FormGroup,
                 { controlId: 'survey-phone-number' },
@@ -11296,8 +11301,7 @@ var App = function (_React$Component) {
                   } },
                 'Schedule test survey call'
               )
-            ),
-            _react2.default.createElement('hr', null)
+            )
           ),
           _react2.default.createElement(
             _reactBootstrap.Row,

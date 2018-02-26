@@ -49,7 +49,8 @@ class App extends React.Component {
         <Grid style={{marginTop: '68px'}}>
           {/* temp. test form */}
           <Row>
-            <Form inline>
+            <Form inline style={{padding: '20px', border: '1px solid #a8a8a8'}}>
+              <ControlLabel style={{marginRight: '20px'}}>DEMO CALL:</ControlLabel>
               <FormGroup controlId='survey-phone-number'>
                 <ControlLabel>Phone number</ControlLabel>{' '}
                 <FormControl type='text' inputRef={ref => { phoneNumberInput = ref; }} />
@@ -77,7 +78,6 @@ class App extends React.Component {
                 passwordInput.value = '';
               }}>Schedule test survey call</Button>
             </Form>
-            <hr />
           </Row>
           {/* /temp. test form */}
           <Row>
