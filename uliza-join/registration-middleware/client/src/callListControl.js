@@ -44,7 +44,7 @@ const CallListControl = ({ onSelect, onRefresh, calls, state }) => {
           ) : (
             <Navbar.Collapse>
               <Navbar.Text>
-                {'No registration calls.'}
+                {'No pending registration calls.'}
               </Navbar.Text>
               <Navbar.Form pullLeft>
                 <FormGroup>
