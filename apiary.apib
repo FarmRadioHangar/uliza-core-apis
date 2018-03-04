@@ -60,6 +60,20 @@ For guidelines and examples, see [White House Web API Standards](https://github.
                 "token": "gcmtoken"
             }
 
+### Delete a notification token for a user [DELETE /users/{id}/tokens]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /users/2/tokens
+
+    + Body
+            
+            {
+                "token": "gcmtoken"
+            }
+
 ## Responses [/responses]
 
 ### List responses for a question [GET /responses/questions/{question_id}{?limit,offset}]
