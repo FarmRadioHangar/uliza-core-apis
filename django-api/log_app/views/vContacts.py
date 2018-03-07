@@ -10,6 +10,18 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+
+class ContactGet(generics.ListCreateAPIView):
+    queryset = Contact.objects.all()
+    model = Contact
+    serializer_class = ContactSerializer
+    filter_fields = ['id','user_id','role','country','radio_station']
+
+class ContactEntity(generics.RetrieveUpdateAPIView):
+    queryset = Contact.objects.all()
+    model = Contact
+    serializer_class = ContactSerializer
+
 @api_view(['PATCH'])
 def update_access(request,id):
     """
@@ -18,8 +30,8 @@ def update_access(request,id):
     from log_app.models import Contact,Program
 
     contact = Contact.objects.get(pk=id)
-    programs = Program.objects.filter(radio_station=contact.radio_station)
     access = request.data['access'].split(',')
+    programs = Program.objects.filter(access=contact)|Program.objects.filter(id__in=access)
 
     for p in programs:
 
@@ -31,16 +43,3 @@ def update_access(request,id):
         p.save()
 
     return Response(access, status=status.HTTP_200_OK)
-
-class ContactGet(generics.ListCreateAPIView):
-
-    queryset = Contact.objects.all()
-    model = Contact
-    serializer_class = ContactSerializer
-    filter_fields = ['id','user_id','role','country']
-
-class ContactEntity(generics.RetrieveUpdateAPIView):
-
-    queryset = Contact.objects.all()
-    model = Contact
-    serializer_class = ContactSerializer
