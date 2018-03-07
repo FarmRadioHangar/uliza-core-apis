@@ -38,32 +38,29 @@ class Country(models.Model):
 		return self.name
 
 class RadioStation(models.Model):
-	name = models.CharField(max_length=50)
-	country = models.ForeignKey('Country',null=True,blank=True)
-	city = models.CharField(max_length=50,null=True)
-	phone_number = models.CharField(max_length=50,null=True,blank=True)
-	email = models.EmailField(max_length=50,null=True,blank=True)
-	uliza_password = models.CharField(max_length=50,null=True,blank=True)
-	website = models.CharField(max_length=50,null=True,blank=True)
-	manager = models.CharField(max_length=50,null=True,blank=True)
+    name = models.CharField(max_length=50)
+    country = models.ForeignKey('Country',null=True,blank=True)
+    city = models.CharField(max_length=50,null=True)
+    phone_number = models.CharField(max_length=50,null=True,blank=True)
+    email = models.EmailField(max_length=50,null=True,blank=True)
+    uliza_password = models.CharField(max_length=50,null=True,blank=True)
+    website = models.CharField(max_length=50,null=True,blank=True)
+    manager = models.CharField(max_length=50,null=True,blank=True)
+    group_account_id = models.CharField(null=True, blank=True, max_length=120)
 
-	frequency = models.CharField(max_length=50,null=True,blank=True)
-	tower_location = models.CharField(max_length=50,null=True,blank=True)
-	tower_height = models.CharField(max_length=50,null=True,blank=True)
-	transmission_power = models.CharField(max_length=50,null=True,blank=True)
-	transmission_gain = models.CharField(max_length=50,null=True,blank=True)
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-	lattitude = models.FloatField(null=True,blank=True)
-	longitude = models.FloatField(null=True,blank=True)
-	frequency = models.CharField(max_length=100,null=True,blank=True)
-	telerivet_project_code = models.CharField(max_length=50,null=True,blank=True)
+    def __unicode__(self):
+        return self.name
 
-	# Time track
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
-
-	def __unicode__(self):
-		return self.name
+class TransmissionTower(models.Model):
+    radio_station = models.ForeignKey('RadioStation')
+    frequency = models.CharField(null=True, blank=True,max_length=80)
+    gain = models.CharField(null=True, blank=True,max_length=80)
+    height = models.CharField(null=True, blank=True,max_length=80)
+    coordinates = models.CharField(null=True, blank=True,max_length=120)
 
 
 def filename(instance, filename):
