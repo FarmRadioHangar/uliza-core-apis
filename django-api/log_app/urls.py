@@ -74,7 +74,7 @@ presenters = patterns('log_app.views.vPresnter',
 
 contacts = patterns('log_app.views.vContacts',
     url(r'/(?P<id>\d+)/accesses$','update_access',name = 'update_access'),
-    url(r'/(?P<id>\d+)$', ContactEntity.as_view()),
+    url(r'/(?P<pk>\d+)$', ContactEntity.as_view()),
     url(r'$', ContactGet.as_view()),
 )
 

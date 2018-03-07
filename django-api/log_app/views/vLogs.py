@@ -31,8 +31,6 @@ class LogFilter(filters.FilterSet):
 
 class LogGet(generics.ListCreateAPIView):
 
-	queryset = Log.objects.all()
-
 	model = Log
 	serializer_class = LogSerializer
 	filter_class = LogFilter
@@ -101,7 +99,7 @@ def upload( request ):
 	instance.save()
 	log_id = str(instance.id)
 	filename = log_id+'_'+re.sub("[^\w.-]", '', file.name.replace(" ","_"))
-	if(not  basename == filename):
+	if(not basename == filename):
 		if(instance.recording_backup):
 			try:
 				os.unlink( instance.recording_backup.path )
