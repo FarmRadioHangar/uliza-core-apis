@@ -49,6 +49,11 @@ class ContactSerializer(serializers.ModelSerializer):
 		model = Contact
 		fields = "__all__"
 
+class RadioTransmissionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = RadioTransmission
+		fields = "__all__"
+
 class Auth0UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Auth0User
