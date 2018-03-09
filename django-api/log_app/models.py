@@ -55,11 +55,12 @@ class RadioStation(models.Model):
     def __unicode__(self):
         return self.name
 
-class TransmissionTower(models.Model):
+class RadioTransmission(models.Model):
     radio_station = models.ForeignKey('RadioStation')
     frequency = models.CharField(null=True, blank=True,max_length=80)
     gain = models.CharField(null=True, blank=True,max_length=80)
     height = models.CharField(null=True, blank=True,max_length=80)
+    power = models.CharField(null=True, blank=True,max_length=80)
     coordinates = models.CharField(null=True, blank=True,max_length=120)
 
 
