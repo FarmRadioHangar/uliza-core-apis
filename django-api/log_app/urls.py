@@ -11,11 +11,16 @@ from log_app.views.vKnowledgePartners import *
 from log_app.views.vLogs import *
 from log_app.views.vPresenters import *
 from log_app.views.vProjects import *
+from log_app.views.vRadiotransmissions import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)$', RadioStationEntity.as_view()),
     url(r'$', RadioStationGet.as_view()),
+)
 
+radio_transmission = patterns('log_app.views.vRadiotransmissions',
+    url(r'/(?P<id>\d+)$', RadioTransmissionEntity.as_view()),
+    url(r'$', RadioTransmissionGet.as_view()),
 )
 
 programs = patterns('log_app.views.vPrograms',
@@ -54,7 +59,7 @@ auth0_user = patterns('log_app.views.vAuth0User',
 )
 
 logs = patterns('log_app.views.vLogs',
-        # Uploads
+    # Uploads
     url( r'recording/delete/(?P<pk>\d+)','upload_delete', name ='recording_delete'),
     url( r'recording/init/(?P<week>\d+)/(?P<program_id>\d+)','create_instance'),
     url( r'recording/check/(?P<log_id>\d+)/(?P<filename>.*)','check_rec'),
@@ -92,6 +97,7 @@ urlpatterns = patterns('',
     url(r'auth0_user', include(auth0_user, 'auth0_user')),
     url(r'countries', include(countries, 'countries')),
     url(r'group_accounts', include(group_accounts, 'group_accounts')),
+    url(r'radio_transmission', include(radio_transmission, 'radio_transmission')),
     url(r'knowledge_partners', include(knowledge_partners, 'knowledge_partners')),
     url(r'logs', include(logs, 'logs')),
     url(r'presenters', include(presenters, 'presenters')),
