@@ -15,7 +15,27 @@ class ContactGet(generics.ListCreateAPIView):
     queryset = Contact.objects.all()
     model = Contact
     serializer_class = ContactSerializer
-    filter_fields = ['id','user_id','role','country','radio_station']
+    ordering_fields = ('role')
+    filter_fields = ['id','user_id','role','email','country','radio_station','notify_on_log_create']
+
+    def get_queryset(self):
+        queryset = None
+        if 'role__in' in self.request.GET:
+            roles = self.request.GET.getlist('role__in')
+            queryset = Contact.objects.filter(role__in = roles)
+
+        if 'pk__in' in self.request.GET:
+            pks = self.request.GET.getlist('pk__in')
+
+            if queryset:
+                queryset = queryset.filter(id__in = pks)
+            else:
+                queryset = Contact.objects.filter(id__in = pks)
+
+        if not queryset:
+            queryset = Contact.objects.all()
+
+        return queryset
 
 class ContactEntity(generics.RetrieveUpdateAPIView):
     queryset = Contact.objects.all()
