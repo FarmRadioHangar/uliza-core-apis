@@ -23,7 +23,7 @@ class ProgramFilter(filters.FilterSet):
 
 	class Meta:
 		model = Program
-		fields = ['id','radio_station','end_date','start_date','radio_station__country', 'project', 'access',
+		fields = ['id','radio_station','end_date','start_date','radio_station__country','radio_station__country__name', 'project', 'access',
 				  'end_date__lt','end_date__gte','start_date__gte','project__end_date__gte','end_date__gt','start_date__lt']
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -38,7 +38,7 @@ class ProgramGet(generics.ListCreateAPIView):
 	model = Program
 	serializer_class = ProgramSerializer
 	filter_backends = (filters.OrderingFilter, DjangoFilterBackend,)
-	ordering_fields = ('week','id','created_at','end_date')
+	ordering_fields = ('week','id','created_at','end_date','radio_station__country')
 	filter_class = ProgramFilter
 	pagination_class = LargeResultsSetPagination
 
@@ -50,9 +50,9 @@ class ProgramGet(generics.ListCreateAPIView):
 		pk_list = self.request.GET.get('ids')
 		if pk_list:
 			pk_list = pk_list.split(',')
-			queryset = Program.objects.filter(pk__in =pk_list).order_by('-end_date').select_related('project__id','radio_station__country','radio_station__name',).prefetch_related('access')
+			queryset = Program.objects.filter(pk__in =pk_list).order_by('-end_date').select_related('project__id','radio_station__country','radio_station__country__name','radio_station__name',).prefetch_related('access')
 		else:
-			queryset = Program.objects.all().order_by('-end_date').select_related('project__id','radio_station__country','radio_station__name',).prefetch_related('access')
+			queryset = Program.objects.all().order_by('-end_date').select_related('project__id','radio_station__country','radio_station__country__name','radio_station__name',).prefetch_related('access')
 
 		return queryset
 
@@ -64,8 +64,6 @@ class ProgramGet(generics.ListCreateAPIView):
 
 		weeks = timedelta(weeks = int(self.request.POST['weeks'])-1)
 		end_date = parse_datetime(self.request.POST['start_date']) + weeks
-		print end_date.strftime('%Y-%m-%d')
-
 		serializer.save(end_date=end_date.strftime('%Y-%m-%d'))
 
 class ProgramEntity(generics.RetrieveUpdateAPIView):
