@@ -12,6 +12,9 @@ from log_app.views.vLogs import *
 from log_app.views.vPresenters import *
 from log_app.views.vProjects import *
 from log_app.views.vRadiotransmissions import *
+from log_app.views.vChecklists import *
+from log_app.views.vFormats import *
+from log_app.views.vReviews import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)$', RadioStationEntity.as_view()),
@@ -83,9 +86,24 @@ contacts = patterns('log_app.views.vContacts',
     url(r'$', ContactGet.as_view()),
 )
 
-projects = patterns('log_app.views.vProject',
-url(r'/(?P<id>\d+)$', ProjectEntity.as_view()),
-url(r'$', ProjectGet.as_view()),
+projects = patterns('log_app.views.vProjects',
+    url(r'/(?P<id>\d+)$', ProjectEntity.as_view()),
+    url(r'$', ProjectGet.as_view()),
+)
+
+checklists = patterns('log_app.views.vChecklists',
+    url(r'/(?P<id>\d+)$', ChecklistEntity.as_view()),
+    url(r'$', ChecklistGet.as_view()),
+)
+
+reviews = patterns('log_app.views.vReviews',
+    url(r'/(?P<id>\d+)$', ReviewEntity.as_view()),
+    url(r'$', ReviewGet.as_view()),
+)
+
+formats = patterns('log_app.views.vFormats',
+    url(r'/(?P<id>\d+)$', FormatEntity.as_view()),
+    url(r'$', FormatGet.as_view()),
 )
 
 urlpatterns = patterns('',
@@ -102,6 +120,9 @@ urlpatterns = patterns('',
     url(r'logs', include(logs, 'logs')),
     url(r'presenters', include(presenters, 'presenters')),
     url(r'projects', include(projects, 'projects')),
+    url(r'formats', include(formats, 'formats')),
+    url(r'checklists', include(checklists, 'checklists')),
+    url(r'reviews', include(reviews, 'reviews'))
 )
 
 
