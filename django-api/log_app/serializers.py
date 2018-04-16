@@ -79,3 +79,18 @@ class AdministratorSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Administrator
 		fields = "__all__"
+
+class ReviewSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Review
+		fields = "__all__"
+
+class ChecklistSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Checklist
+		fields = "__all__"
+
+class FormatSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Format
+		fields = "__all__"
