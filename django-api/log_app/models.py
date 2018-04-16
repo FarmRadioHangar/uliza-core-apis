@@ -320,3 +320,32 @@ class Comment(models.Model):
 
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Format(models.Model):
+	name = models.CharField(max_length=60)
+	description = models.TextField(null=True,blank=True)
+	last_updated_at = models.DateTimeField(auto_now=True)
+
+checklist_level = (
+    ('best', 'Best'),
+    ('good', 'Good'),
+    ('better', 'Best')
+)
+
+class Checklist(models.Model):
+    radio_format = models.ForeignKey('Format')
+    level = models.CharField(max_length=6,default='good',choices=checklist_level)
+    description = models.TextField(null=True,blank=True)
+
+    def __unicode__(self):
+    	return self.description
+
+
+class Review(models.Model):
+	user = models.ForeignKey(User)
+	log = models.ForeignKey('Log')
+	draft = models.BooleanField(default=False)
+	checklists = models.ManyToManyField('Checklist',blank=True)
+
+	created_at = models.DateTimeField(auto_now_add=True)
+	last_updated_at = models.DateTimeField(auto_now=True)
