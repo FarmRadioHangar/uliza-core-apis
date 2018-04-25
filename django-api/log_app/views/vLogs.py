@@ -46,7 +46,7 @@ class LogGet(generics.ListCreateAPIView):
 		for the currently authenticated user.
 		"""
 
-		queryset = Log.objects.all().select_related('program__project__id','program','program__radio_station__country__id','program__radio_station__name','program__radio_station__id','program__start_date')
+		queryset = Log.objects.all().select_related('program__project__id','program','program__radio_station__country__id','program__radio_station__name','program__radio_station__id','program__start_date').prefetch_related('formats')
 
 		pk_list = self.request.GET.get('program__in')
 		if pk_list:
