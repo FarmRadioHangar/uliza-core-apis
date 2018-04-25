@@ -244,74 +244,76 @@ class Program(models.Model):
 		return self.name
 
 class Log(models.Model):
-	program = models.ForeignKey("Program")
-	saved_by = models.ForeignKey(Contact,blank=True,null=True)
-	topic = models.CharField(max_length=30,null=True,blank=True)
+    program = models.ForeignKey("Program")
+    saved_by = models.ForeignKey(Contact,blank=True,null=True)
+    topic = models.CharField(max_length=30,null=True,blank=True)
 
-	focus_statement = models.TextField(null=True,blank=True)
-	ict = models.TextField(blank=True,null=True)
-	duration = models.IntegerField(null=True,blank=True)
-	week = models.IntegerField(null=True,blank=True)
+    focus_statement = models.TextField(null=True,blank=True)
+    ict = models.TextField(blank=True,null=True)
+    duration = models.IntegerField(null=True,blank=True)
+    week = models.IntegerField(null=True,blank=True)
 
-	# Format options
-	studio_interviews = models.BooleanField(default=False)
-	field_interviews = models.BooleanField(default=False)
-	panel = models.BooleanField(default=False)
-	community_discussion = models.BooleanField(default=False)
-	phone_in = models.BooleanField(default=False)
-	vox_pop = models.BooleanField(default=False)
-	mini_documentary = models.BooleanField(default=False)
-	talk_tape = models.BooleanField(default=False)
-	question_answer = models.BooleanField(default=False)
-	case_study = models.BooleanField(default=False)
+    # Format options
+    formats = models.ManyToManyField('Format',blank=True)
+    # These will be deprecated
+    studio_interviews = models.BooleanField(default=False)
+    field_interviews = models.BooleanField(default=False)
+    panel = models.BooleanField(default=False)
+    community_discussion = models.BooleanField(default=False)
+    phone_in = models.BooleanField(default=False)
+    vox_pop = models.BooleanField(default=False)
+    mini_documentary = models.BooleanField(default=False)
+    talk_tape = models.BooleanField(default=False)
+    question_answer = models.BooleanField(default=False)
+    case_study = models.BooleanField(default=False)
 
-	postpone = models.BooleanField(default=False)
-	postponed_for = models.TextField(blank=True,null=True)
+    postpone = models.BooleanField(default=False)
+    postponed_for = models.TextField(blank=True,null=True)
 
-	email = models.TextField(blank=True,null=True,default=None)
+    email = models.TextField(blank=True,null=True,default=None)
 
-	recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
-	recording_backup = models.FileField(null=True,blank=True)
-	recording_saved = models.BooleanField(default=True)
-	offset = models.PositiveIntegerField(default=0)
+    recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
+    recording_backup = models.FileField(null=True,blank=True)
+    recording_saved = models.BooleanField(default=True)
+    offset = models.PositiveIntegerField(default=0)
 
-	# Time track
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-	def __unicode__(self):
-		return self.topic
+    def __unicode__(self):
+    	return self.topic
 
-	def close_file(self):
-		file_ = self.recording_backup
-		while file_ is not None:
-			file_.close()
-			file_ = getattr(file_, 'file', None)
+    def close_file(self):
+    	file_ = self.recording_backup
+    	while file_ is not None:
+    		file_.close()
+    		file_ = getattr(file_, 'file', None)
 
-	def append_chunk(self, chunk, chunk_size=None, save=True):
-		self.close_file()
-		self.recording_backup.open(mode='ab')  # mode = append+binary
-		# We can use .read() safely because chunk is already in memory
-		self.recording_backup.write(chunk.read())
-		if chunk_size is not None:
-			self.offset += chunk_size
-		elif hasattr(chunk, 'size'):
-			self.offset += chunk.size
-		else:
-			self.offset = self.file.size
-		self._md5 = None  # Clear cached md5
-		if save:
-			self.save()
-		self.close_file()  # Flush
+    def append_chunk(self, chunk, chunk_size=None, save=True):
+    	self.close_file()
+    	self.recording_backup.open(mode='ab')  # mode = append+binary
+    	# We can use .read() safely because chunk is already in memory
+    	self.recording_backup.write(chunk.read())
+    	if chunk_size is not None:
+    		self.offset += chunk_size
+    	elif hasattr(chunk, 'size'):
+    		self.offset += chunk.size
+    	else:
+    		self.offset = self.file.size
+    	self._md5 = None  # Clear cached md5
+    	if save:
+    		self.save()
+    	self.close_file()  # Flush
 
-	def rename(self):
-		import os
-		if (self.recording_backup):
-			old_path = self.recording_backup.path
-			self.recording_backup.name = 'FRI-LOG-'+self.program.name+'-'+str(self.week)+'.mp3'
+    def rename(self):
+    	import os
+    	if (self.recording_backup):
+    		old_path = self.recording_backup.path
+    		self.recording_backup.name = 'FRI-LOG-'+self.program.name+'-'+str(self.week)+'.mp3'
 
-			os.rename(old_path, self.recording_backup.path)
-			self.save()
+    		os.rename(old_path, self.recording_backup.path)
+    		self.save()
 
 class Comment(models.Model):
     content = models.TextField()
