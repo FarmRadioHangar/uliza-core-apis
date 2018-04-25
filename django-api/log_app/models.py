@@ -324,9 +324,12 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Format(models.Model):
-	name = models.CharField(max_length=60)
-	description = models.TextField(null=True,blank=True)
-	last_updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=60)
+    description = models.TextField(null=True,blank=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
+
+    # legacy formats that won't show up in the formats but is used for old Logs
+    legacy = models.BooleanField(default=False)
 
 checklist_level = (
     ('best', 'Best'),
