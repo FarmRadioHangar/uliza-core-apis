@@ -15,7 +15,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProgramSerializer(serializers.ModelSerializer):
 	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
 	project__name = serializers.CharField(source='project.name',read_only=True)
-	country = serializers.CharField(source='radio_station.country.id',read_only=True)
+	country = serializers.IntegerField(source='radio_station.country.id',read_only=True)
 	country_name = serializers.CharField(source='radio_station.country',read_only=True)
 
 	class Meta:
