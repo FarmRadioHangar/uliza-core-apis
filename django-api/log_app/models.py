@@ -344,10 +344,10 @@ class Checklist(models.Model):
 
 
 class Review(models.Model):
-	user = models.ForeignKey(User)
-	log = models.ForeignKey('Log')
-	draft = models.BooleanField(default=False)
-	checklists = models.ManyToManyField('Checklist',blank=True)
+    log = models.ForeignKey('log')
+    reviewer = models.ForeignKey(Contact)
+    draft = models.BooleanField(default=False)
+    checklists = models.ManyToManyField('Checklist',blank=True)
 
-	created_at = models.DateTimeField(auto_now_add=True)
-	last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
