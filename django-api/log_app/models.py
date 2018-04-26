@@ -31,6 +31,8 @@ class Country(models.Model):
 	country_code = models.CharField(max_length=3)
 	language = models.CharField(max_length=6)
 
+	gbb = models.BooleanField(default=False)
+
 	class Meta:
 		verbose_name_plural = "Countries"
 
