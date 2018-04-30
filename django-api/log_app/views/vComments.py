@@ -16,7 +16,7 @@ class CommentGet(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     filter_fields = ['id','log']
 
-class CommentEntity(generics.RetrieveUpdateAPIView):
+class CommentEntity(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     model = Comment
     serializer_class = CommentSerializer

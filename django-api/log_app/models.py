@@ -31,6 +31,8 @@ class Country(models.Model):
 	country_code = models.CharField(max_length=3)
 	language = models.CharField(max_length=6)
 
+	gbb = models.BooleanField(default=False)
+
 	class Meta:
 		verbose_name_plural = "Countries"
 
@@ -38,115 +40,34 @@ class Country(models.Model):
 		return self.name
 
 class RadioStation(models.Model):
-	name = models.CharField(max_length=50)
-	country = models.ForeignKey('Country',null=True,blank=True)
-	city = models.CharField(max_length=50,null=True)
-	phone_number = models.CharField(max_length=50,null=True,blank=True)
-	email = models.EmailField(max_length=50,null=True,blank=True)
-	uliza_password = models.CharField(max_length=50,null=True,blank=True)
-	website = models.CharField(max_length=50,null=True,blank=True)
-	manager = models.CharField(max_length=50,null=True,blank=True)
+    name = models.CharField(max_length=50)
+    country = models.ForeignKey('Country',null=True,blank=True)
+    city = models.CharField(max_length=50,null=True)
+    phone_number = models.CharField(max_length=50,null=True,blank=True)
+    email = models.EmailField(max_length=50,null=True,blank=True)
+    uliza_password = models.CharField(max_length=50,null=True,blank=True)
+    website = models.CharField(max_length=50,null=True,blank=True)
+    manager = models.CharField(max_length=50,null=True,blank=True)
+    group_account_id = models.CharField(null=True, blank=True, max_length=120)
 
-	frequency = models.CharField(max_length=50,null=True,blank=True)
-	tower_location = models.CharField(max_length=50,null=True,blank=True)
-	tower_height = models.CharField(max_length=50,null=True,blank=True)
-	transmission_power = models.CharField(max_length=50,null=True,blank=True)
-	transmission_gain = models.CharField(max_length=50,null=True,blank=True)
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-	lattitude = models.FloatField(null=True,blank=True)
-	longitude = models.FloatField(null=True,blank=True)
-	frequency = models.CharField(max_length=100,null=True,blank=True)
-	telerivet_project_code = models.CharField(max_length=50,null=True,blank=True)
+    def __unicode__(self):
+        return self.name
 
-	# Time track
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
-
-	def __unicode__(self):
-		return self.name
+class RadioTransmission(models.Model):
+    radio_station = models.ForeignKey('RadioStation')
+    frequency = models.CharField(null=True, blank=True,max_length=80)
+    gain = models.CharField(null=True, blank=True,max_length=80)
+    height = models.CharField(null=True, blank=True,max_length=80)
+    power = models.CharField(null=True, blank=True,max_length=80)
+    coordinates = models.CharField(null=True, blank=True,max_length=120)
 
 
 def filename(instance, filename):
 	return 'FRI-LOG-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
-
-class Log(models.Model):
-	program = models.ForeignKey("Program")
-	presenter = models.ForeignKey("Presenter",blank=True,null=True)
-	saved_by = models.ForeignKey(User,blank=True,null=True)
-	topic = models.CharField(max_length=30,null=True,blank=True)
-
-	focus_statement = models.TextField(null=True,blank=True)
-	ict = models.TextField(blank=True,null=True)
-	duration = models.IntegerField(null=True,blank=True)
-	week = models.IntegerField(null=True,blank=True)
-
-	# Format options
-	studio_interviews = models.BooleanField(default=False)
-	field_interviews = models.BooleanField(default=False)
-	panel = models.BooleanField(default=False)
-	community_discussion = models.BooleanField(default=False)
-	phone_in = models.BooleanField(default=False)
-	vox_pop = models.BooleanField(default=False)
-	mini_documentary = models.BooleanField(default=False)
-	talk_tape = models.BooleanField(default=False)
-	question_answer = models.BooleanField(default=False)
-	case_study = models.BooleanField(default=False)
-
-	postpone = models.BooleanField(default=False)
-	postponed_for = models.TextField(blank=True,null=True)
-
-	email = models.TextField(blank=True,null=True,default=None)
-
-	recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
-	recording_backup = models.FileField(null=True,blank=True)
-	recording_saved = models.BooleanField(default=True)
-	offset = models.PositiveIntegerField(default=0)
-
-	# Time track
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
-
-	def __unicode__(self):
-		return self.topic
-
-	def close_file(self):
-		file_ = self.recording_backup
-		while file_ is not None:
-			file_.close()
-			file_ = getattr(file_, 'file', None)
-
-	def append_chunk(self, chunk, chunk_size=None, save=True):
-		self.close_file()
-		self.recording_backup.open(mode='ab')  # mode = append+binary
-		# We can use .read() safely because chunk is already in memory
-		self.recording_backup.write(chunk.read())
-		if chunk_size is not None:
-			self.offset += chunk_size
-		elif hasattr(chunk, 'size'):
-			self.offset += chunk.size
-		else:
-			self.offset = self.file.size
-		self._md5 = None  # Clear cached md5
-		if save:
-			self.save()
-		self.close_file()  # Flush
-
-	def rename(self):
-		import os
-		if (self.recording_backup):
-			old_path = self.recording_backup.path
-			self.recording_backup.name = 'FRI-LOG-'+self.program.name+'-'+str(self.week)+'.mp3'
-
-			os.rename(old_path, self.recording_backup.path)
-			self.save()
-
-class Comment(models.Model):
-	content = models.TextField()
-	log = models.ForeignKey('Log')
-	user = models.ForeignKey(User)
-
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Project(models.Model):
@@ -166,10 +87,10 @@ class Project(models.Model):
 		return self.name
 
 languages = (
-	('en-us', 'English'),
-	('pt-mz', 'Portuguese'),
-	('am-et', 'Amharic'),
-	('fr-fr', 'Francais')
+	('en', 'English'),
+	('pt', 'Portuguese'),
+	('am', 'Amharic'),
+	('fr', 'Francais')
 )
 
 class Presenter(models.Model):
@@ -178,7 +99,7 @@ class Presenter(models.Model):
 	radio_station = models.ForeignKey(RadioStation,null=True)
 	phone_number = models.CharField(max_length=50,null=True,blank=True,unique=True)
 	role = models.CharField(max_length=64,null=True)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 
 	def __unicode__(self):
 		return self.user.username
@@ -187,7 +108,7 @@ class Group_account(models.Model):
 	user = models.ForeignKey(User)
 	radio_station = models.ForeignKey(RadioStation,null=True)
 	members = models.ManyToManyField('Presenter',blank=True)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 
 	def __unicode__(self):
 		return self.user.username
@@ -199,7 +120,7 @@ class Knowledge_partner(models.Model):
 	phone_number = models.CharField(max_length=50,null=True,blank=True,unique=True)
 	organization = models.CharField(max_length=64,null=True)
 	role = models.CharField(max_length=64,null=True)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 	country = models.ForeignKey('Country', null=True)
 
 
@@ -213,7 +134,7 @@ class Administrator(models.Model):
 	notify_signup = models.BooleanField(default=True)
 	notify_log_submission = models.BooleanField(default=True)
 	notify_daily_schedule = models.BooleanField(default=False)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
+	language = models.CharField(max_length=6,default='en',choices=languages)
 
 	def __unicode__(self):
 		return self.user.username
@@ -221,22 +142,33 @@ class Administrator(models.Model):
 
 # Contact
 class Contact(models.Model):
-	user_id = models.CharField(null=True, blank=True, max_length=120)
-	radio_station = models.IntegerField(null=True, blank=True, default=None)
-	first_name = models.CharField(null=True, blank=True, max_length=30)
-	last_name = models.CharField(null=True, blank=True, max_length=30)
-	job_title = models.CharField(null=True,blank=True, max_length=100)
-	organization = models.CharField(null=True, blank=True, max_length=100)
-	phone_number = models.CharField(max_length=50,null=True,blank=True)
-	organization = models.CharField(max_length=64,null=True)
-	role = models.CharField(max_length=64,null=True)
-	language = models.CharField(max_length=6,default='en-us',choices=languages)
-	country = models.ForeignKey('Country', null=True)
+    roles = (
+        ('staff', 'Staff'),
+        ('consultant', 'Consultant'),
+        ('broadcaster', 'Broadcaster'),
+        ('project_partner', 'Project Partner'),
+        ('knowledge_partner', 'Knowledge Partner'),
+    )
+    user_id = models.CharField(null=True, blank=True, max_length=120)
+    radio_station = models.IntegerField(null=True, blank=True, default=None)
+    first_name = models.CharField(null=True, blank=True, max_length=30)
+    last_name = models.CharField(null=True, blank=True, max_length=30)
+    job_title = models.CharField(null=True,blank=True, max_length=100)
+    organization = models.CharField(null=True, blank=True, max_length=100)
+    phone_number = models.CharField(max_length=50,null=True,blank=True)
+    email = models.EmailField(max_length=50,null=True,blank=True)
+    role = models.CharField(max_length=64,null=True,choices=roles)
+    language = models.CharField(max_length=6,default='en',choices=languages)
+    country = models.ForeignKey('Country', null=True)
 
+    is_superuser = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
+    blocked = models.BooleanField(default=False)
 
-	def __unicode__(self):
-		return self.first_name
+    notify_on_log_create = models.BooleanField(default=False)
 
+    def __unicode__(self):
+    	return self.first_name
 
 class Program(models.Model):
 
@@ -312,3 +244,115 @@ class Program(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+class Log(models.Model):
+    program = models.ForeignKey("Program")
+    saved_by = models.ForeignKey(Contact,blank=True,null=True)
+    topic = models.CharField(max_length=30,null=True,blank=True)
+
+    focus_statement = models.TextField(null=True,blank=True)
+    ict = models.TextField(blank=True,null=True)
+    duration = models.IntegerField(null=True,blank=True)
+    week = models.IntegerField(null=True,blank=True)
+
+    # Format options
+    formats = models.ManyToManyField('Format',blank=True)
+    # These will be deprecated
+    studio_interviews = models.BooleanField(default=False)
+    field_interviews = models.BooleanField(default=False)
+    panel = models.BooleanField(default=False)
+    community_discussion = models.BooleanField(default=False)
+    phone_in = models.BooleanField(default=False)
+    vox_pop = models.BooleanField(default=False)
+    mini_documentary = models.BooleanField(default=False)
+    talk_tape = models.BooleanField(default=False)
+    question_answer = models.BooleanField(default=False)
+    case_study = models.BooleanField(default=False)
+
+    postpone = models.BooleanField(default=False)
+    postponed_for = models.TextField(blank=True,null=True)
+
+    email = models.TextField(blank=True,null=True,default=None)
+
+    recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
+    recording_backup = models.FileField(null=True,blank=True)
+    recording_saved = models.BooleanField(default=True)
+    offset = models.PositiveIntegerField(default=0)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+    	return self.topic
+
+    def close_file(self):
+    	file_ = self.recording_backup
+    	while file_ is not None:
+    		file_.close()
+    		file_ = getattr(file_, 'file', None)
+
+    def append_chunk(self, chunk, chunk_size=None, save=True):
+    	self.close_file()
+    	self.recording_backup.open(mode='ab')  # mode = append+binary
+    	# We can use .read() safely because chunk is already in memory
+    	self.recording_backup.write(chunk.read())
+    	if chunk_size is not None:
+    		self.offset += chunk_size
+    	elif hasattr(chunk, 'size'):
+    		self.offset += chunk.size
+    	else:
+    		self.offset = self.file.size
+    	self._md5 = None  # Clear cached md5
+    	if save:
+    		self.save()
+    	self.close_file()  # Flush
+
+    def rename(self):
+    	import os
+    	if (self.recording_backup):
+    		old_path = self.recording_backup.path
+    		self.recording_backup.name = 'FRI-LOG-'+self.program.name+'-'+str(self.week)+'.mp3'
+
+    		os.rename(old_path, self.recording_backup.path)
+    		self.save()
+
+class Comment(models.Model):
+    content = models.TextField()
+    log = models.ForeignKey('Log')
+    contact = models.ForeignKey('Contact',null=True)
+
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Format(models.Model):
+    name = models.CharField(max_length=60)
+    description = models.TextField(null=True,blank=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
+
+    # legacy formats that won't show up in the formats but is used for old Logs
+    legacy = models.BooleanField(default=False)
+
+checklist_level = (
+    ('best', 'Best'),
+    ('good', 'Good'),
+    ('better', 'Best')
+)
+
+class Checklist(models.Model):
+    radio_format = models.ForeignKey('Format')
+    level = models.CharField(max_length=6,default='good',choices=checklist_level)
+    description = models.TextField(null=True,blank=True)
+
+    def __unicode__(self):
+    	return self.description
+
+
+class Review(models.Model):
+    log = models.ForeignKey('log')
+    reviewer = models.ForeignKey(Contact)
+    draft = models.BooleanField(default=False)
+    checklists = models.ManyToManyField('Checklist',blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated_at = models.DateTimeField(auto_now=True)

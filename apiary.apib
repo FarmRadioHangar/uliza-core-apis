@@ -46,78 +46,33 @@ For guidelines and examples, see [White House Web API Standards](https://github.
                 ]
             }
 
-### View details for a user subscription token [GET /users/tokens/{id}]
-
-+ Response 200 (application/json)
-
-        {
-        }
-
 ### Subscribe to notifications for a user [POST /users/{id}/tokens]
 
 + Response 200 (application/json)
 
     + Headers
 
-            Location: /users/tokens/2
+            Location: /users/2/tokens
 
     + Body
             
             {
+                "token": "gcmtoken"
             }
 
-## Participants [/participants]
-
-### List all participants [GET /participants/{?limit,offset}]
-
-+ Parameters
-
-    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
-    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+### Delete a notification token for a user [DELETE /users/{id}/tokens]
 
 + Response 200 (application/json)
 
-        {
-            "metadata": {
-                "resultset": {
-                    "count": 227,
-                    "offset": 50,
-                    "limit": 25
-                }
-            },
-            "results": []
-        }
+    + Headers
 
-### List participants for a role [GET /participants/{role_id}{?limit,offset}]
+            Location: /users/2/tokens
 
-+ Parameters
-
-    + role_id (number) - the role id
-    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
-    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
-
-+ Response 200 (application/json)
-
-        {
-            "metadata": {
-                "resultset": {
-                    "count": 227,
-                    "offset": 50,
-                    "limit": 25
-                }
-            },
-            "results": []
-        }
-
-### List all radio stations associated with a participant [GET /participants/{id}/stations/{?limit,offset}]
-
-+ Parameters
-
-    + id (number) - The participant id
-    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
-    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
-
-+ Response 200 (application/json)
+    + Body
+            
+            {
+                "token": "gcmtoken"
+            }
 
 ## Responses [/responses]
 
@@ -131,32 +86,11 @@ For guidelines and examples, see [White House Web API Standards](https://github.
 
 + Response 200 (application/json)
 
-### List responses for a participant [GET /responses/participants/{participant_id}{?limit,offset}]
-
-+ Parameters
-
-    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
-    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
-
-+ Response 200 (application/json)
-
 ### List responses for a contributor [GET /responses/contributor/{contributor_id}{?limit,offset}]
 
 + Parameters
 
     + contributor_id (number) - The contributor id
-    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
-    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
-
-+ Response 200 (application/json)
-
-## Topics [/topics]
-
-### List all advice for a topic [GET /topics/{topic_id}/advice/{?limit,offset}]
-
-+ Parameters
-
-    + topic_id (number) - The topic id
     + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
     + offset (number, optional) - offset=50 means ‘skip the first 50 records’
 
@@ -356,15 +290,6 @@ For guidelines and examples, see [White House Web API Standards](https://github.
             ]
         }
         
-## Channels [/channels]
-
-## Schedules [/schedules]
-
-## Programs [/programs]
-
-## Projects [/projects]
-
-## Campaigns [/campaigns]
 
 ## Questions [/questions]
 
@@ -457,6 +382,85 @@ For guidelines and examples, see [White House Web API Standards](https://github.
                     }
                 ]
             }
+       
+# Group Unused endpointss 
+
+These are endpoints which definitions we're written for but are not needed for a MVP.
+            
+## Participants [/participants]
+
+### List all participants [GET /participants/{?limit,offset}]
+
++ Parameters
+
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+        {
+            "metadata": {
+                "resultset": {
+                    "count": 227,
+                    "offset": 50,
+                    "limit": 25
+                }
+            },
+            "results": []
+        }
+
+### List participants for a role [GET /participants/{role_id}{?limit,offset}]
+
++ Parameters
+
+    + role_id (number) - the role id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+        {
+            "metadata": {
+                "resultset": {
+                    "count": 227,
+                    "offset": 50,
+                    "limit": 25
+                }
+            },
+            "results": []
+        }
+
+### List all radio stations associated with a participant [GET /participants/{id}/stations/{?limit,offset}]
+
++ Parameters
+
+    + id (number) - The participant id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+## Topics [/topics]
+
+### List all advice for a topic [GET /topics/{topic_id}/advice/{?limit,offset}]
+
++ Parameters
+
+    + topic_id (number) - The topic id
+    + limit (number, optional) - limit=25 means ‘return a maximum of 25 records’
+    + offset (number, optional) - offset=50 means ‘skip the first 50 records’
+
++ Response 200 (application/json)
+
+## Channels [/channels]
+
+## Schedules [/schedules]
+
+## Programs [/programs]
+
+## Projects [/projects]
+
+## Campaigns [/campaigns]
 
 ## Voxboxes [/voxboxes]
 
