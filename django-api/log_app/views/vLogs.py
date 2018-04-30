@@ -27,11 +27,9 @@ class LogFilter(filters.FilterSet):
 
 	class Meta:
 		model = Log
-		fields = ['id','week','program','program__radio_station__country','postpone','week__lte','id__lt']
+		fields = ['id','week','program','program__radio_station__country','postpone','week__lte','id__lt','saved_by','formats']
 
 class LogGet(generics.ListCreateAPIView):
-
-	queryset = Log.objects.all()
 
 	model = Log
 	serializer_class = LogSerializer
@@ -48,7 +46,7 @@ class LogGet(generics.ListCreateAPIView):
 		for the currently authenticated user.
 		"""
 
-		queryset = Log.objects.all().select_related('program__project__id','program','program__radio_station__country__id','program__radio_station__name','program__radio_station__id','program__start_date')
+		queryset = Log.objects.all().select_related('program__project__id','program','program__radio_station__country__id','program__radio_station__name','program__radio_station__id','program__start_date').prefetch_related('formats')
 
 		pk_list = self.request.GET.get('program__in')
 		if pk_list:
@@ -67,14 +65,29 @@ class LogGet(generics.ListCreateAPIView):
 
 		return logs
 
-
-class LogEntity(generics.RetrieveUpdateAPIView):
+class LogEntity(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Log.objects.all()
     model = Log
     serializer_class = LogSerializer
     lookup_field = 'id'
 
+    def perform_destroy(self, instance):
+		try:
+			import os
+			os.unlink( instance.recording_backup.path )
+			instance.recording_backup = None
+			instance.save()
+		except (OSError,ValueError) as e:
+		    success = False
+
+		if (instance.postpone):
+			import datetime
+			weeks = datetime.timedelta(weeks = 1)
+			instance.program.end_date = instance.program.end_date - weeks
+			instance.program.save()
+
+		instance.delete()
 
 
 from django.views.decorators.csrf import csrf_exempt
@@ -101,7 +114,7 @@ def upload( request ):
 	instance.save()
 	log_id = str(instance.id)
 	filename = log_id+'_'+re.sub("[^\w.-]", '', file.name.replace(" ","_"))
-	if(not  basename == filename):
+	if(not basename == filename):
 		if(instance.recording_backup):
 			try:
 				os.unlink( instance.recording_backup.path )
@@ -188,12 +201,6 @@ def rec_download(request,pk):
 		download = '/media/'+str(basename)
 
 		return redirect(download)
-
-		# response = HttpResponse(content_type = mimetype, status=206)
-		# response['Content-Length'] = os.path.getsize(download)
-		# response['Content-Disposition'] = 'attachment; filename='+str(basename)
-
-		return response
 	else:
 		return HttpResponse('<h2>404</h2>')
 
@@ -210,20 +217,6 @@ def check_rec(request,log_id,filename):
 	return JFUResponse( request, False )
 
 def create_instance(request,week,program_id):
-	# This should be replaced by auth0
-	# if (request.user.is_admin()):
-	# 	user = Administrator.objects.get(user__id = request.user.id)
-	# 	user = user.user
-	# 	a_programs = Program.objects.all()
-	# else:
-	# 	presenter = Presenter.objects.filter(user__id = request.user.id)
-	# 	if presenter:
-	# 		user = presenter[0].user
-	# 	else:
-	# 		group = Group_account.objects.get(user__id = request.user.id)
-	# 		user = group.user
-
-	# 	a_programs = Program.objects.filter(access = user)
 	from log_app.models import Program
 
 	try:
@@ -236,31 +229,3 @@ def create_instance(request,week,program_id):
 	instance.save()
 
 	return HttpResponse(instance.id)
-
-def delete( request, pk ):
-	# return HttpResponse('<h2>400 - Log not found</h2>',status=400)
-	admin = request.user.is_admin()
-	instance = Log.objects.get(pk = pk)
-	if(not instance):
-		return HttpResponse('<h2>400 - Log not found</h2>',status=400)
-
-	if(not admin and not instance.postpone):
-		return HttpResponse('<h2>403 - Forbidden</h2>',status=403)
-
-	try:
-		import os
-		os.unlink( instance.recording_backup.path )
-		instance.recording_backup = None
-		instance.save()
-	except (OSError,ValueError) as e:
-	    success = False
-
-	if (instance.postpone):
-		import datetime
-		weeks = datetime.timedelta(weeks = 1)
-		instance.program.end_date = instance.program.end_date - weeks
-		instance.program.save()
-
-	instance.delete()
-
-	return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))

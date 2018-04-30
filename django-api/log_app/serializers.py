@@ -15,7 +15,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProgramSerializer(serializers.ModelSerializer):
 	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
 	project__name = serializers.CharField(source='project.name',read_only=True)
-	country = serializers.CharField(source='radio_station.country.id',read_only=True)
+	country = serializers.IntegerField(source='radio_station.country.id',read_only=True)
+	country_name = serializers.CharField(source='radio_station.country',read_only=True)
 
 	class Meta:
 		model = Program
@@ -49,6 +50,11 @@ class ContactSerializer(serializers.ModelSerializer):
 		model = Contact
 		fields = "__all__"
 
+class RadioTransmissionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = RadioTransmission
+		fields = "__all__"
+
 class Auth0UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Auth0User
@@ -72,4 +78,19 @@ class KnowledgePartnerSerializer(serializers.ModelSerializer):
 class AdministratorSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Administrator
+		fields = "__all__"
+
+class ReviewSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Review
+		fields = "__all__"
+
+class ChecklistSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Checklist
+		fields = "__all__"
+
+class FormatSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Format
 		fields = "__all__"
