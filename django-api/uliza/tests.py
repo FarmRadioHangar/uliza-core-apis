@@ -57,7 +57,7 @@ class TestAnswers(TestCase):
 		#Testing delete
 		response = self.client.get('/api/v1/answers/questions/7/')
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-		pass
+		
 		
 
 class GetParticipantsTests(TestCase):
