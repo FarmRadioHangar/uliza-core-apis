@@ -79,3 +79,20 @@ class VotoSurveyRegistrationTree(models.Model):
 
     class Meta:
         db_table = 'uliza_voto_survey_registration_tree'
+
+class Answer(models.Model):
+	zammad_id = models.IntegerField(null=False, unique=False)
+	subscriber_phone = models.CharField(max_length=20)
+	audio = models.TextField(null=True, blank=True)
+	articles_count = models.CharField(max_length=50)
+	state_id = models.PositiveSmallIntegerField()
+	created_at = models.DateTimeField(auto_now_add=True)
+
+class User(models.Model):
+	auth_user_id = models.IntegerField(null=False, unique=False)
+	zammad_token = models.CharField(max_length=50)
+	firebase_login = models.CharField(max_length=50)
+	sip_username = models.CharField(max_length=50)
+	sip_password = models.CharField(max_length=20)
+	sip_host = models.TextField(null=False, blank=False)
+	create_at = models.DateTimeField(auto_now_add=True)

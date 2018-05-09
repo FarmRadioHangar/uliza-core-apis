@@ -4,7 +4,7 @@ from uliza.models import (Participant,
                           ParticipantRegistrationStatusLog,
                           VotoWebhookLog,
                           VotoSurveyRegistrationTree,
-                          registration_status)
+                          registration_status, Answer)
 from eav.models import Attribute
 
 
@@ -95,3 +95,15 @@ class VotoSurveyRegistrationTreeSerializer(serializers.Serializer):
         if self.instance and value != self.instance.voto_survey_id:
             raise serializers.ValidationError('voto_survey_id is read only')
         return value
+
+class AnswerSerializer(serializers.ModelSerializer):
+	
+	class Meta:
+		model = Answer
+		fields = '__all__'
+		#fields = ('zammad_id', 'subscriber_phone','audio','articles_count', 'state_id')
+	
+
+class UserSerializer(serializers.Serializer):
+
+	pass

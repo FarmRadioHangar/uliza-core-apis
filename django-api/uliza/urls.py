@@ -1,4 +1,5 @@
 from django.conf.urls import include, url
+from rest_framework.urlpatterns import format_suffix_patterns
 from uliza.views.Participants import (
         Participants,
         ParticipantsInstance)
@@ -12,6 +13,7 @@ from uliza.views.VotoSurveyRegistrationTree import (
         VotoSurveyRegistrationTreeCollection,
         VotoSurveyRegistrationTreeInstance)
 from uliza.views.APIRoot import APIRoot
+from uliza.views.Answers import(Answers, AnswersInstance)
 
 participants = [
     url(r'^(?P<id>\d+)/$', ParticipantsInstance.as_view()),
@@ -34,6 +36,11 @@ voto_survey_registration_tree = [
     url(r'^$', VotoSurveyRegistrationTreeCollection.as_view()),
 ]
 
+answers = [
+	url(r'^(?P<id>\d+)/$', AnswersInstance.as_view(), name='question'),
+	url(r'^$', Answers.as_view(), name='questions'),
+]
+
 urlpatterns = [
     url(r'^$', APIRoot.as_view()),
     url(r'^participants/', include(participants, 'participants')),
@@ -43,5 +50,7 @@ urlpatterns = [
     url(r'^voto_survey_registration_tree/', include(
         voto_survey_registration_tree,
         'voto_survey_registration_tree'
-    ))
+    )), 
+	url(r'^answers/questions/', include(answers, 'questions')),
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)
