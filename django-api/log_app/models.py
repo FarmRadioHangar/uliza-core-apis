@@ -143,6 +143,7 @@ class Administrator(models.Model):
 # Contact
 class Contact(models.Model):
     roles = (
+        ('unknown', 'Unknown'),
         ('staff', 'Staff'),
         ('consultant', 'Consultant'),
         ('broadcaster', 'Broadcaster'),
@@ -327,6 +328,9 @@ class Comment(models.Model):
 
 class Format(models.Model):
     name = models.CharField(max_length=60)
+    name_fr = models.CharField(null=True,blank=True,max_length=60)
+    name_pt = models.CharField(null=True,blank=True,max_length=60)
+    name_am = models.CharField(null=True,blank=True,max_length=60)
     description = models.TextField(null=True,blank=True)
     last_updated_at = models.DateTimeField(auto_now=True)
 
@@ -343,6 +347,9 @@ class Checklist(models.Model):
     radio_format = models.ForeignKey('Format')
     level = models.CharField(max_length=6,default='good',choices=checklist_level)
     description = models.TextField(null=True,blank=True)
+    description_fr = models.TextField(null=True,blank=True)
+    description_pt = models.TextField(null=True,blank=True)
+    description_am = models.TextField(null=True,blank=True)
 
     def __unicode__(self):
     	return self.description
