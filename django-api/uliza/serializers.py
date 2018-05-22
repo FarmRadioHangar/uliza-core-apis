@@ -96,6 +96,7 @@ class VotoSurveyRegistrationTreeSerializer(serializers.Serializer):
             raise serializers.ValidationError('voto_survey_id is read only')
         return value
 
+
 class AnswerSerializer(serializers.ModelSerializer):
 	
 	class Meta:
