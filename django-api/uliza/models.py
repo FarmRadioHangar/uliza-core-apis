@@ -7,6 +7,13 @@ registration_status = (
     ('DECLINED', 'Declined')
 )
 
+OPEN = 'open'
+CLOSED = 'closed'
+
+CALL_STATE = (
+	(OPEN, 'open'),
+	(CLOSED, 'closed')
+)
 
 @register_eav()
 class Participant(models.Model):
@@ -84,10 +91,30 @@ class Answer(models.Model):
 	zammad_id = models.IntegerField(null=False, unique=False)
 	subscriber_phone = models.CharField(max_length=20)
 	audio = models.TextField(null=True, blank=True)
-	articles_count = models.CharField(max_length=50)
-	state_id = models.PositiveSmallIntegerField()
+	articles_count = models.PositiveSmallIntegerField(default=1)
+	state = models.CharField(max_length=10, choices=CALL_STATE, default=OPEN)
 	created_at = models.DateTimeField(auto_now_add=True)
 
+	'''def serialize_hook(self, hook):
+		return {
+			'hook': hook.dict(),
+			'data': {
+			    'id': self.id,
+			    'zammad_id': self.zammad_id,
+			    'subscriber_phone': self.subscriber_phone,
+			    'state_id': self.state_id,
+		               }
+			}
+
+	
+	def mark_as_read(self):
+		from rest_hooks.signals import hook_event
+		hook_event.send(
+		    sender=self.__class__,
+		    action='read',
+		    instance=self
+		)
+	'''
 class User(models.Model):
 	auth_user_id = models.IntegerField(null=False, unique=False)
 	zammad_token = models.CharField(max_length=50)
