@@ -1,52 +1,62 @@
 import logging
 import json
 import requests
+from collections import namedtuple
 
 class EventsHelper:
 	LANGUAGE_ID = 206069	
 
 	#Gets block with given audio
-	def get_block(self, interactions, id):
+	@classmethod
+	def get_block(cls, interactions, block_id):
 		for interaction in interactions:
-			if interaction.block_id == id:
+			if interaction.block_id == block_id:
 				return interaction
 			return None
 
 	#Checks whether request data contains a given field
-	def assert_body_field(self, request, field):
-		self.data = json.loads(request.body)
-		if not data[field]:
-			logging.error('Missing field '+field)	
+	@classmethod
+	def assert_body_field(cls, request, field):
+		data = json.loads(request, object_hook=lambda d: namedtuple('F', d.keys())(*d.values()))
+		if not hasattr(data,field):
+			 return 'Missing field '+field
+		return field
 
 	#Checks whether request data contains a given Parameter
-	def assert_query_param(self, request, param):
-		self.data = json.loads(request.query)
-		if not data[param]:
-			logging.error('Missing parameter '+param)
+	@classmethod
+	def assert_query_param(cls, request, param):
+		data = json.loads(request, object_hook=lambda d: namedtuple('P', d.keys())(*d.values()))
+		if not hasattr(data,param):
+			return 'Missing parameter '+param
+		return param
 	
 	#Creates ticket in zammad
-	def create_ticket(self, payload):
+	@classmethod
+	def create_ticket(cls, payload):
 		return requests.post('tickets', json.dumps(payload))
 
 
 	#Creates message in viamo
-	def create_message(self, audio, languageId):
-		self.url = 'message?audio_file[' + languageId + ']=' +audioId
+	@classmethod
+	def create_message(cls, audio, languageId):
+		url = 'message?audio_file[' + languageId + ']=' +audioId
 		class MessageData:
 			has_voice = 1
 			has_sms = 0
 			title = 'Uliza Answers Response Message'
 	 
-		return requests.post(url, json.dumps(MessageData))
+		return requests.post(url, json.dumps(MessageData.__dict__))
 
 	#Schedule outgoing call in Viamo
-	def schedule_outgoing_call(self, messageId, phonenumber):
-		self.data = ''
-		return requests.post('outgoing_calls', json.dumps(data))
+	@classmethod
+	def schedule_outgoing_call(cls, messageId, phonenumber):
+		data = '{"subscriber_data":"{\\"receiver_voice\\":1, \\"receiver_sms\\":1, \\"contact\\":phonenumber}"}'
+		return requests.post('outgoing_calls', json.dumps(data.__dict__))
 
 	#Sends response to question to viamo for an answer to the initial caller
-	def send_answer(self, audioId, ticket):
-		self.response = create_message(audioId, LANGUAGE_ID)
-		self.messageId =  json.loads(response.body.data)
+	@classmethod
+	def send_answer(cls, audioId, ticket):
+		response = create_message(audioId, LANGUAGE_ID)
+		raw_data = json.loads(request, object_hook=lambda d:namedtuple('F', d.keys())(*d.values()))
+		messageId =  json.loads(raw_data[0].data)
 		schedule_outgoing_call(messageId, ticket.subscriber_phone)
-	

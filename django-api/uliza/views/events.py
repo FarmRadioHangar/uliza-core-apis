@@ -31,7 +31,7 @@ class Events(View):
 	
 	def get(self, request, *args, **kwargs):
 		#return make_request(viamo, uri, options, 'GET')
-		response = requests.post('/update', data=null)
+		response = requests.post('/update', data=None)
 		logging.info('Sent a request Viamo webhook')
 		
 		EventHelper.assert_body_field(response, 'delivery_status')
@@ -62,14 +62,14 @@ class Events(View):
 				class Article:
                             		subject = 'n/a'
                              		body = 'n/a'
-                               		attachments = [Attachment]
+                               		attachments = [json.dumps(Attachment.__dict__)]
 				class PayLoad:
 					title = '[viamoOpenEndedAudio]'
                                     	group = 'Bart FM'
                                        	customer = 'guess:'+ deliverylog_entry.subscriber.phone + '@uliza.fm'
-                                       	article = Article
+                                       	article = json.dumps(Article.__dict__)
 				#Received audio is then sent to zammad for ticket creation
-				zammad_response = Events.create_ticket(json.dumps(Payload))
+				zammad_response = Events.create_ticket(json.dumps(Payload.__dict__))
 				#Save the ticket to uliza database
 				zammad_data = json.loads(response.body)
 				Answer.objects.create(zammad_id=zammad_data.id, subscriber_phone=phone, audio=encoded_audio)			
@@ -84,10 +84,3 @@ class Events(View):
 		
 		return HttpResponse('/v1/api/events/')
 
-	def put(self, request, *args, **kwargs):
-		#return make_request(viamo, uri, options, 'PUT', data)
-		return HttpResponse('/v1/api/events')
-
-	def patch(self, request, *args, **kwargs):
-		#return make_request(viamo, uri, options, 'PATCH', data)
-		return HttpResponse('/v1/api/events')
