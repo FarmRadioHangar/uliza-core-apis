@@ -3,6 +3,19 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
+def add_superuser_data(apps, schema_editor):
+    Auth0User = apps.get_model('log_app','Auth0User')
+    Contact = apps.get_model('log_app','Contact')
+    users = Auth0User.objects.all()
+
+    for user in users:
+        c = Contact.objects.filter(user_id=user.id)
+
+        if c:
+            c = c[0]
+            c.is_superuser = user.is_super_user
+            c.save()
+
 
 class Migration(migrations.Migration):
 
@@ -56,4 +69,5 @@ class Migration(migrations.Migration):
             name='language',
             field=models.CharField(default=b'en', max_length=6, choices=[(b'en', b'English'), (b'pt', b'Portuguese'), (b'am', b'Amharic'), (b'fr', b'Francais')]),
         ),
+        migrations.RunPython(add_superuser_data),
     ]
