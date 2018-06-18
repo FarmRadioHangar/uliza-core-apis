@@ -13,7 +13,10 @@ from uliza.views.VotoSurveyRegistrationTree import (
         VotoSurveyRegistrationTreeCollection,
         VotoSurveyRegistrationTreeInstance)
 from uliza.views.APIRoot import APIRoot
-from uliza.views.Answers import(Answers, AnswersInstance)
+from uliza.views.events import Events
+from uliza.views.answers import Answers, AnswersInstance
+from uliza.views.content_manager import Role, RoleInstance, Detail, \
+DetailInstance, ContactDetail, ContactDetailInstance
 
 participants = [
     url(r'^(?P<id>\d+)/$', ParticipantsInstance.as_view()),
@@ -37,8 +40,27 @@ voto_survey_registration_tree = [
 ]
 
 answers = [
-	url(r'^(?P<id>\d+)/$', AnswersInstance.as_view(), name='question'),
-	url(r'^$', Answers.as_view(), name='questions'),
+    url(r'^(?P<id>\d+)/$', AnswersInstance.as_view(), name='question'),
+    url(r'^$', Answers.as_view(), name='questions'),
+]
+
+roles = [
+    url(r'^(?P<id>\d+)/$', RoleInstance.as_view()),
+    url(r'^$', Role.as_view()),
+]
+
+details = [
+    url(r'^(?P<id>\d+)/$', DetailInstance.as_view()),
+    url(r'^$', Detail.as_view()),
+]
+
+contact_details = [
+    url(r'^(?P<id>\d+)/$', ContactDetailInstance.as_view()),
+    url(r'^$', ContactDetail.as_view()),
+]
+
+webhooks = [
+	url(r'^$', Events.as_view())
 ]
 
 urlpatterns = [
@@ -51,6 +73,11 @@ urlpatterns = [
         voto_survey_registration_tree,
         'voto_survey_registration_tree'
     )), 
-	url(r'^answers/questions/', include(answers, 'questions')),
+    url(r'^answers/questions/', include(answers, 'questions')),
+    url(r'^hooks/viamo', include(webhooks, 'webhooks')),
+    url(r'^content/roles/', include(roles, 'roles')),
+    url(r'^content/details/', include(details, 'details')),
+    url(r'^content/contact_details/', include(contact_details, 'contact_details')),
+
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

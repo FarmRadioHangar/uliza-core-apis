@@ -115,6 +115,23 @@ class Answer(models.Model):
 		    instance=self
 		)
 	'''
+
+class Role(models.Model):
+	name = models.CharField(max_length=50)
+	description = models.CharField(max_length=50)
+	
+class Detail(models.Model):
+	name = models.CharField(max_length=50)
+
+class Contact(models.Model):
+	role = models.ForeignKey(Role, related_name='roles', related_query_name='role')
+
+class ContactDetail(models.Model):
+	contact = models.ForeignKey(Contact, related_name='+') 
+	detail = models.ForeignKey(Detail, related_name='+')
+	info = models.CharField(max_length=50)
+	meta = models.CharField(max_length=50)
+
 class User(models.Model):
 	auth_user_id = models.IntegerField(null=False, unique=False)
 	zammad_token = models.CharField(max_length=50)

@@ -4,7 +4,8 @@ from uliza.models import (Participant,
                           ParticipantRegistrationStatusLog,
                           VotoWebhookLog,
                           VotoSurveyRegistrationTree,
-                          registration_status, Answer)
+                          registration_status, Answer, Role,
+			  Detail, Contact, ContactDetail)
 from eav.models import Attribute
 
 
@@ -103,7 +104,27 @@ class AnswerSerializer(serializers.ModelSerializer):
 		model = Answer
 		fields = '__all__'
 		#fields = ('zammad_id', 'subscriber_phone','audio','articles_count', 'state_id')
-	
+
+class RoleSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Role
+		fields = '__all__'
+
+
+class DetailSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Detail
+		fields = '__all__'
+
+class ContactSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Contact
+		fields = '__all__'
+
+class ContactDetailSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = ContactDetail
+		fields = '__all__'
 
 class UserSerializer(serializers.Serializer):
 
