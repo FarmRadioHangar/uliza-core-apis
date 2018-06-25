@@ -11,7 +11,7 @@ class RadioStationGet(generics.ListCreateAPIView):
     queryset = RadioStation.objects.all()
     model = RadioStation
     serializer_class = RadioStationSerializer
-    filter_fields = ['id','country']
+    filter_fields = ['id','country','group_account_id']
 
 class RadioStationEntity(generics.RetrieveUpdateAPIView):
 
@@ -19,4 +19,3 @@ class RadioStationEntity(generics.RetrieveUpdateAPIView):
     model = RadioStation
     serializer_class = RadioStationSerializer
     lookup_field = 'id'
-         

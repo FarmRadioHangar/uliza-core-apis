@@ -3,6 +3,18 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
+def add_email_data(apps, schema_editor):
+    Auth0User = apps.get_model('log_app','Auth0User')
+    Contact = apps.get_model('log_app','Contact')
+    users = Auth0User.objects.all()
+
+    for user in users:
+        c = Contact.objects.filter(user_id=user.id)
+
+        if c:
+            c = c[0]
+            c.email = user.email
+            c.save()
 
 class Migration(migrations.Migration):
 
@@ -16,4 +28,5 @@ class Migration(migrations.Migration):
             name='email',
             field=models.EmailField(max_length=50, null=True, blank=True),
         ),
+        migrations.RunPython(add_email_data),
     ]
