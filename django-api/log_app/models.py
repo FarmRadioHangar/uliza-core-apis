@@ -336,6 +336,7 @@ class Format(models.Model):
 
     # legacy formats that won't show up in the formats but is used for old Logs
     legacy = models.BooleanField(default=False)
+    always_checked = models.BooleanField(default=False)
 
 checklist_level = (
     ('best', 'Best'),
