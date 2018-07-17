@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 from envparse import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os,json
+from six.moves.urllib import request
+from cryptography.x509 import load_pem_x509_certificate
+from cryptography.hazmat.backends import default_backend
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -146,6 +149,11 @@ SITE_ID = 1
 GDRIVE_STORAGE = None
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
@@ -158,3 +166,23 @@ REST_FRAMEWORK = {
 
 # if DEBUG:
 #     from api_core.settings_dev import *
+jsonurl = request.urlopen("https://farmradioet.auth0.com/.well-known/jwks.json"
+)
+jwks = json.loads(jsonurl.read())
+
+cert = '-----BEGIN CERTIFICATE-----\n' + \
+        jwks['keys'][0]['x5c'][0] + \
+        '\n-----END CERTIFICATE-----'
+
+certificate = load_pem_x509_certificate(cert.encode('ascii'), default_backend())
+publickey = certificate.public_key()
+
+JWT_AUTH = {
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
+        'uliza.user.jwt_get_username_from_payload_handler',
+    'JWT_PUBLIC_KEY': publickey,
+    'JWT_ALGORITHM': 'RS256',
+    'JWT_AUDIENCE': 'http://127.0.0.1:3000/api/',
+    'JWT_ISSUER': 'https://farmradioet.auth0.com/',
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
