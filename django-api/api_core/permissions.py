@@ -27,7 +27,11 @@ class CheckAuth0AccessGrant(BasePermission):
             return None
 
         try:
-            payload = jwt.decode(jwt_value,JWT_AUTH['JWT_PUBLIC_KEY'],audience=JWT_AUTH['JWT_AUDIENCE'],verify=True)
+            payload = jwt.decode(jwt_value,JWT_AUTH['JWT_PUBLIC_KEY'],
+                                 issuer=JWT_AUTH['JWT_ISSUER'],
+                                 audience=JWT_AUTH['JWT_AUDIENCE'],
+                                 verify=True)
+
         except jwt.ExpiredSignature:
             msg = _('Signature has expired.')
             raise exceptions.AuthenticationFailed(msg)
@@ -37,7 +41,7 @@ class CheckAuth0AccessGrant(BasePermission):
         except jwt.InvalidTokenError:
             raise exceptions.AuthenticationFailed()
 
-        if not payload['gty']=='client-credentials':
+        if not payload['gty'] == 'client-credentials':
             return False
 
         return True
