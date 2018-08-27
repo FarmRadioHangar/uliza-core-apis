@@ -122,7 +122,10 @@ urlpatterns = patterns('',
     url(r'projects', include(projects, 'projects')),
     url(r'formats', include(formats, 'formats')),
     url(r'checklists', include(checklists, 'checklists')),
-    url(r'reviews', include(reviews, 'reviews'))
+    url(r'reviews', include(reviews, 'reviews')),
+
+    # auth0 custom db authentication
+    url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate')
 )
 
 
