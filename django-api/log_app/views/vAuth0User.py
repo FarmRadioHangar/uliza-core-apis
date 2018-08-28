@@ -28,21 +28,22 @@ class Auth0UserEntity(generics.RetrieveUpdateAPIView):
 
 @require_POST
 def authenticate(request):
+    import json
+    data = json.loads(request.body)
     try:
-        user = Auth0User.objects.get(username=request.POST['username'])
+        user = Auth0User.objects.get(username=data['username'])
     except Auth0User.DoesNotExist:
         return Http404
 
     # Check password
-    if check_password(request.POST['password'],user.password):
+    if check_password(data['password'],user.password):
         try:
             contact = Contact.objects.get(user_id=user.id)
         except Contact.DoesNotExist:
             raise Http404('User does not exist')
 
-        user = {'username':user.username,'name':contact.first_name+' '+contact.last_name,'email':user.email}
+        user = {'user_id':user.id,'username':user.username,'name':contact.first_name+' '+contact.last_name,'email':user.email}
 
-        import json
         user = json.dumps(user)
 
         return HttpResponse(user,content_type = 'application/javascript; charset=utf8')
