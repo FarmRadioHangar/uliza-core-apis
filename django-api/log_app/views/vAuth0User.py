@@ -42,7 +42,14 @@ def authenticate(request):
         except Contact.DoesNotExist:
             raise Http404('User does not exist')
 
-        user = {'user_id':user.id,'username':user.username,'name':contact.first_name+' '+contact.last_name,'email':user.email}
+        user = {'user_id':user.id,
+                'username':user.username,
+                'name':contact.first_name+' '+contact.last_name,
+                'email':user.email,
+                'app_metadata': {'role': contact.role,
+                                 'is_superuser': contact.is_superuser,
+                                 'is_admin': contact.is_admin}
+                }
 
         user = json.dumps(user)
 
