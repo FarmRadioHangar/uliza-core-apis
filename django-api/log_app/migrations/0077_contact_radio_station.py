@@ -74,7 +74,7 @@ def change_accounts_to_contacts(apps,schema_editor):
     									email=email, role='knowledge_partner',is_super_user=partner.user.is_superuser,
     									notify_on_log_create=True)
 
-    	contact = Contact.objects.create(user_id=user.id,first_name=partner.user.first_name,
+    	contact = Contact.objects.create(user_id='auth0|'+str(user.id),first_name=partner.user.first_name,
     									last_name=partner.user.last_name,job_title=partner.role,
     									organization=partner.organization, country_id=partner.country.id,
     									phone_number=partner.phone_number,role='knowledge_partner')
