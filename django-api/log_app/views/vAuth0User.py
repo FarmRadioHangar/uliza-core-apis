@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Auth0User,Contact
+from log_app.models import Auth0User,Contact,RadioStation
 from log_app.serializers import Auth0UserSerializer
 from django.http import Http404,HttpResponse
 from django.contrib.auth.hashers import check_password
@@ -33,26 +33,38 @@ def authenticate(request):
     try:
         user = Auth0User.objects.get(username=data['username'])
     except Auth0User.DoesNotExist:
-        return Http404
+        raise Http404
 
     # Check password
     if check_password(data['password'],user.password):
-        try:
-            contact = Contact.objects.get(user_id=user.id)
-        except Contact.DoesNotExist:
-            raise Http404('User does not exist')
+        contact = Contact.objects.filter(user_id='auth0|'+str(user.id))
+
+        if not contact:
+            try:
+                contact = RadioStation.objects.get(user_id='auth0|'+str(user.id))
+            except RadioStation.DoesNotExist:
+                raise Http404
+
+            name = contact.name
+            app_metadata = {'role': 'group',
+                            'is_superuser': False,
+                            'is_admin': False}
+        else:
+            contact = contact[0]
+            name = contact.first_name+' '+contact.last_name
+            app_metadata = {'role': contact.role,
+                            'is_superuser': contact.is_superuser,
+                            'is_admin': contact.is_admin}
 
         user = {'user_id':user.id,
                 'username':user.username,
-                'name':contact.first_name+' '+contact.last_name,
+                'name':name,
                 'email':user.email,
-                'app_metadata': {'role': contact.role,
-                                 'is_superuser': contact.is_superuser,
-                                 'is_admin': contact.is_admin}
+                'app_metadata': app_metadata
                 }
 
         user = json.dumps(user)
 
         return HttpResponse(user,content_type = 'application/javascript; charset=utf8')
     else:
-        raise Http404('User does not exist')
+        return Http404('User does not exist')
