@@ -47,7 +47,7 @@ def change_accounts_to_contacts(apps,schema_editor):
     	# the radio station model will hold the contact's id
     	# on create the organization name will be duplicated here [in the organization attribute]
 
-    groups = Group_account.objects.all().order_by('-user.last_login')
+    groups = Group_account.objects.all().order_by('-user__last_login')
     for group in groups:
         if group.user.email:
             email = group.user.email
