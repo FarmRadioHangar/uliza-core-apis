@@ -167,6 +167,10 @@ class Contact(models.Model):
     blocked = models.BooleanField(default=False)
 
     notify_on_log_create = models.BooleanField(default=False)
+    
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
     	return self.first_name
