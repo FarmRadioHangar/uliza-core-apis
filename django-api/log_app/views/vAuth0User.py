@@ -39,9 +39,10 @@ def authenticate(request):
     if check_password(data['password'],user.password):
         contact = Contact.objects.filter(user_id='auth0|'+str(user.id))
 
+        import pdb; pdb.set_trace()
         if not contact:
             try:
-                contact = RadioStation.objects.get(user_id='auth0|'+str(user.id))
+                contact = RadioStation.objects.get(group_account_id='auth0|'+str(user.id))
             except RadioStation.DoesNotExist:
                 raise Http404
 
