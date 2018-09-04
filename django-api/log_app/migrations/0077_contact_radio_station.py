@@ -17,7 +17,7 @@ def change_accounts_to_contacts(apps,schema_editor):
         if admin.user.email:
             email = admin.user.email
         else:
-            email = admin.user.username+'@uliza_log.fm'
+            email = admin.user.username+'@ulizalog.fm'
 
         user = Auth0User.objects.create(username=admin.user.username, password=admin.user.password,
         								email=email, role='staff',is_super_user=admin.user.is_superuser,
@@ -33,7 +33,7 @@ def change_accounts_to_contacts(apps,schema_editor):
         if broadcaster.user.email:
             email = broadcaster.user.email
         else:
-            email = broadcaster.user.username+'@uliza_log.fm'
+            email = broadcaster.user.username+'@ulizalog.fm'
 
     	user = Auth0User.objects.create(username=broadcaster.user.username, password=broadcaster.user.password,
     									email=email, role='broadcaster',is_super_user=broadcaster.user.is_superuser,
@@ -52,7 +52,7 @@ def change_accounts_to_contacts(apps,schema_editor):
         if group.user.email:
             email = group.user.email
         else:
-            email = group.user.username+'@uliza_log.fm'
+            email = group.user.username+'@ulizalog.fm'
     	user = Auth0User.objects.create(username=group.user.username, password=group.user.password,
     									email=email, role='group',is_super_user=group.user.is_superuser,
     									notify_on_log_create=False)
@@ -68,7 +68,7 @@ def change_accounts_to_contacts(apps,schema_editor):
         if partner.user.email:
             email = partner.user.email
         else:
-            email = partner.user.username+'@uliza_log.fm'
+            email = partner.user.username+'@ulizalog.fm'
 
     	user = Auth0User.objects.create(username=partner.user.username, password=partner.user.password,
     									email=email, role='knowledge_partner',is_super_user=partner.user.is_superuser,
