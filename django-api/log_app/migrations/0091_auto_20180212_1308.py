@@ -9,6 +9,7 @@ def nullify_user_register(apps,schema_editor):
     Log = apps.get_model('log_app', 'Log')
     logs = Log.objects.all()
 
+    import pdb; pdb.set_trace()
     for l in logs:
         if l.saved_by:
             log_users[l.id] = l.saved_by.username
@@ -27,7 +28,7 @@ def replace_user_register(apps, schema_editor):
         id = None
 
         if user:
-            contact = Contact.objects.filter(user_id=user[0].id)
+            contact = Contact.objects.filter(user_id='auth0|'+str(user[0].id))
             if contact:
                 id = contact[0]
 
