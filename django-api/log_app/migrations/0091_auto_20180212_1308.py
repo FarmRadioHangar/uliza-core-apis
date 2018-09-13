@@ -9,7 +9,6 @@ def nullify_user_register(apps,schema_editor):
     Log = apps.get_model('log_app', 'Log')
     logs = Log.objects.all()
 
-    import pdb; pdb.set_trace()
     for l in logs:
         if l.saved_by:
             log_users[l.id] = l.saved_by.username
