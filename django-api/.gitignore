@@ -1,5 +1,7 @@
 .docker
 api_core/settings.py
+media
+start_server.sh
 .env
 env
 npm-debug.log
