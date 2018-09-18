@@ -22,7 +22,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 	max_page_size = 10000
 
 class LogFilter(filters.FilterSet):
-	week__lte = django_filters.DateTimeFilter(name="week", lookup_expr='lte')
+	week__lte = django_filters.NumberFilter(name="week", lookup_expr='lte')
 	id__lt = django_filters.DateTimeFilter(name="id", lookup_expr='lt')
 
 	class Meta:
