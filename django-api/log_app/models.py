@@ -167,7 +167,7 @@ class Contact(models.Model):
     blocked = models.BooleanField(default=False)
 
     notify_on_log_create = models.BooleanField(default=False)
-    
+
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -325,6 +325,8 @@ class Log(models.Model):
 class Comment(models.Model):
     content = models.TextField()
     log = models.ForeignKey('Log')
+
+    # If null the comment is from the radio station broadcasting group
     contact = models.ForeignKey('Contact',null=True)
 
     last_updated_at = models.DateTimeField(auto_now=True)
