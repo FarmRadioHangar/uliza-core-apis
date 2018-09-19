@@ -37,35 +37,56 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class RadioTransmissionEntity(generics.RetrieveUpdateAPIView):
+class RadioTransmissionEntity(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = RadioTransmission.objects.all()
     model = RadioTransmission
     serializer_class = RadioTransmissionSerializer
     lookup_field = 'id'
 
+    def destroy(self, request, *args, **kwargs):
+        if 'radio_station' in request.GET:
+            instances = RadioTransmission.objects.filter(radio_station=request.GET['radio_station'])
+            instances.delete()
+        else:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     def update(self, request, *args, **kwargs):
-        instances = RadioTransmission.objects.filter(id__in = request.data['id'])
-        index = 0
+        if 'radio_station' in request.data:
+            instances = RadioTransmission.objects.filter(radio_station=request.data['radio_station'][0]).exclude(id__in = request.data['id'])
+            instances.delete()
 
-        for instance in instances:
+            # todo updating radio transmission
+            instances = RadioTransmission.objects.filter(id__in = request.data['id'])
+            index = 0
 
-            form_data={'frequency': request.data['frequency'][index],
-                    'radio_station': request.data['radio_station'][index],
-                    'gain': request.data['gain'][index],
-                    'height': request.data['height'][index],
-                    'power': request.data['power'][index],
-                    'coordinates': request.data['coordinates'][index]},
+            for instance in instances:
+                form_data={'frequency': request.data['frequency'][index],
+                        'radio_station': request.data['radio_station'][index],
+                        'gain': request.data['gain'][index],
+                        'height': request.data['height'][index],
+                        'power': request.data['power'][index],
+                        'coordinates': request.data['coordinates'][index]},
 
-            serializer = self.get_serializer(instance,data=form_data[0],partial=True)
+                serializer = self.get_serializer(instance,data=form_data[0],partial=True)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+        else:
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
 
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)
-            index=index+1
 
-            if getattr(instance, '_prefetched_objects_cache', None):
-                # If 'prefetch_related' has been applied to a queryset, we need to
-                # forcibly invalidate the prefetch cache on the instance.
-                instance._prefetched_objects_cache = {}
+
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
