@@ -125,7 +125,8 @@ urlpatterns = patterns('',
     url(r'reviews', include(reviews, 'reviews')),
 
     # auth0 custom db authentication
-    url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate')
+    url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),
+    url(r'check_user_by_email$','log_app.views.vAuth0User.check_user_by_email',name='check_user_by_email')
 )
 
 

@@ -68,3 +68,44 @@ def authenticate(request):
         return HttpResponse(user,content_type = 'application/javascript; charset=utf8')
     else:
         return Http404('User does not exist')
+
+
+@require_POST
+def check_user_by_email(request):
+    import json
+    data = json.loads(request.body)
+    try:
+        user = Auth0User.objects.get(email=data['email'])
+    except Auth0User.DoesNotExist:
+        raise Http404
+
+    # Check password
+    contact = Contact.objects.filter(user_id='auth0|'+str(user.id))
+
+    if not contact:
+        try:
+            contact = RadioStation.objects.get(group_account_id='auth0|'+str(user.id))
+        except RadioStation.DoesNotExist:
+            raise Http404
+
+        name = contact.name
+        app_metadata = {'role': 'group',
+                        'is_superuser': False,
+                        'is_admin': False}
+    else:
+        contact = contact[0]
+        name = contact.first_name+' '+contact.last_name
+        app_metadata = {'role': contact.role,
+                        'is_superuser': contact.is_superuser,
+                        'is_admin': contact.is_admin}
+
+    user = {'user_id':user.id,
+            'username':user.username,
+            'name':name,
+            'email':user.email,
+            'app_metadata': app_metadata
+            }
+
+    user = json.dumps(user)
+
+    return HttpResponse(user,content_type = 'application/javascript; charset=utf8')
