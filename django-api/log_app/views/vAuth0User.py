@@ -37,11 +37,11 @@ def authenticate(request):
 
     # Check password
     if check_password(data['password'],user.password):
-        contact = Contact.objects.filter(user_id='auth0|'+str(user.id))
+        contact = Contact.objects.filter(user_id='local|'+str(user.id))
 
         if not contact:
             try:
-                contact = RadioStation.objects.get(group_account_id='auth0|'+str(user.id))
+                contact = RadioStation.objects.get(group_account_id='local|'+str(user.id))
             except RadioStation.DoesNotExist:
                 raise Http404
 
@@ -56,12 +56,16 @@ def authenticate(request):
                             'is_superuser': contact.is_superuser,
                             'is_admin': contact.is_admin}
 
+        contact.user_id = 'auth0|'+str(user.id)
+        contact.save()
+
         user = {'user_id':user.id,
                 'username':user.username,
                 'name':name,
                 'email':user.email,
                 'app_metadata': app_metadata
                 }
+
 
         user = json.dumps(user)
 
@@ -80,11 +84,11 @@ def check_user_by_email(request):
         raise Http404
 
     # Check password
-    contact = Contact.objects.filter(user_id='auth0|'+str(user.id))
+    contact = Contact.objects.filter(user_id='local|'+str(user.id))
 
     if not contact:
         try:
-            contact = RadioStation.objects.get(group_account_id='auth0|'+str(user.id))
+            contact = RadioStation.objects.get(group_account_id='local|'+str(user.id))
         except RadioStation.DoesNotExist:
             raise Http404
 

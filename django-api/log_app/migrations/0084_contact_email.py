@@ -9,7 +9,7 @@ def add_email_data(apps, schema_editor):
     users = Auth0User.objects.all()
 
     for user in users:
-        c = Contact.objects.filter(user_id='auth0|'+str(user.id))
+        c = Contact.objects.filter(user_id='local|'+str(user.id))
 
         if c:
             c = c[0]

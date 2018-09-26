@@ -14,7 +14,7 @@ def change_comment_user_to_contact(apps,schema_editor):
         user = Auth0User.objects.filter(username = comment.user.username)
 
         if user:
-            contact = Contact.objects.filter(user_id='auth0|'+str(user[0].id))
+            contact = Contact.objects.filter(user_id='local|'+str(user[0].id))
             comment.contact = contact[0]
             comment.save()
 

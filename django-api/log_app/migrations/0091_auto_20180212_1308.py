@@ -27,7 +27,7 @@ def replace_user_register(apps, schema_editor):
         id = None
 
         if user:
-            contact = Contact.objects.filter(user_id='auth0|'+str(user[0].id))
+            contact = Contact.objects.filter(user_id='local|'+str(user[0].id))
             if contact:
                 id = contact[0]
 

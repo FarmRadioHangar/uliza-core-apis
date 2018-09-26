@@ -23,7 +23,7 @@ def change_accounts_to_contacts(apps,schema_editor):
         								email=email, role='staff',is_super_user=admin.user.is_superuser,
         								notify_on_log_create=admin.notify_log_submission)
 
-        contact = Contact.objects.create(user_id='auth0|'+str(user.id),first_name=admin.user.first_name,
+        contact = Contact.objects.create(user_id='local|'+str(user.id),first_name=admin.user.first_name,
     									last_name=admin.user.last_name,job_title=admin.job_description,
     									organization="Farm Radio International", country_id=admin.country.id,
     									phone_number="",role='staff')
@@ -39,7 +39,7 @@ def change_accounts_to_contacts(apps,schema_editor):
     									email=email, role='broadcaster',is_super_user=broadcaster.user.is_superuser,
     									notify_on_log_create=False)
 
-    	contact = Contact.objects.create(user_id='auth0|'+str(user.id),first_name=broadcaster.user.first_name,
+    	contact = Contact.objects.create(user_id='local|'+str(user.id),first_name=broadcaster.user.first_name,
     									last_name=broadcaster.user.last_name,job_title=broadcaster.role,
     									organization=broadcaster.radio_station.name, country_id=broadcaster.radio_station.country.id,
     									phone_number=broadcaster.phone_number, radio_station=broadcaster.radio_station.id,role='broadcaster')
@@ -57,7 +57,7 @@ def change_accounts_to_contacts(apps,schema_editor):
     									email=email, role='group',is_super_user=group.user.is_superuser,
     									notify_on_log_create=False)
 
-    	contact = Contact.objects.create(user_id='auth0|'+str(user.id),first_name=group.user.first_name,
+    	contact = Contact.objects.create(user_id='local|'+str(user.id),first_name=group.user.first_name,
     									last_name=group.user.last_name,job_title="Group account for "+str(group.radio_station.name),
     									organization=group.radio_station.name, country_id=group.radio_station.country.id,
     									phone_number='',role='group')
@@ -74,7 +74,7 @@ def change_accounts_to_contacts(apps,schema_editor):
     									email=email, role='knowledge_partner',is_super_user=partner.user.is_superuser,
     									notify_on_log_create=True)
 
-    	contact = Contact.objects.create(user_id='auth0|'+str(user.id),first_name=partner.user.first_name,
+    	contact = Contact.objects.create(user_id='local|'+str(user.id),first_name=partner.user.first_name,
     									last_name=partner.user.last_name,job_title=partner.role,
     									organization=partner.organization, country_id=partner.country.id,
     									phone_number=partner.phone_number,role='knowledge_partner')
