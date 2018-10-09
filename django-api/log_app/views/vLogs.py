@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Log
+from log_app.models import Log, Program
 from log_app.serializers import LogSerializer
 
 from rest_framework import filters
@@ -15,6 +15,44 @@ from django.views.decorators.csrf import csrf_exempt
 
 import django_filters
 from rest_framework import filters
+
+from django.contrib.syndication.views import Feed
+from django.core.urlresolvers import reverse
+
+class ProgramLogFeed(Feed):
+    site = "http://localhost:3000"
+    link = "/api/v1/"
+
+    def get_object(self,request,program_id):
+        return Program.objects.get(id=program_id)
+
+    def title(self,obj):
+        if obj.public_name:
+            return obj.name+': '+str(obj.public_name)
+        else:
+            return obj.name
+
+    def description(self,obj):
+        return obj.project.focus
+
+    def item_author_name(self,item):
+        return item.program.radio_station.name
+
+    def item_author_email(self,item):
+        return item.program.radio_station.email
+
+    def items(self,obj):
+        return Log.objects.filter(program__id=obj.id)
+
+    def item_title(self, item):
+        return item.topic
+
+    def item_description(self, item):
+        return item.focus_statement
+
+    # item_link is only needed if NewsItem has no get_absolute_url method.
+    def item_link(self, item):
+        return item.recording_backup.url
 
 class LargeResultsSetPagination(PageNumberPagination):
 	page_size = 1000
