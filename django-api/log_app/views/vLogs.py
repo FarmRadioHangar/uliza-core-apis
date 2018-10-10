@@ -20,7 +20,6 @@ from django.contrib.syndication.views import Feed
 from django.core.urlresolvers import reverse
 
 class ProgramLogFeed(Feed):
-    site = "http://localhost:3000"
     link = "/api/v1/"
 
     def get_object(self,request,program_id):
