@@ -31,6 +31,9 @@ class ProgramLogFeed(Feed):
         else:
             return obj.name
 
+    def author_name(self,obj):
+        return obj.radio_station.name
+
     def description(self,obj):
         return obj.project.focus
 
@@ -47,14 +50,19 @@ class ProgramLogFeed(Feed):
         return item.topic
 
     def item_enclosure_url(self, item):
-        return item.recording_backup.url
+        if item.recording_backup:
+            return item.recording_backup.url
+        else:
+            return item.recording_backup.url
 
     def item_description(self, item):
         return item.focus_statement
 
-    # item_link is only needed if NewsItem has no get_absolute_url method.
     def item_link(self, item):
-        return item.recording_backup.url
+        if item.recording_backup:
+            return item.recording_backup.url
+        else:
+            return ''
 
 class LargeResultsSetPagination(PageNumberPagination):
 	page_size = 1000
