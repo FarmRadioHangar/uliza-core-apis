@@ -46,6 +46,9 @@ class ProgramLogFeed(Feed):
     def item_title(self, item):
         return item.topic
 
+    def item_enclosure_url(self, item):
+        return item.recording_backup.url
+
     def item_description(self, item):
         return item.focus_statement
 
