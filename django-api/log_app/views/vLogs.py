@@ -20,6 +20,14 @@ from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Rss201rev2Feed
 from django.core.urlresolvers import reverse
 
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.base import ContentFile
+
+from api_core import settings
+from jfu.http import upload_receive, UploadResponse, JFUResponse
+
+from django.http import HttpResponse
+
 class iTunesFeed(Rss201rev2Feed):
     def rss_attributes(self):
         return {
@@ -38,7 +46,7 @@ class iTunesFeed(Rss201rev2Feed):
         handler.addQuickElement('itunes:name', self.feed['author_name'])
         handler.addQuickElement('itunes:email', self.feed['itunes_email'])
         handler.endElement("itunes:owner")
-        handler.addQuickElement('itunes:image', 'http://localhost:8000/static/img/default_podcast_image.png')
+        handler.addQuickElement('itunes:image', settings.DEFAULT_PODCAST_IMAGE)
 
     def add_item_elements(self, handler, item):
         super(iTunesFeed, self).add_item_elements(handler, item)
@@ -178,13 +186,6 @@ class LogEntity(generics.RetrieveUpdateDestroyAPIView):
 		instance.delete()
 
 
-from django.views.decorators.csrf import csrf_exempt
-from django.core.files.base import ContentFile
-
-from api_core import settings
-from jfu.http import upload_receive, UploadResponse, JFUResponse
-
-from django.http import HttpResponse
 
 @require_POST
 def upload( request ):
