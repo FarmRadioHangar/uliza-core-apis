@@ -17,10 +17,44 @@ import django_filters
 from rest_framework import filters
 
 from django.contrib.syndication.views import Feed
+from django.utils.feedgenerator import Rss201rev2Feed
 from django.core.urlresolvers import reverse
 
+class iTunesFeed(Rss201rev2Feed):
+    def rss_attributes(self):
+        return {
+            "version": self._version,
+            "xmlns:atom": "http://www.w3.org/2005/Atom",
+            'xmlns:itunes': u'http://www.itunes.com/dtds/podcast-1.0.dtd'
+        }
+
+    def add_root_elements(self, handler):
+        super(iTunesFeed, self).add_root_elements(handler)
+        handler.addQuickElement('itunes:author', self.feed['author_name'])
+        handler.addQuickElement('itunes:summary', self.feed['description'])
+        handler.addQuickElement('itunes:category', 'education')
+        handler.addQuickElement('itunes:explicit', 'clean')
+        handler.startElement("itunes:owner", {})
+        handler.addQuickElement('itunes:name', self.feed['author_name'])
+        handler.addQuickElement('itunes:email', self.feed['itunes_email'])
+        handler.endElement("itunes:owner")
+        handler.addQuickElement('itunes:image', 'http://localhost:8000/static/img/default_podcast_image.png')
+
+    def add_item_elements(self, handler, item):
+        super(iTunesFeed, self).add_item_elements(handler, item)
+        handler.addQuickElement(u'itunes:summary', item['summary'])
+        # handler.addQuickElement(u'itunes:duration', item['duration'])
+        handler.addQuickElement(u'itunes:explicit', 'clean')
+
 class ProgramLogFeed(Feed):
+    feed_type = iTunesFeed
     link = "/api/v1/"
+
+    def feed_extra_kwargs(self, obj):
+        return {'itunes_email': obj.radio_station.email}
+
+    def item_extra_kwargs(self, item):
+        return {'summary': item.focus_statement}
 
     def get_object(self,request,program_id):
         return Program.objects.get(id=program_id)
@@ -58,11 +92,17 @@ class ProgramLogFeed(Feed):
     def item_description(self, item):
         return item.focus_statement
 
+    def item_pubdate(self,item):
+        return item.created_at
+
     def item_link(self, item):
         if item.recording_backup:
             return item.recording_backup.url
         else:
             return ''
+
+    def item_enclosure_mime_type(self, item):
+        return 'audio/mp3'
 
 class LargeResultsSetPagination(PageNumberPagination):
 	page_size = 1000
