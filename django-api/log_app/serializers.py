@@ -2,11 +2,9 @@ from rest_framework import serializers
 from log_app.models import *
 
 class RadioStationSerializer(serializers.ModelSerializer):
-
 	class Meta:
 		model = RadioStation
-		fields = ('id', 'name', 'city', 'phone_number', 'email', 'website', 'manager','last_updated_at', 'created_at', 'country','group_account_id')
-
+		fields = "__all__"
 class ProjectSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Project
