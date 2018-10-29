@@ -7,6 +7,7 @@ class RadioStationSerializer(serializers.ModelSerializer):
 		model = RadioStation
 		fields = ('id', 'name', 'city', 'phone_number', 'email', 'website', 'manager','last_updated_at', 'created_at', 'country','group_account_id')
 
+
 class ProjectSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Project

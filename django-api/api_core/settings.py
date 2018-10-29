@@ -48,7 +48,6 @@ INSTALLED_APPS = (
     'log_app',
     'shell_plus'
 )
-
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -158,3 +157,8 @@ REST_FRAMEWORK = {
 
 # if DEBUG:
 #     from api_core.settings_dev import *
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
