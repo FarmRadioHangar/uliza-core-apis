@@ -133,7 +133,7 @@ class LogGet(generics.ListCreateAPIView):
 
 	pagination_class = LargeResultsSetPagination
 	filter_backends = (filters.OrderingFilter, DjangoFilterBackend,)
-	ordering_fields = ('week','id','created_at')
+	ordering_fields = ('week','id','created_at','postpone')
 	fields = ['id']
 
 	def get_queryset(self):
