@@ -11,9 +11,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='radiotransmission',
-            name='power',
-            field=models.CharField(max_length=80, null=True, blank=True),
-        ),
+
     ]
