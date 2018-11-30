@@ -80,6 +80,8 @@ def check_user_by_email(request):
     data = json.loads(request.body)
     try:
         user = Auth0User.objects.get(email=data['email'])
+    except Auth0User.ValueError:
+        raise Http404
     except Auth0User.DoesNotExist:
         raise Http404
 
