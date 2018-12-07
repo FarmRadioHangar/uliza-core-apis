@@ -49,6 +49,8 @@ def authenticate(request):
             app_metadata = {'role': 'group',
                             'is_superuser': False,
                             'is_admin': False}
+            contact=contact[0]
+            contact.group_account_id='auth0|'+str(user.id)
         else:
             contact = contact[0]
             name = contact.first_name+' '+contact.last_name
@@ -56,8 +58,8 @@ def authenticate(request):
                             'is_superuser': contact.is_superuser,
                             'is_admin': contact.is_admin}
 
-        contact.user_id = 'auth0|'+str(user.id)
-        contact.save()
+            contact.user_id = 'auth0|'+str(user.id)
+            contact.save()
 
         user = {'user_id':user.id,
                 'username':user.username,
