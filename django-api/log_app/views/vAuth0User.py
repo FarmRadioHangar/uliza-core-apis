@@ -59,7 +59,8 @@ def authenticate(request):
                             'is_admin': contact.is_admin}
 
             contact.user_id = 'auth0|'+str(user.id)
-            contact.save()
+            
+        contact.save()
 
         user = {'user_id':user.id,
                 'username':user.username,
