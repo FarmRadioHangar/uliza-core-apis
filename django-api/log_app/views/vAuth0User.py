@@ -49,7 +49,6 @@ def authenticate(request):
             app_metadata = {'role': 'group',
                             'is_superuser': False,
                             'is_admin': False}
-            contact=contact
             contact.group_account_id='auth0|'+str(user.id)
         else:
             contact = contact[0]
