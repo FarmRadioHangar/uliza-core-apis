@@ -26,6 +26,7 @@ from django.core.files.base import ContentFile
 from api_core import settings
 from jfu.http import upload_receive, UploadResponse, JFUResponse
 
+from django.contrib.sites.models import Site
 from django.http import HttpResponse
 
 class iTunesFeed(Rss201rev2Feed):
@@ -57,6 +58,7 @@ class iTunesFeed(Rss201rev2Feed):
 class ProgramLogFeed(Feed):
     feed_type = iTunesFeed
     link = "/api/v1/"
+    domain = Site.objects.get_current().domain
 
     def feed_extra_kwargs(self, obj):
         return {'itunes_email': obj.radio_station.email}
@@ -93,9 +95,9 @@ class ProgramLogFeed(Feed):
 
     def item_enclosure_url(self, item):
         if item.recording_backup:
-            return item.recording_backup.url
+            return 'https://'+self.domain+item.recording_backup.url
         else:
-            return item.recording_backup.url
+            return ''
 
     def item_description(self, item):
         return item.focus_statement
@@ -105,7 +107,7 @@ class ProgramLogFeed(Feed):
 
     def item_link(self, item):
         if item.recording_backup:
-            return item.recording_backup.url
+            return 'https://'+self.domain+item.recording_backup.url
         else:
             return ''
 
@@ -137,10 +139,6 @@ class LogGet(generics.ListCreateAPIView):
 	fields = ['id']
 
 	def get_queryset(self):
-		"""
-		This view should return a list of all the purchases
-		for the currently authenticated user.
-		"""
 
 		queryset = Log.objects.all().select_related('program__project__id','program','program__radio_station__country__id','program__radio_station__name','program__radio_station__id','program__start_date').prefetch_related('formats')
 
