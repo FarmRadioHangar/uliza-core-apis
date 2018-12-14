@@ -71,20 +71,21 @@ def filename(instance, filename):
 
 
 class Project(models.Model):
-	name = models.CharField(max_length=50)
-	country = models.ForeignKey('Country')
-	doner = models.CharField(max_length=50)
-	focus = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    country = models.ForeignKey('Country')
+    doner = models.CharField(max_length=50)
+    focus = models.CharField(max_length=50)
+    image = models.CharField(null=True, blank=True,max_length=100)
 
-	start_date = models.DateField(null=True)
-	end_date = models.DateField(null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
 
-	# Time track
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-	def __unicode__(self):
-		return self.name
+    def __unicode__(self):
+        return self.name
 
 languages = (
 	('en', 'English'),

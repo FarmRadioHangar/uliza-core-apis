@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Project 
+from log_app.models import Project
 from log_app.serializers import ProjectSerializer
 
 import django_filters
@@ -15,18 +15,18 @@ class ProjectFilter(filters.FilterSet):
 
 	class Meta:
 		model = Project
-		fields = ['id','country','end_date__gte','start_date__lte']
-		
+		fields = ['id','country','end_date__gte','start_date__lte','image']
+
 
 class ProjectGet(generics.ListCreateAPIView):
 
 	queryset = Project.objects.all()
-	model = Project 
+	model = Project
 	serializer_class = ProjectSerializer
 	filter_class = ProjectFilter
 
 class ProjectEntity(generics.RetrieveUpdateAPIView):
 	queryset = Project.objects.all()
-	model = Project 
+	model = Project
 	serializer_class = ProjectSerializer
 	lookup_field = 'id'
