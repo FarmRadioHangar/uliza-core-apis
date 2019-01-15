@@ -25,7 +25,7 @@ from django.core.files.base import ContentFile
 
 from api_core import settings
 from jfu.http import upload_receive, UploadResponse, JFUResponse
-
+from django.shortcuts import redirect
 from django.contrib.sites.models import Site
 from django.http import HttpResponse
 
