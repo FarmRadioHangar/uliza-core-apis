@@ -263,17 +263,6 @@ class Log(models.Model):
 
     # Format options
     formats = models.ManyToManyField('Format',blank=True)
-    # These will be deprecated
-    studio_interviews = models.BooleanField(default=False)
-    field_interviews = models.BooleanField(default=False)
-    panel = models.BooleanField(default=False)
-    community_discussion = models.BooleanField(default=False)
-    phone_in = models.BooleanField(default=False)
-    vox_pop = models.BooleanField(default=False)
-    mini_documentary = models.BooleanField(default=False)
-    talk_tape = models.BooleanField(default=False)
-    question_answer = models.BooleanField(default=False)
-    case_study = models.BooleanField(default=False)
 
     postpone = models.BooleanField(default=False)
     postponed_for = models.TextField(blank=True,null=True)
