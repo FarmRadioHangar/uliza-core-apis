@@ -35,7 +35,7 @@ class LogSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Log
-		fields = "__all__"
+		exclude = ('recording',)
 
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:
