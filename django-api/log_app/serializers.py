@@ -35,7 +35,7 @@ class LogSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Log
-		exclude = ('recording',)
+		exclude = ('gdrive',)
 
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:

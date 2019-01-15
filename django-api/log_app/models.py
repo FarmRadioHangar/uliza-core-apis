@@ -269,7 +269,8 @@ class Log(models.Model):
 
     email = models.TextField(blank=True,null=True,default=None)
 
-    recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
+    gdrive = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
+    gdrive_available = models.BooleanField(default=False)
     recording_backup = models.FileField(null=True,blank=True)
     recording_saved = models.BooleanField(default=True)
     offset = models.PositiveIntegerField(default=0)

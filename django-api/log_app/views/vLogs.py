@@ -263,20 +263,27 @@ def upload_delete( request, pk ):
     return JFUResponse( request, success )
 
 def open_with_drive(request,pk):
-	log = Log.objects.get(pk=pk)
+    log = Log.objects.get(pk=pk)
 
-	if(log.recording):
-		return redirect(log.recording.url)
-	elif(log.recording_backup):
-		# Uploading to gdrive
-		import os
-		from django.core.files import File
-		log.recording = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
-		log.save()
+    if(log.gdrive):
+    	return redirect(log.gdrive.url)
+    elif(log.recording_backup):
+        # Uploading to gdrive
+        import os
+        from django.core.files import File
+        log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+        log.save()
 
-		return redirect(log.recording.url)
+        if 'archive' in request.GET:
+            os.unlink( log.recording_backup.path )
+            log.recording_backup = None
 
-	return HttpResponse('<h2>404 Not found</h2>',status=404)
+        log.gdrive_available = True
+        log.save()
+
+    	return redirect(log.gdrive.url)
+
+    return HttpResponse('<h2>404 Not found</h2>',status=404)
 
 def rec_download(request,pk):
 	log = Log.objects.get(pk=pk)
