@@ -6,6 +6,7 @@ from django.db import models, migrations
 def migrate_group_accounts(apps,schema_editor):
     Contact = apps.get_model('log_app', 'Contact')
     RadioStation = apps.get_model('log_app','RadioStation')
+    Log = apps.get_model('log_app','Log')
 
     groups = Contact.objects.filter(role='group')
 
@@ -13,6 +14,12 @@ def migrate_group_accounts(apps,schema_editor):
         radio_station = RadioStation.objects.filter(name=group.organization)[0]
         radio_station.group_account_id = group.user_id
         radio_station.save()
+        logs = Log.objects.filter(saved_by=group)
+
+        for log in logs:
+            log.saved_by = None
+            log.save()
+            
         group.delete()
 
 class Migration(migrations.Migration):

@@ -6,14 +6,14 @@ from django.db import models, migrations
 def add_superuser_data(apps, schema_editor):
     Auth0User = apps.get_model('log_app','Auth0User')
     Contact = apps.get_model('log_app','Contact')
-    users = Auth0User.objects.all()
+    users = Auth0User.objects.filter(is_super_user=True)
 
     for user in users:
-        c = Contact.objects.filter(user_id=user.id)
+        c = Contact.objects.filter(user_id='local|'+str(user.id))
 
         if c:
             c = c[0]
-            c.is_superuser = user.is_super_user
+            c.is_superuser = True
             c.save()
 
 

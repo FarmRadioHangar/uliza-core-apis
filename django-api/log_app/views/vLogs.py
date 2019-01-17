@@ -25,7 +25,8 @@ from django.core.files.base import ContentFile
 
 from api_core import settings
 from jfu.http import upload_receive, UploadResponse, JFUResponse
-
+from django.shortcuts import redirect
+from django.contrib.sites.models import Site
 from django.http import HttpResponse
 
 class iTunesFeed(Rss201rev2Feed):
@@ -57,6 +58,7 @@ class iTunesFeed(Rss201rev2Feed):
 class ProgramLogFeed(Feed):
     feed_type = iTunesFeed
     link = "/api/v1/"
+    domain = Site.objects.get_current().domain
 
     def feed_extra_kwargs(self, obj):
         return {'itunes_email': obj.radio_station.email}
@@ -93,9 +95,9 @@ class ProgramLogFeed(Feed):
 
     def item_enclosure_url(self, item):
         if item.recording_backup:
-            return item.recording_backup.url
+            return 'https://'+self.domain+item.recording_backup.url
         else:
-            return item.recording_backup.url
+            return ''
 
     def item_description(self, item):
         return item.focus_statement
@@ -105,7 +107,7 @@ class ProgramLogFeed(Feed):
 
     def item_link(self, item):
         if item.recording_backup:
-            return item.recording_backup.url
+            return 'https://'+self.domain+item.recording_backup.url
         else:
             return ''
 
@@ -137,10 +139,6 @@ class LogGet(generics.ListCreateAPIView):
 	fields = ['id']
 
 	def get_queryset(self):
-		"""
-		This view should return a list of all the purchases
-		for the currently authenticated user.
-		"""
 
 		queryset = Log.objects.all().select_related('program__project__id','program','program__radio_station__country__id','program__radio_station__name','program__radio_station__id','program__start_date').prefetch_related('formats')
 
@@ -265,20 +263,27 @@ def upload_delete( request, pk ):
     return JFUResponse( request, success )
 
 def open_with_drive(request,pk):
-	log = Log.objects.get(pk=pk)
+    log = Log.objects.get(pk=pk)
 
-	if(log.recording):
-		return redirect(log.recording.url)
-	elif(log.recording_backup):
-		# Uploading to gdrive
-		import os
-		from django.core.files import File
-		log.recording = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
-		log.save()
+    if(log.gdrive):
+    	return redirect(log.gdrive.url)
+    elif(log.recording_backup):
+        # Uploading to gdrive
+        import os
+        from django.core.files import File
+        log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+        log.save()
 
-		return redirect(log.recording.url)
+        if 'archive' in request.GET:
+            os.unlink( log.recording_backup.path )
+            log.recording_backup = None
 
-	return HttpResponse('<h2>404 Not found</h2>',status=404)
+        log.gdrive_available = True
+        log.save()
+
+    	return redirect(log.gdrive.url)
+
+    return HttpResponse('<h2>404 Not found</h2>',status=404)
 
 def rec_download(request,pk):
 	log = Log.objects.get(pk=pk)

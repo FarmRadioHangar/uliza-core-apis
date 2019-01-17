@@ -71,20 +71,21 @@ def filename(instance, filename):
 
 
 class Project(models.Model):
-	name = models.CharField(max_length=50)
-	country = models.ForeignKey('Country')
-	doner = models.CharField(max_length=50)
-	focus = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    country = models.ForeignKey('Country')
+    doner = models.CharField(max_length=50)
+    focus = models.CharField(max_length=50)
+    image = models.CharField(null=True, blank=True,max_length=100)
 
-	start_date = models.DateField(null=True)
-	end_date = models.DateField(null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
 
-	# Time track
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-	def __unicode__(self):
-		return self.name
+    def __unicode__(self):
+        return self.name
 
 languages = (
 	('en', 'English'),
@@ -262,24 +263,14 @@ class Log(models.Model):
 
     # Format options
     formats = models.ManyToManyField('Format',blank=True)
-    # These will be deprecated
-    studio_interviews = models.BooleanField(default=False)
-    field_interviews = models.BooleanField(default=False)
-    panel = models.BooleanField(default=False)
-    community_discussion = models.BooleanField(default=False)
-    phone_in = models.BooleanField(default=False)
-    vox_pop = models.BooleanField(default=False)
-    mini_documentary = models.BooleanField(default=False)
-    talk_tape = models.BooleanField(default=False)
-    question_answer = models.BooleanField(default=False)
-    case_study = models.BooleanField(default=False)
 
     postpone = models.BooleanField(default=False)
     postponed_for = models.TextField(blank=True,null=True)
 
     email = models.TextField(blank=True,null=True,default=None)
 
-    recording = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
+    gdrive = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
+    gdrive_available = models.BooleanField(default=False)
     recording_backup = models.FileField(null=True,blank=True)
     recording_saved = models.BooleanField(default=True)
     offset = models.PositiveIntegerField(default=0)

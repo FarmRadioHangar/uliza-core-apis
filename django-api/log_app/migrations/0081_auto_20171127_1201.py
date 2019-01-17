@@ -7,15 +7,16 @@ program_users = {}
 
 def nullify_user_access(apps,schema_editor):
     Program = apps.get_model('log_app', 'Program')
-    programs = Program.objects.all()
+    programs = Program.objects.exclude(access=None)
 
     for p in programs:
-        program_users[p.id] = [u.id for u in p.access.all()]
+        program_users[p.id] = [u.username for u in p.access.all()]
         p.access = []
         p.save()
 
 def replace_contact_access(apps, schema_editor):
     Program = apps.get_model('log_app', 'Program')
+    Auth0User = apps.get_model('log_app', 'Auth0User')
     Contact = apps.get_model('log_app', 'Contact')
 
     for program_id in program_users:
@@ -24,26 +25,15 @@ def replace_contact_access(apps, schema_editor):
         if program_users[program_id]:
             program = Program.objects.get(pk=program_id)
 
-            for user_id in program_users[program_id]:
-                contact = Contact.objects.filter(user_id=user_id)
+            for username in program_users[program_id]:
+                user = Auth0User.objects.filter(username=username)
 
-                if contact:
+                if user:
+                    contact = Contact.objects.filter(user_id='local|'+str(user[0].id))
                     access.append(contact[0].id)
 
             program.access = access
             program.save()
-
-    # access = []
-    # for user in program_users[p.id]:
-    #     import pdb; pdb.set_trace()
-    #     c = Contact.objects.get(user_id = user[0])
-    #     access.append(c.id)
-    #
-    #     print p.name
-    #     print access
-        # p.access = access
-        # p.save()
-
 
 class Migration(migrations.Migration):
 
