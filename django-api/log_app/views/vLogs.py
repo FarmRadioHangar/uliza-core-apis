@@ -265,23 +265,30 @@ def upload_delete( request, pk ):
 def open_with_drive(request,pk):
     log = Log.objects.get(pk=pk)
 
-    if(log.gdrive):
-    	return redirect(log.gdrive.url)
+    if(log.gdrive_available):
+        # get the old link from dev api
+        import requests
+        response = requests.get('https://dev.uliza.fm/api/v1/logs/recording/gdrive/'+str(pk),params={})
+        if response.status_code == 200:
+            return redirect(response.content)
+        else:
+            return HttpResponse('<h2>404 Not found</h2>',status=404)
+
+    elif(log.gdrive):
+        return redirect(log.gdrive_url)
     elif(log.recording_backup):
         # Uploading to gdrive
         import os
         from django.core.files import File
         log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+        log.gdrive_url = log.gdrive.url
         log.save()
 
         if 'archive' in request.GET:
             os.unlink( log.recording_backup.path )
             log.recording_backup = None
 
-        log.gdrive_available = True
-        log.save()
-
-    	return redirect(log.gdrive.url)
+    	return redirect(log.gdrive_url)
 
     return HttpResponse('<h2>404 Not found</h2>',status=404)
 
