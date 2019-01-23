@@ -281,8 +281,11 @@ def open_with_drive(request,pk):
         import os
         from django.core.files import File
         log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+        log.save()
+
         log.gdrive_url = log.gdrive.url
         log.save()
+
 
         if 'archive' in request.GET:
             os.unlink( log.recording_backup.path )
