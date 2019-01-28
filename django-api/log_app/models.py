@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
 from api_core.settings import GDRIVE_STORAGE
@@ -309,8 +310,13 @@ class Log(models.Model):
     	import os
     	if (self.recording_backup):
     		old_path = self.recording_backup.path
-    		self.recording_backup.name = 'FRI-LOG-'+self.program.name+'-'+str(self.week)+'.mp3'
+    		self.recording_backup.name = 'Uliza-log-'+self.program.name.encode('utf-8')+'.mp3'
 
+    		try:
+			self.recording_backup.name.encode('ascii')
+		except:
+			self.recording_backup.name='Uliza-log-ID'+str(self.id)+'-W'+str(self.week)+'.mp3' 
+			
     		os.rename(old_path, self.recording_backup.path)
     		self.save()
 
