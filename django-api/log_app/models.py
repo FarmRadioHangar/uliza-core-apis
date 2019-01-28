@@ -309,8 +309,13 @@ class Log(models.Model):
     	import os
     	if (self.recording_backup):
     		old_path = self.recording_backup.path
-    		self.recording_backup.name = 'FRI-LOG-'+self.program.name+'-'+str(self.week)+'.mp3'
+    		self.recording_backup.name = 'Uliza-log-'+self.program.name+'-'+str(self.week)+'.mp3'
 
+            try:
+                self.recording_backup.name.encode('ascii')
+            except:
+                self.recording_backup.name = 'Uliza-log-ID'+str(self.id)+'-W'+str(self.week)+'.mp3'
+                
     		os.rename(old_path, self.recording_backup.path)
     		self.save()
 
