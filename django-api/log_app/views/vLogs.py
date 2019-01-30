@@ -314,7 +314,7 @@ def check_rec(request,log_id,filename):
 	import os.path,re
 
 	filename = re.sub("[^\w.-]", '', filename.replace(" ","_"))
-	filepath = settings.MEDIA_ROOT+log_id+'_'+filename
+	filepath = settings.MEDIA_ROOT+'/'+log_id+'_'+filename
 
 	if(os.path.isfile(filepath)):
 		return HttpResponse(os.path.getsize(filepath))
