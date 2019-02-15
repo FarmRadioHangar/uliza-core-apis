@@ -201,6 +201,7 @@ def upload( request ):
 
 	instance.save()
 	log_id = str(instance.id)
+    file.name = file.name.encode('ascii','ignore')
 	filename = log_id+'_'+re.sub("[^\w.-]", '', file.name.replace(" ","_"))
 	if(not basename == filename):
 		if(instance.recording_backup):
@@ -314,6 +315,7 @@ def rec_download(request,pk):
 def check_rec(request,log_id,filename):
 	import os.path,re
 
+    filename = filename.encode('ascii','ignore')
 	filename = re.sub("[^\w.-]", '', filename.replace(" ","_"))
 	filepath = settings.MEDIA_ROOT+'/'+log_id+'_'+filename
 
