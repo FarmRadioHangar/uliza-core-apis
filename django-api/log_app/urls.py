@@ -17,6 +17,7 @@ from log_app.views.vFormats import *
 from log_app.views.vReviews import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
+    url(r'/(?P<id>\d+)/projects$', radion_station_projects),
     url(r'/(?P<id>\d+)$', RadioStationEntity.as_view()),
     url(r'$', RadioStationGet.as_view()),
 )
