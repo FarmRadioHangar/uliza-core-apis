@@ -123,6 +123,7 @@ class LogFilter(filters.FilterSet):
 	week__lte = django_filters.NumberFilter(name="week", lookup_expr='lte')
 	id__lt = django_filters.DateTimeFilter(name="id", lookup_expr='lt')
 	country__not = django_filters.NumberFilter(name="program__radio_station__country", exclude=True)
+	program__radio_station = django_filters.NumberFilter(name="program__radio_station")
 
 	class Meta:
 		model = Log
