@@ -33,9 +33,10 @@ class ProjectGet(generics.ListCreateAPIView):
 	serializer_class = ProjectSerializer
 	ordering_fields=('id','created_at')
 	filter_class = ProjectFilter
-	filter_backends = (filters.OrderingFilter,DjangoFilterBackend)
+	filter_backends = (filters.OrderingFilter,filters.SearchFilter,DjangoFilterBackend)
 	pagination_class = LargeResultsSetPagination
 	fields=['id']
+	search_fields = ('name','doner')
 
 class ProjectEntity(generics.RetrieveUpdateAPIView):
 	queryset = Project.objects.all()
