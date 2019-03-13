@@ -8,6 +8,8 @@ from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 from log_app.models import RadioStation,Program,Project
 from log_app.serializers import RadioStationSerializer,ProjectSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 class RadioStationGet(generics.ListCreateAPIView):
 
@@ -15,6 +17,8 @@ class RadioStationGet(generics.ListCreateAPIView):
     model = RadioStation
     serializer_class = RadioStationSerializer
     filter_fields = ['id','country','group_account_id']
+    filter_backends = (filters.SearchFilter,DjangoFilterBackend)
+    search_fields = ('name','city','country__name')
 
 class RadioStationEntity(generics.RetrieveUpdateAPIView):
 
