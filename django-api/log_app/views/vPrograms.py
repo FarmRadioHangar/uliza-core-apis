@@ -19,6 +19,7 @@ class ProgramFilter(filters.FilterSet):
 	start_date__gte = django_filters.DateTimeFilter(name="start_date", lookup_expr='gte')
 	start_date__lt = django_filters.DateTimeFilter(name="start_date", lookup_expr='lt')
 	project__end_date__gte = django_filters.DateTimeFilter(name="project__end_date", lookup_expr='gte')
+	country__not = django_filters.NumberFilter(name="radio_station__country", exclude=True)
 
 
 	class Meta:
