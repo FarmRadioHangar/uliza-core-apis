@@ -36,7 +36,7 @@ class ProjectGet(generics.ListCreateAPIView):
 	filter_backends = (filters.OrderingFilter,filters.SearchFilter,DjangoFilterBackend)
 	pagination_class = LargeResultsSetPagination
 	fields=['id']
-	search_fields = ('name','doner')
+	search_fields = ('name','doner','country__name')
 
 class ProjectEntity(generics.RetrieveUpdateAPIView):
 	queryset = Project.objects.all()
