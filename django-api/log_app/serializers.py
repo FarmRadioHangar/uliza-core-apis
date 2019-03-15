@@ -43,7 +43,7 @@ class CommentSerializer(serializers.ModelSerializer):
 	contact__job_title = serializers.CharField(source='contact.job_title',read_only=True)
 	class Meta:
 		model = Comment
-		fields = ('content','log','contact__first_name','contact__last_name','contact__job_title','contact')
+		fields = ('content','log','contact__first_name','contact__last_name','contact__job_title','contact','last_updated_at','created_at','id')
 
 
 class ContactSerializer(serializers.ModelSerializer):
