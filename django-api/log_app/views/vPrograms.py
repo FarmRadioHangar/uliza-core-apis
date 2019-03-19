@@ -49,9 +49,13 @@ class ProgramGet(generics.ListCreateAPIView):
 		for the currently authenticated user.
 		"""
 		pk_list = self.request.GET.get('ids')
+		project_search = self.request.GET.get('project__search')
 		if pk_list:
 			pk_list = pk_list.split(',')
 			queryset = Program.objects.filter(pk__in =pk_list).order_by('-end_date').select_related('project__id','radio_station__country','radio_station__country__name','radio_station__name',).prefetch_related('access')
+		elif project_search:
+			from django.db.models import Q
+			queryset = Program.objects.filter(Q(project__name__icontains=project_search)|Q(project__doner__icontains=project_search))
 		else:
 			queryset = Program.objects.all().order_by('-end_date').select_related('project__id','radio_station__country','radio_station__country__name','radio_station__name',).prefetch_related('access')
 

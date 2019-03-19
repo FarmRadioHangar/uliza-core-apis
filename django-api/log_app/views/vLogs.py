@@ -152,10 +152,14 @@ class LogGet(generics.ListCreateAPIView):
 			logs = queryset
 
 		pk_list = self.request.GET.get('project__in')
+		project_search = self.request.GET.get('project__search')
 		if pk_list:
 			pk_list = pk_list.split(',')
 			logs = queryset.filter(program__project__in=pk_list)
-		else:
+  		elif project_search:
+			from django.db.models import Q
+			logs = queryset.filter(Q(program__project__name__icontains=project_search)|Q(program__project__doner__icontains=project_search))
+  		else:
 			logs = queryset
 
 
