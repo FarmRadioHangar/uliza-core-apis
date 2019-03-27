@@ -272,17 +272,18 @@ def upload_delete( request, pk ):
 def open_with_drive(request,pk):
     log = Log.objects.get(pk=pk)
 
-    if(log.gdrive_available):
+    if(log.gdrive_url):
+        return redirect(log.gdrive_url)
+    elif(log.gdrive_available):
         # get the old link from dev api
         import requests
         response = requests.get('https://dev.uliza.fm/api/v1/logs/recording/gdrive_old/'+str(pk),params={})
         if response.status_code == 200:
+            log.gdrive_url = response.content
+            log.save()
             return redirect(response.content)
         else:
             return HttpResponse('<h2>404 Not found</h2>',status=404)
-
-    elif(log.gdrive):
-        return redirect(log.gdrive_url)
     elif(log.recording_backup):
         # Uploading to gdrive
         import os
