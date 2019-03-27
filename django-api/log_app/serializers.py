@@ -4,13 +4,7 @@ from log_app.models import *
 class RadioStationSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = RadioStation
-<<<<<<< HEAD
-		fields = ('id', 'name', 'city', 'phone_number', 'email', 'website', 'manager','last_updated_at', 'created_at', 'country','group_account_id')
-
-
-=======
 		fields = "__all__"
->>>>>>> 5d45cc9b08edea406a8fe3e0c79b8438bf846368
 class ProjectSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Project
@@ -101,3 +95,4 @@ class FormatSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Format
 		fields = "__all__"
+
