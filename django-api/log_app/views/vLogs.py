@@ -275,7 +275,7 @@ def open_with_drive(request,pk):
     if(log.gdrive_available):
         # get the old link from dev api
         import requests
-        response = requests.get('https://dev.uliza.fm/api/v1/logs/recording/gdrive/'+str(pk),params={})
+        response = requests.get('https://dev.uliza.fm/api/v1/logs/recording/gdrive_old/'+str(pk),params={})
         if response.status_code == 200:
             return redirect(response.content)
         else:
