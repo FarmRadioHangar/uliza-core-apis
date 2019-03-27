@@ -97,11 +97,9 @@ DATABASES = {
 
 GOOGLE_DRIVE_STORAGE = {
     'service_account': {
-        'email': ('483337829320-cb6pjf723llvsmjlk1iptv5n4ins06eb@developer'
-                  '.gserviceaccount.com'),
-        'private_key_file_path': 'fri-log-665598a2cc6b.p12'
+        'email': (env('GDRIVE_EMAIL')),
+        'private_key_file_path': env('GDRIVE_PRIVATE_KEY')
     }
-
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -144,6 +142,7 @@ SITE_ID = 1
 
 from log_app.storage.gd_storage import GoogleDriveStorage
 GDRIVE_STORAGE = GoogleDriveStorage()
+DEFAULT_PODCAST_IMAGE=env('DEFAULT_PODCAST_IMAGE')
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
