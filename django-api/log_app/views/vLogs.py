@@ -303,6 +303,13 @@ def open_with_drive(request,pk):
 
     return HttpResponse('<h2>404 Not found</h2>',status=404)
 
+def get_old_gdrive_link(request,pk):
+    log = Log.objects.get(pk=pk)
+    if(log.gdrive_available):
+        return HttpResponse(log.gdrive.url)
+
+    return HttpResponse('<h2>404 Not found</h2>',status=404)
+
 def rec_download(request,pk):
 	log = Log.objects.get(pk=pk)
 

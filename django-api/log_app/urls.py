@@ -70,6 +70,7 @@ logs = patterns('log_app.views.vLogs',
     url( r'recording/upload','upload', name = 'recording_upload' ),
     url( r'recording/download/(?P<pk>\d+)','rec_download', name ='recording_download'),
     url( r'recording/gdrive/(?P<pk>\d+)','open_with_drive', name ='open_with_drive'),
+    url( r'recording/gdrive_old/(?P<pk>\d+)','get_old_gdrive_link', name ='get_old_gdrive_link'),
     url( r'feed/(?P<program_id>\d+)', ProgramLogFeed()),
 
     url(r'/(?P<id>\d+)$', LogEntity.as_view()),
