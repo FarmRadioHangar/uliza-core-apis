@@ -44,9 +44,12 @@ class LogSerializer(serializers.ModelSerializer):
 		exclude = ('gdrive',)
 
 class CommentSerializer(serializers.ModelSerializer):
+	contact__last_name = serializers.CharField(source='contact.last_name',read_only=True)
+	contact__first_name = serializers.CharField(source='contact.first_name',read_only=True)
+	contact__job_title = serializers.CharField(source='contact.job_title',read_only=True)
 	class Meta:
 		model = Comment
-		fields = "__all__"
+		fields = ('content','log','contact__first_name','contact__last_name','contact__job_title','contact','last_updated_at','created_at','id')
 
 
 class ContactSerializer(serializers.ModelSerializer):

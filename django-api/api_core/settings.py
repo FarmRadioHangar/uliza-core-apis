@@ -121,7 +121,7 @@ CORS_ALLOW_HEADERS = (
 SUB_SITE = ''
 STATIC_URL = '/public/'
 STATIC_ROOT = 'public'
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = '/datadisk/fri_log/media/'
 MEDIA_URL = '/media/'
 
 # Internationalization
@@ -141,8 +141,8 @@ USE_TZ = True
 
 SITE_ID = 1
 
-# from log_app.storage.gd_storage import GoogleDriveStorage
-GDRIVE_STORAGE = None
+from log_app.storage.gd_storage import GoogleDriveStorage
+GDRIVE_STORAGE = GoogleDriveStorage()
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (

@@ -115,13 +115,15 @@ class ProgramLogFeed(Feed):
         return 'audio/mp3'
 
 class LargeResultsSetPagination(PageNumberPagination):
-	page_size = 1000
-	page_size_query_param = 'page_size'
-	max_page_size = 10000
+    page_size = 1000
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
 
 class LogFilter(filters.FilterSet):
 	week__lte = django_filters.NumberFilter(name="week", lookup_expr='lte')
 	id__lt = django_filters.DateTimeFilter(name="id", lookup_expr='lt')
+	country__not = django_filters.NumberFilter(name="program__radio_station__country", exclude=True)
+	program__radio_station = django_filters.NumberFilter(name="program__radio_station")
 
 	class Meta:
 		model = Log
@@ -150,10 +152,14 @@ class LogGet(generics.ListCreateAPIView):
 			logs = queryset
 
 		pk_list = self.request.GET.get('project__in')
+		project_search = self.request.GET.get('project__search')
 		if pk_list:
 			pk_list = pk_list.split(',')
 			logs = queryset.filter(program__project__in=pk_list)
-		else:
+  		elif project_search:
+			from django.db.models import Q
+			logs = queryset.filter(Q(program__project__name__icontains=project_search)|Q(program__project__doner__icontains=project_search))
+  		else:
 			logs = queryset
 
 
@@ -200,6 +206,7 @@ def upload( request ):
 
 	instance.save()
 	log_id = str(instance.id)
+	file.name = file.name.encode('ascii','ignore')
 	filename = log_id+'_'+re.sub("[^\w.-]", '', file.name.replace(" ","_"))
 	if(not basename == filename):
 		if(instance.recording_backup):
@@ -313,6 +320,7 @@ def rec_download(request,pk):
 def check_rec(request,log_id,filename):
 	import os.path,re
 
+	filename = filename.encode('ascii','ignore')
 	filename = re.sub("[^\w.-]", '', filename.replace(" ","_"))
 	filepath = settings.MEDIA_ROOT+'/'+log_id+'_'+filename
 
