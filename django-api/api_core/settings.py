@@ -17,6 +17,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+env.read_envfile()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -25,11 +26,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^+7=!#%326^+lvo^89%gh2kde^zs35^o7&xxyc$boif18mxsc6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env.bool('DEBUG',default=False)
 
 ALLOWED_HOSTS = ["*"]
 
-env.read_envfile()
 # Application definition
 
 INSTALLED_APPS = (
@@ -119,7 +119,7 @@ CORS_ALLOW_HEADERS = (
 SUB_SITE = ''
 STATIC_URL = '/public/'
 STATIC_ROOT = 'public'
-MEDIA_ROOT = env('MEDIA_ROOT') 
+MEDIA_ROOT = env('MEDIA_ROOT')
 MEDIA_URL = '/media/'
 
 # Internationalization
@@ -176,7 +176,10 @@ LOGGING = {
 }
 
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+TELEGRAM_TOKEN = env('TELEGRAM_TOKEN')
