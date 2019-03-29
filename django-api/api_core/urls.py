@@ -6,5 +6,6 @@ urlpatterns = [
     url(r'^admin', include(admin.site.urls)),
     url(r'^api/v1/', include('log_app.urls')),
     url(r'^api/v1/', include('uliza.urls')),
+    url(r'^api/v1/telegram/', include('telegram_bot.urls')),
     url(r'^api/docs/', include_docs_urls(title='Uliza API')),
 ]
