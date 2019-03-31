@@ -46,7 +46,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'uliza',
     'log_app',
-    'shell_plus'
+    'shell_plus',
+    'telegram_bot'
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
