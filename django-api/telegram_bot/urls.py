@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
-
+from api_core.settings import TELEGRAM_TOKEN 
 
 urlpatterns = patterns('',
-    url(r'start$','telegram_bot.views.start',name='authenticate'),
+    url(r'activate$','telegram_bot.views.activate',name='activate'),
+    url(TELEGRAM_TOKEN+'$','telegram_bot.views.start',name='telegram'),
 )

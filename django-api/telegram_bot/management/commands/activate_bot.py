@@ -6,8 +6,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         url = "https://api.telegram.org/bot"+TELEGRAM_TOKEN+"/setWebhook"
 
-        response = requests.post(url,{"url":"https://dev.uliza.fm/api/v1/telegram"},
-                      files=dict(certificate=BASE_DIR+"/fullchain.pem"))
+        response = requests.get(url,params={"url":"https://dev.uliza.fm/api/v1/telegram/"+TELEGRAM_TOKEN})
 
-        import pdb; pdb.set_trace()
-        print response
+        print response.content

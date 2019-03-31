@@ -11,7 +11,8 @@ def activate(request):
     response = requests.post(url,{"url":"https://dev.uliza.fm/api/v1/telegram"},
                   files=dict(certificate=BASE_DIR+"/fullchain.pem"))
 
-    return HttpResponse(response.content)
+    return HttpResponse((response.status_code,response.content))
 
 def start(request):
-    return HttpResponse('This is FRI speaking... what can I help you?')
+	print request
+	return HttpResponse('Success')
