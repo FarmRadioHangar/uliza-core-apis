@@ -12,15 +12,35 @@ from telegram.ext import Updater, CommandHandler
 """
 #
 def start(bot, update):
+    countries = Country.objects.all()
+    country_buttons = []
+    for country in countries:
+        country_buttons.append({"text":country.name,'callback_data':'/country:'+str(country.country_code)})
+
+
     update.message.reply_text(
-        'Hello {}'.format(update.message.from_user.first_name)
+        'Welcome {}'.format(update.message.from_user.first_name),
+        reply_markup = {'inline_keyboard':[[{'text':'My subscriptions','callback_data':'/my_subscriptions'}],
+                                            country_buttons]}
+
     )
+
+def country_subscription(bot,update):
+    update.message.reply_text(update['callback_query']['data'])
+
 def main(request):
     updater = Updater(TELEGRAM_TOKEN)
-    updater.dispatcher.add_handler(CommandHandler('start',start))
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('start', start)],
+        states={
+            FIRST: [CallbackQueryHandler(country_subscription)],
+            # SECOND: [CallbackQueryHandler(country_subscription)]
+        },
+        fallbacks=[CommandHandler('start', start)]
+    )
 
-    updater.start_polling()
-    updater.idle()
+    updater.dispatcher.add_handler(conv_handler)
+
 
 
 
