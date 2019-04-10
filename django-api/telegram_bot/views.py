@@ -3,7 +3,9 @@ from django.http import HttpResponse,HttpResponseForbidden
 from api_core.settings import BASE_DIR,TELEGRAM_TOKEN
 import requests
 
-from telegram.ext import Updater, CommandHandler,CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler,CallbackQueryHandler,ConversationHandler
+
+FIRST, SECOND = range(2)
 
 """
 {u'message': {u'from': {u'username': u'jixat', u'first_name': u'Jigsa', u'last_name': u'Tesfaye', u'is_bot': False, u'language_code': u'en', u'id': 222282720}, u'text': u'/start', u'entities': [{u'length': 6, u'type': u'bot_command', u'offset': 0}], u'chat': {u'username': u'jixat', u'first_name': u'Jigsa', u'last_name': u'Tesfaye', u'type': u'private', u'id': 222282720}, u'date': 1554066646, u'message_id': 15}, u'update_id': 632340368}
@@ -25,24 +27,27 @@ def start(bot, update):
 
     )
 
+
 def country_subscription(bot,update):
+    update.message.reply_text(update['callback_query']['data'])
+
+def second(bot,update):
     update.message.reply_text(update['callback_query']['data'])
 
 def main(request):
     updater = Updater(TELEGRAM_TOKEN)
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[CallbackQueryHandler(start)],
         states={
             FIRST: [CallbackQueryHandler(country_subscription)],
-            # SECOND: [CallbackQueryHandler(country_subscription)]
+            SECOND: [CallbackQueryHandler(second)]
         },
-        fallbacks=[CommandHandler('start', start)]
+        fallbacks=[CallbackQueryHandler(start)],
+	per_message=True
     )
 
     updater.dispatcher.add_handler(conv_handler)
-
-
-
+    return HttpResponse('Success')
 
 def activate(request):
     url = "https://api.telegram.org/bot"+TELEGRAM_TOKEN+"/setWebhook"
