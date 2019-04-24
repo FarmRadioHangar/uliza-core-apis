@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'uliza',
     'log_app',
     'shell_plus',
+    'django_telegrambot',
     'telegram_bot'
 )
 MIDDLEWARE_CLASSES = (
@@ -184,3 +185,5 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
 
 TELEGRAM_TOKEN = env('TELEGRAM_TOKEN')
+
+from telegram_bot.bot_settings import *
