@@ -1,0 +1,15 @@
+<b>📄 Week {{log.week}} </b>
+{{program.name}} - {{program.public_name}}
+
+{% if log.topic %}<b>Topic:</b> {{log.topic}}
+{% endif %}{% if log.focus_statement %}<b>Focus statement:</b> {{log.focus_statement}}
+{% endif %}{% if formats %}<b>Formats:</b> {% for format in formats %}[{{format.name}}] {% endfor %}
+{% endif %}<b>Project:</b> {{program.project.name}} - {{program.project.focus}}
+<b>Radio type:</b> {{program.program_type}}
+<b>Airing time:</b> Every {{program.start_date|date:'D'}}. at {{program.start_date|date:'h:i a'}}
+{% if program.repeat_start_time %}<b>Repeat:</b> {{program.repeat_week_day}}, {{program.repeat_start_time|date:'h:i a'}}
+{% endif %}<b>Duration:</b> {{program.duration}} mins
+<b>Weeks:</b> {{aired_episodes}} episodes aired / {{program.weeks}}
+
+⬅️/go_back_to_country_profile{{program.project.country.id}}
+/home

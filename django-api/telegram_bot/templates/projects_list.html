@@ -1,0 +1,9 @@
+<b>{{title}} {{country_name|capfirst}}</b>
+{% for project in projects %}
+<b>💼 {{project.name}} - {{project.doner}}</b> {{project.focus}}
+{{project.start_date|date:'M d, Y'}} - {{project.end_date|date:'M d, Y'}}
+/see_project_details_PID{{project.id}}
+~
+{% endfor %}
+⬅️/go_back_to_country_profile{{country_id}}
+/home

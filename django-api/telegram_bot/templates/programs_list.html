@@ -1,0 +1,12 @@
+<b>{{title}} {{country_name|capfirst}}</b>
+{% for program in programs %}
+📻 <b>{{program.name}}</b>
+Status: {{program.status}}
+Project: {{program.project.name}} {{program.project.doner}}: {{program.project.focus}}
+Radio station: {{program.radio_station}}
+/see_program_details_PID{{program.id}}
+
+~
+{% endfor %}
+⬅️/go_back_to_country_profile{{country_id}}
+/home

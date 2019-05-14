@@ -1,42 +1,117 @@
 # -*- coding: utf-8 -*-
-# Example code for telegrambot.py module
-from telegram.ext import CommandHandler, MessageHandler, Filters
+from telegram.ext import CommandHandler,ConversationHandler, Filters, CallbackQueryHandler,RegexHandler ,MessageHandler, Filters
 from django_telegrambot.apps import DjangoTelegramBot
+from django.template.loader import render_to_string
+from log_app.models import *
+from telegram_bot.callbacks.programs import *
+from telegram_bot.callbacks.comments import *
+from telegram_bot.callbacks.radio_stations import *
+from telegram_bot.callbacks.projects import *
 
 import logging
-logger = logging.getLogger(__name__)
+logging.basicConfig()
+logger = logging.getLogger('django')
+exclude_country_id = [4]
+
+def flag(code):
+    OFFSET = 127397
+    points = [ord(x) + OFFSET for x in code.upper()]
+
+    return ("\\U%08x\\U%08x" % tuple(points)).decode("unicode-escape")
 
 
-# Define a few command handlers. These usually take the two arguments bot and
-# update. Error handlers also receive the raised TelegramError object in error.
 def start(bot, update):
-    print "reached here"
-    bot.sendMessage(update.message.chat_id, text='Hi!')
+    bot.sendMessage(update.message.chat_id, text='This bot will help you find data related to projects from Farm Radio International. farmradio.org',reply_markup=
+                    {'inline_keyboard':[[{'text':'Choose country','callback_data':'/country'}],
+                                        [{'text':'My subscriptions','callback_data':'/my_subscriptions'}]
+                                        ]})
+
+def country(bot, update):
+    countries = Country.objects.exclude(id__in=exclude_country_id)
+    reply_markup = []
+    row_content = []
+    column_count = 0
+    index = -1
+    init = True
+
+    for country in countries:
+        f = flag(country.country_code)
+        data = {"text":f+" "+country.name,'callback_data':'/country_chosen_'+str(country.id)}
+
+        if column_count == 3 or init:
+            init=False
+            row_content = []
+            row_content.append(data)
+            index = index+1
+            reply_markup.append(row_content)
+            column_count=0
+        else:
+            row_content.append(data)
+            reply_markup[index] = row_content
+
+        column_count=column_count+1
+
+    bot.editMessageText("Choose country",chat_id=update.callback_query.message.chat.id,message_id=update.callback_query.message.message_id,reply_markup={'inline_keyboard':reply_markup})
+
+def country_chosen(bot, update):
+    print update
+    if update.message:
+        id = update.message.text.split("/go_back_to_country_profile")[1]
+    else:
+        id = update.callback_query.data.split('_')[2]
+
+    import datetime
+    today = datetime.date.today()
+
+    country = Country.objects.get(id=id)
+    programs = Program.objects.filter(radio_station__country=country)
+    projects = Project.objects.filter(country=country)
+    active_projects = projects.filter(end_date__gte=today,start_date__lt=today)
+    stations = []
+    active_stations = []
+    active_programs = []
+
+    for program in programs:
+        if program.end_date >= today:
+            active_programs.append(program.id)
+
+        if not program.radio_station.id in stations:
+            stations.append(program.radio_station.id)
+
+        if program.id in active_programs and not program.radio_station.id in active_stations:
+            active_stations.append(program.radio_station.id)
 
 
-def startgroup(bot, update):
-    bot.sendMessage(update.message.chat_id, text='Hi!')
+    active_stations= len(active_stations)
+    active_projects = len(active_projects)
+    active_programs = len(active_programs)
+    stations= len(stations)
+    projects = len(projects)
+    programs = len(programs)
+    country_command_name = country.name.replace(' ','_')
 
+    output = render_to_string('country_profile.html',
+                              context={'country_flag':flag(country.country_code),
+                                       'stations':stations,
+                                       'programs':programs,
+                                       'projects':projects,
+                                       'active_stations':active_stations,
+                                       'active_programs':active_programs,
+                                       'active_projects':active_projects,
+                                       'country_command_name':country_command_name,
+                                       'country_name':country.name})
 
-def me(bot, update):
-    bot.sendMessage(update.message.chat_id, text='Your information:\n{}'.format(update.effective_user))
+    if update.message:
+        bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML')
+    else:
+        bot.sendMessage(update.callback_query.message.chat_id,
+                    text=output,
+                    parse_mode='HTML')
 
+def my_subscriptions(bot, update):
+    bot.answer_callback_query(update.callback_query.id, text='SUBSCRIPTIONS')
 
-def chat(bot, update):
-    bot.sendMessage(update.message.chat_id, text='This chat information:\n {}'.format(update.effective_chat))
-
-
-def forwarded(bot, update):
-    bot.sendMessage(update.message.chat_id, text='This msg forwaded information:\n {}'.format(update.effective_message))
-
-
-def help(bot, update):
-    bot.sendMessage(update.message.chat_id, text='Help!')
-
-
-def echo(bot, update):
-    update.message.reply_text(update.message.text)
-
+# sendAudio(chat_id, audio, duration=None, performer=None, title=None, caption=None, disable_notification=False, reply_to_message_id=None, reply_markup=None, timeout=20, parse_mode=None, thumb=None, **kwargs)
 
 def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
@@ -45,23 +120,45 @@ def error(bot, update, error):
 def main():
     logger.info("Loading handlers for telegram bot")
 
-    # Default dispatcher (this is related to the first bot in settings.TELEGRAM_BOT_TOKENS)
     dp = DjangoTelegramBot.dispatcher
-    # To get Dispatcher related to a specific bot
-    # dp = DjangoTelegramBot.getDispatcher('BOT_n_token')     #get by bot token
-    # dp = DjangoTelegramBot.getDispatcher('BOT_n_username')  #get by bot username
 
-    # on different commands - answer in Telegram
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler(["start","home"], start))
 
-    dp.add_handler(CommandHandler("startgroup", startgroup))
-    dp.add_handler(CommandHandler("me", me))
-    dp.add_handler(CommandHandler("chat", chat))
-    dp.add_handler(MessageHandler(Filters.forwarded , forwarded))
+    # programs
+    dp.add_handler(RegexHandler("/list_all_programs_in*", list_all_programs_in_country))
+    dp.add_handler(CallbackQueryHandler(list_all_programs_in_country,pattern="/list_all_programs_in*"))
+    dp.add_handler(RegexHandler("/list_active_programs_in*", list_active_programs_in_country))
+    dp.add_handler(CallbackQueryHandler(list_active_programs_in_country,pattern="/list_active_programs_in*"))
+    dp.add_handler(RegexHandler("/see_program_details_PID*", program_details))
+    dp.add_handler(RegexHandler("/play_episode__*", program_episode))
 
-    # on noncommand i.e message - echo the message on Telegram
-    dp.add_handler(MessageHandler(Filters.text, echo))
+    #comments
+    comment_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
+        states = {0: [MessageHandler(Filters.text,add_comment)]},
+        fallbacks = [CommandHandler('cancel', start)]
+    )
+    dp.add_handler(comment_handler)
 
-    # log all errors
+    #radio_stations
+    dp.add_handler(RegexHandler("/list_all_stations_in*", list_all_stations_in_country))
+    dp.add_handler(CallbackQueryHandler(list_all_stations_in_country,pattern="/list_all_stations_in*"))
+    dp.add_handler(RegexHandler("/list_active_stations_in*", list_active_stations_in_country))
+    dp.add_handler(CallbackQueryHandler(list_active_stations_in_country,pattern="/list_active_stations_in*"))
+    dp.add_handler(RegexHandler("/see_station_details_RSID*", station_details))
+
+
+    #projects
+    dp.add_handler(RegexHandler("/list_all_projects_in*", list_all_projects_in_country))
+    dp.add_handler(CallbackQueryHandler(list_all_projects_in_country,pattern="/list_all_projects_in*"))
+    dp.add_handler(RegexHandler("/list_active_projects_in*", list_active_projects_in_country))
+    dp.add_handler(CallbackQueryHandler(list_active_projects_in_country,pattern="/list_active_projects_in*"))
+    dp.add_handler(RegexHandler("/see_project_details_PID*", project_details))
+
+    dp.add_handler(CommandHandler("home", start))
+    dp.add_handler(CallbackQueryHandler(country_chosen,pattern="/country_chosen*"))
+    dp.add_handler(RegexHandler("/go_back_to_country_profile*", country_chosen))
+    dp.add_handler(CallbackQueryHandler(my_subscriptions,pattern="/my_subscriptions"))
+    dp.add_handler(CallbackQueryHandler(country,pattern="/country"))
+
     dp.add_error_handler(error)

@@ -1,0 +1,17 @@
+<b>💼 {{program.name}} </b>
+{{program.project.name}} - {{program.project.focus}}
+{{program.start_date|date:'M d, Y'}} - {{program.end_date|date:'M d, Y'}}
+
+Radio type: {{program.program_type}}
+Airing time: Every {{program.start_date|date:'D'}}. at {{program.start_date|date:'h:i a'}}
+Repeat: {{program.repeat_week_day}}, {{program.repeat_start_time|date:'h:i a'}}
+Duration: {{program.duration}} mins
+Weeks: {{aired_episodes}} episodes aired / {{program.weeks}}
+
+
+<b>🎙 Episodes</b> ({{logs|length}})
+{%for log in logs %}
+ * Week {{log.week}} {{log.topic}} [▶️ /play_episode__{{log.id}} ]
+{% endfor %}
+⬅️/go_back_to_country_profile{{program.project.country.id}}
+/home

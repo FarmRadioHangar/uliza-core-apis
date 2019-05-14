@@ -1,0 +1,9 @@
+<b>🏢 {{station.name}} </b>
+{{station.website}} 📍 {{station.city}}, {{station.country.name}}
+
+<b>📻 Radio programs from {{station.name}}</b> ({{programs|length}})
+{%for program in programs %}
+ {{program.name}} [{{program.status}}] /see_program_details_PID{{program.id}}
+{% endfor %}
+⬅️/go_back_to_country_profile{{station.country.id}}
+ /home

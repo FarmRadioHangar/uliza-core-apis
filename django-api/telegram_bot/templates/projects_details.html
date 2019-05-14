@@ -1,0 +1,11 @@
+<b>💼 {{project.name}} - {{project.doner}}</b>
+{{project.start_date|date:'M d, Y'}} - {{project.end_date|date:'M d, Y'}}
+{{project.focus}} 📍 {{project.country.name}}
+
+<b>📻 Radio programs</b> ({{programs|length}})
+{%for program in programs %}
+ * {{program.name}} [{{program.status}}] /see_program_details_PID{{program.id}}
+{% endfor %}
+
+⬅️/go_back_to_country_profile{{project.country.id}}
+/home

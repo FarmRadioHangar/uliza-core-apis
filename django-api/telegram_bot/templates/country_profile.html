@@ -1,0 +1,21 @@
+<b>{{country_flag}} {{country_name}}</b>
+{% if active_programs == 0 %}
+ No radio program currently airing
+{% else %}
+<b> {{active_programs}} active programs</b>  /list_active_programs_in_{{country_command_name|lower}}
+
+<b> {{active_stations}} active stations</b>  /list_active_stations_in_{{country_command_name|lower}}
+
+<b> {{active_projects}} active projects</b>  /list_active_projects_in_{{country_command_name|lower}}
+
+{% endif %}
+~
+
+<b> {{programs}} total programs</b>  /list_all_programs_in_{{country_command_name|lower}}
+
+<b> {{stations}} total station partners</b>  /list_all_stations_in_{{country_command_name|lower}}
+
+<b> {{projects}} total projects</b>  /list_all_projects_in_{{country_command_name|lower}}
+
+/home
+--
