@@ -1,4 +1,13 @@
-<b>📄 Week {{log.week}} </b>
+{% if link %}<a href="{{link}}">▶️ Link to the audio</a>
+<i>Sorry can only send you the link.
+Audio exceeds telegram filesize limit.</i>
+
+{% elif glink %}<a href="{{glink}}">▶️ Gdrive link to audio</a>
+<i>Link to the google drive archive.</i>
+{% else %}
+<i>No audio uploaded yet.</i>
+
+{% endif %}<b>📄 Week {{log.week}} </b>
 {{program.name}} - {{program.public_name}}
 
 {% if log.topic %}<b>Topic:</b> {{log.topic}}

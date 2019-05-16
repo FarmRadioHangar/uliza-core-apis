@@ -19,16 +19,32 @@ def episodes_aired(program):
 
 def program_episode(bot, update):
     # from telegram import InputMediaAudio
-    link =  "https://log.uliza.fm/media/Uliza-log-PRTV-REGI-GiZ-1.mp3"
 
     id = update.message.text.split("/play_episode__")[1]
     log = Log.objects.get(pk=id)
     formats = Format.objects.filter(id__in=log.formats.values_list('id',flat=True))
     aired_episodes = episodes_aired(log.program)
-    caption = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes})
-    reply_markup=[[{'text':'Comment','callback_data':'/add_comment__'+str(log.id)},{'text':'See comments','callback_data':'/see_comments__'+str(log.id)}]]
+    reply_markup=[[{'text':'Comment','callback_data':'/add_comment__'+str(log.id)},{'text':'Show my comments','callback_data':'/show_comments__'+str(log.id)}]]
 
-    bot.sendAudio(update.message.chat_id,link,caption=caption,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+    if log.recording_backup:
+        link = 'https://log.uliza.fm'+log.recording_backup.url
+        # link = 'https://log.uliza.fm/media/Uliza-log-Wolayta%20CA%202018%202nd%20Phase-18.mp3'
+        if log.offset < 200001:
+            output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':None})
+            bot.sendAudio(update.message.chat_id,link,caption=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+        else:
+            output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':link})
+            bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+    elif log.gdrive_available:
+        glink = 'https://log.uliza.fm/logs/recording/gdrive'+str(log.id)
+        output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink})
+        bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML')
+    else:
+        glink = None
+        output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink})
+        bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML')
+
+
 
 def program_details(bot,update):
     program_id = update.message.text.split("/see_program_details_PID")[1]
