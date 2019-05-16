@@ -307,18 +307,18 @@ class Log(models.Model):
     	self.close_file()  # Flush
 
     def rename(self):
-    	import os
-    	if (self.recording_backup):
-    		old_path = self.recording_backup.path
-    		self.recording_backup.name = 'Uliza-log-'+self.program.name.encode('utf-8')+'-'+str(self.week)+'.mp3'
+        import os
+        if (self.recording_backup):
+            old_path = self.recording_backup.path
+            self.recording_backup.name = 'Uliza-log-'+self.program.name.encode('utf-8')+'-'+str(self.week)+'.mp3'
 
-    		try:
-			self.recording_backup.name.encode('ascii')
-		except:
-			self.recording_backup.name='Uliza-log-ID'+str(self.id)+'-W'+str(self.week)+'.mp3' 
-			
-    		os.rename(old_path, self.recording_backup.path)
-    		self.save()
+            try:
+                self.recording_backup.name.encode('ascii')
+            except:
+                self.recording_backup.name='Uliza-log-ID'+str(self.id)+'-W'+str(self.week)+'.mp3'
+
+            os.rename(old_path, self.recording_backup.path)
+            self.save()
 
 class Comment(models.Model):
     content = models.TextField()
@@ -326,6 +326,7 @@ class Comment(models.Model):
 
     # If null the comment is from the radio station broadcasting group
     contact = models.ForeignKey('Contact',null=True)
+    telegram_username = models.CharField(max_length=80, null=True)
 
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

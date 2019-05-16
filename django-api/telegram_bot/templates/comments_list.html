@@ -1,0 +1,7 @@
+{% if comments %}💬 Comments{% else %}No comments{% endif %}
+{% for comment in comments %}
+{{comment.telegram_username}}
+{{comment.content}}
+/delete_comment__{{comment.id}}
+~
+{% endfor %}

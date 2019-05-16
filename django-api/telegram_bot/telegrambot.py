@@ -135,10 +135,13 @@ def main():
     #comments
     comment_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
-        states = {0: [MessageHandler(Filters.text,add_comment)]},
+        states = {0: [CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
+                  1: [MessageHandler(Filters.text,add_comment)]},
         fallbacks = [CommandHandler('cancel', start)]
     )
     dp.add_handler(comment_handler)
+    dp.add_handler(CallbackQueryHandler(show_comments,pattern='/show_comments*'))
+    dp.add_handler(RegexHandler("/delete_comment__*", delete_comment))
 
     #radio_stations
     dp.add_handler(RegexHandler("/list_all_stations_in*", list_all_stations_in_country))
