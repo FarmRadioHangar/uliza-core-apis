@@ -1,6 +1,7 @@
 <b>{{title}} {{country_name|capfirst}}</b>
 {% for project in projects %}
 <b>💼 {{project.name}} - {{project.doner}}</b> {{project.focus}}
+{% if country_name == 'Uniterra'%}{{project.country.name}}{%endif%}
 {{project.start_date|date:'M d, Y'}} - {{project.end_date|date:'M d, Y'}}
 /see_project_details_PID{{project.id}}
 ~

@@ -91,3 +91,31 @@ def list_active_projects_in_country(bot,update):
         bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={"inline_keyboard":reply_markup})
     else:
         bot.editMessageText(output,parse_mode='HTML',chat_id=update.callback_query.message.chat.id,message_id=update.callback_query.message.message_id,reply_markup={'inline_keyboard':reply_markup})
+
+
+def list_all_uniterra_projects(bot,update):
+    from django.db.models import Q
+    projects = Project.objects.filter(Q(name__icontains='uniterra') | Q(doner__icontains="uniterra"))
+    page = 1
+
+    from django.core.paginator import Paginator
+    projects = Paginator(projects,10)
+
+    callback_data = '/uniterra'
+    reply_markup=[[]]
+    projects = projects.page(page)
+
+    if projects.has_previous():
+        reply_markup[0].append({'text':'Previous page','callback_data':callback_data+'_'+str(projects.previous_page_number())})
+
+    if projects.has_next():
+        reply_markup[0].append({'text':'Next page','callback_data':callback_data+'_'+str(projects.next_page_number())})
+
+    projects = projects.object_list
+
+    output = render_to_string('projects_list.html',context={'projects':projects,'title':'Projects from','country_name':"Uniterra",'country_id':1})
+
+    if update.message:
+        bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={"inline_keyboard":reply_markup})
+    else:
+        bot.editMessageText(output,parse_mode='HTML',chat_id=update.callback_query.message.chat.id,message_id=update.callback_query.message.message_id,reply_markup={'inline_keyboard':reply_markup})

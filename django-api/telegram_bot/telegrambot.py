@@ -21,8 +21,9 @@ def flag(code):
 
 
 def start(bot, update):
-    bot.sendMessage(update.message.chat_id, text='This bot will help you find data related to projects from Farm Radio International. farmradio.org',reply_markup=
+    bot.sendMessage(update.message.chat_id, text='This bot will help you find information related to projects from Farm Radio International. farmradio.org',reply_markup=
                     {'inline_keyboard':[[{'text':'Choose country','callback_data':'/country'}],
+                                        [{'text':'Uniterra programs','callback_data':'/uniterra'}],
                                         [{'text':'My subscriptions','callback_data':'/my_subscriptions'}]
                                         ]})
 
@@ -157,6 +158,8 @@ def main():
     dp.add_handler(RegexHandler("/list_active_projects_in*", list_active_projects_in_country))
     dp.add_handler(CallbackQueryHandler(list_active_projects_in_country,pattern="/list_active_projects_in*"))
     dp.add_handler(RegexHandler("/see_project_details_PID*", project_details))
+    #uniterra
+    dp.add_handler(CallbackQueryHandler(list_all_uniterra_projects,pattern="/uniterra"))
 
     dp.add_handler(CommandHandler("home", start))
     dp.add_handler(CallbackQueryHandler(country_chosen,pattern="/country_chosen*"))
