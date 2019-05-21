@@ -1,15 +1,18 @@
-
 from log_app.models import *
+from telegram_bot.models import ProgramSubscription
 from django.template.loader import render_to_string
 
 def project_details(bot,update):
     project_id = update.message.text.split("/see_project_details_PID")[1]
     project = Project.objects.get(id = project_id)
     programs = Program.objects.filter(project=project)
+    reply_markup = [[]]
+    if programs:
+        reply_markup[0].append({'text':'Subscribe to all programs in this project','callback_data':'/subscribe_project_'+str(project_id)})
 
     output = render_to_string('projects_details.html',context={'project':project,'programs':programs})
 
-    bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML')
+    bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={"inline_keyboard":reply_markup})
 
 
 def list_all_projects_in_country(bot,update):
@@ -119,3 +122,27 @@ def list_all_uniterra_projects(bot,update):
         bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={"inline_keyboard":reply_markup})
     else:
         bot.editMessageText(output,parse_mode='HTML',chat_id=update.callback_query.message.chat.id,message_id=update.callback_query.message.message_id,reply_markup={'inline_keyboard':reply_markup})
+
+def subscribe_to_project(bot, update):
+    project_id = update.callback_query.data.split('/subscribe_project_')[1]
+    username = update.callback_query.from_user.username
+    chat_id = update.callback_query.message.chat.id
+    programs = Program.objects.filter(project__id=project_id)
+    subscription = ProgramSubscription.objects.filter(chat_id=chat_id)
+    if subscription:
+        subscription = subscription[0]
+        subscribed_programs = subscription.programs.values_list('id',flat=True)
+        for p in programs:
+            if not p.pk in subscribed_programs:
+                subscription.programs.add(str(p.pk))
+
+        subscription.username = username
+    else:
+        programs = [str(p.pk) for p in programs]
+        subscription = ProgramSubscription(username=username,chat_id=chat_id)
+        subscription.save()
+        subscription.programs.add(*programs)
+
+    subscription.save()
+
+    bot.answer_callback_query(update.callback_query.id, text='Subscribed! you will recieve notifications.')

@@ -1,5 +1,6 @@
 from log_app.models import *
 from django.template.loader import render_to_string
+from telegram_bot.models import ProgramSubscription
 
 
 def episodes_aired(program):
@@ -36,7 +37,7 @@ def program_episode(bot, update):
             output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':link})
             bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
     elif log.gdrive_available:
-        glink = 'https://log.uliza.fm/logs/recording/gdrive'+str(log.id)
+        glink = 'https://log.uliza.fm/api/v1/logs/recording/gdrive/'+str(log.id)
         output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink})
         bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML')
     else:
@@ -49,13 +50,14 @@ def program_episode(bot, update):
 def program_details(bot,update):
     program_id = update.message.text.split("/see_program_details_PID")[1]
     program = Program.objects.get(id = program_id)
-    logs = Log.objects.filter(program=program)
+    logs = Log.objects.filter(program=program,postpone=False)
     aired_episodes = episodes_aired(program)
+    reply_markup = [[]]
+    reply_markup[0].append({'text':'Subscribe to this program ','callback_data':'/subscribe_program_'+str(program_id)})
 
     output = render_to_string('programs_details.html',context={'program':program,'logs':logs,'aired_episodes':aired_episodes})
 
-    bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML')
-
+    bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={"inline_keyboard":reply_markup})
 
 def list_all_programs_in_country(bot,update):
     if update.message:
@@ -135,3 +137,27 @@ def list_active_programs_in_country(bot,update):
         bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={"inline_keyboard":reply_markup})
     else:
         bot.editMessageText(output,parse_mode='HTML',chat_id=update.callback_query.message.chat.id,message_id=update.callback_query.message.message_id,reply_markup={'inline_keyboard':reply_markup})
+
+
+def subscribe_to_program(bot, update):
+    program_id = update.callback_query.data.split('/subscribe_program_')[1]
+    username = update.callback_query.from_user.username
+    chat_id = update.callback_query.message.chat.id
+    program = Program.objects.get(pk=program_id)
+    subscription = ProgramSubscription.objects.filter(chat_id=chat_id)
+    if subscription:
+        subscription = subscription[0]
+        subscribed_programs = subscription.programs.values_list('id',flat=True)
+
+        if not program.pk in subscribed_programs:
+            subscription.programs.add(str(program.pk))
+
+        subscription.username = username
+    else:
+        subscription = ProgramSubscription(username=username,chat_id=chat_id)
+        subscription.save()
+        subscription.programs.add(str(program.pk))
+
+    subscription.save()
+
+    bot.answer_callback_query(update.callback_query.id, text='Subscribed! you will recieve notifications.')

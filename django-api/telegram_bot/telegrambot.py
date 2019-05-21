@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from log_app.models import *
 from telegram_bot.callbacks.programs import *
 from telegram_bot.callbacks.comments import *
+from telegram_bot.models import ProgramSubscription
 from telegram_bot.callbacks.radio_stations import *
 from telegram_bot.callbacks.projects import *
 
@@ -110,7 +111,18 @@ def country_chosen(bot, update):
                     parse_mode='HTML')
 
 def my_subscriptions(bot, update):
-    bot.answer_callback_query(update.callback_query.id, text='SUBSCRIPTIONS')
+    chat_id = update.callback_query.message.chat.id
+    subscriptions = ProgramSubscription.objects.filter(chat_id=chat_id)
+    output = '\n~\n'
+    if subscriptions:
+        for p in subscriptions[0].programs.all():
+            output = output + '- {}  [/delete_subscription_{}]\n\n'.format(p.name,p.pk)
+        output= output+'/home'
+
+    else:
+        output = 'No subscriptions'
+
+    bot.sendMessage(update.callback_query.message.chat_id, text=output)
 
 # sendAudio(chat_id, audio, duration=None, performer=None, title=None, caption=None, disable_notification=False, reply_to_message_id=None, reply_markup=None, timeout=20, parse_mode=None, thumb=None, **kwargs)
 
@@ -132,6 +144,7 @@ def main():
     dp.add_handler(CallbackQueryHandler(list_active_programs_in_country,pattern="/list_active_programs_in*"))
     dp.add_handler(RegexHandler("/see_program_details_PID*", program_details))
     dp.add_handler(RegexHandler("/play_episode__*", program_episode))
+    dp.add_handler(CallbackQueryHandler(subscribe_to_program,pattern="/subscribe_program*"))
 
     #comments
     comment_handler = ConversationHandler(
@@ -158,6 +171,7 @@ def main():
     dp.add_handler(RegexHandler("/list_active_projects_in*", list_active_projects_in_country))
     dp.add_handler(CallbackQueryHandler(list_active_projects_in_country,pattern="/list_active_projects_in*"))
     dp.add_handler(RegexHandler("/see_project_details_PID*", project_details))
+    dp.add_handler(CallbackQueryHandler(subscribe_to_project,pattern="/subscribe_project*"))
     #uniterra
     dp.add_handler(CallbackQueryHandler(list_all_uniterra_projects,pattern="/uniterra"))
 
