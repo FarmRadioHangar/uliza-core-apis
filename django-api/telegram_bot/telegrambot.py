@@ -115,14 +115,27 @@ def my_subscriptions(bot, update):
     subscriptions = ProgramSubscription.objects.filter(chat_id=chat_id)
     output = '\n~\n'
     if subscriptions:
-        for p in subscriptions[0].programs.all():
-            output = output + '- {}  [/delete_subscription_{}]\n\n'.format(p.name,p.pk)
-        output= output+'/home'
-
+        if not subscriptions[0].programs.all():
+            output = 'No subscriptions'
+        else:
+            for p in subscriptions[0].programs.all():
+                output = output + '- {}  [/remove_subscription_{}]\n\n'.format(p.name,p.pk)
+            output= output+'/home'
     else:
         output = 'No subscriptions'
 
     bot.sendMessage(update.callback_query.message.chat_id, text=output)
+
+
+def delete_subscription(bot, update):
+    program_id = update.message.text.split("/remove_subscription_")[1]
+    program = Program.objects.get(pk=program_id)
+    chat_id = update.message.chat_id
+    subscriptions = ProgramSubscription.objects.filter(chat_id=chat_id)
+    if subscriptions:
+        subscriptions[0].programs.remove(str(program_id))
+
+    bot.sendMessage(update.message.chat_id, text="Removed subscription! > "+str(program.name))
 
 # sendAudio(chat_id, audio, duration=None, performer=None, title=None, caption=None, disable_notification=False, reply_to_message_id=None, reply_markup=None, timeout=20, parse_mode=None, thumb=None, **kwargs)
 
@@ -145,6 +158,7 @@ def main():
     dp.add_handler(RegexHandler("/see_program_details_PID*", program_details))
     dp.add_handler(RegexHandler("/play_episode__*", program_episode))
     dp.add_handler(CallbackQueryHandler(subscribe_to_program,pattern="/subscribe_program*"))
+    dp.add_handler(RegexHandler("/remove_subscription_*", delete_subscription))
 
     #comments
     comment_handler = ConversationHandler(
