@@ -7,7 +7,7 @@ def comment_instruction(bot,update):
     comment_states[update.callback_query.from_user.id]=update.callback_query.data
     bot.sendMessage(update.callback_query.message.chat.id,text="Send your comment via the chat input field.")
 
-    return 1
+    return 0
 
 
 def add_comment(bot,update):
@@ -19,8 +19,6 @@ def add_comment(bot,update):
         Comment.objects.create(log=log,content=update.message.text,telegram_username=telegram_username)
 
     bot.sendMessage(update.message.chat.id, text='Your comment is noted. Thank You!')
-
-    return 0
 
 def show_comments(bot,update):
     if update.message:
