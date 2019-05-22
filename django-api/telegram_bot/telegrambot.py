@@ -165,12 +165,8 @@ def main():
         entry_points=[CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
         states = {0: [CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
                   1: [MessageHandler(Filters.text,add_comment)]},
-<<<<<<< HEAD
         fallbacks = [CommandHandler('cancel', start)],
         allow_reentry= True
-=======
-        fallbacks = [CommandHandler('cancel', start)]
->>>>>>> 36e6810a9d72e81b6291443abd15c69fb281ba38
     )
     dp.add_handler(comment_handler)
     dp.add_handler(CallbackQueryHandler(show_comments,pattern='/show_comments*'))
