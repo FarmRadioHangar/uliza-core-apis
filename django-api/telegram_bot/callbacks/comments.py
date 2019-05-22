@@ -20,7 +20,7 @@ def add_comment(bot,update):
 
     bot.sendMessage(update.message.chat.id, text='Your comment is noted. Thank You!')
 
-    return -1
+    return 1
 
 def show_comments(bot,update):
     if update.message:
