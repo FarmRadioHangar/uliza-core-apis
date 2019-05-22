@@ -164,8 +164,8 @@ def main():
     comment_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
         states = {
-                  1: [MessageHandler(Filters.text,add_comment)]},
-        fallbacks = [0],
+                  0: [MessageHandler(Filters.text,add_comment)]},
+        fallbacks = [-1],
         allow_reentry= True
     )
     dp.add_handler(comment_handler)
