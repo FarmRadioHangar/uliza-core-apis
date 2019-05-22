@@ -166,6 +166,7 @@ def main():
         states = {0: [CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
                   1: [MessageHandler(Filters.text,add_comment)]},
         fallbacks = [MessageHandler(Filters.text,add_comment)],
+        
         allow_reentry= True
     )
     dp.add_handler(comment_handler)
