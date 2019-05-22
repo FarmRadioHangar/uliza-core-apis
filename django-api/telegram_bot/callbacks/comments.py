@@ -7,7 +7,7 @@ def comment_instruction(bot,update):
     comment_states[update.callback_query.from_user.id]=update.callback_query.data
     bot.sendMessage(update.callback_query.message.chat.id,text="Send your comment via the chat input field.")
 
-    return 0
+    return 1
 
 
 def add_comment(bot,update):
