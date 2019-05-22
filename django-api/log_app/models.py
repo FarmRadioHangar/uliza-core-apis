@@ -282,7 +282,7 @@ class Log(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-    	return self.topic
+    	return self.topic or u'None'
 
     def close_file(self):
     	file_ = self.recording_backup
