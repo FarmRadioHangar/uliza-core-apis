@@ -20,6 +20,8 @@ def add_comment(bot,update):
 
     bot.sendMessage(update.message.chat.id, text='Your comment is noted. Thank You!')
 
+    return 0
+
 def show_comments(bot,update):
     if update.message:
         id = update.message.text.split("/show_comments__")[1]
