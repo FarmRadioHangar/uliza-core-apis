@@ -54,6 +54,7 @@ def program_details(bot,update):
     aired_episodes = episodes_aired(program)
     reply_markup = [[]]
     reply_markup[0].append({'text':'Subscribe to this program ','callback_data':'/subscribe_program_'+str(program_id)})
+    reply_markup[0].append({'text':'Podcast feed','callback_data':'/podcast_'+str(program_id)})
 
     output = render_to_string('programs_details.html',context={'program':program,'logs':logs,'aired_episodes':aired_episodes})
 
@@ -161,3 +162,13 @@ def subscribe_to_program(bot, update):
     subscription.save()
 
     bot.answer_callback_query(update.callback_query.id, text='Subscribed! you will recieve notifications.')
+
+def podcast(bot, update):
+    program_id = update.callback_query.data.split('/podcast_')[1]
+    output = 'Podcast Feed URL > https://log.uliza.fm/api/v1/logs/feed/'+str(program_id)
+    output = output+' \n\n'
+    output = output+ 'Subscribe via URL using the link above. For more details on how to manually add podcasts > /podcast_details'
+    bot.sendMessage(update.callback_query.message.chat_id, text=output)
+
+def podcast_details(bot, update):
+    bot.sendMessage(update.message.chat_id, text="https://transistor.fm/add-podcast/")

@@ -158,7 +158,9 @@ def main():
     dp.add_handler(RegexHandler("/see_program_details_PID*", program_details))
     dp.add_handler(RegexHandler("/play_episode__*", program_episode))
     dp.add_handler(CallbackQueryHandler(subscribe_to_program,pattern="/subscribe_program*"))
+    dp.add_handler(CallbackQueryHandler(podcast,pattern="/podcast_*"))
     dp.add_handler(RegexHandler("/remove_subscription_*", delete_subscription))
+    dp.add_handler(CommandHandler("podcast_details", podcast_details))
 
     #comments
     comment_handler = ConversationHandler(
