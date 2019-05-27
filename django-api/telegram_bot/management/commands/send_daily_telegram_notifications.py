@@ -57,16 +57,16 @@ class Command(BaseCommand):
                         link = 'https://log.uliza.fm'+log.recording_backup.url
                         # link = 'https://log.uliza.fm/media/Uliza-log-Wolayta%20CA%202018%202nd%20Phase-18.mp3'
                         if log.offset < 200001:
-                            output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':None})
+                            output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':None,'notification':True})
                             bot.sendAudio(subscriber.chat_id,link,caption=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
                         else:
-                            output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':link})
+                            output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':link,'notification':True})
                             bot.sendMessage(subscriber.chat_id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
                     elif log.gdrive_available:
                         glink = 'https://log.uliza.fm/api/v1/logs/recording/gdrive/'+str(log.id)
-                        output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink})
+                        output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink,'notification':True})
                         bot.sendMessage(subscriber.chat_id,text=output,parse_mode='HTML')
                     else:
                         glink = None
-                        output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink})
+                        output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink,'notification':True})
                         bot.sendMessage(subscriber.chat_id,text=output,parse_mode='HTML')
