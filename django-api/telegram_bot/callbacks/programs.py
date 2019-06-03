@@ -142,7 +142,11 @@ def list_active_programs_in_country(bot,update):
 
 def subscribe_to_program(bot, update):
     program_id = update.callback_query.data.split('/subscribe_program_')[1]
-    username = update.callback_query.from_user.username
+
+    if update.callback_query.from_user.username:
+        username = update.callback_query.from_user.username
+    else:
+        username = update.callback_query.from_user.first_name+' '+update.callback_query.from_user.last_name
     chat_id = update.callback_query.message.chat.id
     program = Program.objects.get(pk=program_id)
     subscription = ProgramSubscription.objects.filter(chat_id=chat_id)
