@@ -125,7 +125,14 @@ def list_all_uniterra_projects(bot,update):
 
 def subscribe_to_project(bot, update):
     project_id = update.callback_query.data.split('/subscribe_project_')[1]
-    username = update.callback_query.from_user.username
+
+    if update.callback_query.from_user.username:
+        username = update.callback_query.from_user.username
+    elif update.callback_query.from_user.last_name:
+        username = update.callback_query.from_user.first_name+' '+update.callback_query.from_user.last_name
+    else:
+        username = update.callback_query.from_user.first_name
+        
     chat_id = update.callback_query.message.chat.id
     programs = Program.objects.filter(project__id=project_id)
     subscription = ProgramSubscription.objects.filter(chat_id=chat_id)
