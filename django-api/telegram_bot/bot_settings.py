@@ -7,8 +7,8 @@ DJANGO_TELEGRAMBOT = {
                         # NB: if use polling mode you must provide to run
                         # a management command that starts a worker
 
-    'WEBHOOK_SITE' : 'https://7f6acb35.ngrok.io',
-	'WEBHOOK_PREFIX' : '/api/v1/telegram/', # (Optional[str]) # If this value is specified,
+    'WEBHOOK_SITE' : TELEGRAM_WEBHOOK_SITE,
+	'WEBHOOK_PREFIX' : TELEGRAM_WEBHOOK_PREFIX, # (Optional[str]) # If this value is specified,
                                   # a prefix is added to webhook url
 
 	#'WEBHOOK_CERTIFICATE' : 'cert.pem', # If your site use self-signed
