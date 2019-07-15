@@ -1,4 +1,4 @@
-from api_core.settings import TELEGRAM_TOKEN
+from api_core.settings import TELEGRAM_TOKEN,TELEGRAM_WEBHOOK_SITE,TELEGRAM_WEBHOOK_PREFIX
 #settings.py
 DJANGO_TELEGRAMBOT = {
 
