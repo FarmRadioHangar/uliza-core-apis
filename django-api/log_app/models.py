@@ -346,7 +346,7 @@ class Format(models.Model):
 checklist_level = (
     ('best', 'Best'),
     ('good', 'Good'),
-    ('better', 'Best')
+    ('better', 'Better')
 )
 
 class Checklist(models.Model):
@@ -356,6 +356,7 @@ class Checklist(models.Model):
     description_fr = models.TextField(null=True,blank=True)
     description_pt = models.TextField(null=True,blank=True)
     description_am = models.TextField(null=True,blank=True)
+    gender_responsive = models.BooleanField(default=False)
 
     def __unicode__(self):
     	return self.description
