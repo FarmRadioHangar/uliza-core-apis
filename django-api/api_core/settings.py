@@ -141,8 +141,7 @@ USE_TZ = True
 
 SITE_ID = 1
 
-from log_app.storage.gd_storage import GoogleDriveStorage
-GDRIVE_STORAGE = GoogleDriveStorage()
+
 DEFAULT_PODCAST_IMAGE=env('DEFAULT_PODCAST_IMAGE')
 
 REST_FRAMEWORK = {
@@ -183,6 +182,11 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+    from log_app.storage.gd_storage import GoogleDriveStorage
+    GDRIVE_STORAGE = GoogleDriveStorage()
+else:
+    GDRIVE_STORAGE = False
 
 TELEGRAM_TOKEN = env('TELEGRAM_TOKEN')
 TELEGRAM_WEBHOOK_SITE = env('TELEGRAM_WEBHOOK_SITE')
