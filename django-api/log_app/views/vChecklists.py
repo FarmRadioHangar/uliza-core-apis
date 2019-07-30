@@ -13,7 +13,7 @@ class ChecklistGet(generics.ListCreateAPIView):
     model = Checklist
     serializer_class = ChecklistSerializer
     ordering_fields = 'radio_format'
-    filter_fields = ['id', 'level', 'radio_format']
+    filter_fields = ['id', 'level', 'radio_format','gender_responsive' ]
 
     def get_queryset(self):
         """
