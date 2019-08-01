@@ -72,8 +72,16 @@ class ProgramGet(generics.ListCreateAPIView):
 		serializer.save(end_date=end_date.strftime('%Y-%m-%d'))
 
 class ProgramEntity(generics.RetrieveUpdateAPIView):
+	queryset = Program.objects.all()
+	model = Program
+	serializer_class = ProgramSerializer
+	lookup_field = 'id'
 
-    queryset = Program.objects.all()
-    model = Program
-    serializer_class = ProgramSerializer
-    lookup_field = 'id'
+	def perform_update(self, serializer):
+		# Set end_date by looking at the number weeks and adding it to the start_date
+		from datetime  import timedelta
+		from django.utils.dateparse import parse_datetime
+
+		weeks = timedelta(weeks = int(self.request._data['weeks'])-1)
+		end_date = parse_datetime(self.request._data['start_date']) + weeks
+		serializer.save(end_date=end_date.strftime('%Y-%m-%d'))
