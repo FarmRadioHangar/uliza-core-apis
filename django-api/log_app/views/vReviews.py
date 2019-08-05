@@ -16,8 +16,12 @@ class ReviewGet(generics.ListCreateAPIView):
 
     def get_queryset(self):
         program = self.request.GET.get('program')
+        project = self.request.GET.get('project')
         if program:
             logs = Log.objects.filter(program=program).values('id')
+            queryset = Review.objects.filter(log__in=logs)
+        elif project:
+            logs = Log.objects.filter(program__project=project).values('id')
             queryset = Review.objects.filter(log__in=logs)
         else:
             queryset = Review.objects.all()
