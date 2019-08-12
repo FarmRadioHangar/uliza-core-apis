@@ -6,12 +6,15 @@ from rest_framework.views import APIView
 from log_app.models import Review,Log
 from log_app.serializers import ReviewSerializer
 import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 class ReviewGet(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     model = Review
     serializer_class = ReviewSerializer
+    filter_backends = (filters.OrderingFilter, DjangoFilterBackend,)
+    ordering_fields = ('id','created_at')
     filter_fields = ['id', 'log', 'reviewer']
 
     def get_queryset(self):
