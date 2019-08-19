@@ -41,7 +41,7 @@ class iTunesFeed(Rss201rev2Feed):
         super(iTunesFeed, self).add_root_elements(handler)
         handler.addQuickElement('itunes:author', self.feed['author_name'])
         handler.addQuickElement('itunes:summary', self.feed['description'])
-        handler.addQuickElement('itunes:category', 'education')
+        handler.addQuickElement('itunes:category','', {'text':'Education'})
         handler.addQuickElement('itunes:explicit', 'clean')
         handler.startElement("itunes:owner", {})
         handler.addQuickElement('itunes:name', self.feed['author_name'])
