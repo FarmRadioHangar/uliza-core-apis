@@ -47,7 +47,7 @@ class iTunesFeed(Rss201rev2Feed):
         handler.addQuickElement('itunes:name', self.feed['author_name'])
         handler.addQuickElement('itunes:email', self.feed['itunes_email'])
         handler.endElement("itunes:owner")
-        handler.addQuickElement('itunes:image', settings.DEFAULT_PODCAST_IMAGE)
+        handler.addQuickElement('itunes:image', self.feed['image'])
 
     def add_item_elements(self, handler, item):
         super(iTunesFeed, self).add_item_elements(handler, item)
@@ -61,7 +61,12 @@ class ProgramLogFeed(Feed):
     domain = Site.objects.get_current().domain
 
     def feed_extra_kwargs(self, obj):
-        return {'itunes_email': obj.radio_station.email}
+        if obj.project.image:
+            image = 'https://'+self.domain+'/ulizalog_static/'+obj.project.image
+        else:
+            image = settings.DEFAULT_PODCAST_IMAGE
+
+        return {'itunes_email': obj.radio_station.email,'image':image}
 
     def item_extra_kwargs(self, item):
         return {'summary': item.focus_statement}
@@ -104,6 +109,7 @@ class ProgramLogFeed(Feed):
 
     def item_pubdate(self,item):
         return item.created_at
+
 
     def item_link(self, item):
         if item.recording_backup:
