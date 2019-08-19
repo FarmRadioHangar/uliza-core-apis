@@ -62,7 +62,7 @@ class ProgramLogFeed(Feed):
 
     def feed_extra_kwargs(self, obj):
         if obj.project.image:
-            image = 'https://'+self.domain+'/ulizalog_static/'+obj.project.image
+            image = 'https://'+self.domain+'/ulizalog_static/img/'+obj.project.image
         else:
             image = settings.DEFAULT_PODCAST_IMAGE
 
