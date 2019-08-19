@@ -47,7 +47,10 @@ class iTunesFeed(Rss201rev2Feed):
         handler.addQuickElement('itunes:name', self.feed['author_name'])
         handler.addQuickElement('itunes:email', self.feed['itunes_email'])
         handler.endElement("itunes:owner")
-        handler.addQuickElement('itunes:image', self.feed['image'])
+        handler.startElement("itunes:image", {})
+        handler.addQuickElement('url', self.feed['image'])
+        handler.addQuickElement('title', self.feed['description'])
+        handler.endElement("itunes:image")
 
     def add_item_elements(self, handler, item):
         super(iTunesFeed, self).add_item_elements(handler, item)
