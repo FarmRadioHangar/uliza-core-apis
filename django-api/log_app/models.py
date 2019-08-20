@@ -397,13 +397,4 @@ class Review(models.Model):
         total_score = float(total_score)/total
         total_score = total_score*100
 
-        if total_score > 66:
-            total_score=3
-        elif total_score < 66 and total_score>33:
-            total_score=2
-        elif total_score <=0:
-            total_score=0
-        else:
-            total_score=1
-
         return total_score
