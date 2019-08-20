@@ -376,6 +376,8 @@ def reviewed_logs(request):
 
     if 'sorted' in request.GET:
         reviews = sorted(reviews, key=lambda r: r.calculate_score(), reverse=True)
+    else:
+        reviews = reviews.order_by('-created_at')
 
     reviews = paginator.paginate_queryset(reviews,request)
     reviews = ReviewLogSerializer(reviews,many=True)
