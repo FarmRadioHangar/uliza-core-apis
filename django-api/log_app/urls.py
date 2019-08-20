@@ -73,6 +73,7 @@ logs = patterns('log_app.views.vLogs',
     url( r'recording/gdrive_old/(?P<pk>\d+)','get_old_gdrive_link', name ='get_old_gdrive_link'),
     url( r'feed/(?P<program_id>\d+)', ProgramLogFeed()),
 
+    url(r'/reviewed$', reviewed_logs),
     url(r'/(?P<id>\d+)$', LogEntity.as_view()),
     url(r'$', LogGet.as_view()),
 )

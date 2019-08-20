@@ -1,10 +1,11 @@
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Log, Program
-from log_app.serializers import LogSerializer
+from log_app.models import Log,Program,Review,Format,Checklist
+from log_app.serializers import LogSerializer,ReviewLogSerializer
 
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
@@ -356,3 +357,27 @@ def create_instance(request,week,program_id):
 	instance.save()
 
 	return HttpResponse(instance.id)
+
+
+@api_view(['GET'])
+def reviewed_logs(request):
+    context = {'request', request}
+    paginator = PageNumberPagination()
+
+    if 'page_size' in request.GET:
+        paginator.page_size = request.GET['page_size']
+    else:
+        paginator.page_size = 4
+
+    if 'country' in request.GET:
+        reviews = Review.objects.filter(log__program__radio_station__country=request.GET['country'])
+    else:
+        reviews = Review.objects.all()
+
+    if 'sorted' in request.GET:
+        reviews = sorted(reviews, key=lambda r: r.calculate_score(), reverse=True)
+
+    reviews = paginator.paginate_queryset(reviews,request)
+    reviews = ReviewLogSerializer(reviews,many=True)
+
+    return paginator.get_paginated_response(reviews.data)
