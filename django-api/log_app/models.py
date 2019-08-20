@@ -370,3 +370,40 @@ class Review(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)
+
+    def calculate_score(self):
+        formats = Format.objects.filter(always_checked=True).values_list('id',flat=True)
+        checklists = Checklist.objects.filter(radio_format__in=formats).values_list('id','level')
+        checklists = list(checklists)
+        checklists+list(self.log.formats.values_list('checklist__id','checklist__level'))
+
+        review_checklists = self.checklists.values_list('id','level')
+        total = 0
+        total_score = 0
+
+        for checklist in checklists:
+            score =0
+            if checklist[1] =='best':
+                score = 3
+            elif checklist[1] == 'better':
+                score = 2
+            else:
+                score = 1
+
+            total = total+score
+            if checklist in review_checklists:
+                total_score = total_score+score
+
+        total_score = float(total_score)/total
+        total_score = total_score*100
+
+        if total_score > 66:
+            total_score=3
+        elif total_score < 66 and total_score>33:
+            total_score=2
+        elif total_score <=0:
+            total_score=0
+        else:
+            total_score=1
+
+        return total_score
