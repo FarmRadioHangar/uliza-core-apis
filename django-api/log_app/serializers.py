@@ -86,6 +86,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 		model = Review
 		fields = "__all__"
 
+class ReviewLogSerializer(serializers.ModelSerializer):
+	log=LogSerializer()
+	score = serializers.IntegerField(source='calculate_score', read_only=True)
+
+	class Meta:
+		model = Review
+		fields = "__all__"
+
 class ChecklistSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Checklist
