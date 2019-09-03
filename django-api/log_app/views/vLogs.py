@@ -307,6 +307,10 @@ def open_with_drive(request,pk):
 
         log.save()
 
+        if 'return_status' in request.GET:
+            return HttpResponse('OK');
+
+
     	return redirect(log.gdrive_url)
 
     return HttpResponse('<h2>404 Not found</h2>',status=404)
