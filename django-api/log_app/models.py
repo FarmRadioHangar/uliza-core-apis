@@ -273,6 +273,7 @@ class Log(models.Model):
     gdrive = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
     gdrive_available = models.BooleanField(default=False)
     gdrive_url = models.URLField(max_length=400,null=True,blank=True)
+    star_audio = models.BooleanField(default=False)
     recording_backup = models.FileField(null=True,blank=True)
     recording_saved = models.BooleanField(default=True)
     offset = models.PositiveIntegerField(default=0)
