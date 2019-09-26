@@ -29,6 +29,9 @@ radio_transmission = patterns('log_app.views.vRadiotransmissions',
 
 programs = patterns('log_app.views.vPrograms',
     url(r'/(?P<id>\d+)$', ProgramEntity.as_view()),
+    url(r'/(?P<id>\d+)/download_media_zipped$', download_media_zipped),
+    url(r'/(?P<id>\d+)/delete_all_media$', delete_all_media),
+    url(r'/to_archive$', to_archive),
     url(r'$', ProgramGet.as_view()),
 )
 

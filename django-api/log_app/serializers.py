@@ -20,6 +20,15 @@ class ProgramSerializer(serializers.ModelSerializer):
 		model = Program
 		fields = "__all__"
 
+class ProgramRecordingSerializer(serializers.ModelSerializer):
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
+	project__name = serializers.CharField(source='project.name',read_only=True)
+	recordings = serializers.IntegerField()
+
+	class Meta:
+		model = Program
+		fields = "__all__"
+
 
 class CountrySerializer(serializers.ModelSerializer):
 	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)

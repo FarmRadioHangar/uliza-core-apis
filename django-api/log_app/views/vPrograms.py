@@ -1,15 +1,18 @@
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Program
-from log_app.serializers import ProgramSerializer
+from log_app.models import Program,Log
+from log_app.serializers import ProgramSerializer,ProgramRecordingSerializer
 
 import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
+from django.http import HttpResponse
+from rest_framework.response import Response
 
 class ProgramFilter(filters.FilterSet):
 	# ids = django_filters.NumberFilter(name="pk", lookup_expr='in')
@@ -25,7 +28,7 @@ class ProgramFilter(filters.FilterSet):
 	class Meta:
 		model = Program
 		fields = ['id','radio_station','end_date','start_date','radio_station__country','radio_station__country__name', 'project', 'access',
-				  'end_date__lt','end_date__gte','start_date__gte','project__end_date__gte','end_date__gt','start_date__lt']
+				  'end_date__lt','end_date__gte','start_date__gte','project__end_date__gte','end_date__gt','start_date__lt','media_backup_status']
 
 class LargeResultsSetPagination(PageNumberPagination):
 	page_size = 1000
@@ -85,3 +88,82 @@ class ProgramEntity(generics.RetrieveUpdateAPIView):
 		weeks = timedelta(weeks = int(self.request._data['weeks'])-1)
 		end_date = parse_datetime(self.request._data['start_date']) + weeks
 		serializer.save(end_date=end_date.strftime('%Y-%m-%d'))
+
+@api_view(['GET'])
+def to_archive(request):
+	from django.db.models import Sum,Case,IntegerField,When,Value
+	from datetime import date
+	paginator = PageNumberPagination()
+
+	if 'page_size' in request.GET:
+		paginator.page_size = request.GET['page_size']
+	else:
+		paginator.page_size = 4
+
+	if 'country' in request.GET:
+		programs = Program.objects.filter(end_date__lt=date.today(),radio_station__country__id=request.GET['country']).annotate(recordings=Sum(Case(When(log=None, then=Value(0)),When(log__recording_backup='', then=Value(0)),default=Value(1),output_field=IntegerField()))).filter(recordings__gt=0)
+	else:
+		programs = Program.objects.filter(end_date__lt=date.today()).annotate(recordings=Sum(Case(When(log=None, then=Value(0)),When(log__recording_backup='', then=Value(0)),default=Value(1),output_field=IntegerField()))).filter(recordings__gt=0)
+
+	programs= paginator.paginate_queryset(programs,request)
+	programs= ProgramRecordingSerializer(programs,many=True)
+
+	return paginator.get_paginated_response(programs.data)
+
+
+def download_media_zipped(request,id):
+    # zip
+	from zipfile import ZipFile
+	from api_core.settings import MEDIA_ROOT
+
+	program = Program.objects.get(id=id)
+
+	logs = Log.objects.filter(program=program).exclude(star_audio=False,recording_backup='')
+
+	filename = 'Uliza-log-'+program.name.encode('utf-8')
+	try:
+		filename = filename.encode('ascii')
+		filename = filename+'.zip'
+	except:
+		filename = 'Uliza-log-PID'+str(program.id)+'.zip'
+
+	with ZipFile(MEDIA_ROOT+'/'+filename,'w') as zipper:
+		for log in logs:
+			zipper.write(log.recording_backup.path, log.recording_backup.name)
+
+	program.media_backup_status = 'zip'
+	program.save()
+
+	zipper = open(MEDIA_ROOT+'/'+filename,'r')
+	response = HttpResponse(zipper,content_type='application/zip')
+	response['Content-Disposition'] = 'attachment; filename='+filename
+
+	return response
+
+def delete_all_media(request,id):
+	from api_core.settings import MEDIA_ROOT
+	import os
+
+	program = Program.objects.get(id=id)
+	logs = Log.objects.filter(program=program).exclude(star_audio=False,recording_backup='')
+
+	for log in logs:
+		os.unlink(log.recording_backup.path)
+		log.recording_backup = None
+		log.save()
+
+	if program.media_backup_status == 'zip':
+		filename = 'Uliza-log-'+program.name.encode('utf-8')
+		try:
+			filename = filename.encode('ascii')
+			filename = filename+'.zip'
+		except:
+			filename = 'Uliza-log-PID'+str(program.id)+'.zip'
+
+
+		os.unlink(MEDIA_ROOT+'/'+filename)
+
+		program.media_backup_status = 'removed'
+		program.save()
+
+	return HttpResponse('OK')
