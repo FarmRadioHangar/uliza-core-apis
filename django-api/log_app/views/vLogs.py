@@ -294,15 +294,17 @@ def open_with_drive(request,pk):
     elif(log.recording_backup):
         # Uploading to gdrive
         import os
-        from django.core.files import File
-        log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
-        log.save()
+        if os.path.isfile(log.recording_backup.path):
+            from django.core.files import File
+            log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+            log.save()
 
-        log.gdrive_url = log.gdrive.url
+            log.gdrive_url = log.gdrive.url
 
-
-        if 'archive' in request.GET:
-            os.unlink( log.recording_backup.path )
+            if 'archive' in request.GET:
+                os.unlink( log.recording_backup.path )
+                log.recording_backup = None
+        else:
             log.recording_backup = None
 
         log.save()
