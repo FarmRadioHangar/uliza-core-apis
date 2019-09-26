@@ -189,6 +189,13 @@ class Program(models.Model):
 	    ('Sun', 'Sunday'),
 	)
 
+
+	backup_status = (
+	    ('none', 'None'),
+	    ('removed', 'Removed'),
+	    ('zip', 'Zip'),
+	)
+
 	name = models.CharField(max_length=50)
 	public_name = models.CharField(null=True,blank=True,max_length=50)
 	radio_station = models.ForeignKey('RadioStation')
@@ -209,6 +216,7 @@ class Program(models.Model):
 	weeks = models.IntegerField()
 
 	access = models.ManyToManyField(Contact,blank=True)
+	media_backup_status = models.CharField(max_length=15,default='none',choices=backup_status)
 
 	# Time track
 	last_updated_at = models.DateTimeField(auto_now=True)
