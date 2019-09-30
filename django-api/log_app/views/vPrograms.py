@@ -13,7 +13,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
 from django.http import HttpResponse
 from rest_framework.response import Response
-
+from django.shortcuts import redirect
 class ProgramFilter(filters.FilterSet):
 	# ids = django_filters.NumberFilter(name="pk", lookup_expr='in')
 	end_date__gte = django_filters.DateTimeFilter(name="end_date", lookup_expr='gte')
@@ -133,6 +133,10 @@ def download_media_zipped(request,id):
 
 	program.media_backup_status = 'zip'
 	program.save()
+
+	if 'redirect' in request.GET:
+		from api_core.settings import MEDIA_URL
+		return redirect('http://'+request.META['HTTP_HOST']+MEDIA_URL+filename)
 
 	zipper = open(MEDIA_ROOT+'/'+filename,'r')
 	response = HttpResponse(zipper,content_type='application/zip')
