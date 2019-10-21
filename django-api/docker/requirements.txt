@@ -1,4 +1,4 @@
-Django==1.11.7
+Django==1.11.23
 django-filter==1.1.0
 djangorestframework==3.7.3
 envparse==0.2.0
