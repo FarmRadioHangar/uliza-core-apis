@@ -118,6 +118,9 @@ class ProgramLogFeed(Feed):
         else:
             return ''
 
+    def item_enclosure_length(self, item):
+        return item.offset
+
     def item_enclosure_mime_type(self, item):
         return 'audio/mp3'
 
