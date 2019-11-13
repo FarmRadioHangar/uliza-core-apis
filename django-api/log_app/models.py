@@ -263,7 +263,7 @@ class Program(models.Model):
 class Log(models.Model):
     program = models.ForeignKey("Program")
     saved_by = models.ForeignKey(Contact,blank=True,null=True)
-    topic = models.CharField(max_length=30,null=True,blank=True)
+    topic = models.CharField(max_length=100,null=True,blank=True)
 
     focus_statement = models.TextField(null=True,blank=True)
     ict = models.TextField(blank=True,null=True)
