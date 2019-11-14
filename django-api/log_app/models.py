@@ -75,7 +75,7 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     country = models.ForeignKey('Country')
     doner = models.CharField(max_length=50)
-    focus = models.CharField(max_length=50)
+    focus = models.TextField()
     image = models.CharField(null=True, blank=True,max_length=100)
 
     start_date = models.DateField(null=True)
