@@ -92,7 +92,9 @@ DATABASES = {
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
         'HOST': env('DB_SERVICE_HOST'),
-        'PORT': env('DB_SERVICE_PORT')
+        'PORT': env('DB_SERVICE_PORT'),
+        'OPTIONS': {'charset': 'utf8mb4',
+                    'use_unicode': True }
     },
 }
 
