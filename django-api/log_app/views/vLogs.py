@@ -131,7 +131,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 class LogFilter(filters.FilterSet):
 	week__lte = django_filters.NumberFilter(name="week", lookup_expr='lte')
-	id__lt = django_filters.DateTimeFilter(name="id", lookup_expr='lt')
+	id__lt = django_filters.NumberFilter(name="id", lookup_expr='lt')
 	country__not = django_filters.NumberFilter(name="program__radio_station__country", exclude=True)
 	program__radio_station = django_filters.NumberFilter(name="program__radio_station")
 
@@ -284,7 +284,7 @@ def open_with_drive(request,pk):
 
     if(log.gdrive_url):
         return redirect(log.gdrive_url)
-    elif(log.gdrive_available):
+    elif(log.gdrive_available) and not 'return_status' in request.GET:
         # get the old link from dev api
         import requests
         response = requests.get('https://dev.uliza.fm/api/v1/logs/recording/gdrive_old/'+str(pk),params={})
@@ -385,6 +385,8 @@ def reviewed_logs(request):
 
     if 'sorted' in request.GET:
         reviews = sorted(reviews, key=lambda r: r.calculate_score(), reverse=True)
+    elif 'ordering' in request.GET:
+        reviews = reviews.order_by(request.GET['ordering'])
     else:
         reviews = reviews.order_by('-created_at')
 
