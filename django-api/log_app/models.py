@@ -367,6 +367,9 @@ class Checklist(models.Model):
     description_am = models.TextField(null=True,blank=True)
     gender_responsive = models.BooleanField(default=False)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
+
     def __unicode__(self):
     	return self.description
 

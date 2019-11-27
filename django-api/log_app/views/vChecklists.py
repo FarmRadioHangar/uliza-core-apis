@@ -8,12 +8,20 @@ from log_app.serializers import ChecklistSerializer
 import django_filters
 from rest_framework import filters
 
+class ChecklistFilter(filters.FilterSet):
+	created_at__lte = django_filters.Filter(name="created_at", lookup_expr='lte')
+	created_at__gt = django_filters.Filter(name="created_at", lookup_expr='gt')
+	class Meta:
+		model = Checklist
+		fields = ['id','level','radio_format','gender_responsive','created_at__lte','created_at__gt']
+
 class ChecklistGet(generics.ListCreateAPIView):
-    queryset = Checklist.objects.all().order_by('-level')
+    # queryset = Checklist.objects.all()
     model = Checklist
     serializer_class = ChecklistSerializer
-    ordering_fields = 'radio_format'
-    filter_fields = ['id', 'level', 'radio_format','gender_responsive' ]
+    filter_class = ChecklistFilter
+    filter_backends = (filters.OrderingFilter,filters.DjangoFilterBackend)
+    ordering_fields = ('level','radio_format')
 
     def get_queryset(self):
         """
