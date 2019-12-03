@@ -282,7 +282,7 @@ def upload_delete( request, pk ):
 def open_with_drive(request,pk):
     log = Log.objects.get(pk=pk)
 
-    if(log.gdrive_url):
+    if(log.gdrive_url and not 'return_status' in request.GET):
         return redirect(log.gdrive_url)
     elif(log.gdrive_available) and not 'return_status' in request.GET:
         # get the old link from dev api
@@ -297,7 +297,7 @@ def open_with_drive(request,pk):
     elif(log.recording_backup):
         # Uploading to gdrive
         import os
-        if os.path.isfile(log.recording_backup.path):
+        if os.path.isfile(log.recording_backup.path) and not log.gdrive:
             from django.core.files import File
             log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
             log.save()
