@@ -297,7 +297,7 @@ def open_with_drive(request,pk):
     elif(log.recording_backup):
         # Uploading to gdrive
         import os
-        if os.path.isfile(log.recording_backup.path) and not log.gdrive:
+        if os.path.isfile(log.recording_backup.path) and not log.gdrive.url:
             from django.core.files import File
             log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
             log.save()
