@@ -72,6 +72,7 @@ def filename(instance, filename):
 
 
 class Project(models.Model):
+    code = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
     country = models.ForeignKey('Country')
     doner = models.CharField(max_length=50)
