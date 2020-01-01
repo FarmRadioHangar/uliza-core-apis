@@ -318,7 +318,7 @@ class Log(models.Model):
     def rename(self):
         import os
         if (self.recording_backup):
-            old_path = self.recording_backup.path
+            old_path = self.recording_backup.path.encode('utf8')
             self.recording_backup.name = 'Uliza-log-'+self.program.name.encode('utf-8')+'-'+str(self.week)+'.mp3'
 
             try:
