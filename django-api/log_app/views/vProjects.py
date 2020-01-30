@@ -142,16 +142,16 @@ def project_report_numbers(request,project_id):
 	        format_checklists = checklists.filter(radio_format=format,created_at__lte=review.last_updated_at)
 
 	        for criteria in format_checklists:
-	            if criteria.id in review_checklists:
-	                score = level_score[criteria.level]+score
+				if criteria.id in review_checklists:
+				    score = level_score[criteria.level]+score
 
-	                if criteria.gender_responsive:
+				    if criteria.gender_responsive:
 						gender_score = level_score[criteria.level]+gender_score
 
 				if criteria.gender_responsive:
-		            total_gender_score = level_score[criteria.level]+total_gender_score
-					
-	            total_score = level_score[criteria.level]+score
+				    total_gender_score = level_score[criteria.level]+total_gender_score
+
+				total_score = level_score[criteria.level]+score
 
 	        if not format.id in format_index.keys():
 	            format_index[format.id] = len(format_score)
