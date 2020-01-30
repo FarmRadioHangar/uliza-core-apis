@@ -94,6 +94,7 @@ contacts = patterns('log_app.views.vContacts',
 )
 
 projects = patterns('log_app.views.vProjects',
+    url(r'/report/(?P<project_id>\d+)$','project_report_numbers',name = 'project_report_numbers'),
     url(r'/(?P<id>\d+)$', ProjectEntity.as_view()),
     url(r'$', ProjectGet.as_view()),
 )
