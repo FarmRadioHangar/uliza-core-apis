@@ -148,7 +148,9 @@ def project_report_numbers(request,project_id):
 	                if criteria.gender_responsive:
 						gender_score = level_score[criteria.level]+gender_score
 
-	            total_gender_score = level_score[criteria.level]+total_gender_score
+				if criteria.gender_responsive:
+		            total_gender_score = level_score[criteria.level]+total_gender_score
+					
 	            total_score = level_score[criteria.level]+score
 
 	        if not format.id in format_index.keys():
