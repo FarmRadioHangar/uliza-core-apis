@@ -197,7 +197,8 @@ def project_report_numbers(request,project_id):
 		        least_used['formats_index'] = [format_index[format.id]]
 		        least_used['value'] = 0
 		else:
-			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['logs'])            # select strong format
+			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['logs'])
+			format_score[format_index[format.id]]['value'] = math.ceil(format_score[format_index[format.id]]['value'])
 			total_score = total_score +format_score[format_index[format.id]]['value']
 
 			# VOICE
