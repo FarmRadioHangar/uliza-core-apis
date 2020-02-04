@@ -338,8 +338,19 @@ class Comment(models.Model):
     contact = models.ForeignKey('Contact',null=True)
     telegram_username = models.CharField(max_length=80, null=True)
 
+    training_call = models.BooleanField(default=False)
+
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self,*args,**kwargs):
+        comment_already_exists = Comment.objects.filter(log=self.log,content=self.content)
+        if comment_already_exists:
+            return
+        else:
+            return super(Comment, self).save(*args, **kwargs)
+
+
 
 class Format(models.Model):
     name = models.CharField(max_length=60)
