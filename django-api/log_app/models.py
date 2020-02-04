@@ -344,7 +344,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self,*args,**kwargs):
-        comment_already_exists = Comment.objects.filter(log=self.log,content=self.content)
+        comment_already_exists = Comment.objects.filter(log=self.log,training_call=self.training_call,content=self.content)
         if comment_already_exists:
             return
         else:
