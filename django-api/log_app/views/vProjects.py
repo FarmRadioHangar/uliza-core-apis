@@ -132,7 +132,7 @@ def project_report_numbers(request,project_id):
 			logs_reviewed = logs_reviewed+1
 			review=review[0]
 
-	    log_formats = log.formats.all()
+	    log_formats = log.formats.filter(legacy=False)
 	    log_formats = list(chain(log_formats,formats_always_checked))
 
 	    review_checklists = review.checklists.values_list('id',flat=True)
