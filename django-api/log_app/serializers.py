@@ -50,12 +50,15 @@ class CommentSerializer(serializers.ModelSerializer):
 	contact__last_name = serializers.CharField(source='contact.last_name',read_only=True)
 	contact__first_name = serializers.CharField(source='contact.first_name',read_only=True)
 	contact__job_title = serializers.CharField(source='contact.job_title',read_only=True)
+	program_name = serializers.CharField(source='log.program.name',read_only=True)
+	week = serializers.CharField(source='log.week',read_only=True)
 	class Meta:
 		model = Comment
-		fields = ('content','log','contact__first_name','contact__last_name','contact__job_title','telegram_username','contact','last_updated_at','created_at','id','training_call')
+		fields = ('week','program_name','content','log','contact__first_name','contact__last_name','contact__job_title','telegram_username','contact','last_updated_at','created_at','id','training_call')
 
 
 class ContactSerializer(serializers.ModelSerializer):
+	country__name = serializers.CharField(source='country.name',read_only=True)
 	class Meta:
 		model = Contact
 		fields = "__all__"
