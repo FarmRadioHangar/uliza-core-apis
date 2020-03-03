@@ -15,6 +15,7 @@ from log_app.views.vRadiotransmissions import *
 from log_app.views.vChecklists import *
 from log_app.views.vFormats import *
 from log_app.views.vReviews import *
+from log_app.views.vBroadcasterResources import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -114,6 +115,11 @@ formats = patterns('log_app.views.vFormats',
     url(r'$', FormatGet.as_view()),
 )
 
+broadcaster_resources = patterns('log_app.views.vBroadcasterResources',
+    url(r'/(?P<id>\d+)$', BroadcasterResourceEntity.as_view()),
+    url(r'$', BroadcasterResourceGet.as_view()),
+)
+
 urlpatterns = patterns('',
     url(r'radio_stations', include(radio_stations, 'radio_stations')),
     url(r'programs', include(programs, 'programs')),
@@ -129,6 +135,7 @@ urlpatterns = patterns('',
     url(r'presenters', include(presenters, 'presenters')),
     url(r'projects', include(projects, 'projects')),
     url(r'formats', include(formats, 'formats')),
+    url(r'broadcaster_resources', include(broadcaster_resources, 'broadcaster_resources')),
     url(r'checklists', include(checklists, 'checklists')),
     url(r'reviews', include(reviews, 'reviews')),
 

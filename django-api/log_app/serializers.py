@@ -5,9 +5,15 @@ class RadioStationSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = RadioStation
 		fields = "__all__"
+
 class ProjectSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Project
+		fields = "__all__"
+
+class BroadcasterResourceSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = BroadcasterResource
 		fields = "__all__"
 
 class ProgramSerializer(serializers.ModelSerializer):

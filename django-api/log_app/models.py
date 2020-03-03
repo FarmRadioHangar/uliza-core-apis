@@ -261,6 +261,13 @@ class Program(models.Model):
 	def __unicode__(self):
 		return self.name
 
+class BroadcasterResource(models.Model):
+    name = models.CharField(max_length=100)
+    name_fr = models.CharField(max_length=100)
+    name_pt = models.CharField(max_length=100)
+    name_am = models.CharField(max_length=100)
+    description = models.TextField(null=True,blank=True)
+
 class Log(models.Model):
     program = models.ForeignKey("Program")
     saved_by = models.ForeignKey(Contact,blank=True,null=True)
@@ -286,6 +293,9 @@ class Log(models.Model):
     recording_backup = models.FileField(null=True,blank=True)
     recording_saved = models.BooleanField(default=True)
     offset = models.PositiveIntegerField(default=0)
+
+    broadcaster_resource = models.ForeignKey(BroadcasterResource,blank=True,null=True)
+    link_to_resource = models.URLField(max_length=400,null=True,blank=True)
 
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)
