@@ -68,11 +68,11 @@ def project_report_numbers(request,project_id):
 
 		logs = Log.objects.filter(program__project = project_id,\
 								  created_at__gte=start_date,\
-		                          created_at__lte=end_date)
+		                          created_at__lte=end_date).order_by('week')
 
 	else:
 		comments = Comment.objects.filter(log__program__project=project_id)
-		logs = Log.objects.filter(program__project = project_id)
+		logs = Log.objects.filter(program__project = project_id).order_by('week')
 
 
 	if 'radio_station' in request.GET:
@@ -119,6 +119,10 @@ def project_report_numbers(request,project_id):
 	gender_score=0
 	total_gender_score = 0
 	logs_reviewed=0
+
+	week_labels = []
+	week_scores = []
+
 	for log in logs:
 	    if week == log.week:
 	        continue
@@ -136,39 +140,65 @@ def project_report_numbers(request,project_id):
 	    log_formats = list(chain(log_formats,formats_always_checked))
 
 	    review_checklists = review.checklists.values_list('id',flat=True)
+	    gender_episode_score = 0
+	    gender_total_episode_score = 0
+
 	    for format in log_formats:
-	        score = 0
-	        total_score = 0
+			score = 0
+			total_score = 0
 
 			# review created_at should be considered here
-	        format_checklists = checklists.filter(radio_format=format,created_at__lte=review.last_updated_at)
+			format_checklists = checklists.filter(radio_format=format,created_at__lte=review.last_updated_at)
 
-	        for criteria in format_checklists:
+			for criteria in format_checklists:
 				if criteria.id in review_checklists:
 				    score = level_score[criteria.level]+score
 
 				    if criteria.gender_responsive:
 						gender_score = level_score[criteria.level]+gender_score
+						gender_episode_score = level_score[criteria.level]+gender_episode_score
 
 				if criteria.gender_responsive:
 				    total_gender_score = level_score[criteria.level]+total_gender_score
+				    gender_total_episode_score = level_score[criteria.level]+gender_total_episode_score
 
 				total_score = level_score[criteria.level]+score
 
-	        if not format.id in format_index.keys():
-	            format_index[format.id] = len(format_score)
-	            labels.append(format.name)
-	            format_score.append({'meta':format.name,'value':0,'logs':0})
+			if not format.id in format_index.keys():
+			    format_index[format.id] = len(format_score)
+			    labels.append(format.name)
+			    format_score.append({'meta':format.name,'value':0,'logs':0})
 
-	        if total_score>0:
+			if total_score>0:
 				score = (float(score)/total_score)*100
 				score = math.ceil(score)
 
-	        else:
-	            score = 0
+			else:
+			    score = 0
 
-	        format_score[format_index[format.id]]['value'] = format_score[format_index[format.id]]['value']+score
-	        format_score[format_index[format.id]]['logs'] = format_score[format_index[format.id]]['logs']+1
+			format_score[format_index[format.id]]['value'] = format_score[format_index[format.id]]['value']+score
+			format_score[format_index[format.id]]['logs'] = format_score[format_index[format.id]]['logs']+1
+
+			# if format id == enquired format
+			# add score to the week aggregate
+			# create week_labels and week_score
+			if 'format_id' in request.GET and str(format.id) == request.GET['format_id']:
+				week_label = 'Week '+str(log.week)
+				if not week_label in week_labels:
+					week_labels.append(week_label)
+					week_scores.append({'meta': week_label,'value':0,'total':0})
+
+				index = week_labels.index(week_label)
+
+				week_scores[index]['value'] = week_scores[index]['value']+score
+				week_scores[index]['total'] = week_scores[index]['total']+1
+
+
+
+	    if 'format_id' in request.GET and request.GET['format_id']=='gender':
+			week_labels.append('Week '+str(log.week))
+			week_scores.append({'meta':'Week '+str(log.week),'value':gender_episode_score*100,'total':gender_total_episode_score})
+
 
 	formats = Format.objects.filter(legacy=False)
 
@@ -253,6 +283,15 @@ def project_report_numbers(request,project_id):
 		gender_score = float(gender_score)/total_gender_score
 		gender_score = math.ceil(gender_score*100)
 
+	if 'format_id' in request.GET:
+		for week_score in week_scores:
+			week_score['value'] = float(week_score['value']/week_score['total'])
+			week_score['value'] = math.ceil(week_score['value'])
+
+		format_score = week_scores
+	else:
+		format_score.append({'meta':'Gender','value':gender_score})
+		labels.append('Gender')
 
 	if reviewed_formats > 0:
 		total_score = total_score/reviewed_formats
@@ -265,8 +304,31 @@ def project_report_numbers(request,project_id):
 	else:
 		total_score = '-'
 
-	format_score.append({'meta':'Gender','value':gender_score})
-	labels.append('Gender')
+	# prepare broadcaster resources data
+	# [{'broadcaster_resource__name': u'name', 'total': 2}]
+	from django.db.models import Count
+	resources = logs.exclude(broadcaster_resource=None).values('broadcaster_resource__name').annotate(total=Count('broadcaster_resource'))
+
+	br = {'most_used':["<None>"],'least_used':["<None>"],'total_use':0}
+	if resources:
+		br['least_used'] = []
+		br_mu = 0
+		br_lu =resources[0]
+		for resource in resources:
+			br['total_use'] = br['total_use']+resource['total']
+			if resource['total']> br_mu:
+				br_mu = resource['total']
+				br['most_used'] = [resource['broadcaster_resource__name']]
+			elif resource['total']==br_mu and not br_mu == 0:
+				br['most_used'].append(resource['broadcaster_resource__name'])
+
+			if resource['total']<br_lu:
+				br_lu = resource['total']
+				br['least_used'] = [resource['broadcaster_resource__name']]
+			elif resource['total'] == br_lu:
+				br['least_used'].append(resource['broadcaster_resource__name'])
+
+
 	format_score = {'series':[format_score],\
 					'most_used':most_used,\
 					'least_used':least_used,\
@@ -278,7 +340,9 @@ def project_report_numbers(request,project_id):
 					'total_score':total_score,\
 					'labels':labels}
 
-
+	if week_labels:
+		format_score['week_labels'] = week_labels
 
 	return JsonResponse({'format_score':format_score,\
+						 'br':br,\
 	                     'comments':comments},safe=False)
