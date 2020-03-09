@@ -58,6 +58,11 @@ def project_report_numbers(request,project_id):
 	100 # comments by Gender specialist
 	"""
 
+	if not 'lang' in request.GET or request.GET['lang'] == 'en':
+		lang = ''
+	else:
+		lang = '_'+request.GET['lang']
+
 	if 'start_date' in request.GET and 'end_date' in request.GET:
 		from django.utils.dateparse import parse_date
 		start_date = parse_date(request.GET['start_date'])
@@ -165,9 +170,14 @@ def project_report_numbers(request,project_id):
 				total_score = level_score[criteria.level]+score
 
 			if not format.id in format_index.keys():
-			    format_index[format.id] = len(format_score)
-			    labels.append(format.name)
-			    format_score.append({'meta':format.name,'value':0,'logs':0})
+				format_index[format.id] = len(format_score)
+
+				if getattr(format,'name'+lang):
+				    labels.append(getattr(format,'name'+lang))
+				    format_score.append({'meta':getattr(format,'name'+lang),'value':0,'logs':0})
+				else:
+				    labels.append(getattr(format,'name'))
+				    format_score.append({'meta':getattr(format,'name'),'value':0,'logs':0})
 
 			if total_score>0:
 				score = (float(score)/total_score)*100
@@ -183,7 +193,7 @@ def project_report_numbers(request,project_id):
 			# add score to the week aggregate
 			# create week_labels and week_score
 			if 'format_id' in request.GET and str(format.id) == request.GET['format_id']:
-				week_label = 'Week '+str(log.week)
+				week_label = str(log.week)
 				if not week_label in week_labels:
 					week_labels.append(week_label)
 					week_scores.append({'meta': week_label,'value':0,'total':0})
@@ -196,8 +206,8 @@ def project_report_numbers(request,project_id):
 
 
 	    if 'format_id' in request.GET and request.GET['format_id']=='gender':
-			week_labels.append('Week '+str(log.week))
-			week_scores.append({'meta':'Week '+str(log.week),'value':gender_episode_score*100,'total':gender_total_episode_score})
+			week_labels.append(str(log.week))
+			week_scores.append({'meta':str(log.week),'value':gender_episode_score*100,'total':gender_total_episode_score})
 
 
 	formats = Format.objects.filter(legacy=False)
@@ -221,15 +231,20 @@ def project_report_numbers(request,project_id):
 	for format in formats:
 
 		if not format.id in format_index:
-		    format_index[format.id] = len(format_score)
-		    format_score.append({'meta':format.name,'value':0,'logs':0})
-		    labels.append(format.name)
+			format_index[format.id] = len(format_score)
 
-		    if least_used['value'] == 0:
-		        least_used['formats_index'].append(format_index[format.id])
-		    else:
-		        least_used['formats_index'] = [format_index[format.id]]
-		        least_used['value'] = 0
+			if getattr(format,'name'+lang):
+			    labels.append(getattr(format,'name'+lang))
+			    format_score.append({'meta':getattr(format,'name'+lang),'value':0,'logs':0})
+			else:
+			    labels.append(getattr(format,'name'))
+			    format_score.append({'meta':getattr(format,'name'),'value':0,'logs':0})
+
+			if least_used['value'] == 0:
+			    least_used['formats_index'].append(format_index[format.id])
+			else:
+			    least_used['formats_index'] = [format_index[format.id]]
+			    least_used['value'] = 0
 		else:
 			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['logs'])
 			format_score[format_index[format.id]]['value'] = math.ceil(format_score[format_index[format.id]]['value'])
