@@ -73,11 +73,11 @@ def project_report_numbers(request,project_id):
 
 		logs = Log.objects.filter(program__project = project_id,\
 								  created_at__gte=start_date,\
-		                          created_at__lte=end_date).order_by('id','week')
+		                          created_at__lte=end_date).order_by('week')
 
 	else:
 		comments = Comment.objects.filter(log__program__project=project_id)
-		logs = Log.objects.filter(program__project = project_id).order_by('id','week')
+		logs = Log.objects.filter(program__project = project_id).order_by('week')
 
 
 	if 'radio_station' in request.GET:
@@ -119,7 +119,7 @@ def project_report_numbers(request,project_id):
 
 	level_score = {'good':1,'better':2,'best':3}
 
-	week=0
+	week=None
 	voice_score = 0
 	gender_score=0
 	total_gender_score = 0
@@ -129,10 +129,10 @@ def project_report_numbers(request,project_id):
 	week_scores = []
 
 	for log in logs:
-	    if week == log.week:
+	    if week == (log.week,log.program.id):
 	        continue
 
-	    week = log.week
+	    week = (log.week,log.program.id)
 	    review = Review.objects.filter(log=log)
 
 	    if not review:
@@ -181,8 +181,6 @@ def project_report_numbers(request,project_id):
 
 			if total_score>0:
 				score = (float(score)/total_score)*100
-				score = math.ceil(score)
-
 			else:
 			    score = 0
 
@@ -206,9 +204,15 @@ def project_report_numbers(request,project_id):
 
 
 	    if 'format_id' in request.GET and request.GET['format_id']=='gender':
-			week_labels.append(str(log.week))
-			week_scores.append({'meta':str(log.week),'value':gender_episode_score*100,'total':gender_total_episode_score})
-
+			week_label = str(log.week)
+			score = (float(gender_episode_score)/gender_total_episode_score)*100
+			if not week_label in week_labels:
+				week_labels.append(week_label)
+				week_scores.append({'meta': week_label,'value':score,'total':1})
+			else:
+				index = week_labels.index(week_label)
+				week_scores[index]['value'] = week_scores[index]['value']+score
+				week_scores[index]['total'] = week_scores[index]['total']+1
 
 	formats = Format.objects.filter(legacy=False)
 
