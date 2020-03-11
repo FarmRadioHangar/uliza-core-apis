@@ -331,16 +331,16 @@ def project_report_numbers(request,project_id):
 		br_lu =resources[0]
 		for resource in resources:
 			br['total_use'] = br['total_use']+resource['total']
-			if resource['total']> br_mu:
+			if resource['total']> br_mu :
 				br_mu = resource['total']
 				br['most_used'] = [resource['broadcaster_resource__name']]
-			elif resource['total']==br_mu and not br_mu == 0:
+			elif resource['total']==br_mu and not br_mu == 0 and not resource['broadcaster_resource__name'] in br['most_used']:
 				br['most_used'].append(resource['broadcaster_resource__name'])
 
 			if resource['total']<br_lu:
 				br_lu = resource['total']
 				br['least_used'] = [resource['broadcaster_resource__name']]
-			elif resource['total'] == br_lu:
+			elif resource['total'] == br_lu and not resource['broadcaster_resource__name'] in br['least_used']:
 				br['least_used'].append(resource['broadcaster_resource__name'])
 
 
