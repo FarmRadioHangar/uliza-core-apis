@@ -181,8 +181,6 @@ def project_report_numbers(request,project_id):
 
 			if total_score>0:
 				score = (float(score)/total_score)*100
-				score = math.ceil(score)
-
 			else:
 			    score = 0
 
@@ -206,9 +204,15 @@ def project_report_numbers(request,project_id):
 
 
 	    if 'format_id' in request.GET and request.GET['format_id']=='gender':
-			week_labels.append(str(log.week))
-			week_scores.append({'meta':str(log.week),'value':gender_episode_score*100,'total':gender_total_episode_score})
-
+			week_label = str(log.week)
+			score = (float(gender_episode_score)/gender_total_episode_score)*100
+			if not week_label in week_labels:
+				week_labels.append(week_label)
+				week_scores.append({'meta': week_label,'value':score,'total':1})
+			else:
+				index = week_labels.index(week_label)
+				week_scores[index]['value'] = week_scores[index]['value']+score
+				week_scores[index]['total'] = week_scores[index]['total']+1
 
 	formats = Format.objects.filter(legacy=False)
 
