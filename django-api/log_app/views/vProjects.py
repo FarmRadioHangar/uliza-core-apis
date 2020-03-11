@@ -73,11 +73,11 @@ def project_report_numbers(request,project_id):
 
 		logs = Log.objects.filter(program__project = project_id,\
 								  created_at__gte=start_date,\
-		                          created_at__lte=end_date).order_by('week')
+		                          created_at__lte=end_date).order_by('id','week')
 
 	else:
 		comments = Comment.objects.filter(log__program__project=project_id)
-		logs = Log.objects.filter(program__project = project_id).order_by('week')
+		logs = Log.objects.filter(program__project = project_id).order_by('id','week')
 
 
 	if 'radio_station' in request.GET:
