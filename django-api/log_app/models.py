@@ -150,7 +150,7 @@ class Contact(models.Model):
         ('staff', 'Staff'),
         ('consultant', 'Consultant'),
         ('broadcaster', 'Broadcaster'),
-        ('project_partner', 'Project Partner'),
+        ('gender_specialist', 'Gender Specialist'),
         ('knowledge_partner', 'Knowledge Partner'),
     )
     user_id = models.CharField(null=True, blank=True, max_length=120)
