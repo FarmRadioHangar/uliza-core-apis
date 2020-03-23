@@ -19,7 +19,6 @@ class ContactGet(generics.ListCreateAPIView):
     filter_fields = ['id','user_id','role','email','country','radio_station','notify_on_log_create']
 
     def get_queryset(self):
-        queryset = None
         if 'role__in' in self.request.GET:
             roles = self.request.GET.getlist('role__in')
             queryset = Contact.objects.filter(role__in = roles)
@@ -32,7 +31,7 @@ class ContactGet(generics.ListCreateAPIView):
             else:
                 queryset = Contact.objects.filter(id__in = pks)
 
-        if not queryset:
+        if not 'role__in' in self.request.GET and not 'pk__in' in self.request.GET:
             queryset = Contact.objects.all()
 
         return queryset
