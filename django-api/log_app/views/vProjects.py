@@ -87,8 +87,8 @@ def project_report_numbers(request,project_id):
 
 
 
-	kp_comments = len(comments.filter(contact__role__in=['knowledge_partner','project_partner']))
-	gender_comments = len(comments.filter(contact__role='consultant'))
+	kp_comments = len(comments.filter(contact__role__in=['knowledge_partner','gender_specialist']))
+	gender_comments = len(comments.filter(contact__role='gender_specialist'))
 	training_calls = len(comments.filter(training_call=True))
 
 	comments = len(comments)
