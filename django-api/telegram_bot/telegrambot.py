@@ -29,7 +29,7 @@ def start(bot, update):
                                         ]})
 
 def country(bot, update):
-    countries = Country.objects.exclude(id__in=exclude_country_id)
+    countries = Country.objects.exclude(name__startswith='*')
     reply_markup = []
     row_content = []
     column_count = 0
