@@ -73,11 +73,11 @@ def project_report_numbers(request,project_id):
 
 		logs = Log.objects.filter(program__project = project_id,\
 								  created_at__gte=start_date,\
-		                          created_at__lte=end_date).order_by('week')
+		                          created_at__lte=end_date, postpone=False).order_by('week')
 
 	else:
 		comments = Comment.objects.filter(log__program__project=project_id)
-		logs = Log.objects.filter(program__project = project_id).order_by('week')
+		logs = Log.objects.filter(program__project = project_id,postpone=False).order_by('week')
 
 
 	if 'radio_station' in request.GET:
@@ -152,7 +152,6 @@ def project_report_numbers(request,project_id):
 			score = 0
 			total_score = 0
 
-			# review created_at should be considered here
 			format_checklists = checklists.filter(radio_format=format,created_at__lte=review.last_updated_at)
 
 			for criteria in format_checklists:
@@ -163,11 +162,12 @@ def project_report_numbers(request,project_id):
 						gender_score = level_score[criteria.level]+gender_score
 						gender_episode_score = level_score[criteria.level]+gender_episode_score
 
+				total_score = level_score[criteria.level]+total_score
+
 				if criteria.gender_responsive:
 				    total_gender_score = level_score[criteria.level]+total_gender_score
 				    gender_total_episode_score = level_score[criteria.level]+gender_total_episode_score
 
-				total_score = level_score[criteria.level]+score
 
 			if not format.id in format_index.keys():
 				format_index[format.id] = len(format_score)
