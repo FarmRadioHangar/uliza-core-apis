@@ -3,16 +3,13 @@ from covid.models import Content
 from django.http import HttpResponse
 
 # Create your views here.
-def content(request):
-    if 'topic' in request.GET:
-        content = Content.objects.filter(topic_en=request.GET['topic'])
-        lang = 'en'
-    elif 'topic_fr' in request.GET:
-        content = Content.objects.filter(topic_fr=request.GET['topic_fr'])
-        lang = 'fr'
-    elif 'topic_am' in request.GET:
-        content = Content.objects.filter(topic_am=request.GET['topic_am'])
-        lang = 'am'
+def content(request,topic,lang):
+    if lang == 'en':
+        content = Content.objects.filter(topic_en=topic)
+    elif lang == 'fr':
+        content = Content.objects.filter(topic_fr=topic)
+    elif lang == 'am':
+        content = Content.objects.filter(topic_am=topic)
     else:
         HttpResponse('Content error')
 
