@@ -6,6 +6,8 @@
  </head>
  <body>
   <h3>{{topic}}</h3>
+  {% autoescape off %}
   {{content}}
+  {% endautoescape %}
  </body>
 </html>
