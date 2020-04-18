@@ -4,7 +4,8 @@ from rest_framework.documentation import include_docs_urls
 from settings import TELEGRAM_TOKEN
 
 urlpatterns = [
-    url(r'^admin', include(admin.site.urls)),
+    url(r'^api/admin', include(admin.site.urls)),
+    url(r'^api/covid', include('covid.urls')),
     url(r'^api/v1/', include('log_app.urls')),
     url(r'^api/v1/', include('uliza.urls')),
     url(r'^api/docs/', include_docs_urls(title='Uliza API')),

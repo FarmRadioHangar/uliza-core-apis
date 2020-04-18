@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'uliza',
     'log_app',
+    'covid',
     'shell_plus',
     'django_telegrambot',
     'telegram_bot'
