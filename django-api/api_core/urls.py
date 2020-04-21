@@ -5,7 +5,7 @@ from settings import TELEGRAM_TOKEN
 
 urlpatterns = [
     url(r'^api/admin', include(admin.site.urls)),
-    url(r'^api/covid', include('covid.urls')),
+    url(r'^api/v1/', include('covid.urls')),
     url(r'^api/v1/', include('log_app.urls')),
     url(r'^api/v1/', include('uliza.urls')),
     url(r'^api/docs/', include_docs_urls(title='Uliza API')),
