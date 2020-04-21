@@ -1,17 +1,17 @@
 from django.db import models
-from log_app.models import Country
-
-# Create your models here.
-from django.db import models
-from log_app.models import Country
 
 class ChatUser(models.Model):
-    chat_id = models.CharField(max_length=100)
-    country = models.ForeignKey(Country,null=True,blank=True)
-    language = models.CharField(max_length=6)
+    user_id = models.CharField(max_length=100,unique=True)
+    full_name = models.CharField(max_length=25,null=True,blank=True)
+    radio_station = models.CharField(max_length=25,null=True,blank=True)
+    country = models.CharField(max_length=10,null=True,blank=True)
+    language = models.CharField(max_length=6,null=True,blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.user_id
 
 class Content(models.Model):
     topic_en = models.CharField(max_length=100)
@@ -25,5 +25,11 @@ class Content(models.Model):
         return self.topic_en
 
 class Question(models.Model):
-    chat_id = models.ForeignKey('ChatUser')
+    chat_user = models.ForeignKey('ChatUser',null=True,blank=True)
+    type = models.CharField(max_length=15,null=True,blank=True)
     content = models.TextField()
+
+    answered_by = models.CharField(max_length=30,null=True,blank=True)
+    answer = models.TextField(null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated_at = models.DateTimeField(auto_now=True)
