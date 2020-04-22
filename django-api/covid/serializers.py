@@ -13,6 +13,11 @@ class ChatUserSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = "__all__"
+	question_from = serializers.CharField(source='chat_user.full_name',read_only=True)
+	country = serializers.CharField(source='chat_user.country',read_only=True)
+	language = serializers.CharField(source='chat_user.language',read_only=True)
+	radio_station = serializers.CharField(source='chat_user.radio_station',read_only=True)
+
+	class Meta:
+		model = Question
+		fields = "__all__"
