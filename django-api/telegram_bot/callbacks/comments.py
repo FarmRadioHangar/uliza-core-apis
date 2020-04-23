@@ -15,7 +15,16 @@ def add_comment(bot,update):
     if update.message.from_user.id in comment_states:
         log_id = comment_states[update.message.from_user.id].split('/add_comment__')[1]
         log = Log.objects.get(pk=log_id)
-        telegram_username = update.message.from_user.first_name+' '+update.message.from_user.last_name+' (@'+update.message.from_user.username+')'
+
+        if update.message.from_user.username and update.message.from_user.first_name and update.message.from_user.last_name:
+            telegram_username = update.message.from_user.first_name+' '+update.message.from_user.last_name+' (@'+update.message.from_user.username+')'
+        elif update.message.from_user.username and update.message.from_user.first_name:
+            telegram_username = update.message.from_user.first_name +' (@'+update.message.from_user.username+')'
+        elif update.message.from_user.username:
+            telegram_username = update.message.from_user.username
+        else:
+            telegram_username = update.message.from_user.first_name
+
         Comment.objects.create(log=log,content=update.message.text,telegram_username=telegram_username)
 
     bot.sendMessage(update.message.chat.id, text='Your comment is noted. Thank You!')
