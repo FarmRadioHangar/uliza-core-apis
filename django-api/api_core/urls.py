@@ -1,7 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework.documentation import include_docs_urls
-from settings import TELEGRAM_TOKEN
 
 urlpatterns = [
     url(r'^api/admin', include(admin.site.urls)),
