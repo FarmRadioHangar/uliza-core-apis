@@ -14,9 +14,10 @@ class ChatUser(models.Model):
         return self.user_id
 
 class Content(models.Model):
-    topic_en = models.CharField(max_length=100)
-    topic_fr = models.CharField(max_length=100)
-    topic_am = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    topic_en = models.CharField(max_length=100,null=True,blank=True)
+    topic_fr = models.CharField(max_length=100,null=True,blank=True)
+    topic_am = models.CharField(max_length=100,null=True,blank=True)
     content_en = models.TextField()
     content_fr = models.TextField()
     content_am = models.TextField()
@@ -33,3 +34,5 @@ class Question(models.Model):
     answer = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)
+    def __unicode__(self):
+        return self.content
