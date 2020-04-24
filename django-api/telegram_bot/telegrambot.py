@@ -85,12 +85,12 @@ def main():
     question_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask',)],
         states = {
-                  0: [CallbackQueryHandler(question_instruction,pattern='/ask',)],
-                  1: [MessageHandler(Filters.voice,get_question),
+                  0: [MessageHandler(Filters.voice,get_question),
                       MessageHandler(Filters.text,get_question)],
-                  2: [MessageHandler(Filters.text,get_radio_station)],
-                  3: [CallbackQueryHandler(get_country,pattern="/country_*")]},
-        fallbacks = [CallbackQueryHandler(question_instruction,pattern='/ask',)]
+                  1: [MessageHandler(Filters.text,get_radio_station)],
+                  2: [CallbackQueryHandler(get_country,pattern="/country_*")]},
+        fallbacks = [MessageHandler(Filters.voice,get_question),
+                      MessageHandler(Filters.text,get_question)]
     )
     #comments
     covid_dp.add_handler(question_handler)
