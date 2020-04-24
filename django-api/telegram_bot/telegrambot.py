@@ -85,6 +85,7 @@ def main():
     question_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask',)],
         states = {
+                  0: [CallbackQueryHandler(question_instruction,pattern='/ask',)],
                   1: [MessageHandler(Filters.voice,get_question),
                       MessageHandler(Filters.text,get_question)],
                   2: [MessageHandler(Filters.text,get_radio_station)],
