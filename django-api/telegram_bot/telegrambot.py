@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from api_core.settings import TELEGRAM_TOKENS
 from telegram.ext import CommandHandler,ConversationHandler, Filters, CallbackQueryHandler,RegexHandler ,MessageHandler, Filters
 from django_telegrambot.apps import DjangoTelegramBot
 
@@ -25,7 +26,7 @@ def main():
 
     # covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
 
-    dp = DjangoTelegramBot.getDispatcher('855250794:AAFekAr9OI4pE_ZpEopqoroU8Q5IkcvhVLE')
+    dp = DjangoTelegramBot.getDispatcher(TELEGRAM_TOKENS[0])
 
     dp.add_handler(CommandHandler(["start","home"], start))
 
@@ -80,7 +81,7 @@ def main():
 
     dp.add_error_handler(error)
 
-    covid_dp = DjangoTelegramBot.getDispatcher('1268981723:AAER-MZiPG3jcqeKiOO6G0URxRuoDUJQzeQ')
+    covid_dp = DjangoTelegramBot.getDispatcher(TELEGRAM_TOKENS[1])
     covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
     covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))

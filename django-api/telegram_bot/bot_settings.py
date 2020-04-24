@@ -1,7 +1,7 @@
-from api_core.settings import TELEGRAM_WEBHOOK_SITE,TELEGRAM_WEBHOOK_PREFIX,TELEGRAM_TOKEN
+from api_core.settings import TELEGRAM_WEBHOOK_SITE,TELEGRAM_WEBHOOK_PREFIX,TELEGRAM_TOKENS
 
 BOTS = []
-for token in TELEGRAM_TOKEN:
+for token in TELEGRAM_TOKENS:
     BOTS.append({'TOKEN':token})
 
 #settings.py
