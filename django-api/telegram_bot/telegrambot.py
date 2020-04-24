@@ -106,8 +106,10 @@ def main():
                   2: [MessageHandler(Filters.text,get_radio_station)],
                   3: [CallbackQueryHandler(get_country,pattern="/country_*")]},
         fallbacks = [MessageHandler(Filters.text,get_question)],
-        allow_reentry=True,
-        per_user=True
+        allow_reentry=False,
+        per_user=True,
+        conversation_timeout=120
+
     )
     covid_dp.add_handler(comment_handler)
     covid_dp.add_error_handler(error)
