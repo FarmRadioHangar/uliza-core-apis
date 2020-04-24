@@ -82,8 +82,22 @@ def main():
 
     covid_dp = DjangoTelegramBot.getDispatcher('1268981723:AAER-MZiPG3jcqeKiOO6G0URxRuoDUJQzeQ')
     covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
+    covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))
     covid_dp.add_handler(CallbackQueryHandler(tips_and_resources,pattern="/tips_and_resources"))
+
+    # covid19 content
+    covid_dp.add_handler(CallbackQueryHandler(how_virus_is_spread,pattern="/how_the_virus_is_spread"))
+    covid_dp.add_handler(CallbackQueryHandler(precautionary_measures,pattern="/precautionary_measures"))
+    covid_dp.add_handler(CallbackQueryHandler(symptoms_of_infection,pattern="/symptoms_of_infection"))
+    covid_dp.add_handler(CallbackQueryHandler(myths_misinformation,pattern="/myths_misinformation*"))
+
+    #tips and resources
+    covid_dp.add_handler(CallbackQueryHandler(tips_and_resources,pattern="/tips_and_resources"))
+    covid_dp.add_handler(CallbackQueryHandler(safety_for_broadcasters,pattern="/safety_for_broadcasters"))
+    covid_dp.add_handler(CallbackQueryHandler(broadcaster_resources,pattern="/broadcaster_resources"))
+    covid_dp.add_handler(CallbackQueryHandler(join_online_groups,pattern="/join_online_groups"))
+
     #comments
     comment_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask')],

@@ -1,33 +1,128 @@
 # -*- coding: utf-8 -*-
 from api_core.settings import MEDIA_URL,MEDIA_ROOT
 from covid.models import ChatUser, Question
+from django.template.loader import render_to_string
+
+covid_reply_markup=[[{'text':'Learn more about COVID-19','callback_data':'/learn'},\
+                  {'text':'Go to start','callback_data':'/start'}],[{'text':'Do you have a question?','callback_data':'/ask'}]]
 
 def covid_start(bot,update):
-    bot.sendMessage(update.message.chat_id, text='👋😷\n\n This is a Telegram bot from Farm Radio International.\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19). ')
-    bot.sendMessage(update.message.chat_id, text='What do you want to do?',reply_markup=
+    if update.message:
+        chat_id = update.message.chat_id
+        bot.sendMessage(chat_id, text='👋😷\n\n This is a Telegram bot from Farm Radio International.\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19). ')
+    else:
+        chat_id = update.callback_query.message.chat_id
+
+    bot.sendMessage(chat_id, text='What do you want to do?',reply_markup=
                     {'inline_keyboard':[[{'text':'🦠Learn about COVID-19','callback_data':'/learn'}],
-                                        [{'text':'🎙Get tips and resources','callback_data':'/tips_and_resources'}],
+                                        [{'text':'🎙Tips and resources for broadcasters','callback_data':'/tips_and_resources'}],
                                         [{'text':'❓Ask question or comment','callback_data':'/ask'}]
                                         ]})
 
 def learn(bot,update):
-    reply_markup=[[{'text':'How the virus spread','callback_data':'/how_virus_is_spread'}],\
+    reply_markup=[[{'text':'How the virus spread','callback_data':'/how_the_virus_is_spread'}],\
+                  [{'text':'Precautionary measures','callback_data':'/precautionary_measures'}],\
                   [{'text':'Symptoms and infection','callback_data':'/symptoms_of_infection'}],\
-                  [{'text':'Myths, misinformation & fake news','callback_data':'/myths_misinformation'}]]
+                  [{'text':'Myths, misinformation & fake news I','callback_data':'/myths_misinformation_1'}],\
+                  [{'text':'Myths, misinformation & fake news II','callback_data':'/myths_misinformation_2'}]]
     bot.sendPhoto(update.callback_query.message.chat_id,'https://farmradio.org/wp-content/uploads/2020/03/covid-19-response_blog.jpg',caption="<b>\nSelect the topic you want to learn more about</b>",parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
 def tips_and_resources(bot,update):
     reply_markup=[[{'text':'Safety for broadcasters','callback_data':'/safety_for_broadcasters'}],\
-                  [{'text':'Symptoms and infection','callback_data':'/broadcaster_resources'}],\
-                  [{'text':'Myths, misinformation & fake news','callback_data':'/join_online_groups'}]]
+                  [{'text':'Broadcaster resources','callback_data':'/broadcaster_resources'}],\
+                  [{'text':'Join online groups','callback_data':'/join_online_groups'}]]
     bot.sendPhoto(update.callback_query.message.chat_id,'https://farmradio.org/wp-content/uploads/2020/03/Precious-Naturinda-website.jpg',\
                   caption="<b>Stay safe while still working</b>\n\nSelect the topic you want to learn more about",parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+
+def how_virus_is_spread(bot,update):
+    from covid.models import Content
+    content = Content.objects.filter(title='how_the_virus_is_spread')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    topics = []
+    lang = 'en'
+    topic = content[0]
+    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
+
+def precautionary_measures(bot,update):
+    from covid.models import Content
+    content = Content.objects.filter(title='how_the_virus_is_spread')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    topics = []
+    lang = 'en'
+    topic = content[1]
+    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
+
+def symptoms_of_infection(bot,update):
+    from covid.models import Content
+    content = Content.objects.filter(title='symptoms_of_infection')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    topics = []
+    lang = 'en'
+    topic = content[0]
+    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
+
+def safety_for_broadcasters(bot,update):
+    from covid.models import Content
+    content = Content.objects.filter(title='safety_for_broadcasters')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    topics = []
+    lang = 'en'
+    topic = content[0]
+    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
+    reply_markup = [[{'text':'See other tips for broadcasters','callback_data':'/tips_and_resources'},\
+                   {'text':'Go to start','callback_data':'/start'}],[{'text':'Do you have a question?','callback_data':'/ask'}]]
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+
+def myths_misinformation(bot,update):
+    from covid.models import Content
+    index = update.callback_query.data.split('_')[2]
+    content = Content.objects.filter(title='myths_misinformation')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    topics = []
+    lang = 'en'
+    topic = content[int(index)-1]
+    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
+
+def join_online_groups(bot,update):
+    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 Join online broadcaster groups</b> \n\nLinks to online groups will be shared here soon.\n --',parse_mode='HTML')
+
+def broadcaster_resources(bot,update):
+    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 Broadcaster resources</b> \n\nLinks to online resources will be shared here soon. \n --',parse_mode='HTML')
+
 
 question_states = {}
 def question_instruction(bot,update):
     # answerCallbackQuery(callback_query_id, text=None, show_alert=False, url=None, cache_time=None, timeout=None, **kwargs)
     question_states[update.callback_query.from_user.id]=update.callback_query.data
-    bot.sendMessage(update.callback_query.message.chat.id,text="Send your question or comment using the chat text or voice inputs.")
+    bot.sendMessage(update.callback_query.message.chat.id,text="❓What is your question or comment? Use the chat text or voice inputs.")
 
     return 1
 
@@ -70,7 +165,7 @@ def get_question(bot,update):
         bot.sendMessage(update.message.chat.id, text='Which Radio station do you work for?')
         return 2
     else:
-        bot.sendMessage(update.message.chat.id, text='Your question is recieved. Thank You!')
+        bot.sendMessage(update.message.chat.id, text='Your question is recieved. You will be notified with the answer soon.\nThank You!')
         return -1
 
 def get_country(bot,update):
