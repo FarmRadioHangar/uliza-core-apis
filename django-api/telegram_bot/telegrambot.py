@@ -49,7 +49,6 @@ def main():
                   0: [CallbackQueryHandler(comment_instruction,pattern='/add_comment*')],
                   1: [MessageHandler(Filters.text,add_comment)]},
         fallbacks = [MessageHandler(Filters.text,add_comment)],
-        allow_reentry= True
     )
     dp.add_handler(comment_handler)
     dp.add_handler(CallbackQueryHandler(show_comments,pattern='/show_comments*'))
@@ -101,14 +100,14 @@ def main():
 
     #comments
     comment_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask')],
+        entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask',)],
         states = {
-                  0: [CallbackQueryHandler(question_instruction,pattern='/ask')],
                   1: [MessageHandler(Filters.all,get_question)],
                   2: [MessageHandler(Filters.text,get_radio_station)],
                   3: [CallbackQueryHandler(get_country,pattern="/country_*")]},
         fallbacks = [MessageHandler(Filters.text,get_question)],
-        allow_reentry= True
+        allow_reentry=True,
+        per_user=True
     )
     covid_dp.add_handler(comment_handler)
     covid_dp.add_error_handler(error)
