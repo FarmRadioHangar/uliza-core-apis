@@ -90,7 +90,7 @@ def main():
                   3: [CallbackQueryHandler(get_country,pattern="/country_*")]},
         fallbacks = [MessageHandler(Filters.text,get_question),
                      MessageHandler(Filters.text,get_radio_station),
-                     CallbackQueryHandler(get_country,pattern="/country_*")]],
+                     CallbackQueryHandler(get_country,pattern="/country_*")],
     )
     #comments
     covid_dp.add_handler(question_handler)
