@@ -123,72 +123,101 @@ def broadcaster_resources(bot,update):
     bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 Broadcaster resources</b> \n\nLinks to online resources will be shared here soon. \n --',
                     parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
+def get_username(from_user):
+    if from_user.username and from_user.first_name and from_user.last_name:
+        telegram_username = from_user.first_name+' '+from_user.last_name+' (@'+from_user.username+')'
+    elif from_user.username and from_user.first_name:
+        telegram_username = from_user.first_name +' (@'+from_user.username+')'
+    elif from_user.username:
+        telegram_username = from_user.username
+    else:
+        telegram_username = from_user.first_name
 
-question_states = {}
+    return telegram_username
+
+def update_user_state(id,state=None):
+    chat_user = ChatUser.objects.filter(user_id='t-'+str(id))
+
+    if chat_user:
+        if state:
+            chat_user[0].state = state
+            chat_user[0].save()
+        return chat_user[0]
+    else:
+        return False
+
+INSTRUCTION, QUESTION, RADIOSTATION, COUNTRY = range(4)
+
 def question_instruction(bot,update):
-    # answerCallbackQuery(callback_query_id, text=None, show_alert=False, url=None, cache_time=None, timeout=None, **kwargs)
-    question_states[update.callback_query.from_user.id]=update.callback_query.data
-    bot.sendMessage(update.callback_query.message.chat.id,text="❓What is your question or comment? Use the chat text or voice inputs.")
+    if update.callback_query:
+        from_user =  update.callback_query.from_user
+        chat_user = update_user_state(from_user.id,QUESTION)
+        message = update.callback_query.message
+    elif update.message:
+        from_user =  update.message.from_user
+        message = update.message
+        chat_user = update_user_state(update.message.from_user.id,QUESTION)
 
-    return 0
+    if not chat_user:
+        chat_user = ChatUser.objects.create(full_name=get_username(from_user),user_id='t-'+str(from_user.id))
 
+    bot.sendMessage(message.chat.id,text="❓What is your question or comment? Use the chat text or voice inputs.")
+
+def conversational_dispatch(bot,update):
+    chat_user = update_user_state(update.message.from_user.id)
+    if chat_user.state == QUESTION:
+        get_question(bot,update)
+    elif chat_user.state == RADIOSTATION:
+        get_radio_station(bot,update)
+    elif chat_user.state == COUNTRY:
+        get_country(bot,update)
+    else:
+        question_instruction(bot,update)
 
 def get_question(bot,update):
-    chat_user = ChatUser.objects.filter(user_id='t-'+str(update.message.from_user.id))
+    chat_user = update_user_state(update.message.from_user.id)
 
-    if update.message.from_user.id in question_states:
-        if not chat_user:
-            if update.message.from_user.username and update.message.from_user.first_name and update.message.from_user.last_name:
-                telegram_username = update.message.from_user.first_name+' '+update.message.from_user.last_name+' (@'+update.message.from_user.username+')'
-            elif update.message.from_user.username and update.message.from_user.first_name:
-                telegram_username = update.message.from_user.first_name +' (@'+update.message.from_user.username+')'
-            elif update.message.from_user.username:
-                telegram_username = update.message.from_user.username
-            else:
-                telegram_username = update.message.from_user.first_name
+    if update.message.voice:
+        file = bot.getFile(update.message.voice.file_id)
+        file_name = 't_voice_'+str(update.message.voice.file_id)+'.ogg'
+        file.download(file_name)
+        content = 'https://log.uliza.fm'+MEDIA_URL+file_name
+        type = 'audio'
+    elif update.message.text:
+        type = 'text'
+        content = update.message.text
+    else:
+        bot.sendMessage(update.message.chat.id, text='Content error: Message format not supported')
+        chat_user.state = -1
+        chat_user.save()
 
-            chat_user = ChatUser.objects.create(full_name=telegram_username,user_id='t-'+str(update.message.from_user.id))
-        else:
-            chat_user = chat_user[0]
-
-        if update.message.voice:
-            file = bot.getFile(update.message.voice.file_id)
-            file_name = 't_voice_'+str(update.message.voice.file_id)+'.ogg'
-            file.download(file_name)
-            content = 'https://log.uliza.fm'+MEDIA_URL+file_name
-            type = 'audio'
-        elif update.message.text:
-            type = 'text'
-            content = update.message.text
-        else:
-            bot.sendMessage(update.message.chat.id, text='Content error: Message format not supported')
-            return -1
-
-        Question.objects.create(chat_user=chat_user,type=type,content=content)
+    Question.objects.create(chat_user=chat_user,type=type,content=content)
 
 
     if not chat_user.radio_station or not chat_user.country:
         bot.sendMessage(update.message.chat.id, text='Which Radio station do you work for?')
-        return 1
+        chat_user.state = RADIOSTATION
+        chat_user.save()
     else:
         bot.sendMessage(update.message.chat.id, text='Your question is recieved. You will be notified with the answer soon.\nThank You!')
-        return -1
+        chat_user.state = -1
+        chat_user.save()
 
 def get_country(bot,update):
     code = update.callback_query.data.split('_')[1]
     # answerCallbackQuery(callback_query_id, text=None, show_alert=False, url=None, cache_time=None, timeout=None, **kwargs)
     chat_user = ChatUser.objects.get(user_id='t-'+str(update.callback_query.from_user.id))
     chat_user.country = code
-    chat_user.save()
 
     bot.sendMessage(update.callback_query.message.chat.id, text='Your question/comment is recieved. Thank You!')
-    return -1
+
+    chat_user.state = -1
+    chat_user.save()
 
 def get_radio_station(bot,update):
     # answerCallbackQuery(callback_query_id, text=None, show_alert=False, url=None, cache_time=None, timeout=None, **kwargs)
     chat_user = ChatUser.objects.get(user_id='t-'+str(update.message.from_user.id))
     chat_user.radio_station = update.message.text
-    chat_user.save()
 
     bot.sendMessage(update.message.chat.id, text='Where are you from?',reply_markup=
                     {'inline_keyboard':[[{'text':'Ethiopia','callback_data':'/country_et'},
@@ -203,4 +232,5 @@ def get_radio_station(bot,update):
                                          {'text':'Malawi','callback_data':'/country_mw'}],
                                          [{'text':'Other','callback_data':'/country_other'}],
                                         ]})
-    return 2
+    chat_user.state = COUNTRY
+    chat_user.save()

@@ -82,19 +82,6 @@ def main():
 
     covid_dp = DjangoTelegramBot.getDispatcher(TELEGRAM_TOKENS[1])
 
-    question_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask',)],
-        states = {
-                  0: [MessageHandler(Filters.voice,get_question),
-                      MessageHandler(Filters.text,get_question)],
-                  1: [MessageHandler(Filters.text,get_radio_station)],
-                  2: [CallbackQueryHandler(get_country,pattern="/country_*")]},
-        fallbacks = [MessageHandler(Filters.voice,get_question),
-                      MessageHandler(Filters.text,get_question)]
-    )
-    #comments
-    covid_dp.add_handler(question_handler)
-
     covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
     covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))
@@ -111,6 +98,21 @@ def main():
     covid_dp.add_handler(CallbackQueryHandler(safety_for_broadcasters,pattern="/safety_for_broadcasters"))
     covid_dp.add_handler(CallbackQueryHandler(broadcaster_resources,pattern="/broadcaster_resources"))
     covid_dp.add_handler(CallbackQueryHandler(join_online_groups,pattern="/join_online_groups"))
+
+    # question_handler = ConversationHandler(
+    #     entry_points = [CommandHandler('ask', question_instruction)],
+    #     states = {
+    #               0: [MessageHandler(Filters.voice,get_question),
+    #                   MessageHandler(Filters.text,get_question)],
+    #               1: [MessageHandler(Filters.text,get_radio_station)],
+    #               2: [CallbackQueryHandler(get_country,pattern="/country_*")]},
+    #     fallbacks = [CallbackQueryHandler(question_instruction)]
+    # )
+    #comments
+    # covid_dp.add_handler(question_handler)
+    covid_dp.add_handler(CallbackQueryHandler(question_instruction,pattern="/ask"))
+    covid_dp.add_handler(MessageHandler(Filters.all,conversational_dispatch))
+    covid_dp.add_handler(CallbackQueryHandler(get_country,pattern="/country_*"))
 
 
     covid_dp.add_error_handler(error)
