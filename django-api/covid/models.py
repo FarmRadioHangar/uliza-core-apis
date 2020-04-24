@@ -6,7 +6,7 @@ class ChatUser(models.Model):
     radio_station = models.CharField(max_length=25,null=True,blank=True)
     country = models.CharField(max_length=10,null=True,blank=True)
     language = models.CharField(max_length=6,null=True,blank=True)
-    state = models.IntegerField(null=True, blank=True, default=0)
+    state = models.IntegerField(null=True, blank=True, default=-1)
 
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)
