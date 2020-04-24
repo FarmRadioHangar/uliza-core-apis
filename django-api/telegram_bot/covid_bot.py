@@ -130,7 +130,7 @@ def question_instruction(bot,update):
     question_states[update.callback_query.from_user.id]=update.callback_query.data
     bot.sendMessage(update.callback_query.message.chat.id,text="❓What is your question or comment? Use the chat text or voice inputs.")
 
-    return 1
+    return 0
 
 
 def get_question(bot,update):
@@ -169,7 +169,7 @@ def get_question(bot,update):
 
     if not chat_user.radio_station or not chat_user.country:
         bot.sendMessage(update.message.chat.id, text='Which Radio station do you work for?')
-        return 2
+        return 1
     else:
         bot.sendMessage(update.message.chat.id, text='Your question is recieved. You will be notified with the answer soon.\nThank You!')
         return -1
@@ -203,4 +203,4 @@ def get_radio_station(bot,update):
                                          {'text':'Malawi','callback_data':'/country_mw'}],
                                          [{'text':'Other','callback_data':'/country_other'}],
                                         ]})
-    return 3
+    return 2
