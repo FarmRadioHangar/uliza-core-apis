@@ -14,8 +14,16 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'Messenger'));
  </script>
+
+ <div style="padding:10px;line-height: 1.5;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif">
+ {% for topic in topics %}
   {% autoescape off %}
-  {{content}}
+  <b>{{topic.topic}}</b><br>
+  <p>
+  {{topic.content|linebreaks}}
+  </p>
   {% endautoescape %}
+ {% endfor %}
+ </div>
  </body>
 </html>

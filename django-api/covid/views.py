@@ -57,13 +57,13 @@ class QuestionEntity(generics.RetrieveUpdateAPIView):
 
 
 def content(request,topic,lang):
-    content = Content.objects.filter(topic_en=topic)
+    content = Content.objects.filter(title=topic)
 
     if len(content)==0:
         return HttpResponse('Content error')
 
-    content = content[0]
-    topic = getattr(content,'topic_'+lang)
-    content = getattr(content,'content_'+lang)
+    topics = []
+    for topic in content:
+        topics.append({'topic': getattr(topic,'topic_'+lang),'content': getattr(topic,'content_'+lang)})
 
-    return render(request, 'bot_content.html', {'topic':topic,'content':content,'lang':lang})
+    return render(request, 'bot_content.html', {'topics':topics})
