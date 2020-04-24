@@ -9,11 +9,11 @@ covid_reply_markup=[[{'text':'Learn more about COVID-19','callback_data':'/learn
 def covid_start(bot,update):
     if update.message:
         chat_id = update.message.chat_id
-        bot.sendMessage(chat_id, text='👋😷\n\n This is a Telegram bot from Farm Radio International.\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19). ')
+        bot.sendMessage(chat_id, text='👋😷\n\nHi!')
     else:
         chat_id = update.callback_query.message.chat_id
 
-    bot.sendMessage(chat_id, text='What do you want to do?',reply_markup=
+    bot.sendMessage(chat_id, text='This is a Telegram bot from Farm Radio International.\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19).\n\n What do you want to do?',reply_markup=
                     {'inline_keyboard':[[{'text':'🦠Learn about COVID-19','callback_data':'/learn'}],
                                         [{'text':'🎙Tips and resources for broadcasters','callback_data':'/tips_and_resources'}],
                                         [{'text':'❓Ask question or comment','callback_data':'/ask'}]
@@ -112,10 +112,16 @@ def myths_misinformation(bot,update):
     bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
 
 def join_online_groups(bot,update):
-    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 Join online broadcaster groups</b> \n\nLinks to online groups will be shared here soon.\n --',parse_mode='HTML')
+    reply_markup = [[{'text':'Tips for broadcasters','callback_data':'/tips_and_resources'},\
+                   {'text':'Go to start','callback_data':'/start'}]]
+    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 Join online broadcaster groups</b> \n\nLinks to online groups will be shared here soon.\n --',
+                    parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
 def broadcaster_resources(bot,update):
-    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 Broadcaster resources</b> \n\nLinks to online resources will be shared here soon. \n --',parse_mode='HTML')
+    reply_markup = [[{'text':'Tips for broadcasters','callback_data':'/tips_and_resources'},\
+                   {'text':'Go to start','callback_data':'/start'}]]
+    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 Broadcaster resources</b> \n\nLinks to online resources will be shared here soon. \n --',
+                    parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
 
 question_states = {}
