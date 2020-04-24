@@ -81,6 +81,18 @@ def main():
     dp.add_error_handler(error)
 
     covid_dp = DjangoTelegramBot.getDispatcher(TELEGRAM_TOKENS[1])
+
+    question_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask',)],
+        states = {
+                  1: [MessageHandler(Filters.all,get_question)],
+                  2: [MessageHandler(Filters.text,get_radio_station)],
+                  3: [CallbackQueryHandler(get_country,pattern="/country_*")]},
+        fallbacks = [MessageHandler(Filters.text,get_question)],
+    )
+    #comments
+    covid_dp.add_handler(question_handler)
+
     covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
     covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))
@@ -98,18 +110,5 @@ def main():
     covid_dp.add_handler(CallbackQueryHandler(broadcaster_resources,pattern="/broadcaster_resources"))
     covid_dp.add_handler(CallbackQueryHandler(join_online_groups,pattern="/join_online_groups"))
 
-    #comments
-    comment_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(question_instruction,pattern='/ask',)],
-        states = {
-                  1: [MessageHandler(Filters.all,get_question)],
-                  2: [MessageHandler(Filters.text,get_radio_station)],
-                  3: [CallbackQueryHandler(get_country,pattern="/country_*")]},
-        fallbacks = [MessageHandler(Filters.text,get_question)],
-        allow_reentry=False,
-        per_user=True,
-        conversation_timeout=120
 
-    )
-    covid_dp.add_handler(comment_handler)
     covid_dp.add_error_handler(error)
