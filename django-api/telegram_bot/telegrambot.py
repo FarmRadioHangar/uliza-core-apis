@@ -99,18 +99,9 @@ def main():
     covid_dp.add_handler(CallbackQueryHandler(broadcaster_resources,pattern="/broadcaster_resources"))
     covid_dp.add_handler(CallbackQueryHandler(join_online_groups,pattern="/join_online_groups"))
 
-    # question_handler = ConversationHandler(
-    #     entry_points = [CommandHandler('ask', question_instruction)],
-    #     states = {
-    #               0: [MessageHandler(Filters.voice,get_question),
-    #                   MessageHandler(Filters.text,get_question)],
-    #               1: [MessageHandler(Filters.text,get_radio_station)],
-    #               2: [CallbackQueryHandler(get_country,pattern="/country_*")]},
-    #     fallbacks = [CallbackQueryHandler(question_instruction)]
-    # )
-    #comments
-    # covid_dp.add_handler(question_handler)
-    covid_dp.add_handler(CallbackQueryHandler(question_instruction,pattern="/ask"))
+    covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/no"))
+    covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/ask_confirmation"))
+    covid_dp.add_handler(CallbackQueryHandler(question_instruction,pattern="/question_instruction"))
     covid_dp.add_handler(MessageHandler(Filters.all,conversational_dispatch))
     covid_dp.add_handler(CallbackQueryHandler(get_country,pattern="/country_*"))
 

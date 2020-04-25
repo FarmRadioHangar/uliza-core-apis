@@ -4,7 +4,7 @@ from covid.models import ChatUser, Question
 from django.template.loader import render_to_string
 
 covid_reply_markup=[[{'text':'Learn more about COVID-19','callback_data':'/learn'},\
-                  {'text':'Go to start','callback_data':'/start'}],[{'text':'Do you have a question?','callback_data':'/ask'}]]
+                  {'text':'Go to start','callback_data':'/start'}],[{'text':'Do you have a question?','callback_data':'/ask_confirmation'}]]
 
 def covid_start(bot,update):
     if update.message:
@@ -16,7 +16,7 @@ def covid_start(bot,update):
     bot.sendMessage(chat_id, text='This is a Telegram bot from Farm Radio International.\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19).\n\n What do you want to do?',reply_markup=
                     {'inline_keyboard':[[{'text':'🦠Learn about COVID-19','callback_data':'/learn'}],
                                         [{'text':'🎙Tips and resources for broadcasters','callback_data':'/tips_and_resources'}],
-                                        [{'text':'❓Ask question or comment','callback_data':'/ask'}]
+                                        [{'text':'❓Ask question or comment','callback_data':'/ask_confirmation'}]
                                         ]})
 
 def learn(bot,update):
@@ -91,7 +91,7 @@ def safety_for_broadcasters(bot,update):
     topic = content[0]
     topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
     reply_markup = [[{'text':'See other tips for broadcasters','callback_data':'/tips_and_resources'},\
-                   {'text':'Go to start','callback_data':'/start'}],[{'text':'Do you have a question?','callback_data':'/ask'}]]
+                   {'text':'Go to start','callback_data':'/start'}],[{'text':'Do you have a question?','callback_data':'/ask_confirmation'}]]
     output = render_to_string('covid_content.html',context={'topics':topics})
     bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
@@ -147,7 +147,36 @@ def update_user_state(id,state=None):
         return False
 
 INSTRUCTION, QUESTION, RADIOSTATION, COUNTRY = range(4)
+def conversational_dispatch(bot,update):
+    chat_user = update_user_state(update.message.from_user.id)
 
+    if chat_user.state == QUESTION:
+        get_question(bot,update)
+    elif chat_user.state == RADIOSTATION:
+        get_radio_station(bot,update)
+    elif chat_user.state == COUNTRY:
+        get_country(bot,update)
+    else:
+        get_confirmation(bot,update)
+
+# step 1 CONFIRMATION
+def get_confirmation(bot,update):
+    if update.callback_query:
+        message = update.callback_query.message
+        if update.callback_query.data == '/no':
+            bot.sendMessage(message.chat.id,text="Ok, no problem. See some other content instead maybe.")
+            covid_start(bot,update)
+            return -1
+    else:
+        message = update.message
+
+    reply_markup=[[{'text':'Yes','callback_data':'/question_instruction'},\
+                  {'text':'No','callback_data':'/no'}]]
+
+    bot.sendMessage(message.chat.id,text="❓Do you have a question or comment?",
+                    parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+
+# step 2 INSTRUCTION
 def question_instruction(bot,update):
     if update.callback_query:
         from_user =  update.callback_query.from_user
@@ -163,17 +192,7 @@ def question_instruction(bot,update):
 
     bot.sendMessage(message.chat.id,text="❓What is your question or comment? Use the chat text or voice inputs.")
 
-def conversational_dispatch(bot,update):
-    chat_user = update_user_state(update.message.from_user.id)
-    if chat_user.state == QUESTION:
-        get_question(bot,update)
-    elif chat_user.state == RADIOSTATION:
-        get_radio_station(bot,update)
-    elif chat_user.state == COUNTRY:
-        get_country(bot,update)
-    else:
-        question_instruction(bot,update)
-
+# step 3 QUESTION
 def get_question(bot,update):
     chat_user = update_user_state(update.message.from_user.id)
 
@@ -203,17 +222,7 @@ def get_question(bot,update):
         chat_user.state = -1
         chat_user.save()
 
-def get_country(bot,update):
-    code = update.callback_query.data.split('_')[1]
-    # answerCallbackQuery(callback_query_id, text=None, show_alert=False, url=None, cache_time=None, timeout=None, **kwargs)
-    chat_user = ChatUser.objects.get(user_id='t-'+str(update.callback_query.from_user.id))
-    chat_user.country = code
-
-    bot.sendMessage(update.callback_query.message.chat.id, text='Your question/comment is recieved. Thank You!')
-
-    chat_user.state = -1
-    chat_user.save()
-
+# step 4 RADIOSTATION
 def get_radio_station(bot,update):
     # answerCallbackQuery(callback_query_id, text=None, show_alert=False, url=None, cache_time=None, timeout=None, **kwargs)
     chat_user = ChatUser.objects.get(user_id='t-'+str(update.message.from_user.id))
@@ -233,4 +242,16 @@ def get_radio_station(bot,update):
                                          [{'text':'Other','callback_data':'/country_other'}],
                                         ]})
     chat_user.state = COUNTRY
+    chat_user.save()
+
+# step 5 COUNTRY
+def get_country(bot,update):
+    code = update.callback_query.data.split('_')[1]
+    # answerCallbackQuery(callback_query_id, text=None, show_alert=False, url=None, cache_time=None, timeout=None, **kwargs)
+    chat_user = ChatUser.objects.get(user_id='t-'+str(update.callback_query.from_user.id))
+    chat_user.country = code
+
+    bot.sendMessage(update.callback_query.message.chat.id, text='Your question/comment is recieved. Thank You!')
+
+    chat_user.state = -1
     chat_user.save()
