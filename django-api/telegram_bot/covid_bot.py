@@ -159,7 +159,7 @@ def question_instruction(bot,update):
         chat_user = update_user_state(update.message.from_user.id,QUESTION)
 
     if not chat_user:
-        chat_user = ChatUser.objects.create(full_name=get_username(from_user),user_id='t-'+str(from_user.id))
+        chat_user = ChatUser.objects.create(full_name=get_username(from_user),user_id='t-'+str(from_user.id),state=QUESTION)
 
     bot.sendMessage(message.chat.id,text="❓What is your question or comment? Use the chat text or voice inputs.")
 
