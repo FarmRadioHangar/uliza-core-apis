@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from api_core.settings import MEDIA_URL,MEDIA_ROOT
+from api_core.settings import MEDIA_URL,MEDIA_ROOT,TELEGRAM_WEBHOOK_SITE
 from covid.models import ChatUser, Question
 from django.template.loader import render_to_string
 
@@ -159,7 +159,7 @@ def question_instruction(bot,update):
         chat_user = update_user_state(update.message.from_user.id,QUESTION)
 
     if not chat_user:
-        chat_user = ChatUser.objects.create(full_name=get_username(from_user),user_id='t-'+str(from_user.id))
+        chat_user = ChatUser.objects.create(full_name=get_username(from_user),user_id='t-'+str(from_user.id),state=QUESTION)
 
     bot.sendMessage(message.chat.id,text="❓What is your question or comment? Use the chat text or voice inputs.")
 
@@ -180,8 +180,8 @@ def get_question(bot,update):
     if update.message.voice:
         file = bot.getFile(update.message.voice.file_id)
         file_name = 't_voice_'+str(update.message.voice.file_id)+'.ogg'
-        file.download(file_name)
-        content = 'https://log.uliza.fm'+MEDIA_URL+file_name
+        file.download(MEDIA_ROOT,file_name)
+        content = TELEGRAM_WEBHOOK_SITE+MEDIA_URL+file_name
         type = 'audio'
     elif update.message.text:
         type = 'text'

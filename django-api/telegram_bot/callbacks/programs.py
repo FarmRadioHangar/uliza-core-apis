@@ -1,6 +1,7 @@
 from log_app.models import *
 from django.template.loader import render_to_string
 from telegram_bot.models import ProgramSubscription
+from api_core.settings import TELEGRAM_WEBHOOK_SITE
 
 
 def episodes_aired(program):
@@ -28,7 +29,7 @@ def program_episode(bot, update):
     reply_markup=[[{'text':'Comment','callback_data':'/add_comment__'+str(log.id)},{'text':'Show my comments','callback_data':'/show_comments__'+str(log.id)}]]
 
     if log.recording_backup:
-        link = 'https://log.uliza.fm'+log.recording_backup.url
+        link = TELEGRAM_WEBHOOK_SITE+log.recording_backup.url
         # link = 'https://log.uliza.fm/media/Uliza-log-Wolayta%20CA%202018%202nd%20Phase-18.mp3'
         if log.offset < 200001:
             output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':None})
@@ -37,7 +38,7 @@ def program_episode(bot, update):
             output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':None,'link':link})
             bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
     elif log.gdrive_available:
-        glink = 'https://log.uliza.fm/api/v1/logs/recording/gdrive/'+str(log.id)
+        glink = TELEGRAM_WEBHOOK_SITE+'/api/v1/logs/recording/gdrive/'+str(log.id)
         output = render_to_string('episode_caption.html',context={'program':log.program,'log':log,'formats':formats,'aired_episodes':aired_episodes,'glink':glink})
         bot.sendMessage(update.message.chat_id,text=output,parse_mode='HTML')
     else:
