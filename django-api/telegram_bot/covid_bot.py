@@ -180,7 +180,7 @@ def get_question(bot,update):
     if update.message.voice:
         file = bot.getFile(update.message.voice.file_id)
         file_name = 't_voice_'+str(update.message.voice.file_id)+'.ogg'
-        file.download(MEDIA_ROOT,file_name)
+        file.download(custom_path=MEDIA_ROOT+'/'+file_name)
         content = TELEGRAM_WEBHOOK_SITE+MEDIA_URL+file_name
         type = 'audio'
     elif update.message.text:
