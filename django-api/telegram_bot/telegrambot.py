@@ -83,6 +83,7 @@ def main():
     covid_dp = DjangoTelegramBot.getDispatcher(TELEGRAM_TOKENS[1])
 
     covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
+    covid_dp.add_handler(CommandHandler("lang",get_language))
     covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))
     covid_dp.add_handler(CallbackQueryHandler(tips_and_resources,pattern="/tips_and_resources"))
@@ -99,20 +100,13 @@ def main():
     covid_dp.add_handler(CallbackQueryHandler(broadcaster_resources,pattern="/broadcaster_resources"))
     covid_dp.add_handler(CallbackQueryHandler(join_online_groups,pattern="/join_online_groups"))
 
-    # question_handler = ConversationHandler(
-    #     entry_points = [CommandHandler('ask', question_instruction)],
-    #     states = {
-    #               0: [MessageHandler(Filters.voice,get_question),
-    #                   MessageHandler(Filters.text,get_question)],
-    #               1: [MessageHandler(Filters.text,get_radio_station)],
-    #               2: [CallbackQueryHandler(get_country,pattern="/country_*")]},
-    #     fallbacks = [CallbackQueryHandler(question_instruction)]
-    # )
-    #comments
-    # covid_dp.add_handler(question_handler)
-    covid_dp.add_handler(CallbackQueryHandler(question_instruction,pattern="/ask"))
-    covid_dp.add_handler(MessageHandler(Filters.all,conversational_dispatch))
+    covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/no"))
+    covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/ask_confirmation"))
+    covid_dp.add_handler(CallbackQueryHandler(question_instruction,pattern="/question_instruction"))
+    covid_dp.add_handler(MessageHandler(Filters.text,conversational_dispatch))
+    covid_dp.add_handler(MessageHandler(Filters.voice,conversational_dispatch))
     covid_dp.add_handler(CallbackQueryHandler(get_country,pattern="/country_*"))
+    covid_dp.add_handler(CallbackQueryHandler(set_language,pattern="/language_*"))
 
 
     covid_dp.add_error_handler(error)
