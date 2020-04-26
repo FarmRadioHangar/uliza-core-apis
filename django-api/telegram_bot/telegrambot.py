@@ -83,6 +83,7 @@ def main():
     covid_dp = DjangoTelegramBot.getDispatcher(TELEGRAM_TOKENS[1])
 
     covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
+    covid_dp.add_handler(CommandHandler("lang",get_language))
     covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))
     covid_dp.add_handler(CallbackQueryHandler(tips_and_resources,pattern="/tips_and_resources"))
@@ -102,8 +103,10 @@ def main():
     covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/no"))
     covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/ask_confirmation"))
     covid_dp.add_handler(CallbackQueryHandler(question_instruction,pattern="/question_instruction"))
-    covid_dp.add_handler(MessageHandler(Filters.all,conversational_dispatch))
+    covid_dp.add_handler(MessageHandler(Filters.text,conversational_dispatch))
+    covid_dp.add_handler(MessageHandler(Filters.voice,conversational_dispatch))
     covid_dp.add_handler(CallbackQueryHandler(get_country,pattern="/country_*"))
+    covid_dp.add_handler(CallbackQueryHandler(set_language,pattern="/language_*"))
 
 
     covid_dp.add_error_handler(error)
