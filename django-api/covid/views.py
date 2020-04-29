@@ -41,7 +41,7 @@ class QuestionGet(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         chat_user = ChatUser.objects.get(user_id=self.request._data['user_id'])
-        chat_user.full_name = self.request._data['full_name']
+        chat_user.country = self.request._data['country']
         chat_user.radio_station = self.request._data['radio_station']
         chat_user.save()
         serializer.save(chat_user = chat_user)
