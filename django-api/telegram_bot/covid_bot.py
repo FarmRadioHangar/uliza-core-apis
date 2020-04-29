@@ -81,7 +81,7 @@ def learn(bot,update,*chat_user):
                   [{'text':_('Symptoms and infection'),'callback_data':'/symptoms_of_infection'}],\
                   [{'text':_('Myths, misinformation & fake news I'),'callback_data':'/myths_misinformation_1'}],\
                   [{'text':_('Myths, misinformation & fake news II'),'callback_data':'/myths_misinformation_2'}]]
-    if chat_user.language == 'fr':
+    if chat_user[0].language == 'fr':
         image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-response_blog.jpg'
     else:
         image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-respons-banner_blog-fr.jpg'
