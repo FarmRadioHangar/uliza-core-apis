@@ -64,11 +64,11 @@ def set_language(bot,update,*chat_user):
 def covid_start(bot,update,*chat_user):
     if update.message:
         chat_id = update.message.chat_id
-        bot.sendMessage(chat_id, text='👋😷\n\nHi!')
+        bot.sendMessage(chat_id, text='👋😷\n\n'+_('Hi!'))
     else:
         chat_id = update.callback_query.message.chat_id
 
-    bot.sendMessage(chat_id, text=_('This is a Telegram bot from Farm Radio International.\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19).\n\n What do you want to do?'),reply_markup=
+    bot.sendMessage(chat_id, text=_('This is a Telegram bot from Farm Radio International(farmradio.org).\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19).\n\n What do you want to do?'),reply_markup=
                     {'inline_keyboard':[[{'text':_('%(icon)sLearn about COVID-19')%{'icon':'🦠'},'callback_data':'/learn'}],
                                         [{'text':_('%(icon)sTips and resources for broadcasters')%{'icon':'🎙'},'callback_data':'/tips_and_resources'}],
                                         [{'text':_('%(icon)sAsk question or comment')%{'icon':'❓'},'callback_data':'/ask_confirmation'}]
@@ -81,7 +81,12 @@ def learn(bot,update,*chat_user):
                   [{'text':_('Symptoms and infection'),'callback_data':'/symptoms_of_infection'}],\
                   [{'text':_('Myths, misinformation & fake news I'),'callback_data':'/myths_misinformation_1'}],\
                   [{'text':_('Myths, misinformation & fake news II'),'callback_data':'/myths_misinformation_2'}]]
-    bot.sendPhoto(update.callback_query.message.chat_id,'https://farmradio.org/wp-content/uploads/2020/03/covid-19-response_blog.jpg',caption="<b>\n"+_("Select the topic you want to learn more about")+"</b>",parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+    if chat_user.language == 'fr':
+        image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-response_blog.jpg'
+    else:
+        image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-respons-banner_blog-fr.jpg'
+
+    bot.sendPhoto(update.callback_query.message.chat_id,image,caption="<b>\n"+_("Select the topic you want to learn more about")+"</b>",parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
 @get_user
 def tips_and_resources(bot,update,*chat_user):
@@ -273,7 +278,7 @@ def get_question(bot,update,*chat_user):
     Question.objects.create(chat_user=chat_user,type=type,content=content)
 
     if not chat_user.radio_station or not chat_user.country:
-        bot.sendMessage(update.message.chat.id, text=_('Which Radio station do you work for?'))
+        bot.sendMessage(update.message.chat.id, text=_('What is the name of the Radio station you work for?'))
         chat_user.state = RADIOSTATION
         chat_user.save()
     else:
@@ -295,7 +300,7 @@ def get_radio_station(bot,update,*chat_user):
                                          [{'text':'Ghana','callback_data':'/country_gh'},
                                          {'text':'Burkina Faso','callback_data':'/country_bf'}],
                                          [{'text':'Nigeria','callback_data':'/country_ng'},
-                                         {'text':'Senegal','callback_data':'/country_tz'}],
+                                         {'text':'Senegal','callback_data':'/country_sn'}],
                                          [{'text':'Mali','callback_data':'/country_ml'},
                                          {'text':'Malawi','callback_data':'/country_mw'}],
                                          [{'text':'Other','callback_data':'/country_other'}],
