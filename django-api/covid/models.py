@@ -24,7 +24,7 @@ class Content(models.Model):
     content_am = models.TextField()
 
     def __unicode__(self):
-        return self.topic_en
+        return self.title
 
 class Question(models.Model):
     chat_user = models.ForeignKey('ChatUser',null=True,blank=True)

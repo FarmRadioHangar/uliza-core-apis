@@ -10,7 +10,7 @@ class ContentGet(generics.ListCreateAPIView):
     queryset = Content.objects.all()
     model = Content
     serializer_class = ContentSerializer
-    filter_fields = ['id','topic_en']
+    filter_fields = ['id','title']
 
 class ContentEntity(generics.RetrieveUpdateAPIView):
 
