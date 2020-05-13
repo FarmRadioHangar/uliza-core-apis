@@ -2,7 +2,7 @@
 <html lang="{{lang}}" dir="ltr">
  <head>
   <meta charset="utf-8">
-  <title>{{topic}}</title>
+  <title>COVID-19 bot</title>
  </head>
  <body>
  <script type="text/javascript">
@@ -14,11 +14,12 @@
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'Messenger'));
  </script>
-
  <div style="padding:10px;line-height: 1.5;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif">
  {% for topic in topics %}
   {% autoescape off %}
+  {% if topic.topic %}
   <b><u>{{topic.topic}}</u></b><br>
+  {% endif %}
   <p>
   {{topic.content|linebreaks}}
   </p>
