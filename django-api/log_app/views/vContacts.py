@@ -21,7 +21,7 @@ class ContactGet(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = []
         if 'role__in' in self.request.GET:
-            roles = self.request.GET['role__in'].split(',')
+            roles = self.request.GET.getlist('role__in')
             queryset = Contact.objects.filter(role__in = roles)
 
         if 'pk__in' in self.request.GET:
