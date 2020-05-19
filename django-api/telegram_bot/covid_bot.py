@@ -61,98 +61,252 @@ def set_language(bot,update,*chat_user):
 
 
 @get_user
-def covid_start(bot,update,*chat_user):
+def covid_main_menu(bot,update,*chat_user):
     if update.message:
         chat_id = update.message.chat_id
-        bot.sendMessage(chat_id, text='👋😷\n\n'+_('Hi!'))
+        bot.sendMessage(chat_id, text='👋😷\n\n'+_('Hello!'))
     else:
         chat_id = update.callback_query.message.chat_id
 
-    bot.sendMessage(chat_id, text=_('This is a Telegram bot from Farm Radio International(farmradio.org).\n\nHere you can find information and resources for broadcasters on Coronavirus (COVID-19).\n\n What do you want to do?'),reply_markup=
+    bot.sendMessage(chat_id, text='What do you want to do?',reply_markup=
                     {'inline_keyboard':[[{'text':_('%(icon)sLearn about COVID-19')%{'icon':'🦠'},'callback_data':'/learn'}],
-                                        [{'text':_('%(icon)sTips and resources for broadcasters')%{'icon':'🎙'},'callback_data':'/tips_and_resources'}],
-                                        [{'text':_('%(icon)sAsk question or comment')%{'icon':'❓'},'callback_data':'/ask_confirmation'}]
+                                        [{'text':_('%(icon)sGet radio resources')%{'icon':'🎙'},'callback_data':'/get_radio_resources'}],
+                                        [{'text':_('%(icon)sFact-check myths')%{'icon':'❓'},'callback_data':'/fact_check_myths'}]
+                                        ]})
+@get_user
+def covid_start(bot,update,*chat_user):
+    if update.message:
+        chat_id = update.message.chat_id
+        bot.sendMessage(chat_id, text='👋😷\n\n'+_('Hello!'))
+    else:
+        chat_id = update.callback_query.message.chat_id
+
+    bot.sendMessage(chat_id, text=_('This is the FRI Broadcasters COVID-19 messenger bot.\n\nHere you can find information and resources for broadcasters on coronavirus (COVID-19).\nWe hope this is useful for planning and preparing your radio program.\n\n What do you want to do?'),reply_markup=
+                    {'inline_keyboard':[[{'text':_('%(icon)sLearn about COVID-19')%{'icon':'🦠'},'callback_data':'/learn'}],
+                                        [{'text':_('%(icon)sGet radio resources')%{'icon':'🎙'},'callback_data':'/get_radio_resources'}],
+                                        [{'text':_('%(icon)sFact-check myths')%{'icon':'❓'},'callback_data':'/fact_check_myths'}]
                                         ]})
 
+# COVID-19 content
 @get_user
 def learn(bot,update,*chat_user):
-    reply_markup=[[{'text':_('How the virus spread'),'callback_data':'/how_the_virus_is_spread'}],\
-                  [{'text':_('Precautionary measures'),'callback_data':'/precautionary_measures'}],\
-                  [{'text':_('Symptoms and infection'),'callback_data':'/symptoms_of_infection'}],\
-                  [{'text':_('Myths, misinformation & fake news I'),'callback_data':'/myths_misinformation_1'}],\
-                  [{'text':_('Myths, misinformation & fake news II'),'callback_data':'/myths_misinformation_2'}]]
+    reply_markup=[[{'text':_('Basic facts'),'callback_data':'/basic_facts'}],\
+                  [{'text':_('How the virus spread'),'callback_data':'/how_the_virus_is_spread'}],\
+                  [{'text':_('Preventive measures'),'callback_data':'/preventive_measures'}]]
     if not chat_user[0].language == 'fr':
         image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-response_blog.jpg'
     else:
         image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-respons-banner_blog-fr.jpg'
 
-    bot.sendPhoto(update.callback_query.message.chat_id,image,caption="<b>\n"+_("Select the topic you want to learn more about")+"</b>",parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+    bot.sendPhoto(update.callback_query.message.chat_id,image,caption=_("COVID-19"),parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+
 
 @get_user
-def tips_and_resources(bot,update,*chat_user):
-    reply_markup=[[{'text':_('Safety for broadcasters'),'callback_data':'/safety_for_broadcasters'}],\
-                  [{'text':_('Broadcaster resources'),'callback_data':'/broadcaster_resources'}],\
-                  [{'text':_('Join online groups'),'callback_data':'/join_online_groups'}]]
+def basic_facts(bot,update,*chat_user):
+    content = _("The most common symptoms of COVID-19 are fever, tiredness, and dry cough. Symptoms are usually mild and begin gradually. Some infected people have no symptoms and don't feel ill. People with fever, cough, and difficulty breathing should seek medical attention.")
+    segment_reply_markup = [[{'text':_('Learn more'),'callback_data':'/more_basic_facts'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def more_basic_facts(bot,update,*chat_user):
+    content = _("Most people (about 80%) recover without special treatment. About 1 in 6 people become seriously ill. Older people and people with health issues such as heart problems, diabetes, and high blood pressure are more likely to become seriously ill.")
+    segment_reply_markup = [[{'text':_('Important info'),'callback_data':'/important_info'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+
+@get_user
+def important_info(bot,update,*chat_user):
+    from covid.models import Content
+    content = Content.objects.filter(title='important_info')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    segment_reply_markup = [[{'text':_('How the virus spread?'),'callback_data':'/how_the_virus_is_spread'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
+    topics = []
+    lang = chat_user[0].language
+    topic = content[0]
+    topics.append({'topic':"",'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def how_the_virus_is_spread(bot,update,*chat_user):
+    content = _("People catch COVID-19 from others who have the virus. The disease is spread through small droplets produced when infected people cough, sneeze, or exhale. These droplets can be inhaled by people nearby or land on nearby objects and surfaces. If touched by other people, they can be infected.")
+    segment_reply_markup = [[{'text':_('More info'),'callback_data':'/more_how_the_virus_is_spread'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}],
+                            [{'text':_('Basic facts'),'callback_data':'/basic_facts'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def more_how_the_virus_is_spread(bot,update,*chat_user):
+    content = _("When people inhale droplets or touch contaminated objects or surfaces, then touch their eyes, nose, or mouth, they can be infected. This is why it is important to stay more than 1 metre away from a person who is sick.")
+    segment_reply_markup = [[{'text':_('Preventive measures'),'callback_data':'/preventive_measures'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def preventive_measures(bot,update,*chat_user):
+    content = _("Wash your hands frequently. Maintain social / physical distancing. Avoid touching your eyes, nose, and mouth. Practice good respiratory hygiene. If you have fever, a cough, and difficulty breathing, seek medical care early. Practice safe greetings. ")
+    segment_reply_markup = [[{'text':_('Learn more'),'callback_data':'/more_preventive_measures'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}],
+                            [{'text':_('Basic facts'),'callback_data':'basic_facts'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+
+@get_user
+def more_preventive_measures(bot,update,*chat_user):
+    from covid.models import Content
+    content = Content.objects.filter(title='more_preventive_measures')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    segment_reply_markup = [[{'text':_('Basic facts'),'callback_data':'/basic_facts'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
+    topics = []
+    lang = chat_user[0].language
+    topic = content[0]
+    topics.append({'topic':"",'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':segment_reply_markup})
+
+
+# Get radio resources content
+@get_user
+def get_radio_resources(bot,update,*chat_user):
+    reply_markup=[[{'text':_('Working safely'),'callback_data':'/working_safely'}],\
+                  [{'text':_('Protect your health'),'callback_data':'/protect_your_health'}],\
+                  [{'text':_('Good radio resources'),'callback_data':'/good_radio_resources'}]]
     bot.sendPhoto(update.callback_query.message.chat_id,'https://farmradio.org/wp-content/uploads/2020/03/Precious-Naturinda-website.jpg',\
-                  caption="<b>"+_("Stay safe while still working")+"</b>\n\n"+_("Select the topic you want to learn more about"),parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+                  caption="<b>"+_("Broadcaster resources for COVID-19")+"</b>",parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+
 
 @get_user
-def how_virus_is_spread(bot,update,*chat_user):
+def working_safely(bot,update,*chat_user):
     from covid.models import Content
-    content = Content.objects.filter(title='how_the_virus_is_spread')
+    content = Content.objects.filter(title='working_safely')
 
     if len(content) == 0:
         bot.sendMessage(update.callback_query.message.chat.id,'Content error')
 
-    covid_reply_markup=[[{'text':_('Learn more about COVID-19'),'callback_data':'/learn'},\
-                     {'text':_('Go to start'),'callback_data':'/start'}],
-                     [{'text':_('Do you have a question?'),'callback_data':'/ask_confirmation'}]]
-
+    segment_reply_markup = [[{'text':_('Sanitize your equipment'),'callback_data':'/sanitize_your_equipment'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
     topics = []
     lang = chat_user[0].language
     topic = content[0]
-    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
+    topics.append({'topic':"",'content':getattr(topic,'content_'+lang)})
 
     output = render_to_string('covid_content.html',context={'topics':topics})
-    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':segment_reply_markup})
+
 
 @get_user
-def precautionary_measures(bot,update,*chat_user):
+def sanitize_your_equipment(bot,update,*chat_user):
     from covid.models import Content
-    content = Content.objects.filter(title='how_the_virus_is_spread')
+    content = Content.objects.filter(title='sanitize_your_equipment')
 
     if len(content) == 0:
         bot.sendMessage(update.callback_query.message.chat.id,'Content error')
 
-    covid_reply_markup=[[{'text':_('Learn more about COVID-19'),'callback_data':'/learn'},\
-                     {'text':_('Go to start'),'callback_data':'/start'}],
-                     [{'text':_('Do you have a question?'),'callback_data':'/ask_confirmation'}]]
-    topics = []
-    lang = chat_user[0].language
-    topic = content[1]
-    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
-
-    output = render_to_string('covid_content.html',context={'topics':topics})
-    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
-
-@get_user
-def symptoms_of_infection(bot,update,*chat_user):
-    from covid.models import Content
-    content = Content.objects.filter(title='symptoms_of_infection')
-
-    if len(content) == 0:
-        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
-
-    covid_reply_markup=[[{'text':_('Learn more about COVID-19'),'callback_data':'/learn'},\
-                     {'text':_('Go to start'),'callback_data':'/start'}],
-                     [{'text':_('Do you have a question?'),'callback_data':'/ask_confirmation'}]]
+    segment_reply_markup = [[{'text':_('Protect your health'),'callback_data':'/protect_your_health'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
     topics = []
     lang = chat_user[0].language
     topic = content[0]
-    topics.append({'topic':getattr(topic,'topic_'+lang),'content':getattr(topic,'content_'+lang)})
+    topics.append({'topic':"",'content':getattr(topic,'content_'+lang)})
 
     output = render_to_string('covid_content.html',context={'topics':topics})
-    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':segment_reply_markup})
+
+
+@get_user
+def protect_your_health(bot,update,*chat_user):
+    from covid.models import Content
+    content = Content.objects.filter(title='protect_your_health')
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    segment_reply_markup = [[{'text':_('Good radio resources'),'callback_data':'/good_radio_resources'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
+    topics = []
+    lang = chat_user[0].language
+    topic = content[0]
+    topics.append({'topic':"",'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+    bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def good_radio_resources(bot,update,*chat_user):
+    reply_markup=[[{'text':_('Emergency programs'),'callback_data':'/emergency_programs'}],\
+                  [{'text':_('Farm Radio resources'),'callback_data':'/farm_radio_resources'}],\
+                  [{'text':_('COVID-19 information'),'callback_data':'/covid_information'}]]
+    bot.sendPhoto(update.callback_query.message.chat_id,'https://wire.farmradio.fm/wp-content/uploads/2018/01/broadcaster-resources-image.jpg',\
+                  caption="<b>"+_("Good radio resources")+"</b>",parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+
+
+@get_user
+def emergency_programs(bot,update,*chat_user):
+    content = _("Good reporting practices are also important to ensure that people stay calm in a time of emergency and take appropriate action to respond. Farm Radio International has produced a Broadcaster how-to guide on planning and producing effective emergency response programming, and adapted it for the coronavirus pandemic.\n\nhttp://scripts.farmradio.fm/radio-resource-packs/covid-19-resources/planning-producing-effective-emergency-programming-covid/")
+    segment_reply_markup = [[{'text':_('Farm radio resources'),'callback_data':'/farm_radio_resources'},\
+                             {'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def farm_radio_resources(bot,update,*chat_user):
+    content = _("Farm Radio International is producing a variety of information resources to help broadcasters produce good quality radio programming around COVID-19 and the impact of this crisis on rural populations.")
+    segment_reply_markup = [[ {'text':_('Farmer stories'),'callback_data':'/farmer_stories'},{'text':_('Key info & radio scripts'),'callback_data':'/key_info_radio_scripts'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def farmer_stories(bot,update,*chat_user):
+    content = _("Barza Wire Farmer stories: https://wire.farmradio.fm/tag/emergencies/")
+    segment_reply_markup = [[{'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def key_info_radio_scripts(bot,update,*chat_user):
+    content = _("Access Farm Radio’s resources on COVID-19:http://scripts.farmradio.fm/radio-resource-packs/covid-19-resources/")
+    segment_reply_markup = [[{'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def covid_information(bot,update,*chat_user):
+    content = _("COVID-19 information")
+    segment_reply_markup = [[{'text':_("FRI's key messenges"),'callback_data':'/fri_key_messenges'}],
+                            [{'text':_("WHO resources"),'callback_data':'/who_resources'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def fri_key_messenges(bot,update,*chat_user):
+    content = _("Find all these key messages on COVID-19: http://scripts.farmradio.fm/radio-resource-packs/covid-19-resources/key-information-covid-19-broadcasters/")
+    segment_reply_markup = [[{'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def who_resources(bot,update,*chat_user):
+    content = _("Find all the information and resources from the World Health Organization here: https://www.who.int/emergencies/diseases/novel-coronavirus-2019")
+    segment_reply_markup = [[{'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
 
 @get_user
 def safety_for_broadcasters(bot,update,*chat_user):
@@ -192,20 +346,62 @@ def myths_misinformation(bot,update,*chat_user):
     bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':covid_reply_markup})
 
 @get_user
-def join_online_groups(bot,update,*chat_user):
-    reply_markup = [[{'text':_('Tips for broadcasters'),'callback_data':'/tips_and_resources'},\
-                   {'text':_('Go to start'),'callback_data':'/start'}]]
-    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 '+_('Join online broadcaster groups')+'</b> \n\n'+_('Links to online groups will be shared here soon.')+'\n --',
-                    parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+def fact_check_myths(bot,update,*chat_user):
+    reply_markup=[[{'text':_('Truth behind myths'),'callback_data':'/truth_behind_myths_init'}],\
+                  [{'text':_('Fight fake news'),'callback_data':'/fight_fake_news'}],\
+                  [{'text':_('Latest COVID myths'),'callback_data':'/latest_covid_myths'}]]
+    bot.sendPhoto(update.callback_query.message.chat_id,'https://wire.farmradio.fm/wp-content/uploads/2020/05/FAQs-COVID-graphic.png',\
+                  caption=_("It’s important to dispel myths and fake news so that your audience has the right information to make good decisions about their health, safety, and livelihoods. "),parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
 @get_user
-def broadcaster_resources(bot,update,*chat_user):
-    reply_markup = [[{'text':_('Tips for broadcasters'),'callback_data':'/tips_and_resources'},\
-                   {'text':_('Go to start'),'callback_data':'/start'}]]
-    bot.sendMessage(update.callback_query.message.chat.id,text='<b>🎙 '+_('Broadcaster resources')+'</b> \n\n'+_('Links to online resources will be shared here soon.')+' \n --',
-                    parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+def truth_behind_myths(bot,update,*chat_user):
+    from covid.models import Content
+    page = update.callback_query.data.split('/truth_behind_myths_')[1]
+
+    if page == 'init':
+        content  = Content.objects.filter(title='truth_behind_myths_1')
+    else:
+        content  = Content.objects.filter(title='truth_behind_myths_'+page)
+
+    if len(content) == 0:
+        bot.sendMessage(update.callback_query.message.chat.id,'Content error')
+
+    if page == '1' or page == 'init':
+        segment_reply_markup = [[{'text':_('Next'),'callback_data':'/truth_behind_myths_2'}]]
+    else:
+        segment_reply_markup = [[{'text':_('Previous'),'callback_data':'/truth_behind_myths_1'}]]
+
+    segment_reply_markup.append([{'text':_('Go back'),'callback_data':'/go_back'}])
+
+    topics = []
+    lang = chat_user[0].language
+    topic = content[0]
+    topics.append({'topic':"",'content':getattr(topic,'content_'+lang)})
+
+    output = render_to_string('covid_content.html',context={'topics':topics})
+
+    if page == 'init':
+        bot.sendMessage(update.callback_query.message.chat.id,text=output,parse_mode='HTML',reply_markup={'inline_keyboard':segment_reply_markup})
+    else:
+        bot.editMessageText(output,parse_mode='HTML',chat_id=update.callback_query.message.chat.id,message_id=update.callback_query.message.message_id,reply_markup={'inline_keyboard':segment_reply_markup})
 
 
+@get_user
+def fight_fake_news(bot,update,*chat_user):
+    content = _("Learn how to spot fake news and fact-check myths in our Broadcaster how-to guide. http://scripts.farmradio.fm/radio-resource-packs/farm-radio-resource-pack-114/bh2-fake-news-identify/")
+    segment_reply_markup = [[{'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+@get_user
+def latest_covid_myths(bot,update,*chat_user):
+    content = _("Africa Check is keeping tabs on the latest myths and misconceptions. Get the latest information: https://africacheck.org/reports/live-guide-all-our-coronavirus-fact-checks-in-one-place/")
+    segment_reply_markup = [[{'text':_('Go back'),'callback_data':'/go_back'}]]
+
+    bot.sendMessage(update.callback_query.message.chat.id,text=content,reply_markup={'inline_keyboard':segment_reply_markup})
+
+# question module
+# it is disabled (no route is linked to the handlers)
 def update_user_state(chat_user,state=None):
     if state:
         chat_user.state = state
