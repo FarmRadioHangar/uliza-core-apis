@@ -85,21 +85,41 @@ def main():
     covid_dp.add_handler(CommandHandler(["start","home"], covid_start))
     covid_dp.add_handler(CommandHandler("lang",get_language))
     covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
+    covid_dp.add_handler(CallbackQueryHandler(covid_main_menu,pattern="/go_back"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))
-    covid_dp.add_handler(CallbackQueryHandler(tips_and_resources,pattern="/tips_and_resources"))
 
     # covid19 content
-    covid_dp.add_handler(CallbackQueryHandler(how_virus_is_spread,pattern="/how_the_virus_is_spread"))
-    covid_dp.add_handler(CallbackQueryHandler(precautionary_measures,pattern="/precautionary_measures"))
-    covid_dp.add_handler(CallbackQueryHandler(symptoms_of_infection,pattern="/symptoms_of_infection"))
-    covid_dp.add_handler(CallbackQueryHandler(myths_misinformation,pattern="/myths_misinformation*"))
+    covid_dp.add_handler(CallbackQueryHandler(basic_facts,pattern="/basic_facts"))
+    covid_dp.add_handler(CallbackQueryHandler(more_basic_facts,pattern="/more_basic_facts"))
+    covid_dp.add_handler(CallbackQueryHandler(important_info,pattern="/important_info"))
+    covid_dp.add_handler(CallbackQueryHandler(how_the_virus_is_spread,pattern="/how_the_virus_is_spread"))
+    covid_dp.add_handler(CallbackQueryHandler(more_how_the_virus_is_spread,pattern="/more_how_the_virus_is_spread"))
+    covid_dp.add_handler(CallbackQueryHandler(preventive_measures,pattern="/preventive_measures"))
+    covid_dp.add_handler(CallbackQueryHandler(more_preventive_measures,pattern="/more_preventive_measures"))
 
-    #tips and resources
-    covid_dp.add_handler(CallbackQueryHandler(tips_and_resources,pattern="/tips_and_resources"))
-    covid_dp.add_handler(CallbackQueryHandler(safety_for_broadcasters,pattern="/safety_for_broadcasters"))
-    covid_dp.add_handler(CallbackQueryHandler(broadcaster_resources,pattern="/broadcaster_resources"))
-    covid_dp.add_handler(CallbackQueryHandler(join_online_groups,pattern="/join_online_groups"))
+    #broadcaster resources
+    covid_dp.add_handler(CallbackQueryHandler(get_radio_resources,pattern="/get_radio_resources"))
+    covid_dp.add_handler(CallbackQueryHandler(working_safely,pattern="/working_safely"))
+    covid_dp.add_handler(CallbackQueryHandler(sanitize_your_equipment,pattern="/sanitize_your_equipment"))
+    covid_dp.add_handler(CallbackQueryHandler(protect_your_health,pattern="/protect_your_health"))
+    covid_dp.add_handler(CallbackQueryHandler(good_radio_resources,pattern="/good_radio_resources"))
+    covid_dp.add_handler(CallbackQueryHandler(emergency_programs,pattern="/emergency_programs"))
+    covid_dp.add_handler(CallbackQueryHandler(farm_radio_resources,pattern="/farm_radio_resources"))
+    covid_dp.add_handler(CallbackQueryHandler(farmer_stories,pattern="/farmer_stories"))
+    covid_dp.add_handler(CallbackQueryHandler(key_info_radio_scripts,pattern="/key_info_radio_scripts"))
+    covid_dp.add_handler(CallbackQueryHandler(covid_information,pattern="/covid_information"))
+    covid_dp.add_handler(CallbackQueryHandler(fri_key_messenges,pattern="/fri_key_messenges"))
+    covid_dp.add_handler(CallbackQueryHandler(who_resources,pattern="/who_resources"))
 
+    #fact check myths
+    covid_dp.add_handler(CallbackQueryHandler(fact_check_myths,pattern="/fact_check_myths"))
+    covid_dp.add_handler(CallbackQueryHandler(truth_behind_myths,pattern="/truth_behind_myths*"))
+    covid_dp.add_handler(CallbackQueryHandler(fight_fake_news,pattern="/fight_fake_news"))
+    covid_dp.add_handler(CallbackQueryHandler(latest_covid_myths,pattern="/latest_covid_myths"))
+
+    """
+    # This was the question module
+    # currently commented out
     covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/no"))
     covid_dp.add_handler(CallbackQueryHandler(get_confirmation,pattern="/ask_confirmation"))
     covid_dp.add_handler(CallbackQueryHandler(question_instruction,pattern="/question_instruction"))
@@ -107,6 +127,5 @@ def main():
     covid_dp.add_handler(MessageHandler(Filters.voice,conversational_dispatch))
     covid_dp.add_handler(CallbackQueryHandler(get_country,pattern="/country_*"))
     covid_dp.add_handler(CallbackQueryHandler(set_language,pattern="/language_*"))
-
-
+    """
     covid_dp.add_error_handler(error)

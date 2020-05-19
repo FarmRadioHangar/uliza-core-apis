@@ -1,8 +1,4 @@
 {% for topic in topics %}
 {% autoescape off %}
 <b><u>{{topic.topic}}</u></b>
-
-{{topic.content}}
-{% endautoescape %}
-{% endfor %}
---
+{{topic.content}}{% endautoescape %}{% endfor %}
