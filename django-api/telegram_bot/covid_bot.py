@@ -371,7 +371,7 @@ def truth_behind_myths(bot,update,*chat_user):
     else:
         segment_reply_markup = [[{'text':_('Previous'),'callback_data':'/truth_behind_myths_1'}]]
 
-    segment_reply_markup.append([{'text':_('Go back'),'callback_data':'/go_back'}])
+    segment_reply_markup.append([{'text':_('Latest COVID myths'),'callback_data':'/latest_covid_myths'},{'text':_('Go back'),'callback_data':'/go_back'}])
 
     topics = []
     lang = chat_user[0].language
