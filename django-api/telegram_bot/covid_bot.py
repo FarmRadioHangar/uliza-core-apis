@@ -23,10 +23,11 @@ def get_language(bot,update,*chat_user):
     else:
         chat_id = update.callback_query.message.chat_id
 
-    bot.sendMessage(chat_id, text=_('Language | ቋንቋ | Langue'),reply_markup=
+    bot.sendMessage(chat_id, text=_('Language | Langue'),reply_markup=
                     {'inline_keyboard':[[{'text':'English','callback_data':'/language_en'},
                                          {'text':'Français','callback_data':'/language_fr'},
-                                         {'text':'አማርኛ','callback_data':'/language_am'}],
+                                         # {'text':'አማርኛ','callback_data':'/language_am'}
+                                         ],
                                         ]})
 
 def get_user(func):
@@ -39,7 +40,7 @@ def get_user(func):
         chat_user = ChatUser.objects.filter(user_id='t-'+str(from_user.id))
         if not chat_user:
             chat_user = ChatUser.objects.create(full_name=get_username(from_user),user_id='t-'+str(from_user.id))
-            return get_language(bot,update,chat_user[0])
+            return get_language(bot,update,chat_user)
         elif chat_user[0].language:
             translation.activate(chat_user[0].language)
         else:
@@ -350,8 +351,12 @@ def fact_check_myths(bot,update,*chat_user):
     reply_markup=[[{'text':_('Truth behind myths'),'callback_data':'/truth_behind_myths_init'}],\
                   [{'text':_('Fight fake news'),'callback_data':'/fight_fake_news'}],\
                   [{'text':_('Latest COVID myths'),'callback_data':'/latest_covid_myths'}]]
+    if chat_user[0].language == 'fr':
+        caption = "Il est important de dissiper les mythes et les fausses nouvelles afin que votre public dispose des bonnes informations pour prendre de bonnes décisions concernant leur santé, leur sécurité et leurs moyens de subsistance."
+    else:
+        caption = "It’s important to dispel myths and fake news so that your audience has the right information to make good decisions about their health, safety, and livelihoods."
     bot.sendPhoto(update.callback_query.message.chat_id,'https://wire.farmradio.fm/wp-content/uploads/2020/05/FAQs-COVID-graphic.png',\
-                  caption=_("It’s important to dispel myths and fake news so that your audience has the right information to make good decisions about their health, safety, and livelihoods. "),parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
+                  caption=caption,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
 @get_user
 def truth_behind_myths(bot,update,*chat_user):
