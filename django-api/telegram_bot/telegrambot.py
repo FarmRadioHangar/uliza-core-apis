@@ -87,6 +87,7 @@ def main():
     covid_dp.add_handler(CallbackQueryHandler(covid_start,pattern="/start"))
     covid_dp.add_handler(CallbackQueryHandler(covid_main_menu,pattern="/go_back"))
     covid_dp.add_handler(CallbackQueryHandler(learn,pattern="/learn"))
+    covid_dp.add_handler(CallbackQueryHandler(set_language,pattern="/language_*"))
 
     # covid19 content
     covid_dp.add_handler(CallbackQueryHandler(basic_facts,pattern="/basic_facts"))
@@ -126,6 +127,5 @@ def main():
     covid_dp.add_handler(MessageHandler(Filters.text,conversational_dispatch))
     covid_dp.add_handler(MessageHandler(Filters.voice,conversational_dispatch))
     covid_dp.add_handler(CallbackQueryHandler(get_country,pattern="/country_*"))
-    covid_dp.add_handler(CallbackQueryHandler(set_language,pattern="/language_*"))
     """
     covid_dp.add_error_handler(error)

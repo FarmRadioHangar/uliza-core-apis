@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-19 19:26+0300\n"
+"POT-Creation-Date: 2020-05-20 14:54+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -752,12 +752,12 @@ msgid "Unknown"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:556
-#: telegram_bot/covid_bot.py:436
+#: telegram_bot/covid_bot.py:437
 msgid "Yes"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:557
-#: telegram_bot/covid_bot.py:437
+#: telegram_bot/covid_bot.py:438
 msgid "No"
 msgstr ""
 
@@ -2130,8 +2130,8 @@ msgstr ""
 #: telegram_bot/covid_bot.py:223 telegram_bot/covid_bot.py:242
 #: telegram_bot/covid_bot.py:264 telegram_bot/covid_bot.py:278
 #: telegram_bot/covid_bot.py:285 telegram_bot/covid_bot.py:300
-#: telegram_bot/covid_bot.py:307 telegram_bot/covid_bot.py:374
-#: telegram_bot/covid_bot.py:392 telegram_bot/covid_bot.py:399
+#: telegram_bot/covid_bot.py:307 telegram_bot/covid_bot.py:375
+#: telegram_bot/covid_bot.py:393 telegram_bot/covid_bot.py:400
 msgid "Go back"
 msgstr ""
 
@@ -2296,70 +2296,70 @@ msgstr ""
 msgid "Fight fake news"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:352 telegram_bot/covid_bot.py:374
+#: telegram_bot/covid_bot.py:352 telegram_bot/covid_bot.py:375
 msgid "Latest COVID myths"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:354
+#: telegram_bot/covid_bot.py:353
 msgid ""
 "It’s important to dispel myths and fake news so that your audience has the "
 "right information to make good decisions about their health, safety, and "
-"livelihoods. "
+"livelihoods."
 msgstr ""
 
-#: telegram_bot/covid_bot.py:370
+#: telegram_bot/covid_bot.py:371
 msgid "Next section"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:372
+#: telegram_bot/covid_bot.py:373
 msgid "Previous section"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:391
+#: telegram_bot/covid_bot.py:392
 msgid ""
 "Learn how to spot fake news and fact-check myths in our Broadcaster how-to "
 "guide. http://scripts.farmradio.fm/radio-resource-packs/farm-radio-resource-"
 "pack-114/bh2-fake-news-identify/"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:398
+#: telegram_bot/covid_bot.py:399
 msgid ""
 "Africa Check is keeping tabs on the latest myths and misconceptions. Get the "
 "latest information: https://africacheck.org/reports/live-guide-all-our-"
 "coronavirus-fact-checks-in-one-place/"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:431
+#: telegram_bot/covid_bot.py:432
 msgid "Ok, no problem."
 msgstr ""
 
-#: telegram_bot/covid_bot.py:439
+#: telegram_bot/covid_bot.py:440
 msgid "Do you have a question or comment?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:453
+#: telegram_bot/covid_bot.py:454
 msgid "What is your question or comment? Use the chat text or voice inputs."
 msgstr ""
 
-#: telegram_bot/covid_bot.py:470
+#: telegram_bot/covid_bot.py:471
 msgid "Content error: Message format not supported"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:477
+#: telegram_bot/covid_bot.py:478
 msgid "What is the name of the Radio station you work for?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:481
+#: telegram_bot/covid_bot.py:482
 msgid ""
 "Your question is recieved. You will be notified with the answer soon.\n"
 " Thank You!"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:491
+#: telegram_bot/covid_bot.py:492
 msgid "Where are you from?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:515
+#: telegram_bot/covid_bot.py:516
 msgid "Your question/comment is recieved. Thank You!"
 msgstr ""
 
