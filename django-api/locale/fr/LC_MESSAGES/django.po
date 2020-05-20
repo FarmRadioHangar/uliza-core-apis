@@ -1,298 +1,358 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: COVID-19 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-26 17:01+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2020-05-20 13:20+0300\n"
+"PO-Revision-Date: 2020-05-20 13:49+0300\n"
+"Last-Translator: Jigsa Tesfaye\n"
+"Language-Team: French (France)\n"
+"Language: fr-FR\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Loco https://localise.biz\n"
+"X-Loco-Source-Locale: en-US\n"
+"X-Loco-Project-Id: 91006\n"
+"X-Loco-Api-Version: 1.0.24 20200519-1"
 
-#: api_core/permissions.py:35
+#: api_core/permissions.py:35 loco:5ec5057a4d3dd70e3343ad21
 msgid "Signature has expired."
 msgstr ""
 
-#: api_core/permissions.py:38
+#: api_core/permissions.py:38 loco:5ec5057a4d3dd70e3343ad22
 msgid "Error decoding signature."
 msgstr ""
 
 #: django-eav/eav/fields.py:55 docker/django-eav/eav/fields.py:55
+#: loco:5ec5057a4d3dd70e3343ad23
 msgid ""
 "Must be all lower case, start with a letter, and contain only letters, "
 "numbers, or underscores."
 msgstr ""
 
 #: django-eav/eav/fields.py:90 docker/django-eav/eav/fields.py:90
+#: loco:5ec5057a4d3dd70e3343ad24
 msgid "You cannot change the datatype of an attribute that is already in use."
 msgstr ""
 
 #: django-eav/eav/forms.py:109 docker/django-eav/eav/forms.py:109
+#: loco:5ec5057a4d3dd70e3343ad25
 #, python-format
 msgid "The %s could not be saved because the datadidn't validate."
 msgstr ""
 
 #: django-eav/eav/models.py:80 docker/django-eav/eav/models.py:80
+#: loco:5ec5057a4d3dd70e3343ad26
 msgid "value"
 msgstr ""
 
 #: django-eav/eav/models.py:96 django-eav/eav/models.py:176
 #: docker/django-eav/eav/models.py:96 docker/django-eav/eav/models.py:176
+#: loco:5ec5057a4d3dd70e3343ad27
 msgid "name"
 msgstr ""
 
 #: django-eav/eav/models.py:98 docker/django-eav/eav/models.py:98
+#: loco:5ec5057a4d3dd70e3343ad28
 msgid "enum group"
 msgstr ""
 
 #: django-eav/eav/models.py:167 docker/django-eav/eav/models.py:167
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2153
+#: loco:5ec5057a4d3dd70e3343ad29
 msgid "Text"
 msgstr ""
 
 #: django-eav/eav/models.py:168 docker/django-eav/eav/models.py:168
+#: loco:5ec5057a4d3dd70e3343ad2a
 msgid "Float"
 msgstr ""
 
 #: django-eav/eav/models.py:169 docker/django-eav/eav/models.py:169
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:922
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1833
+#: loco:5ec5057a4d3dd70e3343ad2b
 msgid "Integer"
 msgstr ""
 
 #: django-eav/eav/models.py:170 docker/django-eav/eav/models.py:170
+#: loco:5ec5057a4d3dd70e3343ad2c
 msgid "Date"
 msgstr ""
 
 #: django-eav/eav/models.py:171 docker/django-eav/eav/models.py:171
+#: loco:5ec5057a4d3dd70e3343ad2d
 msgid "True / False"
 msgstr ""
 
 #: django-eav/eav/models.py:172 docker/django-eav/eav/models.py:172
+#: loco:5ec5057a4d3dd70e3343ad2e
 msgid "Django Object"
 msgstr ""
 
 #: django-eav/eav/models.py:173 docker/django-eav/eav/models.py:173
+#: loco:5ec5057a4d3dd70e3343ad2f
 msgid "Multiple Choice"
 msgstr ""
 
 #: django-eav/eav/models.py:177 docker/django-eav/eav/models.py:177
+#: loco:5ec5057a4d3dd70e3343ad30
 msgid "User-friendly attribute name"
 msgstr ""
 
 #: django-eav/eav/models.py:181 docker/django-eav/eav/models.py:181
+#: loco:5ec5057a4d3dd70e3343ad31
 msgid "content type"
 msgstr ""
 
 #: django-eav/eav/models.py:183 docker/django-eav/eav/models.py:183
+#: loco:5ec5057a4d3dd70e3343ad32
 msgid "site"
 msgstr ""
 
 #: django-eav/eav/models.py:186 docker/django-eav/eav/models.py:186
+#: loco:5ec5057a4d3dd70e3343ad33
 msgid "slug"
 msgstr ""
 
 #: django-eav/eav/models.py:187 docker/django-eav/eav/models.py:187
+#: loco:5ec5057a4d3dd70e3343ad34
 msgid "Short unique attribute label"
 msgstr ""
 
 #: django-eav/eav/models.py:189 docker/django-eav/eav/models.py:189
+#: loco:5ec5057a4d3dd70e3343ad35
 msgid "description"
 msgstr ""
 
 #: django-eav/eav/models.py:191 docker/django-eav/eav/models.py:191
+#: loco:5ec5057a4d3dd70e3343ad36
 msgid "Short description"
 msgstr ""
 
 #: django-eav/eav/models.py:193 docker/django-eav/eav/models.py:193
+#: loco:5ec5057a4d3dd70e3343ad37
 msgid "choice group"
 msgstr ""
 
 #: django-eav/eav/models.py:196 docker/django-eav/eav/models.py:196
+#: loco:5ec5057a4d3dd70e3343ad38
 msgid "type"
 msgstr ""
 
 #: django-eav/eav/models.py:202 docker/django-eav/eav/models.py:202
+#: loco:5ec5057a4d3dd70e3343ad39
 msgid "data type"
 msgstr ""
 
 #: django-eav/eav/models.py:205 django-eav/eav/models.py:363
 #: docker/django-eav/eav/models.py:205 docker/django-eav/eav/models.py:363
+#: loco:5ec5057a4d3dd70e3343ad3a
 msgid "created"
 msgstr ""
 
 #: django-eav/eav/models.py:208 django-eav/eav/models.py:364
 #: docker/django-eav/eav/models.py:208 docker/django-eav/eav/models.py:364
+#: loco:5ec5057a4d3dd70e3343ad3b
 msgid "modified"
 msgstr ""
 
 #: django-eav/eav/models.py:210 docker/django-eav/eav/models.py:210
+#: loco:5ec5057a4d3dd70e3343ad3c
 msgid "required"
 msgstr ""
 
 #: django-eav/eav/models.py:212 docker/django-eav/eav/models.py:212
+#: loco:5ec5057a4d3dd70e3343ad3d
 msgid "display order"
 msgstr ""
 
 #: django-eav/eav/models.py:249 docker/django-eav/eav/models.py:249
+#: loco:5ec5057a4d3dd70e3343ad3e
 #, python-format
 msgid "%(enum)s is not a valid choice for %(attr)s"
 msgstr ""
 
 #: django-eav/eav/models.py:271 docker/django-eav/eav/models.py:271
+#: loco:5ec5057a4d3dd70e3343ad3f
 msgid "You must set the choice group for multiple choiceattributes"
 msgstr ""
 
 #: django-eav/eav/models.py:276 docker/django-eav/eav/models.py:276
+#: loco:5ec5057a4d3dd70e3343ad40
 msgid "You can only assign a choice group to multiple choice attributes"
 msgstr ""
 
 #: django-eav/eav/models.py:367 docker/django-eav/eav/models.py:367
+#: loco:5ec5057a4d3dd70e3343ad41
 msgid "attribute"
 msgstr ""
 
 #: django-eav/eav/models.py:384 docker/django-eav/eav/models.py:384
+#: loco:5ec5057a4d3dd70e3343ad42
 msgid "%(choice)s is not a valid choice for %s(attribute)"
 msgstr ""
 
 #: django-eav/eav/models.py:437 docker/django-eav/eav/models.py:437
+#: loco:5ec5057a4d3dd70e3343ad43
 #, python-format
 msgid "%(obj)s has no EAV attribute named '%(attr)s'"
 msgstr ""
 
 #: django-eav/eav/models.py:495 docker/django-eav/eav/models.py:495
+#: loco:5ec5057a4d3dd70e3343ad44
 #, python-format
 msgid "%(attr)s EAV field cannot be blank"
 msgstr ""
 
 #: django-eav/eav/models.py:502 docker/django-eav/eav/models.py:502
+#: loco:5ec5057a4d3dd70e3343ad45
 #, python-format
 msgid "%(attr)s EAV field %(err)s"
 msgstr ""
 
 #: django-eav/eav/validators.py:48 docker/django-eav/eav/validators.py:48
+#: loco:5ec5057a4d3dd70e3343ad46
 msgid "Must be str or unicode"
 msgstr ""
 
 #: django-eav/eav/validators.py:58 docker/django-eav/eav/validators.py:58
+#: loco:5ec5057a4d3dd70e3343ad47
 msgid "Must be a float"
 msgstr ""
 
 #: django-eav/eav/validators.py:68 docker/django-eav/eav/validators.py:68
+#: loco:5ec5057a4d3dd70e3343ad48
 msgid "Must be an integer"
 msgstr ""
 
 #: django-eav/eav/validators.py:77 docker/django-eav/eav/validators.py:77
+#: loco:5ec5057a4d3dd70e3343ad49
 msgid "Must be a date or datetime"
 msgstr ""
 
 #: django-eav/eav/validators.py:85 docker/django-eav/eav/validators.py:85
+#: loco:5ec5057a4d3dd70e3343ad4a
 msgid "Must be a boolean"
 msgstr ""
 
 #: django-eav/eav/validators.py:94 docker/django-eav/eav/validators.py:94
+#: loco:5ec5057a4d3dd70e3343ad4b
 msgid "Must be a django model object instance"
 msgstr ""
 
 #: django-eav/eav/validators.py:96 docker/django-eav/eav/validators.py:96
+#: loco:5ec5057a4d3dd70e3343ad4c
 msgid "Model has not been saved yet"
 msgstr ""
 
 #: django-eav/eav/validators.py:106 docker/django-eav/eav/validators.py:106
+#: loco:5ec5057a4d3dd70e3343ad4d
 msgid "Must be an EnumValue model object instance"
 msgstr ""
 
 #: django-eav/eav/validators.py:108 docker/django-eav/eav/validators.py:108
+#: loco:5ec5057a4d3dd70e3343ad4e
 msgid "EnumValue has not been saved yet"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/contrib/messages/apps.py:7
+#: loco:5ec5057a4d3dd70e3343ad4f
 msgid "Messages"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/contrib/sitemaps/apps.py:7
+#: loco:5ec5057a4d3dd70e3343ad50
 msgid "Site Maps"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/contrib/staticfiles/apps.py:7
+#: loco:5ec5057a4d3dd70e3343ad51
 msgid "Static Files"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/contrib/syndication/apps.py:7
+#: loco:5ec5057a4d3dd70e3343ad52
 msgid "Syndication"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/contrib/webdesign/apps.py:7
+#: loco:5ec5057a4d3dd70e3343ad53
 msgid "Web Design"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:20
+#: loco:5ec5057a4d3dd70e3343ad54
 msgid "Enter a valid value."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:94
 #: env/lib/python2.7/site-packages/django/forms/fields.py:712
+#: loco:5ec5057a4d3dd70e3343ad55
 msgid "Enter a valid URL."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:137
+#: loco:5ec5057a4d3dd70e3343ad56
 msgid "Enter a valid integer."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:148
+#: loco:5ec5057a4d3dd70e3343ad57
 msgid "Enter a valid email address."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:222
+#: loco:5ec5057a4d3dd70e3343ad58
 msgid ""
 "Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:227
 #: env/lib/python2.7/site-packages/django/core/validators.py:246
+#: loco:5ec5057a4d3dd70e3343ad59
 msgid "Enter a valid IPv4 address."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:232
 #: env/lib/python2.7/site-packages/django/core/validators.py:247
+#: loco:5ec5057a4d3dd70e3343ad5a
 msgid "Enter a valid IPv6 address."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:242
 #: env/lib/python2.7/site-packages/django/core/validators.py:245
+#: loco:5ec5057a4d3dd70e3343ad5b
 msgid "Enter a valid IPv4 or IPv6 address."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:270
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1144
+#: loco:5ec5057a4d3dd70e3343ad5c
 msgid "Enter only digits separated by commas."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:279
+#: loco:5ec5057a4d3dd70e3343ad5d
 #, python-format
 msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:305
+#: loco:5ec5057a4d3dd70e3343ad5e
 #, python-format
 msgid "Ensure this value is less than or equal to %(limit_value)s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:312
+#: loco:5ec5057a4d3dd70e3343ad5f
 #, python-format
 msgid "Ensure this value is greater than or equal to %(limit_value)s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:321
+#: loco:5ec5057a4d3dd70e3343ad60
 #, python-format
 msgid ""
 "Ensure this value has at least %(limit_value)d character (it has "
@@ -304,10 +364,11 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/core/validators.py:332
+#: loco:5ec5057a4d3dd70e3343ad62
 #, python-format
 msgid ""
-"Ensure this value has at most %(limit_value)d character (it has "
-"%(show_value)d)."
+"Ensure this value has at most %(limit_value)d character (it has %(show_value)"
+"d)."
 msgid_plural ""
 "Ensure this value has at most %(limit_value)d characters (it has "
 "%(show_value)d)."
@@ -316,28 +377,34 @@ msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/db/models/base.py:1130
 #: env/lib/python2.7/site-packages/django/forms/models.py:718
+#: loco:5ec5057a4d3dd70e3343ad64
 msgid "and"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/base.py:1132
+#: loco:5ec5057a4d3dd70e3343ad65
 #, python-format
 msgid "%(model_name)s with this %(field_labels)s already exists."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:107
+#: loco:5ec5057a4d3dd70e3343ad66
 #, python-format
 msgid "Value %(value)r is not a valid choice."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:108
+#: loco:5ec5057a4d3dd70e3343ad67
 msgid "This field cannot be null."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:109
+#: loco:5ec5057a4d3dd70e3343ad68
 msgid "This field cannot be blank."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:110
+#: loco:5ec5057a4d3dd70e3343ad69
 #, python-format
 msgid "%(model_name)s with this %(field_label)s already exists."
 msgstr ""
@@ -345,41 +412,49 @@ msgstr ""
 #. Translators: The 'lookup_type' is one of 'date', 'year' or 'month'.
 #. Eg: "Title must be unique for pub_date year"
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:114
+#: loco:5ec5057a4d3dd70e3343ad6a
 #, python-format
 msgid ""
 "%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:132
+#: loco:5ec5057a4d3dd70e3343ad6b
 #, python-format
 msgid "Field of type: %(field_type)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:926
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1831
+#: loco:5ec5057a4d3dd70e3343ad6c
 #, python-format
 msgid "'%(value)s' value must be an integer."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1001
+#: loco:5ec5057a4d3dd70e3343ad6d
 #, python-format
 msgid "'%(value)s' value must be either True or False."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1003
+#: loco:5ec5057a4d3dd70e3343ad6e
 msgid "Boolean (Either True or False)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1078
+#: loco:5ec5057a4d3dd70e3343ad6f
 #, python-format
 msgid "String (up to %(max_length)s)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1139
+#: loco:5ec5057a4d3dd70e3343ad70
 msgid "Comma-separated integers"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1188
+#: loco:5ec5057a4d3dd70e3343ad71
 #, python-format
 msgid ""
 "'%(value)s' value has an invalid date format. It must be in YYYY-MM-DD "
@@ -388,6 +463,7 @@ msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1190
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1340
+#: loco:5ec5057a4d3dd70e3343ad72
 #, python-format
 msgid ""
 "'%(value)s' value has the correct format (YYYY-MM-DD) but it is an invalid "
@@ -395,10 +471,12 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1193
+#: loco:5ec5057a4d3dd70e3343ad73
 msgid "Date (without time)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1338
+#: loco:5ec5057a4d3dd70e3343ad74
 #, python-format
 msgid ""
 "'%(value)s' value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
@@ -406,26 +484,31 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1342
+#: loco:5ec5057a4d3dd70e3343ad75
 #, python-format
 msgid ""
-"'%(value)s' value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
+"'%(value)s' value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ])"
+" but it is an invalid date/time."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1346
+#: loco:5ec5057a4d3dd70e3343ad76
 msgid "Date (with time)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1498
+#: loco:5ec5057a4d3dd70e3343ad77
 #, python-format
 msgid "'%(value)s' value must be a decimal number."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1500
+#: loco:5ec5057a4d3dd70e3343ad78
 msgid "Decimal number"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1651
+#: loco:5ec5057a4d3dd70e3343ad79
 #, python-format
 msgid ""
 "'%(value)s' value has an invalid format. It must be in [DD] [HH:[MM:]]ss[."
@@ -433,65 +516,80 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1654
+#: loco:5ec5057a4d3dd70e3343ad7a
 msgid "Duration"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1706
+#: loco:5ec5057a4d3dd70e3343ad7b
 msgid "Email address"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1730
+#: loco:5ec5057a4d3dd70e3343ad7c
 msgid "File path"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1797
+#: loco:5ec5057a4d3dd70e3343ad7d
 #, python-format
 msgid "'%(value)s' value must be a float."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1799
+#: loco:5ec5057a4d3dd70e3343ad7e
 msgid "Floating point number"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1900
+#: loco:5ec5057a4d3dd70e3343ad7f
 msgid "Big (8 byte) integer"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1915
+#: loco:5ec5057a4d3dd70e3343ad80
 msgid "IPv4 address"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:1951
+#: loco:5ec5057a4d3dd70e3343ad81
 msgid "IP address"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2030
+#: loco:5ec5057a4d3dd70e3343ad82
 #, python-format
 msgid "'%(value)s' value must be either None, True or False."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2032
+#: loco:5ec5057a4d3dd70e3343ad83
 msgid "Boolean (Either True, False or None)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2092
+#: loco:5ec5057a4d3dd70e3343ad84
 msgid "Positive integer"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2104
+#: loco:5ec5057a4d3dd70e3343ad85
 msgid "Positive small integer"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2117
+#: loco:5ec5057a4d3dd70e3343ad86
 #, python-format
 msgid "Slug (up to %(max_length)s)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2146
+#: loco:5ec5057a4d3dd70e3343ad87
 msgid "Small integer"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2176
+#: loco:5ec5057a4d3dd70e3343ad88
 #, python-format
 msgid ""
 "'%(value)s' value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
@@ -499,6 +597,7 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2178
+#: loco:5ec5057a4d3dd70e3343ad89
 #, python-format
 msgid ""
 "'%(value)s' value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
@@ -506,61 +605,75 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2181
+#: loco:5ec5057a4d3dd70e3343ad8a
 msgid "Time"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2309
+#: loco:5ec5057a4d3dd70e3343ad8b
 msgid "URL"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2332
+#: loco:5ec5057a4d3dd70e3343ad8c
 msgid "Raw binary data"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/__init__.py:2376
+#: loco:5ec5057a4d3dd70e3343ad8d
 #, python-format
 msgid "'%(value)s' is not a valid UUID."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/files.py:238
+#: loco:5ec5057a4d3dd70e3343ad8e
 msgid "File"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/files.py:388
+#: loco:5ec5057a4d3dd70e3343ad8f
 msgid "Image"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/related.py:1809
+#: loco:5ec5057a4d3dd70e3343ad90
 #, python-format
 msgid "%(model)s instance with %(field)s %(value)r does not exist."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/related.py:1811
+#: loco:5ec5057a4d3dd70e3343ad91
 msgid "Foreign Key (type determined by related field)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/related.py:2041
+#: loco:5ec5057a4d3dd70e3343ad92
 msgid "One-to-one relationship"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/db/models/fields/related.py:2131
+#: loco:5ec5057a4d3dd70e3343ad93
 msgid "Many-to-many relationship"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:64
+#: loco:5ec5057a4d3dd70e3343ad94
 msgid "This field is required."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:237
+#: loco:5ec5057a4d3dd70e3343ad95
 msgid "Enter a whole number."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:280
 #: env/lib/python2.7/site-packages/django/forms/fields.py:317
+#: loco:5ec5057a4d3dd70e3343ad96
 msgid "Enter a number."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:319
+#: loco:5ec5057a4d3dd70e3343ad97
 #, python-format
 msgid "Ensure that there are no more than %(max)s digit in total."
 msgid_plural "Ensure that there are no more than %(max)s digits in total."
@@ -568,6 +681,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:323
+#: loco:5ec5057a4d3dd70e3343ad99
 #, python-format
 msgid "Ensure that there are no more than %(max)s decimal place."
 msgid_plural "Ensure that there are no more than %(max)s decimal places."
@@ -575,6 +689,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:327
+#: loco:5ec5057a4d3dd70e3343ad9b
 #, python-format
 msgid ""
 "Ensure that there are no more than %(max)s digit before the decimal point."
@@ -585,35 +700,43 @@ msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:438
 #: env/lib/python2.7/site-packages/django/forms/fields.py:1193
+#: loco:5ec5057a4d3dd70e3343ad9d
 msgid "Enter a valid date."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:462
 #: env/lib/python2.7/site-packages/django/forms/fields.py:1194
+#: loco:5ec5057a4d3dd70e3343ad9e
 msgid "Enter a valid time."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:484
+#: loco:5ec5057a4d3dd70e3343ad9f
 msgid "Enter a valid date/time."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:525
+#: loco:5ec5057a4d3dd70e3343ada0
 msgid "Enter a valid duration."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:591
+#: loco:5ec5057a4d3dd70e3343ada1
 msgid "No file was submitted. Check the encoding type on the form."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:592
+#: loco:5ec5057a4d3dd70e3343ada2
 msgid "No file was submitted."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:593
+#: loco:5ec5057a4d3dd70e3343ada3
 msgid "The submitted file is empty."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:595
+#: loco:5ec5057a4d3dd70e3343ada4
 #, python-format
 msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
 msgid_plural ""
@@ -622,10 +745,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:598
+#: loco:5ec5057a4d3dd70e3343ada6
 msgid "Please either submit a file or check the clear checkbox, not both."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:660
+#: loco:5ec5057a4d3dd70e3343ada7
 msgid ""
 "Upload a valid image. The file you uploaded was either not an image or a "
 "corrupted image."
@@ -634,6 +759,7 @@ msgstr ""
 #: env/lib/python2.7/site-packages/django/forms/fields.py:827
 #: env/lib/python2.7/site-packages/django/forms/fields.py:921
 #: env/lib/python2.7/site-packages/django/forms/models.py:1238
+#: loco:5ec5057a4d3dd70e3343ada8
 #, python-format
 msgid "Select a valid choice. %(value)s is not one of the available choices."
 msgstr ""
@@ -641,23 +767,28 @@ msgstr ""
 #: env/lib/python2.7/site-packages/django/forms/fields.py:922
 #: env/lib/python2.7/site-packages/django/forms/fields.py:1037
 #: env/lib/python2.7/site-packages/django/forms/models.py:1237
+#: loco:5ec5057a4d3dd70e3343ada9
 msgid "Enter a list of values."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:1038
+#: loco:5ec5057a4d3dd70e3343adaa
 msgid "Enter a complete value."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/fields.py:1264
+#: loco:5ec5057a4d3dd70e3343adab
 msgid "Enter a valid UUID."
 msgstr ""
 
 #. Translators: This is the default suffix added to form field labels
 #: env/lib/python2.7/site-packages/django/forms/forms.py:129
+#: loco:5ec5057a4d3dd70e3343adac
 msgid ":"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/forms.py:214
+#: loco:5ec5057a4d3dd70e3343adad
 #, python-format
 msgid "(Hidden field %(name)s) %(error)s"
 msgstr ""
@@ -665,14 +796,17 @@ msgstr ""
 #. Translators: If found as last label character, these punctuation
 #. characters will prevent the default label_suffix to be appended to the label
 #: env/lib/python2.7/site-packages/django/forms/forms.py:659
+#: loco:5ec5057a4d3dd70e3343adae
 msgid ":?.!"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/formsets.py:96
+#: loco:5ec5057a4d3dd70e3343adaf
 msgid "ManagementForm data is missing or has been tampered with"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/formsets.py:333
+#: loco:5ec5057a4d3dd70e3343adb0
 #, python-format
 msgid "Please submit %d or fewer forms."
 msgid_plural "Please submit %d or fewer forms."
@@ -680,6 +814,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/forms/formsets.py:340
+#: loco:5ec5057a4d3dd70e3343adb2
 #, python-format
 msgid "Please submit %d or more forms."
 msgid_plural "Please submit %d or more forms."
@@ -688,24 +823,29 @@ msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/forms/formsets.py:368
 #: env/lib/python2.7/site-packages/django/forms/formsets.py:370
+#: loco:5ec5057a4d3dd70e3343adb4
 msgid "Order"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/formsets.py:372
+#: loco:5ec5057a4d3dd70e3343adb5
 msgid "Delete"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/models.py:712
+#: loco:5ec5057a4d3dd70e3343adb6
 #, python-format
 msgid "Please correct the duplicate data for %(field)s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/models.py:716
+#: loco:5ec5057a4d3dd70e3343adb7
 #, python-format
 msgid "Please correct the duplicate data for %(field)s, which must be unique."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/models.py:722
+#: loco:5ec5057a4d3dd70e3343adb8
 #, python-format
 msgid ""
 "Please correct the duplicate data for %(field_name)s which must be unique "
@@ -713,23 +853,28 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/models.py:730
+#: loco:5ec5057a4d3dd70e3343adb9
 msgid "Please correct the duplicate values below."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/models.py:1053
+#: loco:5ec5057a4d3dd70e3343adba
 msgid "The inline foreign key did not match the parent instance primary key."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/models.py:1123
+#: loco:5ec5057a4d3dd70e3343adbb
 msgid "Select a valid choice. That choice is not one of the available choices."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/models.py:1240
+#: loco:5ec5057a4d3dd70e3343adbc
 #, python-format
 msgid "\"%(pk)s\" is not a valid value for a primary key."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/utils.py:165
+#: loco:5ec5057a4d3dd70e3343adbd
 #, python-format
 msgid ""
 "%(datetime)s couldn't be interpreted in time zone %(current_timezone)s; it "
@@ -737,37 +882,43 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:345
+#: loco:5ec5057a4d3dd70e3343adbe
 msgid "Currently"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:346
+#: loco:5ec5057a4d3dd70e3343adbf
 msgid "Change"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:347
+#: loco:5ec5057a4d3dd70e3343adc0
 msgid "Clear"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:555
+#: loco:5ec5057a4d3dd70e3343adc1
 msgid "Unknown"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:556
-#: telegram_bot/covid_bot.py:210
+#: telegram_bot/covid_bot.py:436 loco:5ec5057a4d3dd70e3343adc2
 msgid "Yes"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:557
-#: telegram_bot/covid_bot.py:211
+#: telegram_bot/covid_bot.py:437 loco:5ec5057a4d3dd70e3343adc3
 msgid "No"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:865
+#: loco:5ec5057a4d3dd70e3343adc4
 msgid "yes,no,maybe"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:894
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:906
+#: loco:5ec5057a4d3dd70e3343adc5
 #, python-format
 msgid "%(size)d byte"
 msgid_plural "%(size)d bytes"
@@ -775,347 +926,425 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:908
+#: loco:5ec5057a4d3dd70e3343adc7
 #, python-format
 msgid "%s KB"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:910
+#: loco:5ec5057a4d3dd70e3343adc8
 #, python-format
 msgid "%s MB"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:912
+#: loco:5ec5057a4d3dd70e3343adc9
 #, python-format
 msgid "%s GB"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:914
+#: loco:5ec5057a4d3dd70e3343adca
 #, python-format
 msgid "%s TB"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/template/defaultfilters.py:916
+#: loco:5ec5057a4d3dd70e3343adcb
 #, python-format
 msgid "%s PB"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dateformat.py:61
+#: loco:5ec5057a4d3dd70e3343adcc
 msgid "p.m."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dateformat.py:62
+#: loco:5ec5057a4d3dd70e3343adcd
 msgid "a.m."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dateformat.py:67
+#: loco:5ec5057a4d3dd70e3343adce
 msgid "PM"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dateformat.py:68
+#: loco:5ec5057a4d3dd70e3343adcf
 msgid "AM"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dateformat.py:153
+#: loco:5ec5057a4d3dd70e3343add0
 msgid "midnight"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dateformat.py:155
+#: loco:5ec5057a4d3dd70e3343add1
 msgid "noon"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:6
+#: loco:5ec5057a4d3dd70e3343add2
 msgid "Monday"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:6
+#: loco:5ec5057a4d3dd70e3343add3
 msgid "Tuesday"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:6
+#: loco:5ec5057a4d3dd70e3343add4
 msgid "Wednesday"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:6
+#: loco:5ec5057a4d3dd70e3343add5
 msgid "Thursday"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:6
+#: loco:5ec5057a4d3dd70e3343add6
 msgid "Friday"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:7
+#: loco:5ec5057a4d3dd70e3343add7
 msgid "Saturday"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:7
+#: loco:5ec5057a4d3dd70e3343add8
 msgid "Sunday"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:10
+#: loco:5ec5057a4d3dd70e3343add9
 msgid "Mon"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:10
+#: loco:5ec5057a4d3dd70e3343adda
 msgid "Tue"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:10
+#: loco:5ec5057a4d3dd70e3343addb
 msgid "Wed"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:10
+#: loco:5ec5057a4d3dd70e3343addc
 msgid "Thu"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:10
+#: loco:5ec5057a4d3dd70e3343addd
 msgid "Fri"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:11
+#: loco:5ec5057a4d3dd70e3343adde
 msgid "Sat"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:11
+#: loco:5ec5057a4d3dd70e3343addf
 msgid "Sun"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:18
+#: loco:5ec5057a4d3dd70e3343ade0
 msgid "January"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:18
+#: loco:5ec5057a4d3dd70e3343ade1
 msgid "February"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:18
+#: loco:5ec5057a4d3dd70e3343ade2
 msgid "March"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:18
+#: loco:5ec5057a4d3dd70e3343ade3
 msgid "April"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:18
+#: loco:5ec5057a4d3dd70e3343ade4
 msgid "May"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:18
+#: loco:5ec5057a4d3dd70e3343ade5
 msgid "June"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:19
+#: loco:5ec5057a4d3dd70e3343ade6
 msgid "July"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:19
+#: loco:5ec5057a4d3dd70e3343ade7
 msgid "August"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:19
+#: loco:5ec5057a4d3dd70e3343ade8
 msgid "September"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:19
+#: loco:5ec5057a4d3dd70e3343ade9
 msgid "October"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:19
+#: loco:5ec5057a4d3dd70e3343adea
 msgid "November"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:20
+#: loco:5ec5057a4d3dd70e3343adeb
 msgid "December"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:23
+#: loco:5ec5057a4d3dd70e3343adec
 msgid "jan"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:23
+#: loco:5ec5057a4d3dd70e3343aded
 msgid "feb"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:23
+#: loco:5ec5057a4d3dd70e3343adee
 msgid "mar"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:23
+#: loco:5ec5057a4d3dd70e3343adef
 msgid "apr"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:23
+#: loco:5ec5057a4d3dd70e3343adf0
 msgid "may"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:23
+#: loco:5ec5057a4d3dd70e3343adf1
 msgid "jun"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:24
+#: loco:5ec5057a4d3dd70e3343adf2
 msgid "jul"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:24
+#: loco:5ec5057a4d3dd70e3343adf3
 msgid "aug"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:24
+#: loco:5ec5057a4d3dd70e3343adf4
 msgid "sep"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:24
+#: loco:5ec5057a4d3dd70e3343adf5
 msgid "oct"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:24
+#: loco:5ec5057a4d3dd70e3343adf6
 msgid "nov"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:24
+#: loco:5ec5057a4d3dd70e3343adf7
 msgid "dec"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:31
+#: loco:5ec5057a4d3dd70e3343adf8
 msgctxt "abbrev. month"
 msgid "Jan."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:32
+#: loco:5ec5057a4d3dd70e3343adf9
 msgctxt "abbrev. month"
 msgid "Feb."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:33
+#: loco:5ec5057a4d3dd70e3343adfa
 msgctxt "abbrev. month"
 msgid "March"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:34
+#: loco:5ec5057a4d3dd70e3343adfb
 msgctxt "abbrev. month"
 msgid "April"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:35
+#: loco:5ec5057a4d3dd70e3343adfc
 msgctxt "abbrev. month"
 msgid "May"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:36
+#: loco:5ec5057a4d3dd70e3343adfd
 msgctxt "abbrev. month"
 msgid "June"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:37
+#: loco:5ec5057a4d3dd70e3343adfe
 msgctxt "abbrev. month"
 msgid "July"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:38
+#: loco:5ec5057a4d3dd70e3343adff
 msgctxt "abbrev. month"
 msgid "Aug."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:39
+#: loco:5ec5057a4d3dd70e3343ae00
 msgctxt "abbrev. month"
 msgid "Sept."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:40
+#: loco:5ec5057a4d3dd70e3343ae01
 msgctxt "abbrev. month"
 msgid "Oct."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:41
+#: loco:5ec5057a4d3dd70e3343ae02
 msgctxt "abbrev. month"
 msgid "Nov."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:42
+#: loco:5ec5057a4d3dd70e3343ae03
 msgctxt "abbrev. month"
 msgid "Dec."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:45
+#: loco:5ec5057a4d3dd70e3343ae04
 msgctxt "alt. month"
 msgid "January"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:46
+#: loco:5ec5057a4d3dd70e3343ae05
 msgctxt "alt. month"
 msgid "February"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:47
+#: loco:5ec5057a4d3dd70e3343ae06
 msgctxt "alt. month"
 msgid "March"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:48
+#: loco:5ec5057a4d3dd70e3343ae07
 msgctxt "alt. month"
 msgid "April"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:49
+#: loco:5ec5057a4d3dd70e3343ae08
 msgctxt "alt. month"
 msgid "May"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:50
+#: loco:5ec5057a4d3dd70e3343ae09
 msgctxt "alt. month"
 msgid "June"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:51
+#: loco:5ec5057a4d3dd70e3343ae0a
 msgctxt "alt. month"
 msgid "July"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:52
+#: loco:5ec5057a4d3dd70e3343ae0b
 msgctxt "alt. month"
 msgid "August"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:53
+#: loco:5ec5057a4d3dd70e3343ae0c
 msgctxt "alt. month"
 msgid "September"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:54
+#: loco:5ec5057a4d3dd70e3343ae0d
 msgctxt "alt. month"
 msgid "October"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:55
+#: loco:5ec5057a4d3dd70e3343ae0e
 msgctxt "alt. month"
 msgid "November"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/dates.py:56
+#: loco:5ec5057a4d3dd70e3343ae0f
 msgctxt "alt. month"
 msgid "December"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/ipv6.py:10
+#: loco:5ec5057a4d3dd70e3343ae10
 msgid "This is not a valid IPv6 address."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/text.py:79
+#: loco:5ec5057a4d3dd70e3343ae11
 #, python-format
 msgctxt "String to return when truncating text"
 msgid "%(truncated_text)s..."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/text.py:248
+#: loco:5ec5057a4d3dd70e3343ae12
 msgid "or"
 msgstr ""
 
 #. Translators: This string is used as a separator between list elements
 #: env/lib/python2.7/site-packages/django/utils/text.py:267
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:58
+#: loco:5ec5057a4d3dd70e3343ae13
 msgid ", "
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:10
+#: loco:5ec5057a4d3dd70e3343ae14
 #, python-format
 msgid "%d year"
 msgid_plural "%d years"
@@ -1123,6 +1352,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:11
+#: loco:5ec5057a4d3dd70e3343ae16
 #, python-format
 msgid "%d month"
 msgid_plural "%d months"
@@ -1130,6 +1360,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:12
+#: loco:5ec5057a4d3dd70e3343ae18
 #, python-format
 msgid "%d week"
 msgid_plural "%d weeks"
@@ -1137,6 +1368,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:13
+#: loco:5ec5057a4d3dd70e3343ae1a
 #, python-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -1144,6 +1376,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:14
+#: loco:5ec5057a4d3dd70e3343ae1c
 #, python-format
 msgid "%d hour"
 msgid_plural "%d hours"
@@ -1151,6 +1384,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:15
+#: loco:5ec5057a4d3dd70e3343ae1e
 #, python-format
 msgid "%d minute"
 msgid_plural "%d minutes"
@@ -1158,18 +1392,22 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: env/lib/python2.7/site-packages/django/utils/timesince.py:47
+#: loco:5ec5057a4d3dd70e3343ae20
 msgid "0 minutes"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/csrf.py:107
+#: loco:5ec5057a4d3dd70e3343ae21
 msgid "Forbidden"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/csrf.py:108
+#: loco:5ec5057a4d3dd70e3343ae22
 msgid "CSRF verification failed. Request aborted."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/csrf.py:112
+#: loco:5ec5057a4d3dd70e3343ae23
 msgid ""
 "You are seeing this message because this HTTPS site requires a 'Referer "
 "header' to be sent by your Web browser, but none was sent. This header is "
@@ -1178,6 +1416,7 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/csrf.py:117
+#: loco:5ec5057a4d3dd70e3343ae24
 msgid ""
 "If you have configured your browser to disable 'Referer' headers, please re-"
 "enable them, at least for this site, or for HTTPS connections, or for 'same-"
@@ -1185,6 +1424,7 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/csrf.py:122
+#: loco:5ec5057a4d3dd70e3343ae25
 msgid ""
 "You are seeing this message because this site requires a CSRF cookie when "
 "submitting forms. This cookie is required for security reasons, to ensure "
@@ -1192,62 +1432,75 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/csrf.py:127
+#: loco:5ec5057a4d3dd70e3343ae26
 msgid ""
 "If you have configured your browser to disable cookies, please re-enable "
 "them, at least for this site, or for 'same-origin' requests."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/csrf.py:132
+#: loco:5ec5057a4d3dd70e3343ae27
 msgid "More information is available with DEBUG=True."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/debug.py:583
+#: loco:5ec5057a4d3dd70e3343ae28
 msgid "Welcome to Django"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/debug.py:584
+#: loco:5ec5057a4d3dd70e3343ae29
 msgid "It worked!"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/debug.py:585
+#: loco:5ec5057a4d3dd70e3343ae2a
 msgid "Congratulations on your first Django-powered page."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/debug.py:586
+#: loco:5ec5057a4d3dd70e3343ae2b
 msgid ""
 "Of course, you haven't actually done any work yet. Next, start your first "
 "app by running <code>python manage.py startapp [app_label]</code>."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/debug.py:588
+#: loco:5ec5057a4d3dd70e3343ae2c
 msgid ""
 "You're seeing this message because you have <code>DEBUG = True</code> in "
 "your Django settings file and you haven't configured any URLs. Get to work!"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:48
+#: loco:5ec5057a4d3dd70e3343ae2d
 msgid "No year specified"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:104
+#: loco:5ec5057a4d3dd70e3343ae2e
 msgid "No month specified"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:163
+#: loco:5ec5057a4d3dd70e3343ae2f
 msgid "No day specified"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:219
+#: loco:5ec5057a4d3dd70e3343ae30
 msgid "No week specified"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:378
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:406
+#: loco:5ec5057a4d3dd70e3343ae31
 #, python-format
 msgid "No %(verbose_name_plural)s available"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:660
+#: loco:5ec5057a4d3dd70e3343ae32
 #, python-format
 msgid ""
 "Future %(verbose_name_plural)s not available because %(class_name)s."
@@ -1255,383 +1508,470 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/dates.py:694
+#: loco:5ec5057a4d3dd70e3343ae33
 #, python-format
 msgid "Invalid date string '%(datestr)s' given format '%(format)s'"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/detail.py:55
+#: loco:5ec5057a4d3dd70e3343ae34
 #, python-format
 msgid "No %(verbose_name)s found matching the query"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/list.py:76
+#: loco:5ec5057a4d3dd70e3343ae35
 msgid "Page is not 'last', nor can it be converted to an int."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/list.py:81
+#: loco:5ec5057a4d3dd70e3343ae36
 #, python-format
 msgid "Invalid page (%(page_number)s): %(message)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/generic/list.py:172
+#: loco:5ec5057a4d3dd70e3343ae37
 #, python-format
 msgid "Empty list and '%(class_name)s.allow_empty' is False."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/static.py:44
+#: loco:5ec5057a4d3dd70e3343ae38
 msgid "Directory indexes are not allowed here."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/static.py:46
+#: loco:5ec5057a4d3dd70e3343ae39
 #, python-format
 msgid "\"%(path)s\" does not exist"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/views/static.py:86
+#: loco:5ec5057a4d3dd70e3343ae3a
 #, python-format
 msgid "Index of %(directory)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:11
+#: loco:5ec5057a4d3dd70e3343ae3b
 msgid "Null character in input stream, replaced with U+FFFD."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:13
+#: loco:5ec5057a4d3dd70e3343ae3c
 msgid "Invalid codepoint in stream."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:15
+#: loco:5ec5057a4d3dd70e3343ae3d
 msgid "Solidus (/) incorrectly placed in tag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:17
+#: loco:5ec5057a4d3dd70e3343ae3e
 msgid "Incorrect CR newline entity, replaced with LF."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:19
+#: loco:5ec5057a4d3dd70e3343ae3f
 msgid "Entity used with illegal number (windows-1252 reference)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:21
+#: loco:5ec5057a4d3dd70e3343ae40
 #, python-format
 msgid ""
-"Numeric entity couldn't be converted to character (codepoint U+"
-"%(charAsInt)08x)."
+"Numeric entity couldn't be converted to character (codepoint U+%(charAsInt)"
+"08x)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:24
+#: loco:5ec5057a4d3dd70e3343ae41
 #, python-format
 msgid "Numeric entity represents an illegal codepoint: U+%(charAsInt)08x."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:27
+#: loco:5ec5057a4d3dd70e3343ae42
 msgid "Numeric entity didn't end with ';'."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:29
+#: loco:5ec5057a4d3dd70e3343ae43
 msgid "Numeric entity expected. Got end of file instead."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:31
+#: loco:5ec5057a4d3dd70e3343ae44
 msgid "Numeric entity expected but none found."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:33
+#: loco:5ec5057a4d3dd70e3343ae45
 msgid "Named entity didn't end with ';'."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:35
+#: loco:5ec5057a4d3dd70e3343ae46
 msgid "Named entity expected. Got none."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:37
+#: loco:5ec5057a4d3dd70e3343ae47
 msgid "End tag contains unexpected attributes."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:39
+#: loco:5ec5057a4d3dd70e3343ae48
 msgid "End tag contains unexpected self-closing flag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:41
+#: loco:5ec5057a4d3dd70e3343ae49
 msgid "Expected tag name. Got '>' instead."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:43
+#: loco:5ec5057a4d3dd70e3343ae4a
 msgid ""
 "Expected tag name. Got '?' instead. (HTML doesn't support processing "
 "instructions.)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:46
+#: loco:5ec5057a4d3dd70e3343ae4b
 msgid "Expected tag name. Got something else instead"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:48
+#: loco:5ec5057a4d3dd70e3343ae4c
 msgid "Expected closing tag. Got '>' instead. Ignoring '</>'."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:50
+#: loco:5ec5057a4d3dd70e3343ae4d
 msgid "Expected closing tag. Unexpected end of file."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:52
+#: loco:5ec5057a4d3dd70e3343ae4e
 #, python-format
 msgid "Expected closing tag. Unexpected character '%(data)s' found."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:54
+#: loco:5ec5057a4d3dd70e3343ae4f
 msgid "Unexpected end of file in the tag name."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:56
+#: loco:5ec5057a4d3dd70e3343ae50
 msgid "Unexpected end of file. Expected attribute name instead."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:58
+#: loco:5ec5057a4d3dd70e3343ae51
 msgid "Unexpected end of file in attribute name."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:60
+#: loco:5ec5057a4d3dd70e3343ae52
 msgid "Invalid character in attribute name"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:62
+#: loco:5ec5057a4d3dd70e3343ae53
 msgid "Dropped duplicate attribute on tag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:64
+#: loco:5ec5057a4d3dd70e3343ae54
 msgid "Unexpected end of file. Expected = or end of tag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:66
+#: loco:5ec5057a4d3dd70e3343ae55
 msgid "Unexpected end of file. Expected attribute value."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:68
+#: loco:5ec5057a4d3dd70e3343ae56
 msgid "Expected attribute value. Got '>' instead."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:70
+#: loco:5ec5057a4d3dd70e3343ae57
 msgid "Unexpected = in unquoted attribute"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:72
+#: loco:5ec5057a4d3dd70e3343ae58
 msgid "Unexpected character in unquoted attribute"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:74
+#: loco:5ec5057a4d3dd70e3343ae59
 msgid "Unexpected character after attribute name."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:76
+#: loco:5ec5057a4d3dd70e3343ae5a
 msgid "Unexpected character after attribute value."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:78
+#: loco:5ec5057a4d3dd70e3343ae5b
 msgid "Unexpected end of file in attribute value (\")."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:80
+#: loco:5ec5057a4d3dd70e3343ae5c
 msgid "Unexpected end of file in attribute value (')."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:82
+#: loco:5ec5057a4d3dd70e3343ae5d
 msgid "Unexpected end of file in attribute value."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:84
+#: loco:5ec5057a4d3dd70e3343ae5e
 msgid "Unexpected end of file in tag. Expected >"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:86
+#: loco:5ec5057a4d3dd70e3343ae5f
 msgid "Unexpected character after / in tag. Expected >"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:88
+#: loco:5ec5057a4d3dd70e3343ae60
 msgid "Expected '--' or 'DOCTYPE'. Not found."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:90
+#: loco:5ec5057a4d3dd70e3343ae61
 msgid "Unexpected ! after -- in comment"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:92
+#: loco:5ec5057a4d3dd70e3343ae62
 msgid "Unexpected space after -- in comment"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:94
+#: loco:5ec5057a4d3dd70e3343ae63
 msgid "Incorrect comment."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:96
 #: env/lib/python2.7/site-packages/html5lib/constants.py:104
 #: env/lib/python2.7/site-packages/html5lib/constants.py:106
+#: loco:5ec5057a4d3dd70e3343ae64
 msgid "Unexpected end of file in comment."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:98
+#: loco:5ec5057a4d3dd70e3343ae65
 msgid "Unexpected end of file in comment (-)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:100
+#: loco:5ec5057a4d3dd70e3343ae66
 msgid "Unexpected '-' after '--' found in comment."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:102
+#: loco:5ec5057a4d3dd70e3343ae67
 msgid "Unexpected end of file in comment (--)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:108
+#: loco:5ec5057a4d3dd70e3343ae68
 msgid "Unexpected character in comment found."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:110
+#: loco:5ec5057a4d3dd70e3343ae69
 msgid "No space after literal string 'DOCTYPE'."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:112
+#: loco:5ec5057a4d3dd70e3343ae6a
 msgid "Unexpected > character. Expected DOCTYPE name."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:114
+#: loco:5ec5057a4d3dd70e3343ae6b
 msgid "Unexpected end of file. Expected DOCTYPE name."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:116
+#: loco:5ec5057a4d3dd70e3343ae6c
 msgid "Unexpected end of file in DOCTYPE name."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:118
+#: loco:5ec5057a4d3dd70e3343ae6d
 msgid "Unexpected end of file in DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:120
+#: loco:5ec5057a4d3dd70e3343ae6e
 #, python-format
 msgid "Expected space or '>'. Got '%(data)s'"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:122
+#: loco:5ec5057a4d3dd70e3343ae6f
 msgid "Unexpected end of DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:124
+#: loco:5ec5057a4d3dd70e3343ae70
 msgid "Unexpected character in DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:126
+#: loco:5ec5057a4d3dd70e3343ae71
 msgid "XXX innerHTML EOF"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:128
+#: loco:5ec5057a4d3dd70e3343ae72
 msgid "Unexpected DOCTYPE. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:130
+#: loco:5ec5057a4d3dd70e3343ae73
 msgid "html needs to be the first start tag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:132
+#: loco:5ec5057a4d3dd70e3343ae74
 msgid "Unexpected End of file. Expected DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:134
+#: loco:5ec5057a4d3dd70e3343ae75
 msgid "Erroneous DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:136
+#: loco:5ec5057a4d3dd70e3343ae76
 msgid "Unexpected non-space characters. Expected DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:138
+#: loco:5ec5057a4d3dd70e3343ae77
 #, python-format
 msgid "Unexpected start tag (%(name)s). Expected DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:140
+#: loco:5ec5057a4d3dd70e3343ae78
 #, python-format
 msgid "Unexpected end tag (%(name)s). Expected DOCTYPE."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:142
+#: loco:5ec5057a4d3dd70e3343ae79
 #, python-format
 msgid "Unexpected end tag (%(name)s) after the (implied) root element."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:144
+#: loco:5ec5057a4d3dd70e3343ae7a
 #, python-format
 msgid "Unexpected end of file. Expected end tag (%(name)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:146
+#: loco:5ec5057a4d3dd70e3343ae7b
 msgid "Unexpected start tag head in existing head. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:148
+#: loco:5ec5057a4d3dd70e3343ae7c
 #, python-format
 msgid "Unexpected end tag (%(name)s). Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:150
+#: loco:5ec5057a4d3dd70e3343ae7d
 #, python-format
 msgid "Unexpected start tag (%(name)s) that can be in head. Moved."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:152
+#: loco:5ec5057a4d3dd70e3343ae7e
 #, python-format
 msgid "Unexpected start tag (%(name)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:154
+#: loco:5ec5057a4d3dd70e3343ae7f
 #, python-format
 msgid "Missing end tag (%(name)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:156
+#: loco:5ec5057a4d3dd70e3343ae80
 #, python-format
 msgid "Missing end tags (%(name)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:158
+#: loco:5ec5057a4d3dd70e3343ae81
 #, python-format
 msgid "Unexpected start tag (%(startName)s) implies end tag (%(endName)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:161
+#: loco:5ec5057a4d3dd70e3343ae82
 #, python-format
 msgid "Unexpected start tag (%(originalName)s). Treated as %(newName)s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:163
+#: loco:5ec5057a4d3dd70e3343ae83
 #, python-format
 msgid "Unexpected start tag %(name)s. Don't use it!"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:165
+#: loco:5ec5057a4d3dd70e3343ae84
 #, python-format
 msgid "Unexpected start tag %(name)s. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:167
+#: loco:5ec5057a4d3dd70e3343ae85
 #, python-format
 msgid "Unexpected end tag (%(gotName)s). Missing end tag (%(expectedName)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:170
+#: loco:5ec5057a4d3dd70e3343ae86
 #, python-format
 msgid "End tag (%(name)s) seen too early. Expected other end tag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:172
+#: loco:5ec5057a4d3dd70e3343ae87
 #, python-format
 msgid "Unexpected end tag (%(gotName)s). Expected end tag (%(expectedName)s)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:174
+#: loco:5ec5057a4d3dd70e3343ae88
 #, python-format
 msgid "End tag (%(name)s) seen too early. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:176
+#: loco:5ec5057a4d3dd70e3343ae89
 #, python-format
 msgid ""
 "End tag (%(name)s) violates step 1, paragraph 1 of the adoption agency "
@@ -1639,6 +1979,7 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:179
+#: loco:5ec5057a4d3dd70e3343ae8a
 #, python-format
 msgid ""
 "End tag (%(name)s) violates step 1, paragraph 2 of the adoption agency "
@@ -1646,6 +1987,7 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:182
+#: loco:5ec5057a4d3dd70e3343ae8b
 #, python-format
 msgid ""
 "End tag (%(name)s) violates step 1, paragraph 3 of the adoption agency "
@@ -1653,6 +1995,7 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:185
+#: loco:5ec5057a4d3dd70e3343ae8c
 #, python-format
 msgid ""
 "End tag (%(name)s) violates step 4, paragraph 4 of the adoption agency "
@@ -1660,207 +2003,251 @@ msgid ""
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:188
+#: loco:5ec5057a4d3dd70e3343ae8d
 #, python-format
 msgid "Unexpected end tag (%(originalName)s). Treated as %(newName)s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:190
+#: loco:5ec5057a4d3dd70e3343ae8e
 #, python-format
 msgid "This element (%(name)s) has no end tag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:192
+#: loco:5ec5057a4d3dd70e3343ae8f
 #, python-format
 msgid "Unexpected implied end tag (%(name)s) in the table phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:194
+#: loco:5ec5057a4d3dd70e3343ae90
 #, python-format
 msgid "Unexpected implied end tag (%(name)s) in the table body phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:196
+#: loco:5ec5057a4d3dd70e3343ae91
 msgid "Unexpected non-space characters in table context caused voodoo mode."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:199
+#: loco:5ec5057a4d3dd70e3343ae92
 msgid "Unexpected input with type hidden in table context."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:201
+#: loco:5ec5057a4d3dd70e3343ae93
 msgid "Unexpected form in table context."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:203
+#: loco:5ec5057a4d3dd70e3343ae94
 #, python-format
 msgid "Unexpected start tag (%(name)s) in table context caused voodoo mode."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:206
+#: loco:5ec5057a4d3dd70e3343ae95
 #, python-format
 msgid "Unexpected end tag (%(name)s) in table context caused voodoo mode."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:209
+#: loco:5ec5057a4d3dd70e3343ae96
 #, python-format
 msgid "Unexpected table cell start tag (%(name)s) in the table body phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:212
+#: loco:5ec5057a4d3dd70e3343ae97
 #, python-format
 msgid "Got table cell end tag (%(name)s) while required end tags are missing."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:215
+#: loco:5ec5057a4d3dd70e3343ae98
 #, python-format
 msgid "Unexpected end tag (%(name)s) in the table body phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:217
+#: loco:5ec5057a4d3dd70e3343ae99
 #, python-format
 msgid "Unexpected implied end tag (%(name)s) in the table row phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:219
+#: loco:5ec5057a4d3dd70e3343ae9a
 #, python-format
 msgid "Unexpected end tag (%(name)s) in the table row phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:221
+#: loco:5ec5057a4d3dd70e3343ae9b
 msgid ""
 "Unexpected select start tag in the select phase treated as select end tag."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:224
+#: loco:5ec5057a4d3dd70e3343ae9c
 msgid "Unexpected input start tag in the select phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:226
+#: loco:5ec5057a4d3dd70e3343ae9d
 #, python-format
 msgid "Unexpected start tag token (%(name)s in the select phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:229
+#: loco:5ec5057a4d3dd70e3343ae9e
 #, python-format
 msgid "Unexpected end tag (%(name)s) in the select phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:231
+#: loco:5ec5057a4d3dd70e3343ae9f
 #, python-format
 msgid ""
 "Unexpected table element start tag (%(name)s) in the select in table phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:233
+#: loco:5ec5057a4d3dd70e3343aea0
 #, python-format
 msgid ""
 "Unexpected table element end tag (%(name)s) in the select in table phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:235
+#: loco:5ec5057a4d3dd70e3343aea1
 msgid "Unexpected non-space characters in the after body phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:237
+#: loco:5ec5057a4d3dd70e3343aea2
 #, python-format
 msgid "Unexpected start tag token (%(name)s) in the after body phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:240
+#: loco:5ec5057a4d3dd70e3343aea3
 #, python-format
 msgid "Unexpected end tag token (%(name)s) in the after body phase."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:243
+#: loco:5ec5057a4d3dd70e3343aea4
 msgid "Unexpected characters in the frameset phase. Characters ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:245
+#: loco:5ec5057a4d3dd70e3343aea5
 #, python-format
 msgid "Unexpected start tag token (%(name)s) in the frameset phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:248
+#: loco:5ec5057a4d3dd70e3343aea6
 msgid "Unexpected end tag token (frameset) in the frameset phase (innerHTML)."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:251
+#: loco:5ec5057a4d3dd70e3343aea7
 #, python-format
 msgid "Unexpected end tag token (%(name)s) in the frameset phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:254
+#: loco:5ec5057a4d3dd70e3343aea8
 msgid "Unexpected non-space characters in the after frameset phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:257
+#: loco:5ec5057a4d3dd70e3343aea9
 #, python-format
 msgid "Unexpected start tag (%(name)s) in the after frameset phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:260
+#: loco:5ec5057a4d3dd70e3343aeaa
 #, python-format
 msgid "Unexpected end tag (%(name)s) in the after frameset phase. Ignored."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:263
+#: loco:5ec5057a4d3dd70e3343aeab
 msgid "Unexpected end tag after body(innerHtml)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:265
+#: loco:5ec5057a4d3dd70e3343aeac
 msgid "Unexpected non-space characters. Expected end of file."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:267
+#: loco:5ec5057a4d3dd70e3343aead
 #, python-format
 msgid "Unexpected start tag (%(name)s). Expected end of file."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:270
+#: loco:5ec5057a4d3dd70e3343aeae
 #, python-format
 msgid "Unexpected end tag (%(name)s). Expected end of file."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:273
+#: loco:5ec5057a4d3dd70e3343aeaf
 msgid "Unexpected end of file. Expected table content."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:275
+#: loco:5ec5057a4d3dd70e3343aeb0
 msgid "Unexpected end of file. Expected select content."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:277
+#: loco:5ec5057a4d3dd70e3343aeb1
 msgid "Unexpected end of file. Expected frameset content."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:279
+#: loco:5ec5057a4d3dd70e3343aeb2
 msgid "Unexpected end of file. Expected script content."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:281
+#: loco:5ec5057a4d3dd70e3343aeb3
 msgid "Unexpected end of file. Expected foreign content"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:283
+#: loco:5ec5057a4d3dd70e3343aeb4
 #, python-format
 msgid "Trailing solidus not allowed on element %(name)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:285
+#: loco:5ec5057a4d3dd70e3343aeb5
 #, python-format
 msgid "Element %(name)s not allowed in a non-html context"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:287
+#: loco:5ec5057a4d3dd70e3343aeb6
 #, python-format
 msgid "Unexpected end tag (%(name)s) before html."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/constants.py:289
+#: loco:5ec5057a4d3dd70e3343aeb7
 msgid "Undefined error (this sucks and should be fixed)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:26
+#: loco:5ec5057a4d3dd70e3343aeb8
 #, python-format
 msgid "StartTag not in PCDATA content model flag: %(tag)s"
 msgstr ""
@@ -1868,319 +2255,579 @@ msgstr ""
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:28
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:54
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:84
+#: loco:5ec5057a4d3dd70e3343aeb9
 #, python-format
 msgid "Tag name is not a string: %(tag)r"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:30
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:56
+#: loco:5ec5057a4d3dd70e3343aeba
 msgid "Empty tag name"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:32
+#: loco:5ec5057a4d3dd70e3343aebb
 #, python-format
 msgid "Void element reported as StartTag token: %(tag)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:34
+#: loco:5ec5057a4d3dd70e3343aebc
 #, python-format
 msgid "Non-void element reported as EmptyTag token: %(tag)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:39
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:71
+#: loco:5ec5057a4d3dd70e3343aebd
 #, python-format
 msgid "Attribute name is not a string: %(name)r"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:41
+#: loco:5ec5057a4d3dd70e3343aebe
 msgid "Empty attribute name"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:43
+#: loco:5ec5057a4d3dd70e3343aebf
 #, python-format
 msgid "Attribute value is not a string: %(value)r"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:58
+#: loco:5ec5057a4d3dd70e3343aec0
 #, python-format
 msgid "Void element reported as EndTag token: %(tag)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:61
+#: loco:5ec5057a4d3dd70e3343aec1
 #, python-format
 msgid "EndTag (%(end)s) does not match StartTag (%(start)s)"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:66
+#: loco:5ec5057a4d3dd70e3343aec2
 msgid "Comment not in PCDATA content model flag"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:73
+#: loco:5ec5057a4d3dd70e3343aec3
 #, python-format
 msgid "%(type)s token with empty data"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:77
+#: loco:5ec5057a4d3dd70e3343aec4
 #, python-format
 msgid "Non-space character(s) found in SpaceCharacters token: %(token)r"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:82
+#: loco:5ec5057a4d3dd70e3343aec5
 #, python-format
 msgid "Doctype not in PCDATA content model flag: %(name)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/filters/lint.py:91
+#: loco:5ec5057a4d3dd70e3343aec6
 #, python-format
 msgid "Unknown token type: %(type)s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/serializer/htmlserializer.py:211
+#: loco:5ec5057a4d3dd70e3343aec7
 msgid "System identifer contains both single and double quote characters"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/serializer/htmlserializer.py:223
+#: loco:5ec5057a4d3dd70e3343aec8
 msgid "Unexpected </ in CDATA"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/serializer/htmlserializer.py:234
 #: env/lib/python2.7/site-packages/html5lib/serializer/htmlserializer.py:282
+#: loco:5ec5057a4d3dd70e3343aec9
 msgid "Unexpected child element of a CDATA element"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/serializer/htmlserializer.py:288
+#: loco:5ec5057a4d3dd70e3343aeca
 msgid "Comment contains --"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/serializer/htmlserializer.py:295
+#: loco:5ec5057a4d3dd70e3343aecb
 #, python-format
 msgid "Entity %s not recognized"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/treewalkers/_base.py:61
+#: loco:5ec5057a4d3dd70e3343aecc
 msgid "Void element has children"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/treewalkers/_base.py:125
+#: loco:5ec5057a4d3dd70e3343aecd
 msgid "Unknown node type: "
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/treewalkers/lxmletree.py:133
 #: env/lib/python2.7/site-packages/html5lib/treewalkers/lxmletree.py:183
 #: env/lib/python2.7/site-packages/html5lib/treewalkers/lxmletree.py:199
+#: loco:5ec5057a4d3dd70e3343aece
 #, python-format
 msgid "Text nodes are text or tail, found %s"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/html5lib/treewalkers/lxmletree.py:172
+#: loco:5ec5057a4d3dd70e3343aecf
 msgid "Text nodes have no children"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/httplib2/__init__.py:436
+#: loco:5ec5057a4d3dd70e3343aed0
 #, python-format
 msgid "Content purported to be compressed with %s but failed to decompress."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/httplib2/__init__.py:546
+#: loco:5ec5057a4d3dd70e3343aed1
 #, python-format
 msgid "Unsupported value for qop: %s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/httplib2/__init__.py:549
 #: env/lib/python2.7/site-packages/httplib2/__init__.py:611
+#: loco:5ec5057a4d3dd70e3343aed2
 #, python-format
 msgid "Unsupported value for algorithm: %s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/httplib2/__init__.py:608
+#: loco:5ec5057a4d3dd70e3343aed3
 msgid "The challenge doesn't contain a server nonce, or this one is empty."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/httplib2/__init__.py:614
+#: loco:5ec5057a4d3dd70e3343aed4
 #, python-format
 msgid "Unsupported value for pw-algorithm: %s."
 msgstr ""
 
 #: env/lib/python2.7/site-packages/httplib2/__init__.py:1422
+#: loco:5ec5057a4d3dd70e3343aed5
 msgid "Redirected but the response is missing a Location: header."
 msgstr ""
 
-#: log_app/models.py:9
+#: log_app/models.py:9 loco:5ec5057a4d3dd70e3343aed6
 msgid "username"
 msgstr ""
 
-#: log_app/models.py:10
+#: log_app/models.py:10 loco:5ec5057a4d3dd70e3343aed7
 msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr ""
 
-#: log_app/models.py:14
+#: log_app/models.py:14 loco:5ec5057a4d3dd70e3343aed8
 msgid ""
-"Enter a valid username. This value may contain only letters, numbers and @/./"
-"+/-/_ characters."
+"Enter a valid username. This value may contain only letters, numbers and @/."
+"/+/-/_ characters."
 msgstr ""
 
-#: log_app/models.py:19
+#: log_app/models.py:19 loco:5ec5057a4d3dd70e3343aed9
 msgid "A user with that username already exists."
 msgstr ""
 
-#: log_app/models.py:21
+#: log_app/models.py:21 loco:5ec5057a4d3dd70e3343aeda
 msgid "password"
 msgstr ""
 
-#: log_app/models.py:23
+#: log_app/models.py:23 loco:5ec5057a4d3dd70e3343aedb
 msgid "email address"
 msgstr ""
 
-#: log_app/models.py:24
+#: log_app/models.py:24 loco:5ec5057a4d3dd70e3343aedc
 msgid "super user"
 msgstr ""
 
-#: log_app/models.py:25
+#: log_app/models.py:25 loco:5ec5057a4d3dd70e3343aedd
 msgid "Designates whether the user can have access to multiple countries site."
 msgstr ""
 
-#: log_app/models.py:26
+#: log_app/models.py:26 loco:5ec5057a4d3dd70e3343aede
 msgid "notify on new log"
 msgstr ""
 
-#: log_app/models.py:27
+#: log_app/models.py:27 loco:5ec5057a4d3dd70e3343aedf
 msgid "If the user prefers to get notification or not"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:46
+#: telegram_bot/covid_bot.py:26 loco:5ec5057a4d3dd70e3343aee0
+msgid "Language | ቋንቋ | Langue"
+msgstr ""
+
+#: telegram_bot/covid_bot.py:67 telegram_bot/covid_bot.py:80
+#: loco:5ec5057a4d3dd70e3343aee1
+msgid "Hello!"
+msgstr "Salut"
+
+#: telegram_bot/covid_bot.py:72 telegram_bot/covid_bot.py:85
+#: loco:5ec5057a4d3dd70e3343aee2
+#, python-format
+msgid "%(icon)sLearn about COVID-19"
+msgstr "%(icon)sInfos clés-COVID-19"
+
+#: telegram_bot/covid_bot.py:73 telegram_bot/covid_bot.py:86
+#: loco:5ec5057a4d3dd70e3343aee3
+#, python-format
+msgid "%(icon)sGet radio resources"
+msgstr "%(icon)sRessources radiophoniques"
+
+#: telegram_bot/covid_bot.py:74 telegram_bot/covid_bot.py:87
+#: loco:5ec5057a4d3dd70e3343aee4
+#, python-format
+msgid "%(icon)sFact-check myths"
+msgstr "%(icon)sVérification des mythes"
+
+#: telegram_bot/covid_bot.py:84 loco:5ec5057a4d3dd70e3343aee5
 msgid ""
-"This is a Telegram bot from Farm Radio International.\n"
+"This is the FRI Broadcasters COVID-19 messenger bot.\n"
 "\n"
-"Here you can find information and resources for broadcasters on Coronavirus "
+"Here you can find information and resources for broadcasters on coronavirus "
 "(COVID-19).\n"
+"We hope this is useful for planning and preparing your radio program.\n"
 "\n"
 " What do you want to do?"
 msgstr ""
+"C’est le chatbot du COVID-19 pour les partenaires de radiodiffusion de RRI. "
+"Ici vous trouverez des infos et des ressources sur le coronavirus. On espère "
+"que ce service vous aidera  à planifier et préparer votre émission "
+"radiophonique. \n"
+"\n"
+"Que recherchez-vous?"
 
-#: telegram_bot/covid_bot.py:47
-#, python-format
-msgid "%(icon)sLearn about COVID-19"
-msgstr ""
+#: telegram_bot/covid_bot.py:93 telegram_bot/covid_bot.py:144
+#: telegram_bot/covid_bot.py:161 telegram_bot/covid_bot.py:174
+#: loco:5ec5057a4d3dd70e3343aee6
+msgid "Basic facts"
+msgstr "Infos clés sur COVID-19"
 
-#: telegram_bot/covid_bot.py:48
-#, python-format
-msgid "%(icon)sTips and resources for broadcasters"
-msgstr ""
-
-#: telegram_bot/covid_bot.py:49
-#, python-format
-msgid "%(icon)sAsk question or comment"
-msgstr ""
-
-#: telegram_bot/covid_bot.py:54
+#: telegram_bot/covid_bot.py:94 loco:5ec5057a4d3dd70e3343aee7
 msgid "How the virus spread"
+msgstr "Transmission du virus"
+
+#: telegram_bot/covid_bot.py:95 telegram_bot/covid_bot.py:151
+#: loco:5ec5057a4d3dd70e3343aee8
+msgid "Preventive measures"
+msgstr "Mesures préventives"
+
+#: telegram_bot/covid_bot.py:101 loco:5ec5057a4d3dd70e3343aee9
+msgid "COVID-19"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:55
-msgid "Precautionary measures"
+#: telegram_bot/covid_bot.py:106 loco:5ec5057a4d3dd70e3343aeea
+msgid ""
+"The most common symptoms of COVID-19 are fever, tiredness, and dry cough. "
+"Symptoms are usually mild and begin gradually. Some infected people have no "
+"symptoms and don't feel ill. People with fever, cough, and difficulty "
+"breathing should seek medical attention."
 msgstr ""
+"Ses symptômes courants sont la fièvre, la fatigue et la toux sèche. Ils sont "
+"généralement bénins et apparaissent progressivement. Certains ne présentent "
+"aucun symptôme et ne se sentent pas malades."
 
-#: telegram_bot/covid_bot.py:56
-msgid "Symptoms and infection"
+#: telegram_bot/covid_bot.py:107 telegram_bot/covid_bot.py:159
+#: loco:5ec5057a4d3dd70e3343aeeb
+msgid "Learn more"
+msgstr "En savoir plus"
+
+#: telegram_bot/covid_bot.py:108 telegram_bot/covid_bot.py:116
+#: telegram_bot/covid_bot.py:130 telegram_bot/covid_bot.py:143
+#: telegram_bot/covid_bot.py:152 telegram_bot/covid_bot.py:160
+#: telegram_bot/covid_bot.py:175 telegram_bot/covid_bot.py:204
+#: telegram_bot/covid_bot.py:223 telegram_bot/covid_bot.py:242
+#: telegram_bot/covid_bot.py:264 telegram_bot/covid_bot.py:278
+#: telegram_bot/covid_bot.py:285 telegram_bot/covid_bot.py:300
+#: telegram_bot/covid_bot.py:307 telegram_bot/covid_bot.py:374
+#: telegram_bot/covid_bot.py:392 telegram_bot/covid_bot.py:399
+#: loco:5ec5057a4d3dd70e3343aeec
+msgid "Go back"
+msgstr "Retourner"
+
+#: telegram_bot/covid_bot.py:114 loco:5ec5057a4d3dd70e3343aeed
+msgid ""
+"Most people (about 80%) recover without special treatment. About 1 in 6 "
+"people become seriously ill. Older people and people with health issues such "
+"as heart problems, diabetes, and high blood pressure are more likely to "
+"become seriously ill."
 msgstr ""
+"Les personnes qui ont de la fièvre, qui toussent et respirent difficilement "
+"doivent demander une aide médicale. Beaucoup (environ 80 %) guérissent sans "
+"avoir reçu des soins particuliers. Près d’une personne sur six tombe "
+"gravement malade."
 
-#: telegram_bot/covid_bot.py:57
-msgid "Myths, misinformation & fake news I"
+#: telegram_bot/covid_bot.py:115 loco:5ec5057a4d3dd70e3343aeee
+msgid "Important info"
+msgstr "Infos importantes"
+
+#: telegram_bot/covid_bot.py:129 loco:5ec5057a4d3dd70e3343aeef
+msgid "How the virus spread?"
+msgstr "Transmission du virus"
+
+#: telegram_bot/covid_bot.py:141 loco:5ec5057a4d3dd70e3343aef0
+msgid ""
+"People catch COVID-19 from others who have the virus. The disease is spread "
+"through small droplets produced when infected people cough, sneeze, or "
+"exhale. These droplets can be inhaled by people nearby or land on nearby "
+"objects and surfaces. If touched by other people, they can be infected."
 msgstr ""
+"Les gens contractent la maladie auprès d’autres qui ont le virus. La maladie "
+"se propage par le biais de gouttelettes qui s’échappent lorsque les "
+"personnes infectées toussent, éternuent ou expirent. Ces gouttelettes "
+"peuvent être inhalées ou touchées par les personnes situées à proximité. "
 
-#: telegram_bot/covid_bot.py:58
-msgid "Myths, misinformation & fake news II"
+#: telegram_bot/covid_bot.py:142 loco:5ec5057a4d3dd70e3343aef1
+msgid "More info"
+msgstr "En savoir plus"
+
+#: telegram_bot/covid_bot.py:150 loco:5ec5057a4d3dd70e3343aef2
+msgid ""
+"When people inhale droplets or touch contaminated objects or surfaces, then "
+"touch their eyes, nose, or mouth, they can be infected. This is why it is "
+"important to stay more than 1 metre away from a person who is sick."
 msgstr ""
+"Lorsque les gens inhalent les gouttelettes ou touchent des objets ou des "
+"surfaces contaminés, puis se touchent les yeux, le nez ou la bouche, elles "
+"peuvent être infectées. C’est pourquoi il faut rester à plus d’un mètre "
+"d’une personne malade."
 
-#: telegram_bot/covid_bot.py:59 telegram_bot/covid_bot.py:67
-msgid "Select the topic you want to learn more about"
+#: telegram_bot/covid_bot.py:158 loco:5ec5057a4d3dd70e3343aef3
+msgid ""
+"Wash your hands frequently. Maintain social / physical distancing. Avoid "
+"touching your eyes, nose, and mouth. Practice good respiratory hygiene. If "
+"you have fever, a cough, and difficulty breathing, seek medical care early. "
+"Practice safe greetings. "
 msgstr ""
+"Laver régulièrement les mains. Maintenir une distanciation sociale / "
+"physique. Éviter de se toucher les yeux, le nez et la bouche. Pratiquer une "
+"bonne hygiène respiratoire. Si vous êtes fiévreux, toussez et respirez "
+"difficilement, demandez rapidement une aide médicale. Utiliser les moyens de "
+"salutation sécuritaires."
 
-#: telegram_bot/covid_bot.py:63
-msgid "Safety for broadcasters"
+#: telegram_bot/covid_bot.py:188 loco:5ec5057a4d3dd70e3343aef4
+msgid "Working safely"
+msgstr "Travailler en sécurité"
+
+#: telegram_bot/covid_bot.py:189 telegram_bot/covid_bot.py:222
+#: loco:5ec5057a4d3dd70e3343aef5
+msgid "Protect your health"
+msgstr "Rester en bonne santé"
+
+#: telegram_bot/covid_bot.py:190 telegram_bot/covid_bot.py:241
+#: telegram_bot/covid_bot.py:257 loco:5ec5057a4d3dd70e3343aef6
+msgid "Good radio resources"
+msgstr "Ressources radios"
+
+#: telegram_bot/covid_bot.py:192 loco:5ec5057a4d3dd70e3343aef7
+msgid "Broadcaster resources for COVID-19"
+msgstr "Ressources radiophoniques"
+
+#: telegram_bot/covid_bot.py:203 loco:5ec5057a4d3dd70e3343aef8
+msgid "Sanitize your equipment"
+msgstr "Désinfecter"
+
+#: telegram_bot/covid_bot.py:253 loco:5ec5057a4d3dd70e3343aef9
+msgid "Emergency programs"
+msgstr "Émissions d’urgence"
+
+#: telegram_bot/covid_bot.py:254 loco:5ec5057a4d3dd70e3343aefa
+msgid "Farm Radio resources"
+msgstr "Ressources-RRI"
+
+#: telegram_bot/covid_bot.py:255 telegram_bot/covid_bot.py:291
+#: loco:5ec5057a4d3dd70e3343aefb
+msgid "COVID-19 information"
+msgstr "Infos-COVID-19"
+
+#: telegram_bot/covid_bot.py:262 loco:5ec5057a4d3dd70e3343aefc
+msgid ""
+"Good reporting practices are also important to ensure that people stay calm "
+"in a time of emergency and take appropriate action to respond. Farm Radio "
+"International has produced a Broadcaster how-to guide on planning and "
+"producing effective emergency response programming, and adapted it for the "
+"coronavirus pandemic.\n"
+"\n"
+"http://scripts.farmradio.fm/radio-resource-packs/covid-19-resources/planning-"
+"producing-effective-emergency-programming-covid/"
 msgstr ""
+"Il importe d’adopter de bonnes pratiques de reportage pour permettre aux "
+"gens de rester calmes en période de crise et prendre les mesures appropriées "
+"pour y faire face. RRI a un guide pratique pour la radiodiffusion sur "
+"comment planifier et produire des émissions efficaces en temps de crise.\n"
+"\n"
+"http://scripts.farmradio.fm/fr/radio-resource-packs/ressources-sur-covid-"
+"19/planifier-et-produire-des-emissions-efficaces-en-temps-de-crise-covid-"
+"19/"
 
-#: telegram_bot/covid_bot.py:64 telegram_bot/covid_bot.py:175
-msgid "Broadcaster resources"
+#: telegram_bot/covid_bot.py:263 loco:5ec5057a4d3dd70e3343aefd
+msgid "Farm radio resources"
+msgstr "Ressources-RRI"
+
+#: telegram_bot/covid_bot.py:270 loco:5ec5057a4d3dd70e3343aefe
+msgid ""
+"Farm Radio International is producing a variety of information resources to "
+"help broadcasters produce good quality radio programming around COVID-19 and "
+"the impact of this crisis on rural populations."
 msgstr ""
+"RRI partage plusieurs ressources d’information pour aider les "
+"radiodiffuseurs à produire de bonnes émissions sur le COVID-19."
 
-#: telegram_bot/covid_bot.py:65
-msgid "Join online groups"
+#: telegram_bot/covid_bot.py:271 loco:5ec5057a4d3dd70e3343aeff
+msgid "Farmer stories"
+msgstr "Nouvelles agricoles"
+
+#: telegram_bot/covid_bot.py:271 loco:5ec5057a4d3dd70e3343af00
+msgid "Key info & radio scripts"
+msgstr "Textes radiophoniques"
+
+#: telegram_bot/covid_bot.py:277 loco:5ec5057a4d3dd70e3343af01
+msgid "Barza Wire Farmer stories: https://wire.farmradio.fm/tag/emergencies/"
 msgstr ""
+"Nouvelles agricoles de Barza infos : https://wire.farmradio."
+"fm/fr/tag/urgences/"
 
-#: telegram_bot/covid_bot.py:67
-msgid "Stay safe while still working"
+#: telegram_bot/covid_bot.py:284 loco:5ec5057a4d3dd70e3343af02
+msgid ""
+"Access Farm Radio’s resources on COVID-19:http://scripts.farmradio.fm/radio-"
+"resource-packs/covid-19-resources/"
 msgstr ""
+"Accéder aux ensembles de ressources\n"
+"http://scripts.farmradio.fm/fr/radio-resource-packs/ressources-sur-covid-"
+"19/"
 
-#: telegram_bot/covid_bot.py:77 telegram_bot/covid_bot.py:97
-#: telegram_bot/covid_bot.py:116 telegram_bot/covid_bot.py:153
-msgid "Learn more about COVID-19"
+#: telegram_bot/covid_bot.py:292 loco:5ec5057a4d3dd70e3343af03
+msgid "FRI's key messenges"
+msgstr "Messages clés-RRI"
+
+#: telegram_bot/covid_bot.py:293 loco:5ec5057a4d3dd70e3343af04
+msgid "WHO resources"
+msgstr "Ressources-OMS"
+
+#: telegram_bot/covid_bot.py:299 loco:5ec5057a4d3dd70e3343af05
+msgid ""
+"Find all these key messages on COVID-19: http://scripts.farmradio.fm/radio-"
+"resource-packs/covid-19-resources/key-information-covid-19-broadcasters/"
 msgstr ""
+"Tous les messages clés de RRI http://scripts.farmradio.fm/fr/radio-resource-"
+"packs/ressources-sur-covid-19/informations-de-base-sur-le-covid-19-pour-la-"
+"radiodiffusion/"
 
-#: telegram_bot/covid_bot.py:78 telegram_bot/covid_bot.py:98
-#: telegram_bot/covid_bot.py:117 telegram_bot/covid_bot.py:140
-#: telegram_bot/covid_bot.py:154 telegram_bot/covid_bot.py:167
-#: telegram_bot/covid_bot.py:174
-msgid "Go to start"
+#: telegram_bot/covid_bot.py:306 loco:5ec5057a4d3dd70e3343af06
+msgid ""
+"Find all the information and resources from the World Health Organization "
+"here: https://www.who.int/emergencies/diseases/novel-coronavirus-2019"
 msgstr ""
+"Trouver les informations et les ressources de l’OMS ici  https://www.who."
+"int/fr/emergencies/diseases/novel-coronavirus-2019"
 
-#: telegram_bot/covid_bot.py:79 telegram_bot/covid_bot.py:99
-#: telegram_bot/covid_bot.py:118 telegram_bot/covid_bot.py:140
-#: telegram_bot/covid_bot.py:155
-msgid "Do you have a question?"
-msgstr ""
-
-#: telegram_bot/covid_bot.py:139
+#: telegram_bot/covid_bot.py:323 loco:5ec5057a4d3dd70e3343af07
 msgid "See other tips for broadcasters"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:166 telegram_bot/covid_bot.py:173
-msgid "Tips for broadcasters"
+#: telegram_bot/covid_bot.py:324 telegram_bot/covid_bot.py:338
+#: loco:5ec5057a4d3dd70e3343af08
+msgid "Go to start"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:168
-msgid "Join online broadcaster groups"
+#: telegram_bot/covid_bot.py:324 telegram_bot/covid_bot.py:339
+#: loco:5ec5057a4d3dd70e3343af09
+msgid "Do you have a question?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:168
-msgid "Links to online groups will be shared here soon."
+#: telegram_bot/covid_bot.py:337 loco:5ec5057a4d3dd70e3343af0a
+msgid "Learn more about COVID-19"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:175
-msgid "Links to online resources will be shared here soon."
-msgstr ""
+#: telegram_bot/covid_bot.py:350 loco:5ec5057a4d3dd70e3343af0b
+msgid "Truth behind myths"
+msgstr "Vérification des mythes"
 
-#: telegram_bot/covid_bot.py:205
+#: telegram_bot/covid_bot.py:351 loco:5ec5057a4d3dd70e3343af0c
+msgid "Fight fake news"
+msgstr "Gérer fausses nouvelles"
+
+#: telegram_bot/covid_bot.py:352 telegram_bot/covid_bot.py:374
+#: loco:5ec5057a4d3dd70e3343af0d
+msgid "Latest COVID myths"
+msgstr "Récents mythes"
+
+#: telegram_bot/covid_bot.py:354 loco:5ec5057a4d3dd70e3343af0e
+msgid ""
+"It’s important to dispel myths and fake news so that your audience has the "
+"right information to make good decisions about their health, safety, and "
+"livelihoods. "
+msgstr "Vérification des mythes"
+
+#: telegram_bot/covid_bot.py:370 loco:5ec5057a4d3dd70e3343af0f
+msgid "Next section"
+msgstr "Vérification des mythes"
+
+#: telegram_bot/covid_bot.py:372 loco:5ec5057a4d3dd70e3343af10
+msgid "Previous section"
+msgstr "section précédente"
+
+#: telegram_bot/covid_bot.py:391 loco:5ec5057a4d3dd70e3343af11
+msgid ""
+"Learn how to spot fake news and fact-check myths in our Broadcaster how-to "
+"guide. http://scripts.farmradio.fm/radio-resource-packs/farm-radio-resource-"
+"pack-114/bh2-fake-news-identify/"
+msgstr ""
+"Découvrez comment gérer les fausses nouvelles dans notre guide pratique pour "
+"la radiodiffusion. http://scripts.farmradio.fm/fr/radio-resource-packs/114-"
+"ensemble-des-ressources-pour-la-radio-agricole/guide-pratique-fausses-"
+"nouvelles-comment-les-reconnaitre-et-que-faire-pour-y-remedier/"
+
+#: telegram_bot/covid_bot.py:398 loco:5ec5057a4d3dd70e3343af12
+msgid ""
+"Africa Check is keeping tabs on the latest myths and misconceptions. Get the "
+"latest information: https://africacheck.org/reports/live-guide-all-our-"
+"coronavirus-fact-checks-in-one-place/"
+msgstr ""
+"Tous les récents mythes et les données de vérification sont accessibles sur "
+"le site web d’Africa Check : https://fr.africacheck.org/"
+
+#: telegram_bot/covid_bot.py:431 loco:5ec5057a4d3dd70e3343af13
 msgid "Ok, no problem."
 msgstr ""
 
-#: telegram_bot/covid_bot.py:213
+#: telegram_bot/covid_bot.py:439 loco:5ec5057a4d3dd70e3343af14
 msgid "Do you have a question or comment?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:227
+#: telegram_bot/covid_bot.py:453 loco:5ec5057a4d3dd70e3343af15
 msgid "What is your question or comment? Use the chat text or voice inputs."
 msgstr ""
 
-#: telegram_bot/covid_bot.py:244
+#: telegram_bot/covid_bot.py:470 loco:5ec5057a4d3dd70e3343af16
 msgid "Content error: Message format not supported"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:251
-msgid "Which Radio station do you work for?"
+#: telegram_bot/covid_bot.py:477 loco:5ec5057a4d3dd70e3343af17
+msgid "What is the name of the Radio station you work for?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:255
+#: telegram_bot/covid_bot.py:481 loco:5ec5057a4d3dd70e3343af18
 msgid ""
 "Your question is recieved. You will be notified with the answer soon.\n"
 " Thank You!"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:265
+#: telegram_bot/covid_bot.py:491 loco:5ec5057a4d3dd70e3343af19
 msgid "Where are you from?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:288
+#: telegram_bot/covid_bot.py:515 loco:5ec5057a4d3dd70e3343af1a
 msgid "Your question/comment is recieved. Thank You!"
 msgstr ""

@@ -367,9 +367,9 @@ def truth_behind_myths(bot,update,*chat_user):
         bot.sendMessage(update.callback_query.message.chat.id,'Content error')
 
     if page == '1' or page == 'init':
-        segment_reply_markup = [[{'text':_('Next'),'callback_data':'/truth_behind_myths_2'}]]
+        segment_reply_markup = [[{'text':_('Next section'),'callback_data':'/truth_behind_myths_2'}]]
     else:
-        segment_reply_markup = [[{'text':_('Previous'),'callback_data':'/truth_behind_myths_1'}]]
+        segment_reply_markup = [[{'text':_('Previous section'),'callback_data':'/truth_behind_myths_1'}]]
 
     segment_reply_markup.append([{'text':_('Latest COVID myths'),'callback_data':'/latest_covid_myths'},{'text':_('Go back'),'callback_data':'/go_back'}])
 
