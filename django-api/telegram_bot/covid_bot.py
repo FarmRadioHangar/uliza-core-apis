@@ -26,7 +26,8 @@ def get_language(bot,update,*chat_user):
     bot.sendMessage(chat_id, text=_('Language | Langue'),reply_markup=
                     {'inline_keyboard':[[{'text':'English','callback_data':'/language_en'},
                                          {'text':'Français','callback_data':'/language_fr'},
-                                         # {'text':'አማርኛ','callback_data':'/language_am'}],
+                                         # {'text':'አማርኛ','callback_data':'/language_am'}
+                                         ],
                                         ]})
 
 def get_user(func):
