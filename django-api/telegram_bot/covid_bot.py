@@ -26,7 +26,7 @@ def get_language(bot,update,*chat_user):
     bot.sendMessage(chat_id, text=_('Language | Langue'),reply_markup=
                     {'inline_keyboard':[[{'text':'English','callback_data':'/language_en'},
                                          {'text':'Français','callback_data':'/language_fr'},
-                                         # {'text':'አማርኛ','callback_data':'/language_am'}
+                                         {'text':'አማርኛ','callback_data':'/language_am'}
                                          ],
                                         ]})
 
@@ -69,7 +69,7 @@ def covid_main_menu(bot,update,*chat_user):
     else:
         chat_id = update.callback_query.message.chat_id
 
-    bot.sendMessage(chat_id, text='What do you want to do?',reply_markup=
+    bot.sendMessage(chat_id, text=_('What do you want to do?'),reply_markup=
                     {'inline_keyboard':[[{'text':_('%(icon)sLearn about COVID-19')%{'icon':'🦠'},'callback_data':'/learn'}],
                                         [{'text':_('%(icon)sGet radio resources')%{'icon':'🎙'},'callback_data':'/get_radio_resources'}],
                                         [{'text':_('%(icon)sFact-check myths')%{'icon':'❓'},'callback_data':'/fact_check_myths'}]
@@ -94,10 +94,11 @@ def learn(bot,update,*chat_user):
     reply_markup=[[{'text':_('Basic facts'),'callback_data':'/basic_facts'}],\
                   [{'text':_('How the virus spread'),'callback_data':'/how_the_virus_is_spread'}],\
                   [{'text':_('Preventive measures'),'callback_data':'/preventive_measures'}]]
-    if not chat_user[0].language == 'fr':
-        image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-response_blog.jpg'
-    else:
+
+    if chat_user[0].language == 'fr':
         image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-respons-banner_blog-fr.jpg'
+    else:
+        image = 'https://farmradio.org/wp-content/uploads/2020/03/covid-19-response_blog.jpg'
 
     bot.sendPhoto(update.callback_query.message.chat_id,image,caption=_("COVID-19"),parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
@@ -353,8 +354,10 @@ def fact_check_myths(bot,update,*chat_user):
                   [{'text':_('Latest COVID myths'),'callback_data':'/latest_covid_myths'}]]
     if chat_user[0].language == 'fr':
         caption = "Il est important de dissiper les mythes et les fausses nouvelles afin que votre public dispose des bonnes informations pour prendre de bonnes décisions concernant leur santé, leur sécurité et leurs moyens de subsistance."
+    elif chat_user[0].language == 'am':
+        caption = "አድማጮችዎ ትክክለኛ መረጃ ኖሯቸው ስለጤናቸው ደህንነት እና የገቢ ምንጮቻቸው ጥሩ ውሳኔ እንዲወስኑ ሳይንሳዊ ያልሆኑ እምነቶችንና ሀሰተኛ ዜናዎችን ማስወገድ አስፈላጊ ነው፡፡"
     else:
-        caption = "It’s important to dispel myths and fake news so that your audience has the right information to make good decisions about their health, safety, and livelihoods."
+        caption = _("It’s important to dispel myths and fake news so that your audience has the right information to make good decisions about their health, safety, and livelihoods.")
     bot.sendPhoto(update.callback_query.message.chat_id,'https://wire.farmradio.fm/wp-content/uploads/2020/05/FAQs-COVID-graphic.png',\
                   caption=caption,parse_mode='HTML',reply_markup={'inline_keyboard':reply_markup})
 
