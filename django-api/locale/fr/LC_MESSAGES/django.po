@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: COVID-19 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 14:54+0300\n"
+"POT-Creation-Date: 2020-05-26 13:37+0000\n"
 "PO-Revision-Date: 2020-05-20 13:49+0300\n"
 "Last-Translator: Jigsa Tesfaye\n"
 "Language-Team: French (France)\n"
@@ -751,12 +751,12 @@ msgid "Unknown"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:556
-#: telegram_bot/covid_bot.py:437
+#: telegram_bot/covid_bot.py:442
 msgid "Yes"
 msgstr ""
 
 #: env/lib/python2.7/site-packages/django/forms/widgets.py:557
-#: telegram_bot/covid_bot.py:438
+#: telegram_bot/covid_bot.py:443
 msgid "No"
 msgstr ""
 
@@ -2047,29 +2047,33 @@ msgid "If the user prefers to get notification or not"
 msgstr ""
 
 #: telegram_bot/covid_bot.py:26
-msgid "Language | ቋንቋ | Langue"
+msgid "Language | Langue"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:67 telegram_bot/covid_bot.py:80
+#: telegram_bot/covid_bot.py:68 telegram_bot/covid_bot.py:81
 msgid "Hello!"
 msgstr "Salut"
 
-#: telegram_bot/covid_bot.py:72 telegram_bot/covid_bot.py:85
+#: telegram_bot/covid_bot.py:72
+msgid "What do you want to do?"
+msgstr "Que recherchez-vous?"
+
+#: telegram_bot/covid_bot.py:73 telegram_bot/covid_bot.py:86
 #, python-format
 msgid "%(icon)sLearn about COVID-19"
 msgstr "%(icon)sInfos clés-COVID-19"
 
-#: telegram_bot/covid_bot.py:73 telegram_bot/covid_bot.py:86
+#: telegram_bot/covid_bot.py:74 telegram_bot/covid_bot.py:87
 #, python-format
 msgid "%(icon)sGet radio resources"
 msgstr "%(icon)sRessources radiophoniques"
 
-#: telegram_bot/covid_bot.py:74 telegram_bot/covid_bot.py:87
+#: telegram_bot/covid_bot.py:75 telegram_bot/covid_bot.py:88
 #, python-format
 msgid "%(icon)sFact-check myths"
 msgstr "%(icon)sVérification des mythes"
 
-#: telegram_bot/covid_bot.py:84
+#: telegram_bot/covid_bot.py:85
 msgid ""
 "This is the FRI Broadcasters COVID-19 messenger bot.\n"
 "\n"
@@ -2086,24 +2090,24 @@ msgstr ""
 "\n"
 "Que recherchez-vous?"
 
-#: telegram_bot/covid_bot.py:93 telegram_bot/covid_bot.py:144
-#: telegram_bot/covid_bot.py:161 telegram_bot/covid_bot.py:174
+#: telegram_bot/covid_bot.py:94 telegram_bot/covid_bot.py:146
+#: telegram_bot/covid_bot.py:163 telegram_bot/covid_bot.py:176
 msgid "Basic facts"
 msgstr "Infos clés sur COVID-19"
 
-#: telegram_bot/covid_bot.py:94
+#: telegram_bot/covid_bot.py:95
 msgid "How the virus spread"
 msgstr "Transmission du virus"
 
-#: telegram_bot/covid_bot.py:95 telegram_bot/covid_bot.py:151
+#: telegram_bot/covid_bot.py:96 telegram_bot/covid_bot.py:153
 msgid "Preventive measures"
 msgstr "Mesures préventives"
 
-#: telegram_bot/covid_bot.py:101
+#: telegram_bot/covid_bot.py:103
 msgid "COVID-19"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:106
+#: telegram_bot/covid_bot.py:108
 msgid ""
 "The most common symptoms of COVID-19 are fever, tiredness, and dry cough. "
 "Symptoms are usually mild and begin gradually. Some infected people have no "
@@ -2114,23 +2118,23 @@ msgstr ""
 "généralement bénins et apparaissent progressivement. Certains ne présentent "
 "aucun symptôme et ne se sentent pas malades."
 
-#: telegram_bot/covid_bot.py:107 telegram_bot/covid_bot.py:159
+#: telegram_bot/covid_bot.py:109 telegram_bot/covid_bot.py:161
 msgid "Learn more"
 msgstr "En savoir plus"
 
-#: telegram_bot/covid_bot.py:108 telegram_bot/covid_bot.py:116
-#: telegram_bot/covid_bot.py:130 telegram_bot/covid_bot.py:143
-#: telegram_bot/covid_bot.py:152 telegram_bot/covid_bot.py:160
-#: telegram_bot/covid_bot.py:175 telegram_bot/covid_bot.py:204
-#: telegram_bot/covid_bot.py:223 telegram_bot/covid_bot.py:242
-#: telegram_bot/covid_bot.py:264 telegram_bot/covid_bot.py:278
-#: telegram_bot/covid_bot.py:285 telegram_bot/covid_bot.py:300
-#: telegram_bot/covid_bot.py:307 telegram_bot/covid_bot.py:375
-#: telegram_bot/covid_bot.py:393 telegram_bot/covid_bot.py:400
+#: telegram_bot/covid_bot.py:110 telegram_bot/covid_bot.py:118
+#: telegram_bot/covid_bot.py:132 telegram_bot/covid_bot.py:145
+#: telegram_bot/covid_bot.py:154 telegram_bot/covid_bot.py:162
+#: telegram_bot/covid_bot.py:177 telegram_bot/covid_bot.py:206
+#: telegram_bot/covid_bot.py:225 telegram_bot/covid_bot.py:244
+#: telegram_bot/covid_bot.py:266 telegram_bot/covid_bot.py:280
+#: telegram_bot/covid_bot.py:287 telegram_bot/covid_bot.py:302
+#: telegram_bot/covid_bot.py:309 telegram_bot/covid_bot.py:380
+#: telegram_bot/covid_bot.py:398 telegram_bot/covid_bot.py:405
 msgid "Go back"
 msgstr "Retourner"
 
-#: telegram_bot/covid_bot.py:114
+#: telegram_bot/covid_bot.py:116
 msgid ""
 "Most people (about 80%) recover without special treatment. About 1 in 6 "
 "people become seriously ill. Older people and people with health issues such "
@@ -2142,15 +2146,15 @@ msgstr ""
 "avoir reçu des soins particuliers. Près d’une personne sur six tombe "
 "gravement malade."
 
-#: telegram_bot/covid_bot.py:115
+#: telegram_bot/covid_bot.py:117
 msgid "Important info"
 msgstr "Infos importantes"
 
-#: telegram_bot/covid_bot.py:129
+#: telegram_bot/covid_bot.py:131
 msgid "How the virus spread?"
 msgstr "Transmission du virus"
 
-#: telegram_bot/covid_bot.py:141
+#: telegram_bot/covid_bot.py:143
 msgid ""
 "People catch COVID-19 from others who have the virus. The disease is spread "
 "through small droplets produced when infected people cough, sneeze, or "
@@ -2162,11 +2166,11 @@ msgstr ""
 "personnes infectées toussent, éternuent ou expirent. Ces gouttelettes "
 "peuvent être inhalées ou touchées par les personnes situées à proximité. "
 
-#: telegram_bot/covid_bot.py:142
+#: telegram_bot/covid_bot.py:144
 msgid "More info"
 msgstr "En savoir plus"
 
-#: telegram_bot/covid_bot.py:150
+#: telegram_bot/covid_bot.py:152
 msgid ""
 "When people inhale droplets or touch contaminated objects or surfaces, then "
 "touch their eyes, nose, or mouth, they can be infected. This is why it is "
@@ -2177,7 +2181,7 @@ msgstr ""
 "peuvent être infectées. C’est pourquoi il faut rester à plus d’un mètre "
 "d’une personne malade."
 
-#: telegram_bot/covid_bot.py:158
+#: telegram_bot/covid_bot.py:160
 msgid ""
 "Wash your hands frequently. Maintain social / physical distancing. Avoid "
 "touching your eyes, nose, and mouth. Practice good respiratory hygiene. If "
@@ -2190,40 +2194,40 @@ msgstr ""
 "difficilement, demandez rapidement une aide médicale. Utiliser les moyens de "
 "salutation sécuritaires."
 
-#: telegram_bot/covid_bot.py:188
+#: telegram_bot/covid_bot.py:190
 msgid "Working safely"
 msgstr "Travailler en sécurité"
 
-#: telegram_bot/covid_bot.py:189 telegram_bot/covid_bot.py:222
+#: telegram_bot/covid_bot.py:191 telegram_bot/covid_bot.py:224
 msgid "Protect your health"
 msgstr "Rester en bonne santé"
 
-#: telegram_bot/covid_bot.py:190 telegram_bot/covid_bot.py:241
-#: telegram_bot/covid_bot.py:257
+#: telegram_bot/covid_bot.py:192 telegram_bot/covid_bot.py:243
+#: telegram_bot/covid_bot.py:259
 msgid "Good radio resources"
 msgstr "Ressources radios"
 
-#: telegram_bot/covid_bot.py:192
+#: telegram_bot/covid_bot.py:194
 msgid "Broadcaster resources for COVID-19"
 msgstr "Ressources radiophoniques"
 
-#: telegram_bot/covid_bot.py:203
+#: telegram_bot/covid_bot.py:205
 msgid "Sanitize your equipment"
 msgstr "Désinfecter"
 
-#: telegram_bot/covid_bot.py:253
+#: telegram_bot/covid_bot.py:255
 msgid "Emergency programs"
 msgstr "Émissions d’urgence"
 
-#: telegram_bot/covid_bot.py:254
+#: telegram_bot/covid_bot.py:256
 msgid "Farm Radio resources"
 msgstr "Ressources-RRI"
 
-#: telegram_bot/covid_bot.py:255 telegram_bot/covid_bot.py:291
+#: telegram_bot/covid_bot.py:257 telegram_bot/covid_bot.py:293
 msgid "COVID-19 information"
 msgstr "Infos-COVID-19"
 
-#: telegram_bot/covid_bot.py:262
+#: telegram_bot/covid_bot.py:264
 msgid ""
 "Good reporting practices are also important to ensure that people stay calm "
 "in a time of emergency and take appropriate action to respond. Farm Radio "
@@ -2242,11 +2246,11 @@ msgstr ""
 "http://scripts.farmradio.fm/fr/radio-resource-packs/ressources-sur-covid-19/"
 "planifier-et-produire-des-emissions-efficaces-en-temps-de-crise-covid-19/"
 
-#: telegram_bot/covid_bot.py:263
+#: telegram_bot/covid_bot.py:265
 msgid "Farm radio resources"
 msgstr "Ressources-RRI"
 
-#: telegram_bot/covid_bot.py:270
+#: telegram_bot/covid_bot.py:272
 msgid ""
 "Farm Radio International is producing a variety of information resources to "
 "help broadcasters produce good quality radio programming around COVID-19 and "
@@ -2255,21 +2259,21 @@ msgstr ""
 "RRI partage plusieurs ressources d’information pour aider les "
 "radiodiffuseurs à produire de bonnes émissions sur le COVID-19."
 
-#: telegram_bot/covid_bot.py:271
+#: telegram_bot/covid_bot.py:273
 msgid "Farmer stories"
 msgstr "Nouvelles agricoles"
 
-#: telegram_bot/covid_bot.py:271
+#: telegram_bot/covid_bot.py:273
 msgid "Key info & radio scripts"
 msgstr "Textes radiophoniques"
 
-#: telegram_bot/covid_bot.py:277
+#: telegram_bot/covid_bot.py:279
 msgid "Barza Wire Farmer stories: https://wire.farmradio.fm/tag/emergencies/"
 msgstr ""
 "Nouvelles agricoles de Barza infos : https://wire.farmradio.fm/fr/tag/"
 "urgences/"
 
-#: telegram_bot/covid_bot.py:284
+#: telegram_bot/covid_bot.py:286
 msgid ""
 "Access Farm Radio’s resources on COVID-19:http://scripts.farmradio.fm/radio-"
 "resource-packs/covid-19-resources/"
@@ -2277,15 +2281,15 @@ msgstr ""
 "Accéder aux ensembles de ressources\n"
 "http://scripts.farmradio.fm/fr/radio-resource-packs/ressources-sur-covid-19/"
 
-#: telegram_bot/covid_bot.py:292
+#: telegram_bot/covid_bot.py:294
 msgid "FRI's key messenges"
 msgstr "Messages clés-RRI"
 
-#: telegram_bot/covid_bot.py:293
+#: telegram_bot/covid_bot.py:295
 msgid "WHO resources"
 msgstr "Ressources-OMS"
 
-#: telegram_bot/covid_bot.py:299
+#: telegram_bot/covid_bot.py:301
 msgid ""
 "Find all these key messages on COVID-19: http://scripts.farmradio.fm/radio-"
 "resource-packs/covid-19-resources/key-information-covid-19-broadcasters/"
@@ -2294,7 +2298,7 @@ msgstr ""
 "packs/ressources-sur-covid-19/informations-de-base-sur-le-covid-19-pour-la-"
 "radiodiffusion/"
 
-#: telegram_bot/covid_bot.py:306
+#: telegram_bot/covid_bot.py:308
 msgid ""
 "Find all the information and resources from the World Health Organization "
 "here: https://www.who.int/emergencies/diseases/novel-coronavirus-2019"
@@ -2302,35 +2306,35 @@ msgstr ""
 "Trouver les informations et les ressources de l’OMS ici  https://www.who.int/"
 "fr/emergencies/diseases/novel-coronavirus-2019"
 
-#: telegram_bot/covid_bot.py:323
+#: telegram_bot/covid_bot.py:325
 msgid "See other tips for broadcasters"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:324 telegram_bot/covid_bot.py:338
+#: telegram_bot/covid_bot.py:326 telegram_bot/covid_bot.py:340
 msgid "Go to start"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:324 telegram_bot/covid_bot.py:339
+#: telegram_bot/covid_bot.py:326 telegram_bot/covid_bot.py:341
 msgid "Do you have a question?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:337
+#: telegram_bot/covid_bot.py:339
 msgid "Learn more about COVID-19"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:350
+#: telegram_bot/covid_bot.py:352
 msgid "Truth behind myths"
 msgstr "Vérification des mythes"
 
-#: telegram_bot/covid_bot.py:351
+#: telegram_bot/covid_bot.py:353
 msgid "Fight fake news"
 msgstr "Gérer fausses nouvelles"
 
-#: telegram_bot/covid_bot.py:352 telegram_bot/covid_bot.py:375
+#: telegram_bot/covid_bot.py:354 telegram_bot/covid_bot.py:380
 msgid "Latest COVID myths"
 msgstr "Récents mythes"
 
-#: telegram_bot/covid_bot.py:353
+#: telegram_bot/covid_bot.py:358
 msgid ""
 "It’s important to dispel myths and fake news so that your audience has the "
 "right information to make good decisions about their health, safety, and "
@@ -2341,15 +2345,15 @@ msgstr ""
 "décisions concernant leur santé, leur sécurité et leurs moyens de "
 "subsistance."
 
-#: telegram_bot/covid_bot.py:371
+#: telegram_bot/covid_bot.py:376
 msgid "Next section"
 msgstr "section suivante"
 
-#: telegram_bot/covid_bot.py:373
+#: telegram_bot/covid_bot.py:378
 msgid "Previous section"
 msgstr "section précédente"
 
-#: telegram_bot/covid_bot.py:392
+#: telegram_bot/covid_bot.py:397
 msgid ""
 "Learn how to spot fake news and fact-check myths in our Broadcaster how-to "
 "guide. http://scripts.farmradio.fm/radio-resource-packs/farm-radio-resource-"
@@ -2360,7 +2364,7 @@ msgstr ""
 "ensemble-des-ressources-pour-la-radio-agricole/guide-pratique-fausses-"
 "nouvelles-comment-les-reconnaitre-et-que-faire-pour-y-remedier/"
 
-#: telegram_bot/covid_bot.py:399
+#: telegram_bot/covid_bot.py:404
 msgid ""
 "Africa Check is keeping tabs on the latest myths and misconceptions. Get the "
 "latest information: https://africacheck.org/reports/live-guide-all-our-"
@@ -2369,36 +2373,36 @@ msgstr ""
 "Tous les récents mythes et les données de vérification sont accessibles sur "
 "le site web d’Africa Check : https://fr.africacheck.org/"
 
-#: telegram_bot/covid_bot.py:432
+#: telegram_bot/covid_bot.py:437
 msgid "Ok, no problem."
 msgstr ""
 
-#: telegram_bot/covid_bot.py:440
+#: telegram_bot/covid_bot.py:445
 msgid "Do you have a question or comment?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:454
+#: telegram_bot/covid_bot.py:459
 msgid "What is your question or comment? Use the chat text or voice inputs."
 msgstr ""
 
-#: telegram_bot/covid_bot.py:471
+#: telegram_bot/covid_bot.py:476
 msgid "Content error: Message format not supported"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:478
+#: telegram_bot/covid_bot.py:483
 msgid "What is the name of the Radio station you work for?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:482
+#: telegram_bot/covid_bot.py:487
 msgid ""
 "Your question is recieved. You will be notified with the answer soon.\n"
 " Thank You!"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:492
+#: telegram_bot/covid_bot.py:497
 msgid "Where are you from?"
 msgstr ""
 
-#: telegram_bot/covid_bot.py:516
+#: telegram_bot/covid_bot.py:521
 msgid "Your question/comment is recieved. Thank You!"
 msgstr ""
