@@ -12,7 +12,7 @@ class FormatGet(generics.ListCreateAPIView):
     queryset = Format.objects.all()
     model = Format
     serializer_class = FormatSerializer
-    filter_fields = ['id','legacy','always_checked']
+    filter_fields = ['id','name','legacy','always_checked']
 
     def get_queryset(self):
         pk_list = self.request.GET.get('pk_list')
