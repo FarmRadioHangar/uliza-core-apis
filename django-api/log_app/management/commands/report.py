@@ -26,10 +26,12 @@ class Command(BaseCommand):
 
 		campaigns = Program.objects.filter(created_at__gte=start_date, created_at__lte=end_date)
 
+		radio_stations = campaigns.values('radio_station').distinct()
+
 		comments = Comment.objects.filter(created_at__gte=start_date,created_at__lte=end_date).exclude(contact__role="knowledge_partner").exclude(contact__role='gender_specialist')
 
 		# kp who had access to active programs
-		kp_access = Program.objects.filter(end_date__gt=start_date,access__role='knowledge_partner').values('access').annotate(total=Count('access'))
+		kp_access = Program.objects.filter(end_date__gt=start_date).values('access').annotate(total=Count('access')).filter(access__role='knowledge_partner')
 
 		new_kp = Contact.objects.filter(created_at__gte=start_date, created_at__lte = end_date,role='knowledge_partner')
 
@@ -39,6 +41,7 @@ class Command(BaseCommand):
 
 		print('# of radio broadcasts archived ',len(broadcasts))
 		print('# of radio campaigns created ', len(campaigns))
+		print('# of radio station that used the log ', len(radio_stations))
 		print('# of comments exchanged between broadcasters and trainers', len(comments))
 		print('# of knowledge partners who had access to active programs',len(kp_access))
 		print('# of knowledge partners who joined in the FY',len(new_kp))
