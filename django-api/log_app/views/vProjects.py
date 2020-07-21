@@ -158,16 +158,19 @@ def project_report_numbers(request,project_id):
 				if criteria.id in review_checklists:
 				    score = level_score[criteria.level]+score
 
-				    if criteria.gender_responsive:
+				    if criteria.gender_responsive or format.name=='Gender':
 						gender_score = level_score[criteria.level]+gender_score
 						gender_episode_score = level_score[criteria.level]+gender_episode_score
 
 				total_score = level_score[criteria.level]+total_score
 
-				if criteria.gender_responsive:
+				if criteria.gender_responsive or format.name=='Gender':
 				    total_gender_score = level_score[criteria.level]+total_gender_score
 				    gender_total_episode_score = level_score[criteria.level]+gender_total_episode_score
 
+
+			if format.name == 'Gender':
+				continue;
 
 			if not format.id in format_index.keys():
 				format_index[format.id] = len(format_score)
@@ -203,6 +206,7 @@ def project_report_numbers(request,project_id):
 
 
 
+		# if the request is only gender score per week
 	    if 'format_id' in request.GET and request.GET['format_id']=='gender':
 			week_label = str(log.week)
 			score = (float(gender_episode_score)/gender_total_episode_score)*100
@@ -233,7 +237,10 @@ def project_report_numbers(request,project_id):
 	total_score = 0
 
 	for format in formats:
+		if format.name == 'Gender':
+			continue;
 
+		# initializing
 		if not format.id in format_index:
 			format_index[format.id] = len(format_score)
 
