@@ -374,6 +374,9 @@ class Format(models.Model):
     legacy = models.BooleanField(default=False)
     always_checked = models.BooleanField(default=False)
 
+    def __unicode__(self):
+    	return self.name
+
 checklist_level = (
     ('best', 'Best'),
     ('good', 'Good'),
@@ -401,6 +404,7 @@ class Review(models.Model):
     reviewer = models.ForeignKey(Contact)
     draft = models.BooleanField(default=False)
     checklists = models.ManyToManyField('Checklist',blank=True)
+    void_formats = models.ManyToManyField('Format',blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)

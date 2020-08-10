@@ -128,6 +128,11 @@ def project_report_numbers(request,project_id):
 	week_labels = []
 	week_scores = []
 
+	gender_format_id = Format.objects.filter(name = 'Gender')
+
+	if gender_format_id:
+	    gender_format_id = gender_format_id[0].id
+
 	for log in logs:
 	    if week == (log.week,log.program.id):
 	        continue
@@ -145,6 +150,8 @@ def project_report_numbers(request,project_id):
 	    log_formats = list(chain(log_formats,formats_always_checked))
 
 	    review_checklists = review.checklists.values_list('id',flat=True)
+	    void_formats = review.void_formats.values_list('id',flat=True)
+	    # import pdb; pdb.set_trace()
 	    gender_episode_score = 0
 	    gender_total_episode_score = 0
 
@@ -161,6 +168,14 @@ def project_report_numbers(request,project_id):
 				    if criteria.gender_responsive or format.name=='Gender':
 						gender_score = level_score[criteria.level]+gender_score
 						gender_episode_score = level_score[criteria.level]+gender_episode_score
+				else:
+					if format.id in void_formats:
+					    score = -level_score[criteria.level]+score
+
+					if criteria.gender_responsive or format.name=='Gender':
+						if gender_format_id in void_formats:
+							gender_score = -level_score[criteria.level]+gender_score
+							gender_episode_score = -level_score[criteria.level]+gender_episode_score
 
 				total_score = level_score[criteria.level]+total_score
 
