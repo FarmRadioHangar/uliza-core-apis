@@ -51,6 +51,8 @@ class RadioStation(models.Model):
     manager = models.CharField(max_length=50,null=True,blank=True)
     group_account_id = models.CharField(null=True, blank=True, max_length=120)
 
+    premium_account = models.BooleanField(default=False)
+
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -96,6 +98,7 @@ languages = (
 	('fr', 'Francais')
 )
 
+# Depricated - now in contacts with role
 class Presenter(models.Model):
 
 	user = models.ForeignKey(User)
@@ -107,6 +110,7 @@ class Presenter(models.Model):
 	def __unicode__(self):
 		return self.user.username
 
+# Depricated - now in contacts with role
 class Group_account(models.Model):
 	user = models.ForeignKey(User)
 	radio_station = models.ForeignKey(RadioStation,null=True)
@@ -117,6 +121,7 @@ class Group_account(models.Model):
 		return self.user.username
 
 
+# Depricated - now in contacts with role
 class Knowledge_partner(models.Model):
 
 	user = models.ForeignKey(User)
@@ -130,6 +135,7 @@ class Knowledge_partner(models.Model):
 	def __unicode__(self):
 		return self.user.first_name
 
+# Depricated - now in contacts with role
 class Administrator(models.Model):
 	user = models.ForeignKey(User)
 	country = models.ForeignKey(Country)
