@@ -442,3 +442,14 @@ class Review(models.Model):
         total_score = total_score*100
 
         return total_score
+
+
+
+class Podcast(models.Model):
+	spreaker_show_id = models.CharField(null=True, blank=True, max_length=120)
+	title = models.CharField(max_length=50)
+	radio_station = models.ForeignKey('RadioStation')
+
+	# Time track
+	last_updated_at = models.DateTimeField(auto_now=True)
+	created_at = models.DateTimeField(auto_now_add=True)

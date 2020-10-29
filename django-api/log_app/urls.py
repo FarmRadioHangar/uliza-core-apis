@@ -16,6 +16,7 @@ from log_app.views.vChecklists import *
 from log_app.views.vFormats import *
 from log_app.views.vReviews import *
 from log_app.views.vBroadcasterResources import *
+from log_app.views.vPodcasts import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -120,6 +121,11 @@ broadcaster_resources = patterns('log_app.views.vBroadcasterResources',
     url(r'$', BroadcasterResourceGet.as_view()),
 )
 
+podcasts = patterns('log_app.views.vPodcasts',
+    url(r'/(?P<id>\d+)$', PodcastEntity.as_view()),
+    url(r'$', PodcastGet.as_view()),
+)
+
 urlpatterns = patterns('',
     url(r'radio_stations', include(radio_stations, 'radio_stations')),
     url(r'programs', include(programs, 'programs')),
@@ -138,6 +144,7 @@ urlpatterns = patterns('',
     url(r'broadcaster_resources', include(broadcaster_resources, 'broadcaster_resources')),
     url(r'checklists', include(checklists, 'checklists')),
     url(r'reviews', include(reviews, 'reviews')),
+    url(r'podcasts', include(podcasts, 'podcasts')),
 
     # auth0 custom db authentication
     url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),
