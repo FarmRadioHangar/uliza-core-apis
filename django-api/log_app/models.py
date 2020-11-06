@@ -446,10 +446,33 @@ class Review(models.Model):
 
 
 class Podcast(models.Model):
-	spreaker_show_id = models.CharField(null=True, blank=True, max_length=120)
-	title = models.CharField(max_length=50)
-	radio_station = models.ForeignKey('RadioStation')
+    spreaker_show_id = models.CharField(null=True, blank=True, max_length=120)
+    title = models.CharField(max_length=50)
+    radio_station = models.ForeignKey('RadioStation')
 
-	# Time track
-	last_updated_at = models.DateTimeField(auto_now=True)
-	created_at = models.DateTimeField(auto_now_add=True)
+    # for the following fields default radio station website,name, email and country language respectively
+    website = models.CharField(max_length=50,null=True,blank=True)
+    owner = models.CharField(max_length=80,null=True,blank=True)
+    owner_email = models.EmailField(max_length=50,null=True,blank=True)
+    language = models.CharField(max_length=6,default="en")
+
+    description = models.TextField(null=True,blank=True,default="None")
+    category = models.CharField(max_length=60,null=True,blank=True)
+    explicit = models.BooleanField(default=False)
+
+    # default is the spreaker image
+    image = models.CharField(max_length=400,null=True,blank=True)
+    custom_image = models.CharField(null=True, blank=True,max_length=200)
+
+    # listener engagement
+    twitter_url = models.CharField(max_length=400,null=True,blank=True)
+    facebook_url = models.CharField(max_length=400,null=True,blank=True)
+    itunes = models.CharField(null=True, blank=True,max_length=100)
+    skype_name = models.CharField(null=True, blank=True,max_length=100)
+    text_number = models.CharField(null=True, blank=True,max_length=100)
+    telephone_number = models.CharField(max_length=50,null=True,blank=True)
+
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
