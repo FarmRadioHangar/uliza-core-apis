@@ -17,6 +17,7 @@ from log_app.views.vFormats import *
 from log_app.views.vReviews import *
 from log_app.views.vBroadcasterResources import *
 from log_app.views.vPodcasts import *
+from log_app.views.vPodEpisodes import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -122,8 +123,18 @@ broadcaster_resources = patterns('log_app.views.vBroadcasterResources',
 )
 
 podcasts = patterns('log_app.views.vPodcasts',
+    url( r'recording/delete/(?P<pk>\d+)','upload_delete', name ='recording_delete'),
+    url( r'recording/init/(?P<podcast_number>\d+)/(?P<podcast_id>\d+)','create_instance'),
+    url( r'recording/check/(?P<episode_id>\d+)/(?P<filename>.*)','check_rec'),
+    url( r'recording/upload','upload', name = 'recording_upload' ),
     url(r'/(?P<id>\d+)$', PodcastEntity.as_view()),
     url(r'$', PodcastGet.as_view()),
+)
+
+pod_episodes = patterns('log_app.views.vPodEpisodes',
+    url(r'/upload_to_spreaker/(?P<pk>\d+)','upload_to_spreaker', name ='upload_to_spreaker'),
+    url(r'/(?P<id>\d+)$', PodEpisodeEntity.as_view()),
+    url(r'$', PodEpisodeGet.as_view()),
 )
 
 urlpatterns = patterns('',
@@ -145,6 +156,7 @@ urlpatterns = patterns('',
     url(r'checklists', include(checklists, 'checklists')),
     url(r'reviews', include(reviews, 'reviews')),
     url(r'podcasts', include(podcasts, 'podcasts')),
+    url(r'pod_episodes', include(pod_episodes, 'pod_episodes')),
 
     # auth0 custom db authentication
     url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),
