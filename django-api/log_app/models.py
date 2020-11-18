@@ -476,3 +476,55 @@ class Podcast(models.Model):
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class PodEpisode(models.Model):
+    spreaker_episode_id = models.CharField(null=True, blank=True, max_length=120)
+    podcast = models.ForeignKey('Podcast')
+
+    title = models.CharField(null=True,blank=True,max_length=150)
+    description = models.TextField(null=True,blank=True,default="None")
+    audio_file = models.FileField(null=True,blank=True)
+    audio_saved = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
+    audio_file_offset = models.PositiveIntegerField(default=0)
+    spreaker_audio_url = models.TextField(null=True,blank=True)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def close_file(self):
+    	file_ = self.audio_file
+    	while file_ is not None:
+    		file_.close()
+    		file_ = getattr(file_, 'file', None)
+
+    def append_chunk(self, chunk, chunk_size=None, save=True):
+    	self.close_file()
+    	self.audio_file.open(mode='ab')  # mode = append+binary
+    	# We can use .read() safely because chunk is already in memory
+    	self.audio_file.write(chunk.read())
+    	if chunk_size is not None:
+    		self.audio_file_offset += chunk_size
+    	elif hasattr(chunk, 'size'):
+    		self.audio_file_offset += chunk.size
+    	else:
+    		self.audio_file_offset = self.file.size
+    	self._md5 = None  # Clear cached md5
+    	if save:
+    		self.save()
+    	self.close_file()  # Flush
+
+    def rename(self):
+        import os
+        if (self.audio_file):
+            old_path = self.audio_file.path.encode('utf8')
+            self.audio_file.name = 'Uliza-log-'+self.podcast.title.encode('utf-8')+'-'+str(self.id)+'.mp3'
+
+            try:
+                self.audio_file.name.encode('ascii')
+            except:
+                self.audio_file.name='Uliza-log-ID'+str(self.id)+'.mp3'
+
+            os.rename(old_path, self.audio_file.path)
+            self.save()
