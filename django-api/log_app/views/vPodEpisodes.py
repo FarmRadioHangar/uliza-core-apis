@@ -5,7 +5,6 @@ from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 from log_app.models import PodEpisode
 from log_app.serializers import PodEpisodeSerializer
-from api_core.settings import SPREAKER_TOKEN
 from rest_framework.authentication import get_authorization_header
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
@@ -31,6 +30,18 @@ class PodEpisodeEntity(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PodEpisodeSerializer
     lookup_field = 'id'
 
+    def perform_destroy(self, instance):
+        try:
+            import os
+            # delete the associated file
+            os.unlink(instance.audio_file.path)
+            instance.audio_file = None
+            instance.save()
+        except (OSError, ValueError) as e:
+            success = False
+
+        instance.delete()
+
 @require_POST
 def upload_to_spreaker(request, pk):
     try:
@@ -43,7 +54,7 @@ def upload_to_spreaker(request, pk):
     else:
         url = 'https://api.spreaker.com/v2/shows/'+str(instance.podcast.spreaker_show_id)+'/episodes'
 
-    title = instance.title
+    title = request.POST['title']
 
     if not instance.audio_file:
         return HttpResponse("Couldn't fine the audio file",status='404')
