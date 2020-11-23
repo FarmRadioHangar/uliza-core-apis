@@ -16,6 +16,8 @@ from log_app.views.vChecklists import *
 from log_app.views.vFormats import *
 from log_app.views.vReviews import *
 from log_app.views.vBroadcasterResources import *
+from log_app.views.vPodcasts import *
+from log_app.views.vPodEpisodes import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -73,6 +75,7 @@ logs = patterns('log_app.views.vLogs',
     url( r'recording/check/(?P<log_id>\d+)/(?P<filename>.*)','check_rec'),
     url( r'recording/upload','upload', name = 'recording_upload' ),
     url( r'recording/download/(?P<pk>\d+)','rec_download', name ='recording_download'),
+    url( r'recording/gdrive/about','gdrive_about', name ='gdrive_about'),
     url( r'recording/gdrive/(?P<pk>\d+)','open_with_drive', name ='open_with_drive'),
     url( r'recording/gdrive_old/(?P<pk>\d+)','get_old_gdrive_link', name ='get_old_gdrive_link'),
     url( r'feed/(?P<program_id>\d+)', ProgramLogFeed()),
@@ -120,6 +123,21 @@ broadcaster_resources = patterns('log_app.views.vBroadcasterResources',
     url(r'$', BroadcasterResourceGet.as_view()),
 )
 
+podcasts = patterns('log_app.views.vPodcasts',
+    url( r'recording/delete/(?P<pk>\d+)','upload_delete', name ='recording_delete'),
+    url( r'recording/init/(?P<podcast_number>\d+)/(?P<podcast_id>\d+)','create_instance'),
+    url( r'recording/check/(?P<episode_id>\d+)/(?P<filename>.*)','check_rec'),
+    url( r'recording/upload','upload', name = 'recording_upload' ),
+    url(r'/(?P<id>\d+)$', PodcastEntity.as_view()),
+    url(r'$', PodcastGet.as_view()),
+)
+
+pod_episodes = patterns('log_app.views.vPodEpisodes',
+    url(r'/upload_to_spreaker/(?P<pk>\d+)','upload_to_spreaker', name ='upload_to_spreaker'),
+    url(r'/(?P<id>\d+)$', PodEpisodeEntity.as_view()),
+    url(r'$', PodEpisodeGet.as_view()),
+)
+
 urlpatterns = patterns('',
     url(r'radio_stations', include(radio_stations, 'radio_stations')),
     url(r'programs', include(programs, 'programs')),
@@ -138,6 +156,8 @@ urlpatterns = patterns('',
     url(r'broadcaster_resources', include(broadcaster_resources, 'broadcaster_resources')),
     url(r'checklists', include(checklists, 'checklists')),
     url(r'reviews', include(reviews, 'reviews')),
+    url(r'podcasts', include(podcasts, 'podcasts')),
+    url(r'pod_episodes', include(pod_episodes, 'pod_episodes')),
 
     # auth0 custom db authentication
     url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),

@@ -442,3 +442,89 @@ class Review(models.Model):
         total_score = total_score*100
 
         return total_score
+
+
+
+class Podcast(models.Model):
+    spreaker_show_id = models.CharField(null=True, blank=True, max_length=120)
+    title = models.CharField(max_length=50)
+    radio_station = models.ForeignKey('RadioStation')
+
+    # for the following fields default radio station website,name, email and country language respectively
+    website = models.CharField(max_length=50,null=True,blank=True)
+    owner = models.CharField(max_length=80,null=True,blank=True)
+    owner_email = models.EmailField(max_length=50,null=True,blank=True)
+    language = models.CharField(max_length=6,default="en")
+
+    description = models.TextField(null=True,blank=True,default="None")
+    category = models.CharField(max_length=60,null=True,blank=True)
+    explicit = models.BooleanField(default=False)
+
+    # default is the spreaker image
+    image = models.CharField(max_length=400,null=True,blank=True)
+    custom_image = models.CharField(null=True, blank=True,max_length=200)
+
+    # listener engagement
+    twitter_url = models.CharField(max_length=400,null=True,blank=True)
+    facebook_url = models.CharField(max_length=400,null=True,blank=True)
+    itunes = models.CharField(null=True, blank=True,max_length=100)
+    skype_name = models.CharField(null=True, blank=True,max_length=100)
+    text_number = models.CharField(null=True, blank=True,max_length=100)
+    telephone_number = models.CharField(max_length=50,null=True,blank=True)
+
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class PodEpisode(models.Model):
+    spreaker_episode_id = models.CharField(null=True, blank=True, max_length=120)
+    podcast = models.ForeignKey('Podcast')
+
+    title = models.CharField(null=True,blank=True,max_length=150)
+    description = models.TextField(null=True,blank=True,default="None")
+    audio_file = models.FileField(null=True,blank=True)
+    audio_saved = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
+    audio_file_offset = models.PositiveIntegerField(default=0)
+    spreaker_audio_url = models.TextField(null=True,blank=True)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def close_file(self):
+    	file_ = self.audio_file
+    	while file_ is not None:
+    		file_.close()
+    		file_ = getattr(file_, 'file', None)
+
+    def append_chunk(self, chunk, chunk_size=None, save=True):
+    	self.close_file()
+    	self.audio_file.open(mode='ab')  # mode = append+binary
+    	# We can use .read() safely because chunk is already in memory
+    	self.audio_file.write(chunk.read())
+    	if chunk_size is not None:
+    		self.audio_file_offset += chunk_size
+    	elif hasattr(chunk, 'size'):
+    		self.audio_file_offset += chunk.size
+    	else:
+    		self.audio_file_offset = self.file.size
+    	self._md5 = None  # Clear cached md5
+    	if save:
+    		self.save()
+    	self.close_file()  # Flush
+
+    def rename(self):
+        import os
+        if (self.audio_file):
+            old_path = self.audio_file.path.encode('utf8')
+            self.audio_file.name = 'Uliza-log-'+self.podcast.title.encode('utf-8')+'-'+str(self.id)+'.mp3'
+
+            try:
+                self.audio_file.name.encode('ascii')
+            except:
+                self.audio_file.name='Uliza-log-ID'+str(self.id)+'.mp3'
+
+            os.rename(old_path, self.audio_file.path)
+            self.save()

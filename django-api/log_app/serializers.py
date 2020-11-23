@@ -121,3 +121,13 @@ class FormatSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Format
 		fields = "__all__"
+
+class PodcastSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Podcast
+		fields = "__all__"
+
+class PodEpisodeSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PodEpisode
+		fields = "__all__"

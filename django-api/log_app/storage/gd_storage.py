@@ -16,8 +16,8 @@ from django.utils.deconstruct import deconstructible
 class GoogleDriveStorage(Storage):
     """
     Storage class for Django that interacts with Google Drive as persistent storage.
-    This class uses a system account for Google API that create an application drive 
-    (the drive is not owned by any Google User, but it is owned by the application declared on 
+    This class uses a system account for Google API that create an application drive
+    (the drive is not owned by any Google User, but it is owned by the application declared on
     Google API console).
     """
 
@@ -59,7 +59,7 @@ class GoogleDriveStorage(Storage):
     def _split_path(self, p):
         """
         Split a complete path in a list of strings
-        
+
         :param p: Path to be splitted
         :type p: string
         :returns: list - List of strings that composes the path
@@ -70,10 +70,10 @@ class GoogleDriveStorage(Storage):
 
     def _get_or_create_folder(self, path, parent_id=None):
         """
-        Create a folder on Google Drive. 
+        Create a folder on Google Drive.
         It creates folders recursively.
         If the folder already exists, it retrieves only the unique identifier.
-        
+
         :param path: Path that had to be created
         :type path: string
         :param parent_id: Unique identifier for its parent (folder)
@@ -105,7 +105,7 @@ class GoogleDriveStorage(Storage):
     def _check_file_exists(self, filename, parent_id=None):
         """
         Check if a file with specific parameters exists in Google Drive.
-        
+
         :param filename: File or folder to search
         :type filename: string
         :param parent_id: Unique identifier for its parent (folder)
@@ -227,6 +227,14 @@ class GoogleDriveStorage(Storage):
                 directories.append(os.path.join(path, element["title"]))
         return directories, files
 
+    def about(self):
+        """
+        Returns overall info about the gdrive space.
+        """
+        about = self._drive_service.about().get().execute()
+
+        return about
+
     def size(self, name):
         """
         Returns the total size, in bytes, of the file specified by name.
@@ -275,4 +283,4 @@ class GoogleDriveStorage(Storage):
         if file_data is None:
             return None
         else:
-            return parse(file_data["modifiedDate"]) 
+            return parse(file_data["modifiedDate"])
