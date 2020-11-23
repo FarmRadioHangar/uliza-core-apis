@@ -279,6 +279,12 @@ def upload_delete( request, pk ):
 
     return JFUResponse( request, success )
 
+def gdrive_about(request):
+    about = settings.GDRIVE_STORAGE.about()
+    about = {'gd_total_storage':about['quotaBytesTotal'],'gd_used_storage':about['quotaBytesUsed'],'name':about['name']}
+
+    return JsonResponse(about)
+
 def open_with_drive(request,pk):
     log = Log.objects.get(pk=pk)
 
