@@ -368,6 +368,11 @@ class Comment(models.Model):
 
 
 
+# Format is a radio format
+"""
+The new formats (non legacy) is a radio format and
+also can be just a checklist category
+"""
 class Format(models.Model):
     name = models.CharField(max_length=60)
     name_fr = models.CharField(null=True,blank=True,max_length=60)
@@ -379,6 +384,8 @@ class Format(models.Model):
     # legacy formats that won't show up in the formats but is used for old Logs
     legacy = models.BooleanField(default=False)
     always_checked = models.BooleanField(default=False)
+    project_related = models.BooleanField(default=False)
+    projects = models.ManyToManyField('Project',blank=True)
 
     def __unicode__(self):
     	return self.name

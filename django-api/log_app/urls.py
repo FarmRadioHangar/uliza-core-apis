@@ -114,6 +114,7 @@ reviews = patterns('log_app.views.vReviews',
 )
 
 formats = patterns('log_app.views.vFormats',
+    url(r'/(?P<id>\d+)/accesses$','update_access',name = 'update_access'),
     url(r'/(?P<id>\d+)$', FormatEntity.as_view()),
     url(r'$', FormatGet.as_view()),
 )
