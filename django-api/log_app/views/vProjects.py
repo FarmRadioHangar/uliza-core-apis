@@ -34,7 +34,7 @@ class ProjectGet(generics.ListCreateAPIView):
 	queryset = Project.objects.all()
 	model = Project
 	serializer_class = ProjectSerializer
-	ordering_fields=('id','created_at')
+	ordering_fields=('id','country','created_at')
 	filter_class = ProjectFilter
 	filter_backends = (filters.OrderingFilter,filters.SearchFilter,DjangoFilterBackend)
 	pagination_class = LargeResultsSetPagination
@@ -107,7 +107,9 @@ def project_report_numbers(request,project_id):
 	Vox pop Least used | Vox pop Most used
 	"""
 	# radio station filter comes here
+	formats_project_related = Format.objects.filter(projects=project_id)
 	formats_always_checked = Format.objects.filter(always_checked=True)
+	formats_always_checked = formats_always_checked | formats_project_related
 	checklists = Checklist.objects.all()
 
 	from itertools import chain
@@ -257,20 +259,22 @@ def project_report_numbers(request,project_id):
 
 		# initializing
 		if not format.id in format_index:
-			format_index[format.id] = len(format_score)
+			pass
 
-			if getattr(format,'name'+lang):
-			    labels.append(getattr(format,'name'+lang))
-			    format_score.append({'meta':getattr(format,'name'+lang),'value':0,'logs':0})
-			else:
-			    labels.append(getattr(format,'name'))
-			    format_score.append({'meta':getattr(format,'name'),'value':0,'logs':0})
-
-			if least_used['value'] == 0:
-			    least_used['formats_index'].append(format_index[format.id])
-			else:
-			    least_used['formats_index'] = [format_index[format.id]]
-			    least_used['value'] = 0
+			# format_index[format.id] = len(format_score)
+			#
+			# if getattr(format,'name'+lang):
+			#     labels.append(getattr(format,'name'+lang))
+			#     format_score.append({'meta':getattr(format,'name'+lang),'value':0,'logs':0})
+			# else:
+			#     labels.append(getattr(format,'name'))
+			#     format_score.append({'meta':getattr(format,'name'),'value':0,'logs':0})
+			#
+			# if least_used['value'] == 0:
+			#     least_used['formats_index'].append(format_index[format.id])
+			# else:
+			#     least_used['formats_index'] = [format_index[format.id]]
+			#     least_used['value'] = 0
 		else:
 			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['logs'])
 			format_score[format_index[format.id]]['value'] = math.ceil(format_score[format_index[format.id]]['value'])
