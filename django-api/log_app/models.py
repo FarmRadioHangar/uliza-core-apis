@@ -612,3 +612,31 @@ class PodEpisode(models.Model):
 
             os.rename(old_path, self.audio_file.path)
             self.save()
+
+class PodDistributionLog(models.Model):
+    podcast = models.ForeignKey('Podcast')
+    triggered_by =  models.ForeignKey('Contact')
+    description = models.TextField(null=True,blank=True,default="None")
+
+    apple_podcasts_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    spotify_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    google_podcasts_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    podcast_addict_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    amazon_music_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Notification(models.Model):
+    sent_to =  models.ForeignKey('Contact')
+    heading = models.CharField(max_length=80,null=True,blank=True)
+    content = models.TextField(null=True,blank=True,default="None")
+    seen = models.BooleanField(default=False)
+    url_model = models.CharField(max_length=80,null=True,blank=True)
+    link = models.IntegerField(null=True,blank=True)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
