@@ -132,3 +132,15 @@ class PodEpisodeSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = PodEpisode
 		fields = "__all__"
+
+class PodDistributionLogSerializer(serializers.ModelSerializer):
+	first_name = serializers.CharField(source='triggered_by.first_name',read_only=True)
+	last_name = serializers.CharField(source='triggered_by.last_name',read_only=True)
+	class Meta:
+		model = PodDistributionLog
+		fields = "__all__"
+
+class NotificationSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Notification
+		fields = "__all__"
