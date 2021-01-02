@@ -123,6 +123,7 @@ class FormatSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class PodcastSerializer(serializers.ModelSerializer):
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
 	class Meta:
 		model = Podcast
 		fields = "__all__"
