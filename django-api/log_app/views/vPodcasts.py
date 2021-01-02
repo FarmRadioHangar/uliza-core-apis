@@ -3,10 +3,11 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Podcast,PodEpisode
+from log_app.models import Podcast,PodEpisode,PodDistributionLog
 from log_app.serializers import PodcastSerializer
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
+from django.db.models import Q
 
 from api_core import settings
 from jfu.http import upload_receive, UploadResponse, JFUResponse
@@ -19,8 +20,27 @@ class PodcastGet(generics.ListCreateAPIView):
     queryset = Podcast.objects.all()
     model = Podcast
     serializer_class = PodcastSerializer
-    filter_fields = ['id','radio_station','spreaker_show_id']
+    filter_fields = ['id','radio_station','spreaker_show_id','spotify_status','podcast_addict_status','amazon_music_status','apple_podcasts_status','google_podcasts_status']
 
+    def get_queryset(self):
+        status = self.request.GET.get('distribution_status')
+        if status:
+            if status[0] == '-':
+                queryset = Podcast.objects.exclude(Q(spotify_status=status[1:])|
+                                                  Q(google_podcasts_status=status[1:])|
+                                                  Q(podcast_addict_status=status[1:])|
+                                                  Q(amazon_music_status=status[1:])|
+                                                  Q(apple_podcasts_status=status[1:]))
+            else:
+                queryset = Podcast.objects.filter(Q(spotify_status=status)|
+                                                  Q(google_podcasts_status=status)|
+                                                  Q(podcast_addict_status=status)|
+                                                  Q(amazon_music_status=status)|
+                                                  Q(apple_podcasts_status=status))
+        else:
+            queryset = Podcast.objects.all().select_related('radio_station__name')
+
+        return queryset
 
 class PodcastEntity(generics.RetrieveUpdateDestroyAPIView):
     queryset = Podcast.objects.all()
