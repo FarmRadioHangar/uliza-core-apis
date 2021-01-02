@@ -48,6 +48,38 @@ class PodcastEntity(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PodcastSerializer
     lookup_field = 'id'
 
+    def perform_update(self,serializer):
+        original_instance = Podcast.objects.get(id=self.request._full_data['id'])
+        instance = serializer.save()
+
+        if 'description' in self.request._full_data:
+            description = self.request._full_data
+        else:
+            description = ''
+
+        if original_instance.apple_podcasts_status == instance.apple_podcasts_status:
+            instance.apple_podcasts_status = None
+
+        if original_instance.spotify_status == instance.spotify_status:
+            instance.spotify_status = None
+
+        if original_instance.google_podcasts_status == instance.google_podcasts_status:
+            instance.google_podcasts_status = None
+
+        if original_instance.podcast_addict_status == instance.podcast_addict_status:
+            instance.podcast_addict_status = None
+
+        if original_instance.amazon_music_status == instance.amazon_music_status:
+            instance.amazon_music_status = None
+
+        PodDistributionLog.objects.create(podcast=instance,
+                                          triggered_by_id=self.request._full_data['contact'],
+                                          description=description,
+                                          apple_podcasts_status= instance.apple_podcasts_status,
+                                          spotify_status= instance.spotify_status,
+                                          google_podcasts_status= instance.google_podcasts_status,
+                                          podcast_addict_status= instance.podcast_addict_status,
+                                          amazon_music_status= instance.amazon_music_status)
 @require_POST
 def upload( request ):
 	episode_id = request.POST['log_id']
