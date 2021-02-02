@@ -3,10 +3,11 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Podcast,PodEpisode
+from log_app.models import Podcast,PodEpisode,PodDistributionLog
 from log_app.serializers import PodcastSerializer
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
+from django.db.models import Q
 
 from api_core import settings
 from jfu.http import upload_receive, UploadResponse, JFUResponse
@@ -19,8 +20,27 @@ class PodcastGet(generics.ListCreateAPIView):
     queryset = Podcast.objects.all()
     model = Podcast
     serializer_class = PodcastSerializer
-    filter_fields = ['id','radio_station','spreaker_show_id']
+    filter_fields = ['id','radio_station','spreaker_show_id','spotify_status','podcast_addict_status','amazon_music_status','apple_podcasts_status','google_podcasts_status']
 
+    def get_queryset(self):
+        status = self.request.GET.get('distribution_status')
+        if status:
+            if status[0] == '-':
+                queryset = Podcast.objects.exclude(Q(spotify_status=status[1:])|
+                                                  Q(google_podcasts_status=status[1:])|
+                                                  Q(podcast_addict_status=status[1:])|
+                                                  Q(amazon_music_status=status[1:])|
+                                                  Q(apple_podcasts_status=status[1:]))
+            else:
+                queryset = Podcast.objects.filter(Q(spotify_status=status)|
+                                                  Q(google_podcasts_status=status)|
+                                                  Q(podcast_addict_status=status)|
+                                                  Q(amazon_music_status=status)|
+                                                  Q(apple_podcasts_status=status))
+        else:
+            queryset = Podcast.objects.all().select_related('radio_station__name')
+
+        return queryset
 
 class PodcastEntity(generics.RetrieveUpdateDestroyAPIView):
     queryset = Podcast.objects.all()
@@ -28,6 +48,38 @@ class PodcastEntity(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PodcastSerializer
     lookup_field = 'id'
 
+    def perform_update(self,serializer):
+        original_instance = Podcast.objects.get(id=self.request._full_data['id'])
+        instance = serializer.save()
+
+        if 'description' in self.request._full_data:
+            description = self.request._full_data
+        else:
+            description = ''
+
+        if original_instance.apple_podcasts_status == instance.apple_podcasts_status:
+            instance.apple_podcasts_status = None
+
+        if original_instance.spotify_status == instance.spotify_status:
+            instance.spotify_status = None
+
+        if original_instance.google_podcasts_status == instance.google_podcasts_status:
+            instance.google_podcasts_status = None
+
+        if original_instance.podcast_addict_status == instance.podcast_addict_status:
+            instance.podcast_addict_status = None
+
+        if original_instance.amazon_music_status == instance.amazon_music_status:
+            instance.amazon_music_status = None
+
+        PodDistributionLog.objects.create(podcast=instance,
+                                          triggered_by_id=self.request._full_data['contact'],
+                                          description=description,
+                                          apple_podcasts_status= instance.apple_podcasts_status,
+                                          spotify_status= instance.spotify_status,
+                                          google_podcasts_status= instance.google_podcasts_status,
+                                          podcast_addict_status= instance.podcast_addict_status,
+                                          amazon_music_status= instance.amazon_music_status)
 @require_POST
 def upload( request ):
 	episode_id = request.POST['log_id']

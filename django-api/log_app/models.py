@@ -451,6 +451,12 @@ class Review(models.Model):
         return total_score
 
 
+pod_status = (
+    ('inactive', 'Inactive'),
+    ('requested', 'Requested'),
+    ('active', 'Active'),
+    ('recheck', 'Recheck'),
+)
 
 class Podcast(models.Model):
     spreaker_show_id = models.CharField(null=True, blank=True, max_length=120)
@@ -479,10 +485,81 @@ class Podcast(models.Model):
     text_number = models.CharField(null=True, blank=True,max_length=100)
     telephone_number = models.CharField(max_length=50,null=True,blank=True)
 
+    apple_podcasts_status = models.CharField(max_length=15,default='inactive',choices=pod_status)
+    spotify_status = models.CharField(max_length=15,default='inactive',choices=pod_status)
+    google_podcasts_status = models.CharField(max_length=15,default='inactive',choices=pod_status)
+    podcast_addict_status = models.CharField(max_length=15,default='inactive',choices=pod_status)
+    amazon_music_status = models.CharField(max_length=15,default='inactive',choices=pod_status)
 
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self,*args,**kwargs):
+        if self.id:
+            from django.utils.translation import gettext
+            pod = Podcast.objects.get(id=self.id)
+            update = {'apple_podcasts_status':None, 'spotify_status':None, 'google_podcasts_status':None,'amazon_music_status':None,'podcast_addict_status':None}
+            notification_for_staff = False
+
+            # send notifications and log the changes
+            if not pod.apple_podcasts_status == self.apple_podcasts_status:
+                update['apple_podcasts_status'] = self.apple_podcasts_status
+
+                if self.apple_podcasts_status == 'requested':
+                    notification_for_staff = True
+
+            if not pod.spotify_status == self.spotify_status:
+                update['spotify_status'] = self.spotify_status
+
+                if self.spotify_status == 'requested':
+                    notification_for_staff = True
+
+            if not pod.google_podcasts_status == self.google_podcasts_status:
+                update['google_podcasts_status'] = self.google_podcasts_status
+
+                if self.google_podcasts_status == 'requested':
+                    notification_for_staff = True
+
+            if not pod.amazon_music_status == self.amazon_music_status:
+                update['amazon_music_status'] = self.amazon_music_status
+
+                if self.amazon_music_status == 'requested':
+                    notification_for_staff = True
+
+            if not pod.podcast_addict_status == self.podcast_addict_status:
+                update['podcast_addict_status'] = self.podcast_addict_status
+
+                if self.podcast_addict_status == 'requested':
+                    notification_for_staff = True
+
+            content = ''
+            translation = {'apple_podcasts_status':'Apple podcasts','spotify_status':'Spotify','google_podcasts_status':'Google podcasts','amazon_music_status':'Amazon music','podcast_addict_status':'Podcast addict'}
+            for platform in update:
+                if update[platform]:
+                    if content:
+                        content = content+', '+ translation[platform]
+                    else:
+                        content = translation[platform]
+
+            url_model = ''
+            if notification_for_staff:
+                contacts = Contact.objects.filter(is_admin=True)
+                heading = self.title+' ('+ self.radio_station.name+')'
+                url_model = 'podcasts:distribution'
+                message = ' requested'
+            else:
+                message = ' status updated'
+                heading = self.title
+                url_model = 'podcasts:manage'
+                contacts = Contact.objects.filter(radio_station=self.radio_station.id)
+
+            for contact in contacts:
+                final_content = content +' '+gettext(message)
+                Notification.objects.create(url_model=url_model,link=self.id,sent_to=contact,content=final_content,heading=heading)
+
+        return super(Podcast, self).save(*args, **kwargs)
+
 
 class PodEpisode(models.Model):
     spreaker_episode_id = models.CharField(null=True, blank=True, max_length=120)
@@ -535,3 +612,31 @@ class PodEpisode(models.Model):
 
             os.rename(old_path, self.audio_file.path)
             self.save()
+
+class PodDistributionLog(models.Model):
+    podcast = models.ForeignKey('Podcast')
+    triggered_by =  models.ForeignKey('Contact')
+    description = models.TextField(null=True,blank=True,default="None")
+
+    apple_podcasts_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    spotify_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    google_podcasts_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    podcast_addict_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+    amazon_music_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Notification(models.Model):
+    sent_to =  models.ForeignKey('Contact')
+    heading = models.CharField(max_length=80,null=True,blank=True)
+    content = models.TextField(null=True,blank=True,default="None")
+    seen = models.BooleanField(default=False)
+    url_model = models.CharField(max_length=80,null=True,blank=True)
+    link = models.IntegerField(null=True,blank=True)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)

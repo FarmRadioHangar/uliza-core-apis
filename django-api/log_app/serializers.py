@@ -123,6 +123,7 @@ class FormatSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class PodcastSerializer(serializers.ModelSerializer):
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
 	class Meta:
 		model = Podcast
 		fields = "__all__"
@@ -130,4 +131,16 @@ class PodcastSerializer(serializers.ModelSerializer):
 class PodEpisodeSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = PodEpisode
+		fields = "__all__"
+
+class PodDistributionLogSerializer(serializers.ModelSerializer):
+	first_name = serializers.CharField(source='triggered_by.first_name',read_only=True)
+	last_name = serializers.CharField(source='triggered_by.last_name',read_only=True)
+	class Meta:
+		model = PodDistributionLog
+		fields = "__all__"
+
+class NotificationSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Notification
 		fields = "__all__"

@@ -18,6 +18,8 @@ from log_app.views.vReviews import *
 from log_app.views.vBroadcasterResources import *
 from log_app.views.vPodcasts import *
 from log_app.views.vPodEpisodes import *
+from log_app.views.vNotifications import *
+from log_app.views.vPodDistributionLog import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -139,6 +141,11 @@ pod_episodes = patterns('log_app.views.vPodEpisodes',
     url(r'$', PodEpisodeGet.as_view()),
 )
 
+pod_distribution_log = patterns('log_app.views.vPodDistributionLog',
+    url(r'/(?P<id>\d+)$', PodDistributionLogEntity.as_view()),
+    url(r'$', PodDistributionLogGet.as_view()),
+)
+
 urlpatterns = patterns('',
     url(r'radio_stations', include(radio_stations, 'radio_stations')),
     url(r'programs', include(programs, 'programs')),
@@ -159,6 +166,9 @@ urlpatterns = patterns('',
     url(r'reviews', include(reviews, 'reviews')),
     url(r'podcasts', include(podcasts, 'podcasts')),
     url(r'pod_episodes', include(pod_episodes, 'pod_episodes')),
+    url(r'pod_distribution_log', include(pod_distribution_log, 'pod_distribution_log')),
+    url(r'notifications$', NotificationGet.as_view()),
+    url(r'notifications/(?P<id>\d+)$', NotificationEntity.as_view()),
 
     # auth0 custom db authentication
     url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),

@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Project,Review,Checklist,Format,Comment,Log
+from log_app.models import Project,Review,Checklist,Format,Comment,Log,BroadcasterResource
 from log_app.serializers import ProjectSerializer
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
@@ -353,6 +353,7 @@ def project_report_numbers(request,project_id):
 	# [{'broadcaster_resource__name': u'name', 'total': 2}]
 	from django.db.models import Count
 	resources = logs.exclude(broadcaster_resource=None).values('broadcaster_resource__name').annotate(total=Count('broadcaster_resource'))
+	resources_null = list(BroadcasterResource.objects.values_list('name',flat=True))
 
 	br = {'most_used':["<None>"],'least_used':["<None>"],'total_use':0}
 	if resources:
@@ -360,6 +361,7 @@ def project_report_numbers(request,project_id):
 		br_mu = 0
 		br_lu =resources[0]
 		for resource in resources:
+			resources_null.remove(resource['broadcaster_resource__name'])
 			br['total_use'] = br['total_use']+resource['total']
 			if resource['total']> br_mu :
 				br_mu = resource['total']
@@ -373,6 +375,8 @@ def project_report_numbers(request,project_id):
 			elif resource['total'] == br_lu and not resource['broadcaster_resource__name'] in br['least_used']:
 				br['least_used'].append(resource['broadcaster_resource__name'])
 
+	if resources_null:
+		br['least_used'] = resources_null
 
 	format_score = {'series':[format_score],\
 					'most_used':most_used,\
