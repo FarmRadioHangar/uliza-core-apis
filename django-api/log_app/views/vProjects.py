@@ -314,12 +314,12 @@ def project_report_numbers(request,project_id):
 			        least_used['formats_index'].append(format_index[format.id])
 
 		# base weak value
-		if weak['formats_index'] == []:
+		if weak['formats_index'] == [] and format_score:
 		    weak['value'] = format_score[format_index[format.id]]['value']
 		    weak['formats_index'].append(format_index[format.id])
 
 		# base least used value
-		if least_used['formats_index'] == []:
+		if least_used['formats_index'] == [] and format_score:
 		    least_used['value'] = format_score[format_index[format.id]]['logs']
 		    least_used['formats_index'].append(format_index[format.id])
 
@@ -334,7 +334,7 @@ def project_report_numbers(request,project_id):
 			week_score['value'] = math.ceil(week_score['value'])
 
 		format_score = week_scores
-	else:
+	elif total_gender_score > 0:
 		format_score.append({'meta':'Gender','value':gender_score})
 		labels.append('Gender')
 
@@ -375,8 +375,8 @@ def project_report_numbers(request,project_id):
 			elif resource['total'] == br_lu and not resource['broadcaster_resource__name'] in br['least_used']:
 				br['least_used'].append(resource['broadcaster_resource__name'])
 
-	if resources_null:
-		br['least_used'] = resources_null
+		if resources_null:
+			br['least_used'] = resources_null
 
 	format_score = {'series':[format_score],\
 					'most_used':most_used,\
