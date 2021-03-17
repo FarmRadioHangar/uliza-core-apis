@@ -210,7 +210,7 @@ class Program(models.Model):
 	program_type = models.CharField(null=True,blank=True,max_length=50)
 
 	confirmed_program_time = models.BooleanField(default=False)
-	uliza = models.CharField(null=True,blank=True,max_length=50)
+	uliza = models.CharField(null=True,blank=True,max_length=80)
 
 	from django.utils import timezone
 	start_date = models.DateTimeField(default=timezone.now)
@@ -616,7 +616,7 @@ class PodEpisode(models.Model):
 class PodDistributionLog(models.Model):
     podcast = models.ForeignKey('Podcast')
     triggered_by =  models.ForeignKey('Contact')
-    description = models.TextField(null=True,blank=True,default="None")
+    note = models.TextField(null=True,blank=True,default="None")
 
     apple_podcasts_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
     spotify_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
