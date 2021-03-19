@@ -1,6 +1,6 @@
 Django==1.11.7
 django-filter==1.1.0
-djangorestframework==3.7.3
+djangorestframework==3.11.2
 envparse==0.2.0
 Markdown==2.6.9
 MySQL-python==1.2.5
