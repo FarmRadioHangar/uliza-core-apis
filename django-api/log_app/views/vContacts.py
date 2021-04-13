@@ -51,8 +51,15 @@ def update_access(request,id):
     from log_app.models import Contact,Program
 
     contact = Contact.objects.get(pk=id)
-    access = request.data['access'].split(',')
-    programs = Program.objects.filter(access=contact)|Program.objects.filter(id__in=access)
+    access = request.data['access']
+
+    if access == '':
+        programs = Program.objects.filter(access=contact)
+        access = []
+
+    else:
+        access = access.split(',')
+        programs = Program.objects.filter(access=contact)|Program.objects.filter(id__in=access)
 
     for p in programs:
 
