@@ -144,6 +144,8 @@ USE_TZ = True
 
 SITE_ID = 1
 
+LINK = '/api/v1'
+
 LOCALE_PATHS = (
     BASE_DIR+'/locale',
 )
