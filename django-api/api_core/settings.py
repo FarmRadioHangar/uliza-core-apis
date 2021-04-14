@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'covid',
     'shell_plus',
     'django_telegrambot',
-    'telegram_bot'
+    #'telegram_bot'
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
