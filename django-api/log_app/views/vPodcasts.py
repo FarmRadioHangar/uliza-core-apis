@@ -53,7 +53,7 @@ class PodcastEntity(generics.RetrieveUpdateDestroyAPIView):
         instance = serializer.save()
 
         if 'description' in self.request._full_data:
-            description = self.request._full_data
+            description = self.request._full_data['description']
         else:
             description = ''
 
@@ -74,7 +74,7 @@ class PodcastEntity(generics.RetrieveUpdateDestroyAPIView):
 
         PodDistributionLog.objects.create(podcast=instance,
                                           triggered_by_id=self.request._full_data['contact'],
-                                          description=description,
+                                          note=description,
                                           apple_podcasts_status= instance.apple_podcasts_status,
                                           spotify_status= instance.spotify_status,
                                           google_podcasts_status= instance.google_podcasts_status,

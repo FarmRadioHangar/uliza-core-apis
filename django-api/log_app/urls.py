@@ -142,6 +142,7 @@ pod_episodes = patterns('log_app.views.vPodEpisodes',
 )
 
 pod_distribution_log = patterns('log_app.views.vPodDistributionLog',
+    url(r'/last_entry/(?P<id>\d+)$','last_entry',name='last_entry'),
     url(r'/(?P<id>\d+)$', PodDistributionLogEntity.as_view()),
     url(r'$', PodDistributionLogGet.as_view()),
 )

@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
@@ -28,3 +29,13 @@ class PodDistributionLogEntity(generics.RetrieveUpdateDestroyAPIView):
     model = PodDistributionLog
     serializer_class = PodDistributionLogSerializer
     lookup_field = 'id'
+
+@api_view(['GET'])
+def last_entry(request,id):
+    last_entry = PodDistributionLog.objects.filter(podcast = id).last()
+
+    if last_entry:
+        last_entry = PodDistributionLogSerializer(last_entry)
+        return JsonResponse(last_entry.data)
+    else:
+        return JsonResponse({})
