@@ -616,7 +616,7 @@ class PodEpisode(models.Model):
 
 class PodDistributionLog(models.Model):
     podcast = models.ForeignKey('Podcast')
-    triggered_by =  models.ForeignKey('Contact')
+    triggered_by =  models.ForeignKey('Contact',null=True)
     note = models.TextField(null=True,blank=True,default="None")
 
     apple_podcasts_status = models.CharField(max_length=15,default=None,null=True,choices=pod_status)
