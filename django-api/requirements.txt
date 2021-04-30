@@ -43,7 +43,7 @@ pyOpenSSL==17.0.0
 pyparsing==2.2.0
 python-dateutil==2.6.1
 requests==2.18.3
-rsa==3.4.2
+rsa==4.7
 shutilwhich==1.1.0
 six==1.10.0
 uritemplate==3.0.0
