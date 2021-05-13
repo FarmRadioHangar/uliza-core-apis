@@ -240,16 +240,19 @@ def upload( request ):
 	content_range = request.META.get(content_range_header, '')
 	match = content_range_pattern.match(content_range)
 
-	total = int(match.group('total'))
+	if not content_range == '':
+ 		total = int(match.group('total'))
+	else:
+  		total = file.size
 
 	if(total == instance.recording_backup.size):
+		instance.recording = None
 		instance.recording_saved = True
+		instance.save()
 		instance.rename()
 	else:
 		instance.recording_saved = False
-
-	instance.recording = None
-	instance.save()
+		instance.save()
 
 	file_dict = {
 	    'filename' : basename,
