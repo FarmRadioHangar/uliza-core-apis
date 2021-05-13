@@ -223,6 +223,9 @@ class Program(models.Model):
 
 	weeks = models.IntegerField()
 
+	total_polling_responses = models.IntegerField(default=0)
+	unique_polling_respondents = models.IntegerField(default=0)
+
 	access = models.ManyToManyField(Contact,blank=True)
 	media_backup_status = models.CharField(max_length=15,default='none',choices=backup_status)
 
@@ -267,6 +270,58 @@ class Program(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+class PollSegment(models.Model):
+    polling_types = ( ('open', 'open'), ('closed', 'closed'))
+
+    index = models.IntegerField()
+    episode_number = models.IntegerField()
+    title = models.TextField(null=True,blank=True)
+    program = models.ForeignKey('Program')
+    type = models.CharField(max_length=6,default="closed",choices=polling_types)
+    result = models.TextField(null=True,blank=True)
+
+    # open-ended exported file upload meta data
+    poll_file = models.FileField(null=True,blank=True)
+    poll_file_saved = models.BooleanField(default=True)
+    poll_file_offset = models.PositiveIntegerField(default=0)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def close_file(self):
+    	file_ = self.poll_file
+    	while file_ is not None:
+    		file_.close()
+    		file_ = getattr(file_, 'file', None)
+
+    def append_chunk(self, chunk, chunk_size=None, save=True):
+    	self.close_file()
+    	self.poll_file.open(mode='ab')  # mode = append+binary
+    	# We can use .read() safely because chunk is already in memory
+    	self.poll_file.write(chunk.read())
+    	if chunk_size is not None:
+    		self.poll_file_offset += chunk_size
+    	elif hasattr(chunk, 'size'):
+    		self.poll_file_offset += chunk.size
+    	else:
+    		self.poll_file_offset = self.file.size
+    	self._md5 = None  # Clear cached md5
+    	if save:
+    		self.save()
+    	self.close_file()  # Flush
+
+    def rename(self):
+        import os
+        if (self.poll_file):
+            old_path = self.poll_file.path.encode('utf8')
+            file_extension = old_path.split('.')
+            file_extension = file_extension[len(file_extension)-1]
+            self.poll_file.name = 'Uliza-log-Poll'+str(self.id)+'.'+file_extension
+            os.rename(old_path, self.poll_file.path)
+            self.save()
+
 
 class BroadcasterResource(models.Model):
     name = models.CharField(max_length=100)

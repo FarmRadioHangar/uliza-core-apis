@@ -20,6 +20,7 @@ from log_app.views.vPodcasts import *
 from log_app.views.vPodEpisodes import *
 from log_app.views.vNotifications import *
 from log_app.views.vPodDistributionLog import *
+from log_app.views.vPollSegment import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -147,6 +148,17 @@ pod_distribution_log = patterns('log_app.views.vPodDistributionLog',
     url(r'$', PodDistributionLogGet.as_view()),
 )
 
+poll_segment = patterns('log_app.views.vPollSegment',
+    url( r'/openended/delete/(?P<pk>\d+)','upload_delete', name ='recording_delete'),
+    url( r'/openended/init/(?P<index>\d+)/(?P<episode_number>\d+)/(?P<program_id>\d+)','create_instance'),
+    url( r'/openended/check/(?P<poll_segment_id>\d+)/(?P<filename>.*)','check_file'),
+    url( r'/openended/extract/(?P<poll_segment_id>\d+)','extract_data'),
+    url( r'/openended/upload','upload', name = 'recording_upload' ),
+
+    url(r'/(?P<id>\d+)$', PollSegmentEntity.as_view()),
+    url(r'$', PollSegmentGet.as_view()),
+)
+
 urlpatterns = patterns('',
     url(r'radio_stations', include(radio_stations, 'radio_stations')),
     url(r'programs', include(programs, 'programs')),
@@ -168,6 +180,7 @@ urlpatterns = patterns('',
     url(r'podcasts', include(podcasts, 'podcasts')),
     url(r'pod_episodes', include(pod_episodes, 'pod_episodes')),
     url(r'pod_distribution_log', include(pod_distribution_log, 'pod_distribution_log')),
+    url(r'pollsegment', include(poll_segment, 'poll_segment')),
     url(r'notifications$', NotificationGet.as_view()),
     url(r'notifications/(?P<id>\d+)$', NotificationEntity.as_view()),
 
