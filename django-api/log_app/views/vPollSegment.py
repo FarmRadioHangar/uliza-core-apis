@@ -25,6 +25,19 @@ class PollSegmentGet(generics.ListCreateAPIView):
     filter_fields = ['id','program','episode_number']
     ordering_fields = ['id','index']
 
+    def get_queryset(self):
+        last_poll = self.request.GET.get('last')
+        program = self.request.GET.get('program')
+        if last_poll and program:
+            instance = PollSegment.objects.filter(program=program).last()
+            if instance:
+                queryset = PollSegment.objects.filter(id=instance.id)
+            else:
+                queryset = PollSegment.objects.none()
+        else:
+            queryset = PollSegment.objects.all()
+
+        return queryset
 
 class PollSegmentEntity(generics.RetrieveUpdateDestroyAPIView):
     queryset = PollSegment.objects.all()
