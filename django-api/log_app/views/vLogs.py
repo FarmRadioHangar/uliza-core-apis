@@ -317,11 +317,6 @@ def open_with_drive(request,pk):
             if 'archive' in request.GET:
                 os.unlink( log.recording_backup.path )
                 log.recording_backup = None
-        elif os.path.isfile(log.recording_backup.path):
-            os.unlink(log.recording_backup.path)
-            log.recording_backup = None
-        else:
-            log.recording_backup = None
 
         log.save()
 
