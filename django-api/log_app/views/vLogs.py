@@ -291,7 +291,7 @@ def gdrive_about(request):
 def open_with_drive(request,pk):
     log = Log.objects.get(pk=pk)
 
-    if(log.gdrive_url):
+    if log.gdrive_url and not 'return_status' in request.GET:
         return redirect(log.gdrive_url)
     elif(log.gdrive_available) and not 'return_status' in request.GET:
         # get the old link from dev api
@@ -309,7 +309,7 @@ def open_with_drive(request,pk):
         if os.path.isfile(log.recording_backup.path.encode('utf8')):
             log.rename()
             from django.core.files import File
-            log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+            log.gdrive = File(log.recording_backup,log.program.id+'_week_'+str(log.week)+'.mp3')
             log.save()
 
             log.gdrive_url = log.gdrive.url
@@ -317,16 +317,11 @@ def open_with_drive(request,pk):
             if 'archive' in request.GET:
                 os.unlink( log.recording_backup.path )
                 log.recording_backup = None
-        elif os.path.isfile(log.recording_backup.path):
-            os.unlink(log.recording_backup.path)
-            log.recording_backup = None
-        else:
-            log.recording_backup = None
 
         log.save()
 
-        if 'return_status' in request.GET:
-            return HttpResponse('OK');
+    if 'return_status' in request.GET:
+        return HttpResponse('OK');
 
 
     	return redirect(log.gdrive_url)
