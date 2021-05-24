@@ -309,7 +309,7 @@ def open_with_drive(request,pk):
         if os.path.isfile(log.recording_backup.path.encode('utf8')):
             log.rename()
             from django.core.files import File
-            log.gdrive = File(log.recording_backup,log.program.id+'_week_'+str(log.week)+'.mp3')
+            log.gdrive = File(log.recording_backup,str(log.program.id)+'_week_'+str(log.week)+'.mp3')
             log.save()
 
             log.gdrive_url = log.gdrive.url
