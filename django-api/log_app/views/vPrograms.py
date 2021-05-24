@@ -124,12 +124,14 @@ def download_media_zipped(request,id):
 	try:
 		filename = filename.encode('ascii')
 		filename = filename+'.zip'
-	except:
+	except Exception as e:
 		filename = 'Uliza-log-PID'+str(program.id)+'.zip'
 
-	with ZipFile(MEDIA_ROOT+'/'+filename,'w') as zipper:
-		for log in logs:
-			zipper.write(log.recording_backup.path, log.recording_backup.name)
+	with ZipFile(MEDIA_ROOT+'/'+filename,'w',allowZip64=True) as zipper:
+		try:
+			for log in logs:
+				zipper.write(log.recording_backup.path, log.recording_backup.name)
+		except OSError: pass
 
 	program.media_backup_status = 'zip'
 	program.save()
