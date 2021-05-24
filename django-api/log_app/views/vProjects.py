@@ -352,7 +352,7 @@ def project_report_numbers(request,project_id):
 	# prepare broadcaster resources data
 	# [{'broadcaster_resource__name': u'name', 'total': 2}]
 	from django.db.models import Count
-	resources = logs.exclude(broadcaster_resource=None).values('broadcaster_resource__name').annotate(total=Count('broadcaster_resource'))
+	resources = logs.exclude(broadcaster_resource=None).order_by('broadcaster_resource').values('broadcaster_resource__name').annotate(total=Count('broadcaster_resource'))
 	resources_null = list(BroadcasterResource.objects.values_list('name',flat=True))
 
 	br = {'most_used':["<None>"],'least_used':["<None>"],'total_use':0}
