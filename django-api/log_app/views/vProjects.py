@@ -298,7 +298,7 @@ def project_report_numbers(request,project_id):
 			    weak['formats_index'].append(format_index[format.id])
 
 			# if not format.always_checked [if always_checked is not included in this calculation]
-			if not format.always_checked:
+			if not format.always_checked and not format.project_related:
 			    # select most used format
 			    if format_score[format_index[format.id]]['logs'] > most_used['value']:
 			        most_used['formats_index'] = [format_index[format.id]]
