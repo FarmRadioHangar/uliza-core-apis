@@ -16,6 +16,7 @@ from log_app.views.vChecklists import *
 from log_app.views.vFormats import *
 from log_app.views.vReviews import *
 from log_app.views.vBroadcasterResources import *
+from log_app.views.vRadioType import *
 from log_app.views.vPodcasts import *
 from log_app.views.vPodEpisodes import *
 from log_app.views.vNotifications import *
@@ -122,6 +123,11 @@ formats = patterns('log_app.views.vFormats',
     url(r'$', FormatGet.as_view()),
 )
 
+radio_type = patterns('log_app.views.vRadioType',
+    url(r'/(?P<id>\d+)$', RadioTypeEntity.as_view()),
+    url(r'$', RadioTypeGet.as_view()),
+)
+
 broadcaster_resources = patterns('log_app.views.vBroadcasterResources',
     url(r'/(?P<id>\d+)$', BroadcasterResourceEntity.as_view()),
     url(r'$', BroadcasterResourceGet.as_view()),
@@ -175,6 +181,7 @@ urlpatterns = patterns('',
     url(r'projects', include(projects, 'projects')),
     url(r'formats', include(formats, 'formats')),
     url(r'broadcaster_resources', include(broadcaster_resources, 'broadcaster_resources')),
+    url(r'radio_type', include(radio_type, 'radio_type')),
     url(r'checklists', include(checklists, 'checklists')),
     url(r'reviews', include(reviews, 'reviews')),
     url(r'podcasts', include(podcasts, 'podcasts')),

@@ -16,6 +16,11 @@ class BroadcasterResourceSerializer(serializers.ModelSerializer):
 		model = BroadcasterResource
 		fields = "__all__"
 
+class RadioTypeSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = RadioType
+		fields = "__all__"
+
 class ProgramSerializer(serializers.ModelSerializer):
 	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
 	project__name = serializers.CharField(source='project.name',read_only=True)

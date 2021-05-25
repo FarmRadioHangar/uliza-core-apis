@@ -330,6 +330,13 @@ class BroadcasterResource(models.Model):
     name_am = models.CharField(max_length=100)
     description = models.TextField(null=True,blank=True)
 
+class RadioType(models.Model):
+    name = models.CharField(max_length=100)
+    name_fr = models.CharField(max_length=100)
+    name_pt = models.CharField(max_length=100)
+    name_am = models.CharField(max_length=100)
+    description = models.TextField(null=True,blank=True)
+
 class Log(models.Model):
     program = models.ForeignKey("Program")
     saved_by = models.ForeignKey(Contact,blank=True,null=True)
