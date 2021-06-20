@@ -148,8 +148,14 @@ def project_report_numbers(request,project_id):
 			logs_reviewed = logs_reviewed+1
 			review=review[0]
 
+	    rtype_formats = log.program.radio_type.values_list('id',flat=True)
+	    if rtype_formats:
+			rtype_formats = Format.objects.filter(radio_type_related=True,radio_types__in=rtype_formats)
+	    else:
+			rtype_formats = []
+
 	    log_formats = log.formats.filter(legacy=False)
-	    log_formats = list(chain(log_formats,formats_always_checked))
+	    log_formats = list(chain(log_formats,formats_always_checked,rtype_formats))
 
 	    review_checklists = review.checklists.values_list('id',flat=True)
 	    void_formats = review.void_formats.values_list('id',flat=True)
