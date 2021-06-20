@@ -209,6 +209,7 @@ class Program(models.Model):
 	radio_station = models.ForeignKey('RadioStation')
 	project = models.ForeignKey('Project')
 	program_type = models.CharField(null=True,blank=True,max_length=50)
+	radio_type = models.ManyToManyField('RadioType',blank=True,null=True)
 
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=80)
@@ -449,6 +450,8 @@ class Format(models.Model):
     always_checked = models.BooleanField(default=False)
     project_related = models.BooleanField(default=False)
     projects = models.ManyToManyField('Project',blank=True)
+    radio_type_related = models.BooleanField(default=False)
+    radio_types = models.ManyToManyField('RadioType',blank=True)
 
     def __unicode__(self):
     	return self.name
