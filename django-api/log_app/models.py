@@ -453,6 +453,10 @@ class Format(models.Model):
     radio_type_related = models.BooleanField(default=False)
     radio_types = models.ManyToManyField('RadioType',blank=True)
 
+    # can have a checklist from other formats
+    cross_checklist = models.BooleanField(default=False)
+    secondary_checklist = models.ManyToManyField('Checklist',blank=True)
+
     def __unicode__(self):
     	return self.name
 
