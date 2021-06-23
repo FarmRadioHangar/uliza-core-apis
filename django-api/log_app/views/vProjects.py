@@ -123,18 +123,23 @@ def project_report_numbers(request,project_id):
 
 	week=None
 	voice_score = 0
-	gender_score=0
-	total_gender_score = 0
+	gender_score=None
 	logs_reviewed=0
 
 	week_labels = []
 	week_scores = []
 
-	gender_format_id = Format.objects.filter(name = 'Gender')
+	cross_formats = Format.objects.filter(cross_checklist=True)
+	secondary_criteria = {}
 
-	if gender_format_id:
-	    gender_format_id = gender_format_id[0].id
+	for cformat in cross_formats:
+		for id in cformat.secondary_checklist.all():
+			if not id in secondary_criteria:
+				secondary_criteria[id] = [cformat.id]
+			else:
+				secondary_criteria[id].append(cformat.id)
 
+	cf_scores =  {}
 	for log in logs:
 	    if week == (log.week,log.program.id):
 	        continue
@@ -159,9 +164,6 @@ def project_report_numbers(request,project_id):
 
 	    review_checklists = review.checklists.values_list('id',flat=True)
 	    void_formats = review.void_formats.values_list('id',flat=True)
-	    # import pdb; pdb.set_trace()
-	    gender_episode_score = 0
-	    gender_total_episode_score = 0
 
 	    for format in log_formats:
 			score = 0
@@ -173,27 +175,65 @@ def project_report_numbers(request,project_id):
 				if criteria.id in review_checklists:
 				    score = level_score[criteria.level]+score
 
-				    if criteria.gender_responsive or format.name=='Gender':
-						gender_score = level_score[criteria.level]+gender_score
-						gender_episode_score = level_score[criteria.level]+gender_episode_score
 				else:
 					if format.id in void_formats:
 					    score = -level_score[criteria.level]+score
 
-					if criteria.gender_responsive or format.name=='Gender':
-						if gender_format_id in void_formats:
-							gender_score = -level_score[criteria.level]+gender_score
-							gender_episode_score = -level_score[criteria.level]+gender_episode_score
-
 				total_score = level_score[criteria.level]+total_score
 
-				if criteria.gender_responsive or format.name=='Gender':
-				    total_gender_score = level_score[criteria.level]+total_gender_score
-				    gender_total_episode_score = level_score[criteria.level]+gender_total_episode_score
+				if 'format_id' in request.GET and str(format.id) == request.GET['format_id']:
+					week_label = str(log.week)
+					if not week_label in week_labels:
+						week_labels.append(week_label)
+						week_scores.append({'meta': week_label,'value':0,'total':0})
+
+					index = week_labels.index(week_label)
+
+					if criteria.id in review_checklists:
+						week_scores[index]['value'] = week_scores[index]['value']+level_score[criteria.level]
+					else:
+						if format.id in void_formats:
+							week_scores[index]['value'] = week_scores[index]['value']-level_score[criteria.level]
+
+					week_scores[index]['total'] = week_scores[index]['total']+level_score[criteria.level]
 
 
-			if format.name == 'Gender':
-				continue;
+				if criteria.id in secondary_criteria:
+					for cross_format in secondary_criteria[criteria.id]:
+
+						if not cross_format.id in format_index.keys():
+							format_index[cross_format.id] = len(format_score)
+
+							if getattr(cross_format,'name'+lang):
+							    labels.append(getattr(cross_format,'name'+lang))
+							    format_score.append({'meta':getattr(cross_format,'name'+lang),'value':0,'logs':0})
+							else:
+							    labels.append(getattr(cross_format,'name'))
+							    format_score.append({'meta':getattr(cross_format,'name'),'value':0,'logs':0})
+
+						if criteria.id in review_checklists:
+							format_score[format_index][cross_format.id]['value'] = level_score[criteria.level]+format_score[format_index][cross_format.id]['value']
+						else:
+							if cross_format.id in void_formats:
+								format_score[format_index][cross_format.id]['value'] = -level_score[criteria.level]+format_score[format_index][cross_format.id]['value']
+
+						format_score[format_index][cross_format.id]['logs'] = format_score[format_index][cross_format.id]['logs'] + level_score[criteria.level]
+
+						if 'format_id' in request.GET and str(cross_format.id) == request.GET['format_id']:
+							week_label = str(log.week)
+							if not week_label in week_labels:
+								week_labels.append(week_label)
+								week_scores.append({'meta': week_label,'value':0,'total':0})
+
+							index = week_labels.index(week_label)
+
+							if criteria.id in review_checklists:
+								week_scores[index]['value'] = week_scores[index]['value']+level_score[criteria.level]
+							else:
+								if cross_format.id in void_formats:
+									week_scores[index]['value'] = week_scores[index]['value']-level_score[criteria.level]
+
+							week_scores[index]['total'] = week_scores[index]['total']+level_score[criteria.level]
 
 			if not format.id in format_index.keys():
 				format_index[format.id] = len(format_score)
@@ -205,42 +245,18 @@ def project_report_numbers(request,project_id):
 				    labels.append(getattr(format,'name'))
 				    format_score.append({'meta':getattr(format,'name'),'value':0,'logs':0})
 
-			if total_score>0:
-				score = (float(score)/total_score)*100
-			else:
-			    score = 0
+			# if total_score>0:
+			# 	score = (float(score)/total_score)*100
+			# else:
+			#     score = 0
 
 			format_score[format_index[format.id]]['value'] = format_score[format_index[format.id]]['value']+score
-			format_score[format_index[format.id]]['logs'] = format_score[format_index[format.id]]['logs']+1
+			format_score[format_index[format.id]]['logs'] = total_score+format_score[format_index[format.id]]['logs']
+
 
 			# if format id == enquired format
 			# add score to the week aggregate
 			# create week_labels and week_score
-			if 'format_id' in request.GET and str(format.id) == request.GET['format_id']:
-				week_label = str(log.week)
-				if not week_label in week_labels:
-					week_labels.append(week_label)
-					week_scores.append({'meta': week_label,'value':0,'total':0})
-
-				index = week_labels.index(week_label)
-
-				week_scores[index]['value'] = week_scores[index]['value']+score
-				week_scores[index]['total'] = week_scores[index]['total']+1
-
-
-
-		# if the request is only gender score per week
-	    if 'format_id' in request.GET and request.GET['format_id']=='gender':
-			week_label = str(log.week)
-			score = (float(gender_episode_score)/gender_total_episode_score)*100
-			if not week_label in week_labels:
-				week_labels.append(week_label)
-				week_scores.append({'meta': week_label,'value':score,'total':1})
-			else:
-				index = week_labels.index(week_label)
-				week_scores[index]['value'] = week_scores[index]['value']+score
-				week_scores[index]['total'] = week_scores[index]['total']+1
-
 	formats = Format.objects.filter(legacy=False)
 
 	# Weakest | Strongest
@@ -260,11 +276,9 @@ def project_report_numbers(request,project_id):
 	total_score = 0
 
 	for format in formats:
-		if format.name == 'Gender':
-			continue;
-
 		# initializing
-		if not format.id in format_index:
+		# if not format.id in format_index:
+		if not format.id in format_index or format_score[format_index[format.id]]['logs'] == 0:
 			pass
 
 			# format_index[format.id] = len(format_score)
@@ -282,8 +296,12 @@ def project_report_numbers(request,project_id):
 			#     least_used['formats_index'] = [format_index[format.id]]
 			#     least_used['value'] = 0
 		else:
-			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['logs'])
+			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['logs'])*100
 			format_score[format_index[format.id]]['value'] = math.ceil(format_score[format_index[format.id]]['value'])
+
+			if format.name == 'Gender':
+				gender_score = format_score[format_index[format.id]]['value']
+
 			total_score = total_score +format_score[format_index[format.id]]['value']
 
 			# VOICE
@@ -330,19 +348,12 @@ def project_report_numbers(request,project_id):
 		    least_used['formats_index'].append(format_index[format.id])
 
 
-	if total_gender_score > 0:
-		gender_score = float(gender_score)/total_gender_score
-		gender_score = math.ceil(gender_score*100)
-
 	if 'format_id' in request.GET:
 		for week_score in week_scores:
-			week_score['value'] = float(week_score['value']/week_score['total'])
+			week_score['value'] = float(week_score['value'])/week_score['total']*100
 			week_score['value'] = math.ceil(week_score['value'])
 
 		format_score = week_scores
-	elif total_gender_score > 0:
-		format_score.append({'meta':'Gender','value':gender_score})
-		labels.append('Gender')
 
 	if reviewed_formats > 0:
 		total_score = total_score/reviewed_formats
