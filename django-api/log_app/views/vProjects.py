@@ -80,7 +80,11 @@ def project_report_numbers(request,project_id):
 		logs = Log.objects.filter(program__project = project_id,postpone=False).order_by('week')
 
 
-	if 'radio_station' in request.GET:
+	if 'program' in request.GET:
+		if not request.GET['program'] == 'all':
+			comments = comments.filter(log__program=request.GET['program'])
+			logs = logs.filter(program = request.GET['program'])
+	elif 'radio_station' in request.GET:
 		if not request.GET['radio_station'] == 'all':
 			comments = comments.filter(log__program__radio_station=request.GET['radio_station'])
 			logs = logs.filter(program__radio_station = request.GET['radio_station'])
@@ -206,10 +210,10 @@ def project_report_numbers(request,project_id):
 
 							if getattr(cross_format,'name'+lang):
 							    labels.append(getattr(cross_format,'name'+lang))
-							    format_score.append({'meta':getattr(cross_format,'name'+lang),'value':0,'logs':0})
+							    format_score.append({'meta':getattr(cross_format,'name'+lang),'value':0,'total_score':0,'use':0})
 							else:
 							    labels.append(getattr(cross_format,'name'))
-							    format_score.append({'meta':getattr(cross_format,'name'),'value':0,'logs':0})
+							    format_score.append({'meta':getattr(cross_format,'name'),'value':0,'total_score':0,'use':0})
 
 						if criteria.id in review_checklists:
 							format_score[format_index][cross_format.id]['value'] = level_score[criteria.level]+format_score[format_index][cross_format.id]['value']
@@ -217,7 +221,7 @@ def project_report_numbers(request,project_id):
 							if cross_format.id in void_formats:
 								format_score[format_index][cross_format.id]['value'] = -level_score[criteria.level]+format_score[format_index][cross_format.id]['value']
 
-						format_score[format_index][cross_format.id]['logs'] = format_score[format_index][cross_format.id]['logs'] + level_score[criteria.level]
+						format_score[format_index][cross_format.id]['total_score'] = format_score[format_index][cross_format.id]['total_score'] + level_score[criteria.level]
 
 						if 'format_id' in request.GET and str(cross_format.id) == request.GET['format_id']:
 							week_label = str(log.week)
@@ -240,23 +244,17 @@ def project_report_numbers(request,project_id):
 
 				if getattr(format,'name'+lang):
 				    labels.append(getattr(format,'name'+lang))
-				    format_score.append({'meta':getattr(format,'name'+lang),'value':0,'logs':0})
+				    format_score.append({'meta':getattr(format,'name'+lang),'value':0,'total_score':0,'use':0})
 				else:
 				    labels.append(getattr(format,'name'))
-				    format_score.append({'meta':getattr(format,'name'),'value':0,'logs':0})
+				    format_score.append({'meta':getattr(format,'name'),'value':0,'total_score':0,'use':0})
 
-			# if total_score>0:
-			# 	score = (float(score)/total_score)*100
-			# else:
-			#     score = 0
 
 			format_score[format_index[format.id]]['value'] = format_score[format_index[format.id]]['value']+score
-			format_score[format_index[format.id]]['logs'] = total_score+format_score[format_index[format.id]]['logs']
+			format_score[format_index[format.id]]['total_score'] = total_score+format_score[format_index[format.id]]['total_score']
+			format_score[format_index[format.id]]['use'] = format_score[format_index[format.id]]['use']+1
 
 
-			# if format id == enquired format
-			# add score to the week aggregate
-			# create week_labels and week_score
 	formats = Format.objects.filter(legacy=False)
 
 	# Weakest | Strongest
@@ -278,7 +276,7 @@ def project_report_numbers(request,project_id):
 	for format in formats:
 		# initializing
 		# if not format.id in format_index:
-		if not format.id in format_index or format_score[format_index[format.id]]['logs'] == 0:
+		if not format.id in format_index or format_score[format_index[format.id]]['total_score'] == 0:
 			pass
 
 			# format_index[format.id] = len(format_score)
@@ -296,7 +294,7 @@ def project_report_numbers(request,project_id):
 			#     least_used['formats_index'] = [format_index[format.id]]
 			#     least_used['value'] = 0
 		else:
-			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['logs'])*100
+			format_score[format_index[format.id]]['value'] = (float(format_score[format_index[format.id]]['value'])/format_score[format_index[format.id]]['total_score'])*100
 			format_score[format_index[format.id]]['value'] = math.ceil(format_score[format_index[format.id]]['value'])
 
 			if format.name == 'Gender':
@@ -324,17 +322,17 @@ def project_report_numbers(request,project_id):
 			# if not format.always_checked [if always_checked is not included in this calculation]
 			if not format.always_checked and not format.project_related:
 			    # select most used format
-			    if format_score[format_index[format.id]]['logs'] > most_used['value']:
+			    if format_score[format_index[format.id]]['use'] > most_used['value']:
 			        most_used['formats_index'] = [format_index[format.id]]
-			        most_used['value'] = format_score[format_index[format.id]]['logs']
-			    elif format_score[format_index[format.id]]['logs'] == most_used['value']:
+			        most_used['value'] = format_score[format_index[format.id]]['use']
+			    elif format_score[format_index[format.id]]['use'] == most_used['value']:
 			        most_used['formats_index'].append(format_index[format.id])
 
 			    # select least used format
-			    if format_score[format_index[format.id]]['logs'] < least_used['value']:
+			    if format_score[format_index[format.id]]['use'] < least_used['value']:
 			        least_used['formats_index'] = [format_index[format.id]]
-			        least_used['value'] = format_score[format_index[format.id]]['logs']
-			    elif format_score[format_index[format.id]]['logs'] == least_used['value']:
+			        least_used['value'] = format_score[format_index[format.id]]['use']
+			    elif format_score[format_index[format.id]]['use'] == least_used['value']:
 			        least_used['formats_index'].append(format_index[format.id])
 
 		# base weak value
@@ -344,7 +342,7 @@ def project_report_numbers(request,project_id):
 
 		# base least used value
 		if least_used['formats_index'] == [] and format_score:
-		    least_used['value'] = format_score[format_index[format.id]]['logs']
+		    least_used['value'] = format_score[format_index[format.id]]['total_score']
 		    least_used['formats_index'].append(format_index[format.id])
 
 
