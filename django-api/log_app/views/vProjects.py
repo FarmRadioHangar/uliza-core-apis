@@ -80,12 +80,11 @@ def project_report_numbers(request,project_id):
 		logs = Log.objects.filter(program__project = project_id,postpone=False).order_by('week')
 
 
-	if 'program' in request.GET:
-		if not request.GET['program'] == 'all':
+	if 'program' in request.GET and not request.GET['program'] == 'all':
 			comments = comments.filter(log__program=request.GET['program'])
 			logs = logs.filter(program = request.GET['program'])
-	elif 'radio_station' in request.GET:
-		if not request.GET['radio_station'] == 'all':
+
+	if 'radio_station' in request.GET and not request.GET['radio_station'] == 'all':
 			comments = comments.filter(log__program__radio_station=request.GET['radio_station'])
 			logs = logs.filter(program__radio_station = request.GET['radio_station'])
 
