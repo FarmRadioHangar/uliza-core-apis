@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Project,Review,Checklist,Format,Comment,Log,BroadcasterResource
+from log_app.models import Project,Review,Checklist,Format,Comment,Log,BroadcasterResource,Program
 from log_app.serializers import ProjectSerializer
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
@@ -142,7 +142,6 @@ def project_report_numbers(request,project_id):
 			else:
 				secondary_criteria[id].append(cformat.id)
 
-	cf_scores =  {}
 	for log in logs:
 	    if week == (log.week,log.program.id):
 	        continue
@@ -263,8 +262,18 @@ def project_report_numbers(request,project_id):
 	most_used = {'value':0,'formats_index':[]}
 	least_used = {'value':0,'formats_index':[]}
 
+	# if start date is not set
+	project = Project.objects.get(id=project_id)
+	if project.start_date == start_date:
+		from django.db.models import Sum
+		total_weeks = Program.objects.filter(project=project_id).aggregate(Sum('weeks'))
+		total_weeks = total_weeks['weeks__sum']
+	else:
+		total_weeks = len(logs)
+
+
 	if logs:
-		logs_reviewed = float(logs_reviewed)/len(logs)*100
+		logs_reviewed = float(logs_reviewed)/total_weeks*100
 		logs_reviewed = math.ceil(logs_reviewed)
 	else:
 		logs_reviewed = 0
