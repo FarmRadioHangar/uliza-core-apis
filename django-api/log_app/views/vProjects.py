@@ -265,7 +265,7 @@ def project_report_numbers(request,project_id):
 	# if start date is not set
 	project = Project.objects.get(id=project_id)
 
-	if project.start_date == start_date:
+	if project.start_date == start_date and project.end_date == end_date:
 		from django.db.models import Sum
 		if not request.GET['program'] == 'all':
 			program = Program.objects.get(id=request.GET['program'])
