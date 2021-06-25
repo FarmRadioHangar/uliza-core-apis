@@ -264,17 +264,25 @@ def project_report_numbers(request,project_id):
 
 	# if start date is not set
 	project = Project.objects.get(id=project_id)
+
 	if project.start_date == start_date:
 		from django.db.models import Sum
-		total_weeks = Program.objects.filter(project=project_id).aggregate(Sum('weeks'))
-		total_weeks = total_weeks['weeks__sum']
+		if not request.GET['program'] == 'all':
+			program = Program.objects.get(id=request.GET['program'])
+			total_weeks = program.weeks
+		elif not request.GET['radio_station'] == 'all':
+			total_weeks = Program.objects.filter(project=project_id,radio_station=request.GET['radio_station']).aggregate(Sum('weeks'))
+			total_weeks = total_weeks['weeks__sum']
+		else:
+			total_weeks = Program.objects.filter(project=project_id).aggregate(Sum('weeks'))
+			total_weeks = total_weeks['weeks__sum']
 	else:
 		total_weeks = len(logs)
 
 
 	if logs:
 		logs_reviewed = float(logs_reviewed)/total_weeks*100
-		logs_reviewed = math.ceil(logs_reviewed)
+		logs_reviewed = int(round(logs_reviewed))
 	else:
 		logs_reviewed = 0
 
