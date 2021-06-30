@@ -15,14 +15,19 @@ class FormatGet(generics.ListCreateAPIView):
     model = Format
     serializer_class = FormatSerializer
     filter_fields = ['id','name','legacy','always_checked','project_related','projects','radio_types','radio_type_related','cross_checklist']
+    ordering_fields = ('id','cross_checklist')
 
     def get_queryset(self):
         pk_list = self.request.GET.get('pk_list')
+        ordering = self.request.GET.get('ordering')
         if pk_list:
             pk_list = pk_list.split(',')
             queryset = Format.objects.filter(pk__in=pk_list).order_by('name')
+        elif ordering:
+            queryset = Format.objects.all().order_by(ordering)
         else:
             queryset = Format.objects.all().order_by('name')
+
         return queryset
 
 
