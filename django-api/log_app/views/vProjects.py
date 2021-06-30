@@ -136,11 +136,11 @@ def project_report_numbers(request,project_id):
 	secondary_criteria = {}
 
 	for cformat in cross_formats:
-		for id in cformat.secondary_checklist.all():
-			if not id in secondary_criteria:
-				secondary_criteria[id] = [cformat.id]
+		for criteria in cformat.secondary_checklist.all():
+			if not criteria in secondary_criteria:
+				secondary_criteria[criteria.id] = [cformat]
 			else:
-				secondary_criteria[id].append(cformat.id)
+				secondary_criteria[criteria.id].append(cformat)
 
 	for log in logs:
 	    if week == (log.week,log.program.id):
@@ -214,12 +214,12 @@ def project_report_numbers(request,project_id):
 							    format_score.append({'meta':getattr(cross_format,'name'),'value':0,'total_score':0,'use':0})
 
 						if criteria.id in review_checklists:
-							format_score[format_index][cross_format.id]['value'] = level_score[criteria.level]+format_score[format_index][cross_format.id]['value']
+							format_score[format_index[cross_format.id]]['value'] = level_score[criteria.level]+format_score[format_index[cross_format.id]]['value']
 						else:
 							if cross_format.id in void_formats:
-								format_score[format_index][cross_format.id]['value'] = -level_score[criteria.level]+format_score[format_index][cross_format.id]['value']
+								format_score[format_index[cross_format.id]]['value'] = -level_score[criteria.level]+format_score[format_index[cross_format.id]]['value']
 
-						format_score[format_index][cross_format.id]['total_score'] = format_score[format_index][cross_format.id]['total_score'] + level_score[criteria.level]
+						format_score[format_index[cross_format.id]]['total_score'] = format_score[format_index[cross_format.id]]['total_score'] + level_score[criteria.level]
 
 						if 'format_id' in request.GET and str(cross_format.id) == request.GET['format_id']:
 							week_label = str(log.week)
