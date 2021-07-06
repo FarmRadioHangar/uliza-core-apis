@@ -218,7 +218,13 @@ def upload( request ):
 	log_id = str(instance.id)
 	file.name = file.name.encode('ascii','ignore')
 	filename = log_id+'_'+re.sub("[^\w.-]", '', file.name.replace(" ","_"))
-	if(not basename == filename):
+
+	basename = basename.split('_')
+	basename.pop()
+	filename = filename.split('_')
+	filename.pop()
+
+	if(not basename == filename or instance.recording_saved):
 		if(instance.recording_backup):
 			try:
 				os.unlink( instance.recording_backup.path )
@@ -227,7 +233,6 @@ def upload( request ):
 
 		file.name = log_id+'_'+file.name
 		instance.recording_backup = file
-		basename = os.path.basename( instance.recording_backup.path )
 		instance.offset = file.size
 	else:
 		instance.append_chunk(file,file.size,False)
@@ -254,6 +259,7 @@ def upload( request ):
 		instance.recording_saved = False
 		instance.save()
 
+	basename = os.path.basename( instance.recording_backup.path )
 	file_dict = {
 	    'filename' : basename,
 	    'length' : instance.recording_backup.size,
