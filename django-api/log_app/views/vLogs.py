@@ -220,9 +220,11 @@ def upload( request ):
 	filename = log_id+'_'+re.sub("[^\w.-]", '', file.name.replace(" ","_"))
 
 	basename = basename.split('_')
-	basename.pop()
 	filename = filename.split('_')
-	filename.pop()
+
+	if not len(basename) > 1:
+ 		filename.pop()
+  		basename.pop()
 
 	if(not basename == filename or instance.recording_saved):
 		if(instance.recording_backup):
