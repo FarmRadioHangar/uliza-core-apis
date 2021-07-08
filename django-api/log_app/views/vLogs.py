@@ -359,11 +359,15 @@ def rec_download(request,pk):
 
 
 def check_rec(request,log_id,filename):
-	import os.path,re
+	import os.path,re,hashlib
 
 	filename = filename.encode('ascii','ignore')
-	filename = re.sub("[^\w.-]", '', filename.replace(" ","_"))
-	filepath = settings.MEDIA_ROOT+'/'+log_id+'_'+filename
+    file_format = filename.split('.')
+    file_format = file_format[len(file_format)-1]
+    filename = hashlib.sha224(log_id+'_'+filename).hexdigest()
+    filename = filename+'.'file_format
+
+	filepath = settings.MEDIA_ROOT+'/'+filename
 
 	if(os.path.isfile(filepath)):
 		return HttpResponse(os.path.getsize(filepath))
