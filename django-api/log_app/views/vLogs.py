@@ -217,14 +217,15 @@ def upload( request ):
 	instance.save()
 	log_id = str(instance.id)
 	file.name = file.name.encode('ascii','ignore')
-	filename = log_id+'_'+re.sub("[^\w.-]", '', file.name.replace(" ","_"))
 
-	basename = basename.split('_')
-	filename = filename.split('_')
 
-	if not len(basename) > 1:
- 		filename.pop()
-  		basename.pop()
+	import hashlib
+	filename = hashlib.sha224(log_id+'_'+file.name).hexdigest()
+
+	file_format = file.name.split('.')
+	file_format = file_format[len(file_format)-1]
+
+	filename = filename+'.'+file_format
 
 	if(not basename == filename or instance.recording_saved):
 		if(instance.recording_backup):
@@ -233,7 +234,7 @@ def upload( request ):
 			except OSError as e:
 				pass
 
-		file.name = log_id+'_'+file.name
+		file.name = filename
 		instance.recording_backup = file
 		instance.offset = file.size
 	else:
