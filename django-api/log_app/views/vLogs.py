@@ -383,8 +383,12 @@ def create_instance(request,week,program_id):
 		request.session['error_msg'] = 'Access error'
 		return False
 
-	instance = Log(topic='',program_id=program.id,week=week)
-	instance.save()
+	instance = Log.objects.filter(program=program,week=week,postpone=False)
+	if instance:
+ 		instance = instance[0]
+	else:
+  		instance = Log(topic='',program_id=program.id,week=week)
+		instance.save()
 
 	return HttpResponse(instance.id)
 
