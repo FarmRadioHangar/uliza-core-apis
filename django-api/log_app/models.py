@@ -213,6 +213,8 @@ class Program(models.Model):
 
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=80)
+	viamo_survey_pattern = models.TextField(null=True,blank=True)
+	viamo_api = models.CharField(null=True,blank=True,max_length=100)
 
 	from django.utils import timezone
 	start_date = models.DateTimeField(default=timezone.now)
@@ -273,13 +275,13 @@ class Program(models.Model):
 		return self.name
 
 class PollSegment(models.Model):
-    polling_types = ( ('open', 'open'), ('closed', 'closed'))
+    polling_types = (('open', 'open'), ('closed', 'closed'),('viamo_open','viamo_open'),('viamo_closed','viamo_closed'))
 
     index = models.IntegerField()
     episode_number = models.IntegerField()
     title = models.TextField(null=True,blank=True)
     program = models.ForeignKey('Program')
-    type = models.CharField(max_length=6,default="closed",choices=polling_types)
+    type = models.CharField(max_length=15,default="closed",choices=polling_types)
     result = models.TextField(null=True,blank=True)
 
     # open-ended exported file upload meta data
