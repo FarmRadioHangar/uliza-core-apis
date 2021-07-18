@@ -178,6 +178,7 @@ def extract_data(request,poll_segment_id):
 
     data = []
     audio_ids = []
+    total_responses = 0
 
     for detail in finder:
         info = open(detail,'r')
@@ -186,6 +187,7 @@ def extract_data(request,poll_segment_id):
         detail = {}
 
         if snippet:
+            total_responses += 1
             detail['audio_file_id'] = re.findall(r'Audio file ID: (.+)\n',snippet)
             if detail['audio_file_id'][0] in audio_ids:
                 continue;
@@ -220,6 +222,7 @@ def extract_data(request,poll_segment_id):
     import json
     if data:
         poll_segment.title = data[0]['question_name']
+        poll_segment.number_of_responses = total_responses
         poll_segment.result = json.dumps(data)
         poll_segment.save()
 
