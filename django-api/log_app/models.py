@@ -282,7 +282,7 @@ class PollSegment(models.Model):
     title = models.TextField(null=True,blank=True)
     program = models.ForeignKey('Program')
     type = models.CharField(max_length=15,default="closed",choices=polling_types)
-    survey_id = models.CharField(max_length=100,null=True,blank=True)
+    survey_id = models.CharField(max_length=500,null=True,blank=True)
     number_of_respondents = models.IntegerField(default=0)
     number_of_responses = models.IntegerField(default=0)
     result = models.TextField(null=True,blank=True)
