@@ -493,6 +493,7 @@ class Review(models.Model):
     draft = models.BooleanField(default=False)
     checklists = models.ManyToManyField('Checklist',blank=True)
     void_formats = models.ManyToManyField('Format',blank=True)
+    numerical_score = models.FloatField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)
