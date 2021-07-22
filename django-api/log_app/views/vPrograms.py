@@ -189,7 +189,7 @@ def stats(request):
 	start_date = parse_datetime(request.GET['start_date']+' 00:00')
 	end_date = parse_date(request.GET['end_date'])
 
-	programs = Program.objects.filter(end_date__gte = start_date,start_date__lte=end_date).exclude(project__country__country_code='ca')
+	programs = Program.objects.filter(end_date__gte = start_date,start_date__lte=end_date).exclude(project__country__exclude=True)
 
 	if not request.GET['country'] == 'all':
 		programs = programs.filter(project__country = request.GET['country'])

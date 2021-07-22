@@ -31,6 +31,7 @@ class Country(models.Model):
 	name = models.CharField(max_length=50)
 	country_code = models.CharField(max_length=3)
 	language = models.CharField(max_length=6)
+	exclude = models.BooleanField(default=False)
 
 	gbb = models.BooleanField(default=False)
 
