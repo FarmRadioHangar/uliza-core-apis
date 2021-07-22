@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import Program,Log
+from log_app.models import Program,Log, PollSegment,Review
 from log_app.serializers import ProgramSerializer,ProgramRecordingSerializer
 
 import django_filters
@@ -14,6 +14,8 @@ from rest_framework import filters
 from django.http import HttpResponse
 from rest_framework.response import Response
 from django.shortcuts import redirect
+import datetime,math
+
 class ProgramFilter(filters.FilterSet):
 	# ids = django_filters.NumberFilter(name="pk", lookup_expr='in')
 	end_date__gte = django_filters.DateTimeFilter(name="end_date", lookup_expr='gte')
@@ -173,3 +175,123 @@ def delete_all_media(request,id):
 		program.save()
 
 	return HttpResponse('OK')
+
+def weeks_diff(start,end):
+ monday = (start - datetime.timedelta(days=start.weekday()))
+ calc = (end - monday).days
+ weeks = math.floor(calc/7.0)
+ remaining_days = calc%7
+ return weeks,remaining_days
+
+def stats(request):
+	from django.utils.dateparse import parse_date,parse_datetime
+	from django.db.models import Sum,Avg
+	start_date = parse_datetime(request.GET['start_date']+' 00:00')
+	end_date = parse_date(request.GET['end_date'])
+
+	programs = Program.objects.filter(end_date__gte = start_date,start_date__lte=end_date).exclude(project__country__country_code='ca')
+
+	if not request.GET['country'] == 'all':
+		programs = programs.filter(project__country = request.GET['country'])
+
+	total_episodes = 0
+	total_hours = 0
+	total_responses = 0
+	average_respondents = 0
+	total_stations = {}
+	total_reviews = 0
+	total_better_episodes = 0
+	percentage_reviews = 0
+	total_number_of_programs = 0
+
+	import csv
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename="Uliza-Log-export-'+request.GET['start_date']+'-'+request.GET['end_date']+'"'
+	writer = csv.writer(response)
+	writer.writerow(['Radio campaign code','Public name','Radio station name','Project name','Country','Episodes aired','Airtime (mins)','start date','end_date'])
+
+
+	for program in programs:
+		number_of_episodes = 0
+		start_week_number=1
+		better_scores = 0
+		end_week_number = program.weeks
+		program.start_date = program.start_date.replace(tzinfo=None)
+
+		if program.start_date < start_date:
+			week_diff = weeks_diff(program.start_date,start_date)
+
+			start_week_number = week_diff[0]
+			if program.start_date.weekday() < start_date.weekday():
+				start_week_number +=1
+
+
+		if program.end_date > end_date:
+			week_diff = weeks_diff(end_date,program.end_date)
+			end_week_number = week_diff[0]
+			end_week_number = program.weeks-end_week_number
+
+			if end_date.weekday()< program.start_date.weekday():
+				end_week_number -=1
+
+		number_of_episodes = end_week_number - start_week_number
+		postponements = Log.objects.filter(program=program,postpone=True,week__gte=start_week_number,week__lte=end_week_number)
+		number_of_episodes = number_of_episodes - len(postponements)
+
+		if program.repeat_start_time:
+			duration = program.duration*2
+			duration_multiplier = number_of_episodes-1
+		else:
+			duration = program.duration
+			duration_multiplier = number_of_episodes
+
+		if number_of_episodes > 0:
+			if 'export' in request.GET:
+				writer.writerow([program.name.encode('utf8'),program.public_name.encode('utf8'),program.radio_station.name.encode('utf8'),program.project.name.encode('utf8'),program.project.country.name.encode('utf8'),number_of_episodes,program.duration,str(program.start_date),str(program.end_date)])
+
+			total_number_of_programs += 1
+			start_week_number = int(start_week_number)
+			start_week_number = int(start_week_number)
+			polls = PollSegment.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
+			responses = polls.aggregate(Sum('number_of_responses'))
+			respondents = polls.aggregate(Avg('number_of_respondents'))
+			reviews = Review.objects.filter(log__week__gte=start_week_number,log__week__lte=end_week_number,log__program=program)
+			better_scores = reviews.filter(numerical_score__gt=33)
+			better_scores = len(better_scores)
+			total_reviews += len(reviews)
+			total_stations[program.radio_station.id] = program.radio_station.name
+			total_episodes = total_episodes + number_of_episodes
+			duration = duration*duration_multiplier
+			total_hours = total_hours + duration
+
+
+			if responses['number_of_responses__sum']:
+				total_responses += responses['number_of_responses__sum']
+
+			if respondents['number_of_respondents__avg']:
+				average_respondents += respondents['number_of_respondents__avg']
+
+		total_better_episodes += better_scores
+
+	if total_episodes > 0:
+		average_respondents = math.ceil(average_respondents/total_episodes)
+		percentage_reviews = (total_reviews/total_episodes)*100
+
+	total_hours = total_hours/60
+	total_hours = math.floor(total_hours)
+	percentage_reviews = math.floor(percentage_reviews)
+
+
+	if 'export' in request.GET:
+		return response
+
+	return JsonResponse({'programs':total_number_of_programs,
+						'number_of_better_episodes':total_better_episodes,
+						'percentage_reviews':percentage_reviews,
+						'number_of_reviews':total_reviews,
+						'total_stations':len(total_stations.keys()),
+						'total_episodes':int(total_episodes),
+						'total_hours':total_hours,
+						'total_responses':total_responses,
+						'average_respondents':average_respondents},
+						safe=False)
