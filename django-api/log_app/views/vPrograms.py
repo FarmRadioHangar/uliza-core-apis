@@ -208,7 +208,7 @@ def stats(request):
 	response = HttpResponse(content_type='text/csv')
 	response['Content-Disposition'] = 'attachment; filename="Uliza-Log-export-'+request.GET['start_date']+'-'+request.GET['end_date']+'.csv"'
 	writer = csv.writer(response)
-	writer.writerow(['Radio series code','Public name','Radio station name','Project name','Country','Episodes aired','Airtime (mins)','start date','end_date'])
+	writer.writerow(['Radio series code','Public name','Radio station name','Project name','Country','Episodes aired','Episodes reviewed','Airtime (mins)','start date','end_date'])
 
 
 	for program in programs:
@@ -246,13 +246,14 @@ def stats(request):
 		duration_multiplier = number_of_episodes
 
 		if number_of_episodes > 0:
+			reviews = Review.objects.filter(log__week__gte=start_week_number,log__week__lte=end_week_number,log__program=program)
 			if 'export' in request.GET:
 				try:
 					if not program.public_name:
 						public_name = ''
 					else:
 						public_name = program.public_name
-					writer.writerow([program.name.encode('utf8'),program.public_name.encode('utf8'),program.radio_station.name.encode('utf8'),program.project.name.encode('utf8'),program.project.country.name.encode('utf8'),int(number_of_episodes),program.duration,str(program.start_date),str(program.end_date)])
+					writer.writerow([program.name.encode('utf8'),program.public_name.encode('utf8'),program.radio_station.name.encode('utf8'),program.project.name.encode('utf8'),program.project.country.name.encode('utf8'),int(number_of_episodes),len(reviews),program.duration,str(program.start_date),str(program.end_date)])
 				except Exception as e:
 					pass
 
@@ -262,7 +263,6 @@ def stats(request):
 			polls = PollSegment.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
 			responses = polls.aggregate(Sum('number_of_responses'))
 			respondents = polls.aggregate(Avg('number_of_respondents'))
-			reviews = Review.objects.filter(log__week__gte=start_week_number,log__week__lte=end_week_number,log__program=program)
 			better_scores = reviews.filter(numerical_score__gt=33)
 			better_scores = len(better_scores)
 			total_reviews += len(reviews)
