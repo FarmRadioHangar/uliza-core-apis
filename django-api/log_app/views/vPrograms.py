@@ -247,7 +247,14 @@ def stats(request):
 
 		if number_of_episodes > 0:
 			if 'export' in request.GET:
-				writer.writerow([program.name.encode('utf8'),program.public_name.encode('utf8'),program.radio_station.name.encode('utf8'),program.project.name.encode('utf8'),program.project.country.name.encode('utf8'),number_of_episodes,program.duration,str(program.start_date),str(program.end_date)])
+				try:
+					if not program.public_name:
+						public_name = ''
+					else:
+						public_name = program.public_name
+					writer.writerow([program.name.encode('utf8'),program.public_name.encode('utf8'),program.radio_station.name.encode('utf8'),program.project.name.encode('utf8'),program.project.country.name.encode('utf8'),int(number_of_episodes),program.duration,str(program.start_date),str(program.end_date)])
+				except Exception as e:
+					pass
 
 			total_number_of_programs += 1
 			start_week_number = int(start_week_number)
