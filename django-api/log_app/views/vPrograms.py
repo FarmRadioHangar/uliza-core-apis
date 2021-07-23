@@ -240,10 +240,10 @@ def stats(request):
 
 		if program.repeat_start_time:
 			duration = program.duration*2
-			duration_multiplier = number_of_episodes-1
 		else:
 			duration = program.duration
-			duration_multiplier = number_of_episodes
+
+		duration_multiplier = number_of_episodes
 
 		if number_of_episodes > 0:
 			if 'export' in request.GET:
@@ -268,6 +268,8 @@ def stats(request):
 			total_reviews += len(reviews)
 			total_stations[program.radio_station.id] = program.radio_station.name
 			total_episodes = total_episodes + number_of_episodes
+			if program.repeat_start_time and program.end_date > end_date:
+				total_hours = total_hours - duration/2
 			duration = duration*duration_multiplier
 			total_hours = total_hours + duration
 
