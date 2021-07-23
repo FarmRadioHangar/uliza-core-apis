@@ -206,9 +206,9 @@ def stats(request):
 
 	import csv
 	response = HttpResponse(content_type='text/csv')
-	response['Content-Disposition'] = 'attachment; filename="Uliza-Log-export-'+request.GET['start_date']+'-'+request.GET['end_date']+'"'
+	response['Content-Disposition'] = 'attachment; filename="Uliza-Log-export-'+request.GET['start_date']+'-'+request.GET['end_date']+'.csv"'
 	writer = csv.writer(response)
-	writer.writerow(['Radio campaign code','Public name','Radio station name','Project name','Country','Episodes aired','Airtime (mins)','start date','end_date'])
+	writer.writerow(['Radio series code','Public name','Radio station name','Project name','Country','Episodes aired','Airtime (mins)','start date','end_date'])
 
 
 	for program in programs:
