@@ -272,7 +272,7 @@ def stats(request):
 			total_episodes = total_episodes + number_of_episodes
 
 			# total_hours will get into negative
-			if program.repeat_start_time:
+			if program.repeat_start_time and program.repeat_week_day:
 				if weekdays.index(program.repeat_week_day) <= program.start_date.weekday() or weekdays.index(program.repeat_week_day) > end_date.weekday():
 					total_hours = total_hours - duration/2
 
