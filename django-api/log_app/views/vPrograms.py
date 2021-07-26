@@ -210,6 +210,8 @@ def stats(request):
 	writer = csv.writer(response)
 	writer.writerow(['Radio series code','Public name','Radio station name','Project name','Country','Episodes aired','Episodes reviewed','Airtime (mins)','start date','end_date'])
 
+	weekdays = ( 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
+
 
 	for program in programs:
 		number_of_episodes = 0
@@ -268,8 +270,12 @@ def stats(request):
 			total_reviews += len(reviews)
 			total_stations[program.radio_station.id] = program.radio_station.name
 			total_episodes = total_episodes + number_of_episodes
-			if program.repeat_start_time and program.end_date > end_date:
-				total_hours = total_hours - duration/2
+
+			# total_hours will get into negative
+			if program.repeat_start_time:
+				if weekdays.index(program.repeat_week_day) <= program.start_date.weekday() or weekdays.index(program.repeat_week_day) > end_date.weekday():
+					total_hours = total_hours - duration/2
+
 			duration = duration*duration_multiplier
 			total_hours = total_hours + duration
 
