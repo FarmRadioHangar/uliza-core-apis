@@ -236,7 +236,7 @@ def stats(request):
 			if end_date.weekday()< program.start_date.weekday():
 				end_week_number -=1
 
-		number_of_episodes = end_week_number - start_week_number
+		number_of_episodes = end_week_number - start_week_number +1
 		postponements = Log.objects.filter(program=program,postpone=True,week__gte=start_week_number,week__lte=end_week_number)
 		number_of_episodes = number_of_episodes - len(postponements)
 
