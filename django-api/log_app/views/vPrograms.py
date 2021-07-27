@@ -223,8 +223,8 @@ def stats(request):
 		if program.start_date < start_date:
 			week_diff = weeks_diff(program.start_date,start_date)
 
-			start_week_number = week_diff[0]
-			if program.start_date.weekday() < start_date.weekday():
+			start_week_number = week_diff[0]+1
+			if program.start_date.weekday() <= start_date.weekday():
 				start_week_number +=1
 
 
@@ -233,10 +233,10 @@ def stats(request):
 			end_week_number = week_diff[0]
 			end_week_number = program.weeks-end_week_number
 
-			if end_date.weekday()< program.start_date.weekday():
-				end_week_number -=1
+			if end_date.weekday()>= program.start_date.weekday():
+				end_week_number +=1
 
-		number_of_episodes = end_week_number - start_week_number +1
+		number_of_episodes = end_week_number - start_week_number
 		postponements = Log.objects.filter(program=program,postpone=True,week__gte=start_week_number,week__lte=end_week_number)
 		number_of_episodes = number_of_episodes - len(postponements)
 
