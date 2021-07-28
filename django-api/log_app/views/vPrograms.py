@@ -310,3 +310,41 @@ def stats(request):
 						'total_responses':total_responses,
 						'average_respondents':average_respondents},
 						safe=False)
+
+def interactivity(request):
+	if 'program' in request.GET and not request.GET['program'] == 'all':
+		poll_segments = PollSegment.objects.filter(program__id=request.GET['program']).order_by('episode_number')
+	elif 'radio_station' in request.GET and not request.GET['radio_station'] == 'all':
+		poll_segments = PollSegment.objects.filter(program__radio_station=request.GET['radio_station']).order_by('episode_number')
+	else:
+		poll_segments = PollSegment.objects.filter(program__project=request.GET['project']).order_by('episode_number')
+
+	series = [[],[]]
+	labels = []
+	total_responses = 0
+	avg_respondents = 0
+	episodes = 0
+	programs = []
+	week = 0
+	for poll in poll_segments:
+		if not poll.program.id in programs:
+			episodes +=poll.program.weeks_aired()
+			programs.append(poll.program.id)
+
+		label = 'Ep'+str(poll.episode_number)
+		total_responses += poll.number_of_responses
+		avg_respondents += poll.number_of_respondents
+		if not week == poll.episode_number:
+			series[1].append(poll.number_of_responses)
+			series[0].append(poll.number_of_respondents)
+			labels.append(label)
+			week = poll.episode_number
+		else:
+			index = len(series[0])-1
+			series[1][index]+= poll.number_of_responses
+			series[0][index] += poll.number_of_respondents
+
+	avg_respondents = math.ceil(avg_respondents/episodes)
+	response = {'series':series,'labels':labels,'total_responses':total_responses,'avg_respondents':avg_respondents,'total_episodes':episodes}
+
+	return JsonResponse(response,safe=False)

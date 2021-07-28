@@ -238,8 +238,16 @@ class Program(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 
 	def weeks_aired(self):
-		logs = Log.objects.filter(program=self,postpone=False)
-		return logs.count()
+		from datetime import datetime
+		today = datetime.today()
+		week =  today -self.start_date
+ 		week = week.days/7 + 1
+
+  		if week < 1:
+			week = 0
+
+		return week
+
 
 	def weeks_left(self):
 		from django.utils import timezone
