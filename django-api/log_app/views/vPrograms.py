@@ -198,6 +198,7 @@ def stats(request):
 	total_hours = 0
 	total_responses = 0
 	average_respondents = 0
+	total_polls = 0
 	total_stations = {}
 	total_reviews = 0
 	total_better_episodes = 0
@@ -351,7 +352,8 @@ def interactivity(request):
 				series[1][index]+= poll.number_of_responses
 				series[0][index] += poll.number_of_respondents
 
-	avg_respondents = math.ceil(avg_respondents/episodes)
-	response = {'series':series,'labels':labels,'total_responses':total_responses,'avg_respondents':avg_respondents,'total_episodes':episodes}
+	questions = len(poll_segments)
+	avg_respondents = math.ceil(avg_respondents/questions)
+	response = {'series':series,'labels':labels,'total_responses':total_responses,'questions':questions,'avg_respondents':avg_respondents,'total_episodes':episodes}
 
 	return JsonResponse(response,safe=False)
