@@ -324,9 +324,10 @@ def interactivity(request):
 			poll_segments = PollSegment.objects.filter(program__id=program.poll_program_id).order_by('episode_number')
 		else:
 			poll_segments = PollSegment.objects.filter(program__id=request.GET['program']).order_by('episode_number')
-
 	elif 'radio_station' in request.GET and not request.GET['radio_station'] == 'all':
-		poll_segments = PollSegment.objects.filter(program__radio_station=request.GET['radio_station']).order_by('episode_number')
+		from django.db.models import Q
+		programs = Program.objects.filter(radio_station=request.GET['radio_station'],project=request.GET['project']).exclude(poll_program_id=None).values_list('poll_program_id',flat=True)
+		poll_segments = PollSegment.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station']))
 	else:
 		poll_segments = PollSegment.objects.filter(program__project=request.GET['project']).order_by('episode_number')
 
