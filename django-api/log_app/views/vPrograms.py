@@ -283,7 +283,7 @@ def stats(request):
 				polls = PollSegment.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
 				total_polls += len(polls)
 				responses = polls.aggregate(Sum('number_of_responses'))
-				respondents = polls.aggregate(Avg('number_of_respondents'))
+				respondents = polls.aggregate(Sum('number_of_respondents'))
 				if responses['number_of_responses__sum']:
 					total_responses += responses['number_of_responses__sum']
 
