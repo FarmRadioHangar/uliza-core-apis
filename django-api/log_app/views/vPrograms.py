@@ -288,7 +288,7 @@ def stats(request):
 					total_responses += responses['number_of_responses__sum']
 
 				if respondents['number_of_respondents__avg']:
-					average_respondents += respondents['number_of_respondents__avg']
+					average_respondents += respondents['number_of_respondents__sum']
 
 		total_better_episodes += better_scores
 
