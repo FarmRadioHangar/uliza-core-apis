@@ -249,6 +249,7 @@ def stats(request):
 		duration_multiplier = number_of_episodes
 
 		if number_of_episodes > 0:
+			# todo there are times where there could be duplicate reviews for an episode
 			reviews = Review.objects.filter(log__week__gte=start_week_number,log__week__lte=end_week_number,log__program=program)
 			if 'export' in request.GET:
 				try:
@@ -280,6 +281,7 @@ def stats(request):
 
 			if not program.poll_program_id:
 				polls = PollSegment.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
+				total_polls += len(polls)
 				responses = polls.aggregate(Sum('number_of_responses'))
 				respondents = polls.aggregate(Avg('number_of_respondents'))
 				if responses['number_of_responses__sum']:
@@ -291,8 +293,10 @@ def stats(request):
 		total_better_episodes += better_scores
 
 	if total_episodes > 0:
-		average_respondents = math.ceil(average_respondents/total_episodes)
 		percentage_reviews = (total_reviews/total_episodes)*100
+
+	if total_polls > 0:
+		average_respondents = math.ceil(average_respondents/total_polls)
 
 	total_hours = total_hours/60
 	total_hours = math.floor(total_hours)
