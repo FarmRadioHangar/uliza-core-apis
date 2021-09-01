@@ -344,7 +344,7 @@ def delete_local_audio(request,pk):
     if log.gdrive_url:
         try:
             os.unlink(log.recording_backup.path)
-        except OSError as e:
+        except (OSError, ValueError) as e:
             pass
         log.recording_backup = None
     else:
