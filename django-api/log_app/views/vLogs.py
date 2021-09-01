@@ -338,6 +338,7 @@ def open_with_drive(request,pk):
     return HttpResponse('<h2>404 Not found</h2>',status=404)
 
 def delete_local_audio(request,pk):
+    import os
     log = Log.objects.get(pk=pk)
 
     if log.gdrive_url:
