@@ -83,6 +83,7 @@ logs = patterns('log_app.views.vLogs',
     url( r'recording/download/(?P<pk>\d+)','rec_download', name ='recording_download'),
     url( r'recording/gdrive/about','gdrive_about', name ='gdrive_about'),
     url( r'recording/gdrive/(?P<pk>\d+)','open_with_drive', name ='open_with_drive'),
+    url( r'recording/gdrive/delete_local_audio/(?P<pk>\d+)','delete_local_audio', name ='delete_local_audio'),
     url( r'recording/gdrive_old/(?P<pk>\d+)','get_old_gdrive_link', name ='get_old_gdrive_link'),
     url( r'feed/(?P<program_id>\d+)', ProgramLogFeed()),
 

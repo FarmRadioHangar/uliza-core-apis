@@ -323,11 +323,11 @@ def open_with_drive(request,pk):
 
             log.gdrive_url = log.gdrive.url
 
-            if 'archive' in request.GET:
-                os.unlink( log.recording_backup.path )
-                log.recording_backup = None
+            # if 'archive' in request.GET:
+            #     os.unlink( log.recording_backup.path )
+            #     log.recording_backup = None
 
-        log.save()
+        # log.save()
 
         if 'return_status' in request.GET:
             return HttpResponse('OK');
@@ -336,6 +336,20 @@ def open_with_drive(request,pk):
     	return redirect(log.gdrive_url)
 
     return HttpResponse('<h2>404 Not found</h2>',status=404)
+
+def delete_local_audio(request,pk):
+    log = Log.objects.get(pk=pk)
+
+    if log.gdrive_url:
+        try:
+            os.unlink(log.recording_backup.path)
+        except OSError as e:
+            pass
+        log.recording_backup = None
+    else:
+        HttpResponse('Error')
+
+    return HttpResponse('OK')
 
 def get_old_gdrive_link(request,pk):
     log = Log.objects.get(pk=pk)
