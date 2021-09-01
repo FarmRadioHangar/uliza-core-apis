@@ -327,7 +327,7 @@ def open_with_drive(request,pk):
             #     os.unlink( log.recording_backup.path )
             #     log.recording_backup = None
 
-        # log.save()
+        log.save()
 
         if 'return_status' in request.GET:
             return HttpResponse('OK');
