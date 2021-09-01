@@ -349,6 +349,9 @@ def delete_local_audio(request,pk):
 
         log.recording_backup = None
         log.save()
+    elif not os.path.isfile(log.recording_backup.path.encode('utf8')):
+        log.recording_backup = None
+        log.save()
     else:
         HttpResponse('Error')
 
