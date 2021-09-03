@@ -116,6 +116,7 @@ checklists = patterns('log_app.views.vChecklists',
 )
 
 reviews = patterns('log_app.views.vReviews',
+    url(r'/export$', export_analysis),
     url(r'/(?P<id>\d+)$', ReviewEntity.as_view()),
     url(r'$', ReviewGet.as_view()),
 )
