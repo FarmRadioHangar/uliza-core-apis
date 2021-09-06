@@ -318,7 +318,7 @@ def export_analysis(request):
             else:
                 sorted_result['Overall'] = overall_score
 
-            data.append({'radio_station':review.log.program.radio_station.name,'program': review.log.program.name,'program_id':review.log.program.id,'week':review.log.week,'country':review.log.program.radio_station.country.name,'result':sorted_result})
+            data.append({'radio_station':review.log.program.radio_station.name.encode('utf8'),'program': review.log.program.name.encode('utf8'),'program_id':review.log.program.id,'week':review.log.week,'country':review.log.program.radio_station.country.name.encode('utf8'),'result':sorted_result})
 
 
     row_data = []
