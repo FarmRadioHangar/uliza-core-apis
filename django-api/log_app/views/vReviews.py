@@ -244,7 +244,7 @@ def export_analysis(request):
     from django.http import HttpResponse
     import csv
     response = HttpResponse(content_type='text/csv')
-    filename=project.name
+    filename=project.name.encode('utf8')+'_'+project.country.name.encode('utf8')
     response['Content-Disposition'] = 'attachment; filename="'+filename+'"'
     writer  = csv.writer(response)
     current_program = None
@@ -273,7 +273,9 @@ def export_analysis(request):
                     technical_score += r['value']
                     technical_number +=1
 
-                overall_score += r['value']
+                if r['meta'] == 'VOICE' or r['meta'] == 'Interactivity' or r['meta'] == 'Gender':
+                    overall_score += r['value']
+
                 if not 'numerical' in request.GET:
                     if r['value'] <= 0:
                         sorted_result[r['meta']] = 'Null'
@@ -288,7 +290,8 @@ def export_analysis(request):
 
             technical_score = (float(technical_score)/technical_number)
             technical_score = math.ceil(technical_score)
-            overall_score = (float(overall_score)/len(result))
+            overall_score += technical_score
+            overall_score = (float(overall_score)/4)
             overall_score = math.ceil(overall_score)
 
             if not 'numerical' in request.GET:
