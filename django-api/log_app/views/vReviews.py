@@ -244,7 +244,7 @@ def export_analysis(request):
     from django.http import HttpResponse
     import csv
     response = HttpResponse(content_type='text/csv')
-    filename = project.name+' / '+project.country.name
+    filename=project.name
     response['Content-Disposition'] = 'attachment; filename="'+filename+'"'
     writer  = csv.writer(response)
     current_program = None
@@ -274,37 +274,46 @@ def export_analysis(request):
                     technical_number +=1
 
                 overall_score += r['value']
-                if r['value'] <= 0:
-                    sorted_result[r['meta']] = 'Null'
-                elif r['value'] <= 33:
-                    sorted_result[r['meta']] = 'Good'
-                elif r['value'] > 33 and r['value'] <= 66:
-                    sorted_result[r['meta']] = 'Better'
+                if not 'numerical' in request.GET:
+                    if r['value'] <= 0:
+                        sorted_result[r['meta']] = 'Null'
+                    elif r['value'] <= 33:
+                        sorted_result[r['meta']] = 'Good'
+                    elif r['value'] > 33 and r['value'] <= 66:
+                        sorted_result[r['meta']] = 'Better'
+                    else:
+                        sorted_result[r['meta']] = 'Best'
                 else:
-                    sorted_result[r['meta']] = 'Best'
+                    sorted_result[r['meta']] = r['value']
 
-            technical_score = (float(technical_score)/technical_number)*100
+            technical_score = (float(technical_score)/technical_number)
             technical_score = math.ceil(technical_score)
-            overall_score = (float(overall_score)/len(result))*100
+            overall_score = (float(overall_score)/len(result))
             overall_score = math.ceil(overall_score)
 
-            if technical_score <= 0:
-                sorted_result['Technical'] = 'Null'
-            elif technical_score <= 33:
-                sorted_result['Technical'] = 'Good'
-            elif technical_score > 33 and technical_score <= 66:
-                sorted_result['Technical'] = 'Better'
+            if not 'numerical' in request.GET:
+                if technical_score <= 0:
+                    sorted_result['Technical'] = 'Null'
+                elif technical_score <= 33:
+                    sorted_result['Technical'] = 'Good'
+                elif technical_score > 33 and technical_score <= 66:
+                    sorted_result['Technical'] = 'Better'
+                else:
+                    sorted_result['Technical'] = 'Best'
             else:
-                sorted_result['Technical'] = 'Best'
+                sorted_result['Technical'] = technical_score
 
-            if overall_score <= 0:
-                sorted_result['Overall'] = 'Null'
-            elif overall_score <= 33:
-                sorted_result['Overall'] = 'Good'
-            elif overall_score > 33 and overall_score <= 66:
-                sorted_result['Overall'] = 'Better'
+            if not 'numerical' in request.GET:
+                if overall_score <= 0:
+                    sorted_result['Overall'] = 'Null'
+                elif overall_score <= 33:
+                    sorted_result['Overall'] = 'Good'
+                elif overall_score > 33 and overall_score <= 66:
+                    sorted_result['Overall'] = 'Better'
+                else:
+                    sorted_result['Overall'] = 'Best'
             else:
-                sorted_result['Overall'] = 'Best'
+                sorted_result['Overall'] = overall_score
 
             data.append({'radio_station':review.log.program.radio_station.name,'program': review.log.program.name,'program_id':review.log.program.id,'week':review.log.week,'country':review.log.program.radio_station.country.name,'result':sorted_result})
 
@@ -321,6 +330,7 @@ def export_analysis(request):
             row_data = row_data + [d['week'],d['result']['Overall'],d['result']['Technical'],d['result']['VOICE'],d['result']['Interactivity'],d['result']['Gender']]
 
 
+    if row_data:
+        writer.writerow(row_data)
 
     return response
-    return JsonResponse(data,safe=False)
