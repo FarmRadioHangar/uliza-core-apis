@@ -226,6 +226,8 @@ def upload( request ):
 	file_format = file_format[len(file_format)-1]
 
 	filename = filename+'.'+file_format
+    basename = basename.split('_')
+    basename = basename[0]+'.'+file_format
 
 	if(not basename == filename or instance.recording_saved):
 		if(instance.recording_backup):
