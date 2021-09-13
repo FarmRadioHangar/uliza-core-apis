@@ -226,7 +226,8 @@ def upload( request ):
 	file_format = file_format[len(file_format)-1]
 
 	filename = filename+'.'+file_format
-	if basename.find('_') == 0:
+	if not basename.find('_') == -1:
+ 		import pdb; pdb.set_trace()
 		basename = basename.split('_')
 		basename = basename[0]+'.'+file_format
 
