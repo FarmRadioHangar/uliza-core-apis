@@ -415,7 +415,9 @@ class Log(models.Model):
         import os
         if (self.recording_backup):
             old_path = self.recording_backup.path.encode('utf8')
-            self.recording_backup.name = 'Uliza-log-'+self.program.name.encode('utf-8')+'-'+str(self.week)+'.mp3'
+            program_name = self.program.name.encode('utf-8')
+            program_name = program_name.replace('/','|')
+            self.recording_backup.name = 'Uliza-log-'+program_name+'-'+str(self.week)+'.mp3'
 
             try:
                 self.recording_backup.name.encode('ascii')
