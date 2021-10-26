@@ -266,6 +266,7 @@ def export_analysis(request):
             technical_score = 0
             technical_number = 0
             overall_score = 0
+            overall_number = 0
             for r in result:
                 sorted_result[r['meta']] = r['value']
 
