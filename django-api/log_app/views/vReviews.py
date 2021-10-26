@@ -267,8 +267,6 @@ def export_analysis(request):
             technical_number = 0
             overall_score = 0
             # result_number =
-            print(result)
-            import pdb; pdb.set_trace()
             for r in result:
                 sorted_result[r['meta']] = r['value']
 
