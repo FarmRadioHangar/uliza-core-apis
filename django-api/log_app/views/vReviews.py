@@ -273,7 +273,8 @@ def export_analysis(request):
                     technical_score += r['value']
                     technical_number +=1
 
-                if r['meta'] == 'VOICE' or r['meta'] == 'Interactivity' or r['meta'] == 'Gender':
+                # voice is already included in the technical score
+                if r['meta'] == 'Interactivity' or r['meta'] == 'Gender':
                     overall_score += r['value']
 
                 if not 'numerical' in request.GET:
@@ -291,7 +292,10 @@ def export_analysis(request):
             technical_score = (float(technical_score)/technical_number)
             technical_score = math.ceil(technical_score)
             overall_score += technical_score
-            overall_score = (float(overall_score)/4)
+
+            # the overall_number is technical_number plus 2
+            overall_number = technical_number+2
+            overall_score = (float(overall_score)/overall_number)
             overall_score = math.ceil(overall_score)
 
             if not 'numerical' in request.GET:
