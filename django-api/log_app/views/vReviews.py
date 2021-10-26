@@ -266,6 +266,9 @@ def export_analysis(request):
             technical_score = 0
             technical_number = 0
             overall_score = 0
+            # result_number =
+            print(result)
+            import pdb; pdb.set_trace()
             for r in result:
                 sorted_result[r['meta']] = r['value']
 
@@ -294,7 +297,7 @@ def export_analysis(request):
             overall_score += technical_score
 
             # the overall_number is technical_number plus 2
-            overall_score = (float(overall_score)/4)
+            overall_score = (float(overall_score)/3)
             overall_score = math.ceil(overall_score)
 
             if not 'numerical' in request.GET:
