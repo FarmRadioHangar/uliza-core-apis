@@ -378,7 +378,7 @@ class RadioType(models.Model):
 def content_file_name(instance, filename):
     file_extension = filename.split('.')
     file_extension = file_extension[len(file_extension)-1]
-    return '/'.join(['Uliza-log', instance.program.project.country.name,instance.program.name, 'Uliza-log-'+instance.program.id+'-E'+str(instance.week)+'.'+str(file_extension)])
+    return '/'.join(['Uliza-log', instance.program.project.country.name,instance.program.name, 'Uliza-log-'+str(instance.program.id)+'-E'+str(instance.week)+'.'+str(file_extension)])
 
 class Log(models.Model):
     program = models.ForeignKey("Program")
