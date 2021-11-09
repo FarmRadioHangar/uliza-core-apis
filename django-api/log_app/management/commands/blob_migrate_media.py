@@ -1,5 +1,6 @@
 from log_app.models import *
 import os
+from api_core.settings import BASE_DIR
 
 
 from django.core.management.base import BaseCommand, CommandError
@@ -13,6 +14,7 @@ class Command(BaseCommand):
 		logs = logs[:options['count'][0]]
 
 		from django.core.files import File
+		result = open(BASE_DIR+'/migration_log.txt','a')
 
 		for log in logs:
 			try:
@@ -21,6 +23,7 @@ class Command(BaseCommand):
 					continue
 			except(OSError, ValueError) as e:
 				print 'Failed to process file - log id '+str(log.id)
+				result.write('Failed to process file  - ['+str(log.id)+']\n')
 
 
 			print 'Processing: ['+str(log.id)+'] '+str(log.program.project.country.name)+' '+str(log.program.name)+' Episode '+str(log.week)
@@ -31,6 +34,10 @@ class Command(BaseCommand):
 				try:
 					os.unlink(log.recording_backup.path)
 					log.recording_backup = None
+					result.write('Successfully migrated - ['+str(log.id)+']\n')
 				except(OSError,ValueError) as e:
-					print 'Failed to delete file - ['+str(log.id)+']'
+					print 'Failed to delete file - ['+str(log.id)+']\n'
+					result.write('Failed to delete file - ['+str(log.id)+']\n')
 			log.save()
+
+		result.close()
