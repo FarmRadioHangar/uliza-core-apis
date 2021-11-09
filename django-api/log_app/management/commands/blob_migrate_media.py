@@ -11,7 +11,7 @@ class Command(BaseCommand):
 	def handle(self,*args,**options):
 		logs = Log.objects.exclude(recording_backup=None)
 		last_index = len(logs)
-		logs = logs[last_index-options['count'][0]:]
+		logs = logs[:last_index-options['count'][0]]
 
 		from django.core.files import File
 
@@ -26,10 +26,12 @@ class Command(BaseCommand):
 
 			print 'Processing: ['+str(log.id)+'] '+str(log.program.project.country.name)+' '+str(log.program.name)+' Episode '+str(log.week)
 			log.blob_media_storage = File(log.recording_backup)
-			# try:
-			# 	os.unlink(log.recording_backup.path)
-			# except(OSError,ValueError) as e:
-			# 	print 'Failed to delete file - ['+str(log.id)+']'
-			#
-			# log.recording_backup = None
+
+			if log.blob_media_storage.url:
+				try:
+					os.unlink(log.recording_backup.path)
+					log.recording_backup = None
+				except(OSError,ValueError) as e:
+					print 'Failed to delete file - ['+str(log.id)+']'
+
 			log.save()
