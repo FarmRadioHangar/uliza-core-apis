@@ -26,6 +26,7 @@ class Command(BaseCommand):
 
 			print 'Processing: ['+str(log.id)+'] '+str(log.program.project.country.name)+' '+str(log.program.name)+' Episode '+str(log.week)
 			log.blob_media_storage = File(log.recording_backup)
+			log.save()
 
 			if log.blob_media_storage.url:
 				try:
@@ -33,5 +34,4 @@ class Command(BaseCommand):
 					log.recording_backup = None
 				except(OSError,ValueError) as e:
 					print 'Failed to delete file - ['+str(log.id)+']'
-
 			log.save()
