@@ -1,9 +1,31 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
-from api_core.settings import GDRIVE_STORAGE
+from api_core.settings import GDRIVE_STORAGE,AZURE_CONTAINER,AZURE_ACCOUNT_KEY,AZURE_ACCOUNT_NAME
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.core import validators
+from log_app.storage.azure_storage import AzureStorage
+
+
+class PublicAzureStorage(AzureStorage):
+    account_name = AZURE_ACCOUNT_NAME
+    account_key = AZURE_ACCOUNT_KEY
+    azure_container = AZURE_CONTAINER
+    expiration_secs = None
+    overwrite_files = False
+    connection_string = None
+    custom_domain = None
+    azure_ssl = True
+    location = ''
+    token_credential = None
+    object_parameters = {}
+    upload_max_conn = 2
+    timeout = 20
+    max_memory_size = 20
+    expiration_secs = None
+    default_content_type = 'application/octet-stream'
+    cache_control = None
+    sas_token = None
 
 class Auth0User(models.Model):
     username = models.CharField(_('username'), max_length=30, unique=True,
@@ -353,6 +375,9 @@ class RadioType(models.Model):
     name_am = models.CharField(max_length=100)
     description = models.TextField(null=True,blank=True)
 
+def content_file_name(instance, filename):
+    return '/'.join(['Uliza-log', instance.program.project.country.name,instance.program.name, filename])
+
 class Log(models.Model):
     program = models.ForeignKey("Program")
     saved_by = models.ForeignKey(Contact,blank=True,null=True)
@@ -374,6 +399,7 @@ class Log(models.Model):
     gdrive = models.FileField(upload_to='/FRI-LOG',storage=GDRIVE_STORAGE, null=True,blank=True)
     gdrive_available = models.BooleanField(default=False)
     gdrive_url = models.URLField(max_length=400,null=True,blank=True)
+    blob_media_storage = models.FileField(upload_to=content_file_name,storage=PublicAzureStorage(), null=True,blank=True)
     star_audio = models.BooleanField(default=False)
     recording_backup = models.FileField(null=True,blank=True)
     recording_saved = models.BooleanField(default=True)
