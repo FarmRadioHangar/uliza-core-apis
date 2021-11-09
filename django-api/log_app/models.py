@@ -19,9 +19,9 @@ class PublicAzureStorage(AzureStorage):
     location = ''
     token_credential = None
     object_parameters = {}
-    upload_max_conn = 2
-    timeout = 20
-    max_memory_size = 20
+    upload_max_conn = None
+    timeout = None
+    max_memory_size = None
     expiration_secs = None
     default_content_type = 'application/octet-stream'
     cache_control = None
