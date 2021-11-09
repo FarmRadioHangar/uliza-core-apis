@@ -321,10 +321,10 @@ def open_with_drive(request,pk):
         if os.path.isfile(log.recording_backup.path.encode('utf8')):
             log.rename()
             from django.core.files import File
-            log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+            log.blob_media_storage = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
             log.save()
 
-            log.gdrive_url = log.gdrive.url
+            # log.gdrive_url = log.gdrive.url
 
             # if 'archive' in request.GET:
             #     os.unlink( log.recording_backup.path )
@@ -344,7 +344,7 @@ def delete_local_audio(request,pk):
     import os
     log = Log.objects.get(pk=pk)
 
-    if log.gdrive_url:
+    if log.blob_media_storage:
         try:
             os.unlink(log.recording_backup.path)
         except (OSError, ValueError) as e:
@@ -370,7 +370,9 @@ def get_old_gdrive_link(request,pk):
 def rec_download(request,pk):
 	log = Log.objects.get(pk=pk)
 
-	if(log.recording_backup):
+	if(log.blob_media_storage):
+ 		return redirect(log.blob_media_storage.url)
+	elif(log.recording_backup):
 		import os
 
 		basename = os.path.basename(log.recording_backup.url)
