@@ -10,8 +10,7 @@ class Command(BaseCommand):
 
 	def handle(self,*args,**options):
 		logs = Log.objects.exclude(recording_backup='')
-		last_index = len(logs)
-		logs = logs[:last_index-options['count'][0]]
+		logs = logs[:options['count'][0]]
 
 		from django.core.files import File
 
