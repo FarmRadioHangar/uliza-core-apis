@@ -9,7 +9,7 @@ class Command(BaseCommand):
 		parser.add_argument('count',nargs='+',type=int)
 
 	def handle(self,*args,**options):
-		logs = Log.objects.exclude(recording_backup=None)
+		logs = Log.objects.exclude(recording_backup='')
 		last_index = len(logs)
 		logs = logs[:last_index-options['count'][0]]
 
