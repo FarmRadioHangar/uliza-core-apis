@@ -185,9 +185,8 @@ class LogEntity(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance):
 		try:
 			import os
-            if instance.blob_media_storage:
-                instance.blob_media_storage.delete()
-                
+  			if instance.blob_media_storage:
+  			    instance.blob_media_storage.delete()
 			os.unlink( instance.recording_backup.path )
 			instance.recording_backup = None
 			instance.save()
