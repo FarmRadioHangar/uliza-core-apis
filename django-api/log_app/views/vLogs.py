@@ -185,6 +185,9 @@ class LogEntity(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance):
 		try:
 			import os
+            if instance.blob_media_storage:
+                instance.blob_media_storage.delete()
+                
 			os.unlink( instance.recording_backup.path )
 			instance.recording_backup = None
 			instance.save()
@@ -321,10 +324,10 @@ def open_with_drive(request,pk):
         if os.path.isfile(log.recording_backup.path.encode('utf8')):
             log.rename()
             from django.core.files import File
-            log.blob_media_storage = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
+            log.gdrive = File(log.recording_backup,log.program.name+'_week_'+str(log.week)+'.mp3')
             log.save()
 
-            # log.gdrive_url = log.gdrive.url
+            log.gdrive_url = log.gdrive.url
 
             # if 'archive' in request.GET:
             #     os.unlink( log.recording_backup.path )
@@ -344,7 +347,7 @@ def delete_local_audio(request,pk):
     import os
     log = Log.objects.get(pk=pk)
 
-    if log.blob_media_storage:
+    if log.gdrive_url:
         try:
             os.unlink(log.recording_backup.path)
         except (OSError, ValueError) as e:
