@@ -387,7 +387,7 @@ def content_file_name(instance, filename):
     try:
         program_name = instance.program.name.encode('ascii')
     except:
-        program_name = 'Program-ID-'+instance.program.id
+        program_name = 'Program-ID-'+str(instance.program.id)
 
     return '/'.join(['Uliza-log', country_name,program_name, 'Uliza-log-'+str(instance.program.id)+'-E'+str(instance.week)+'.'+str(file_extension)])
 
