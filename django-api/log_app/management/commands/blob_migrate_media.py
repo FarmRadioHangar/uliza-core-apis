@@ -30,7 +30,6 @@ class Command(BaseCommand):
 				result.write(timestamp+' ~ Failed to process file  - ['+str(log.id)+']\n')
 
 
-			print 'Processing: ['+str(log.id)+'] '+str(log.program.project.country.name)+' '+str(log.program.name)+' Episode '+str(log.week)
 			log.blob_media_storage = File(log.recording_backup)
 			log.save()
 
