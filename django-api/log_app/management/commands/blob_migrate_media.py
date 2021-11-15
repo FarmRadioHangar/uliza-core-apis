@@ -22,6 +22,8 @@ class Command(BaseCommand):
 			try:
 				os.path.isfile(log.recording_backup.path.encode('utf8'))
 				if not os.path.isfile(log.recording_backup.path.encode('utf8')):
+					log.recording_backup = None
+					log.save()
 					continue
 			except(OSError, ValueError) as e:
 				print 'Failed to process file - log id '+str(log.id)
