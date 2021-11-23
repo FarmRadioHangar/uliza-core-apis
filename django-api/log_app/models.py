@@ -382,7 +382,7 @@ def content_file_name(instance, filename):
     try:
         country_name = instance.program.project.country.name.encode('ascii')
     except:
-        country_name = 'Country-ID-'+instance.program.project.country.name
+        country_name = '[CountryCode] '+instance.program.project.country.country_code
 
     try:
         program_name = instance.program.name.encode('ascii')
