@@ -320,6 +320,8 @@ def stats(request):
 def interactivity(request):
 	if 'program' in request.GET and not request.GET['program'] == 'all':
 		program = Program.objects.get(id=request.GET['program'])
+
+		# if a specific program is selected as a filter and if polls is linked to another program instance
 		if program.poll_program_id:
 			poll_segments = PollSegment.objects.filter(program__id=program.poll_program_id).order_by('episode_number')
 		else:
@@ -338,7 +340,11 @@ def interactivity(request):
 	episodes = 0
 	programs = []
 	week = 0
+	init_program = 0
+
 	for poll in poll_segments:
+
+		# checks if the polling data is shared with other programs
 		if not poll.program.poll_program_id:
 			if not poll.program.id in programs:
 				episodes +=poll.program.weeks_aired()
@@ -357,8 +363,45 @@ def interactivity(request):
 				series[1][index]+= poll.number_of_responses
 				series[0][index] += poll.number_of_respondents
 
+		init_program = poll.program.id
+
 	questions = len(poll_segments)
 	avg_respondents = math.ceil(avg_respondents/questions)
 	response = {'series':series,'labels':labels,'total_responses':total_responses,'questions':questions,'avg_respondents':avg_respondents,'total_episodes':episodes}
 
 	return JsonResponse(response,safe=False)
+
+def interactivity_export(request):
+	if 'program' in request.GET and not request.GET['program'] == 'all':
+		program = Program.objects.get(id=request.GET['program'])
+
+		# if a specific program is selected as a filter and if polls is linked to another program instance
+		if program.poll_program_id:
+			poll_segments = PollSegment.objects.filter(program__id=program.poll_program_id).order_by('program','episode_number')
+		else:
+			poll_segments = PollSegment.objects.filter(program__id=request.GET['program']).order_by('program','episode_number')
+	elif 'radio_station' in request.GET and not request.GET['radio_station'] == 'all':
+		from django.db.models import Q
+		programs = Program.objects.filter(radio_station=request.GET['radio_station'],project=request.GET['project']).exclude(poll_program_id=None).values_list('poll_program_id',flat=True)
+		poll_segments = PollSegment.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station'])).order_by('program','episode_number')
+	else:
+		poll_segments = PollSegment.objects.filter(program__project=request.GET['project']).order_by('program','episode_number')
+
+	data = {}
+	program_id_name = {}
+	for poll in poll_segments:
+		program_id_name[poll.program.id] = poll.program.name
+
+		if not poll.program.id in data:
+			data[poll.program.id] = {}
+
+		if not poll.episode_number in data[poll.program.id]:
+			data[poll.program.id][poll.episode_number] = {'interactions':poll.number_of_responses,'unique_respondents':poll.number_of_respondents}
+		else:
+			data[poll.program.id][poll.episode_number]['interactions'] += poll.number_of_responses
+			if (poll.number_of_respondents>data[poll.program.id][poll.episode_number]['unique_respondents']):
+				data[poll.program.id][poll.episode_number]['unique_respondents'] = poll.number_of_respondents
+
+	data = [data,program_id_name]
+
+	return JsonResponse(data,safe=False)
