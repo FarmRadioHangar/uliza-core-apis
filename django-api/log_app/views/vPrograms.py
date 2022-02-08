@@ -389,8 +389,9 @@ def interactivity_export(request):
 
 	data = {}
 	program_id_name = {}
+
 	for poll in poll_segments:
-		program_id_name[poll.program.id] = poll.program.name
+		program_id_name[poll.program.id] = poll.program.name + 	"("+poll.program.start_date.strftime('%b %Y')+" - "+poll.program.end_date.strftime('%b %Y')+")"	
 
 		if not poll.program.id in data:
 			data[poll.program.id] = {}
