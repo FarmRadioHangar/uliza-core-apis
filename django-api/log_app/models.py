@@ -237,6 +237,8 @@ class Program(models.Model):
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=80)
 	poll_program_id = models.IntegerField(blank=True,null=True)
+	nuliza_campaign_id = models.IntegerField(blank=True,null=True)
+	nuliza_survey_pattern = models.TextField(null=True,blank=True)
 	viamo_survey_pattern = models.TextField(null=True,blank=True)
 	viamo_api = models.CharField(null=True,blank=True,max_length=100)
 
