@@ -115,6 +115,20 @@ class Project(models.Model):
     def __unicode__(self):
         return self.name
 
+class Result(models.Model):
+    project = models.ForeignKey('Project')
+    variable_identifier = models.CharField(max_length=50)
+    description = models.TextField()
+    value = models.DecimalField(default=0,max_digits=20,decimal_places=0)
+    target_value = models.DecimalField(default=0,max_digits=20,decimal_places=0)
+    update_history = models.TextField()
+    custom = models.BooleanField(default=False)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 languages = (
 	('en', 'English'),
 	('pt', 'Portuguese'),
@@ -227,12 +241,20 @@ class Program(models.Model):
 	    ('zip', 'Zip'),
 	)
 
+	implementation = (
+	    ('none', 'None'),
+	    ('network', 'Network'),
+	    ('impact', 'Impact'),
+	)
+
 	name = models.CharField(max_length=50)
 	public_name = models.CharField(null=True,blank=True,max_length=50)
 	radio_station = models.ForeignKey('RadioStation')
 	project = models.ForeignKey('Project')
 	program_type = models.CharField(null=True,blank=True,max_length=50)
-	radio_type = models.ManyToManyField('RadioType',blank=True,null=True)
+	radio_type = models.ManyToManyField('RadioType',blank=True,null=True,default=None)
+	implementation_type = models.CharField(max_length=15,default='none',choices=implementation)
+	broadcast_language = models.ForeignKey('BroadcastLanguage',null=True,default=None)
 
 	confirmed_program_time = models.BooleanField(default=False)
 	uliza = models.CharField(null=True,blank=True,max_length=80)
@@ -769,3 +791,19 @@ class Notification(models.Model):
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class BroadcastLanguage(models.Model):
+    name = models.CharField(max_length=40)
+    code = models.CharField(max_length=20)
+
+    def save(self,*args,**kwargs):
+        if not self.id:
+            contacts = Contact.objects.filter(is_admin=True)
+            heading = self.name
+            url_model = 'broadcast_languages:index'
+            message = 'New language created - confirm language code'
+
+            for contact in contacts:
+                Notification.objects.create(url_model=url_model,link=None,sent_to=contact,content=message,heading=heading)
+
+        return super(BroadcastLanguage, self).save(*args, **kwargs)
