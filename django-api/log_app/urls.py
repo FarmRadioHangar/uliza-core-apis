@@ -16,12 +16,14 @@ from log_app.views.vChecklists import *
 from log_app.views.vFormats import *
 from log_app.views.vReviews import *
 from log_app.views.vBroadcasterResources import *
+from log_app.views.vBroadcastLanguages import *
 from log_app.views.vRadioType import *
 from log_app.views.vPodcasts import *
 from log_app.views.vPodEpisodes import *
 from log_app.views.vNotifications import *
 from log_app.views.vPodDistributionLog import *
 from log_app.views.vPollSegment import *
+from log_app.views.vResults import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -138,6 +140,11 @@ broadcaster_resources = patterns('log_app.views.vBroadcasterResources',
     url(r'$', BroadcasterResourceGet.as_view()),
 )
 
+broadcast_languages = patterns('log_app.views.vBroadcastLanguages',
+    url(r'/(?P<id>\d+)$', BroadcastLanguageEntity.as_view()),
+    url(r'$', BroadcastLanguageGet.as_view()),
+)
+
 podcasts = patterns('log_app.views.vPodcasts',
     url( r'recording/delete/(?P<pk>\d+)','upload_delete', name ='recording_delete'),
     url( r'recording/init/(?P<podcast_number>\d+)/(?P<podcast_id>\d+)','create_instance'),
@@ -186,6 +193,7 @@ urlpatterns = patterns('',
     url(r'projects', include(projects, 'projects')),
     url(r'formats', include(formats, 'formats')),
     url(r'broadcaster_resources', include(broadcaster_resources, 'broadcaster_resources')),
+    url(r'broadcast_languages', include(broadcast_languages, 'broadcast_languages')),
     url(r'radio_type', include(radio_type, 'radio_type')),
     url(r'checklists', include(checklists, 'checklists')),
     url(r'reviews', include(reviews, 'reviews')),
@@ -195,6 +203,10 @@ urlpatterns = patterns('',
     url(r'pollsegment', include(poll_segment, 'poll_segment')),
     url(r'notifications$', NotificationGet.as_view()),
     url(r'notifications/(?P<id>\d+)$', NotificationEntity.as_view()),
+    url(r'results$', ResultGet.as_view()),
+    url(r'results/stats$', 'log_app.views.vResults.stats', name='result_stats'),
+    url(r'results/set_targets/(?P<project_id>\d+)$', 'log_app.views.vResults.set_targets', name='set_targets'),
+    url(r'results/save_results/(?P<id>\d+)$', 'log_app.views.vResults.save_results', name='save_results'),
 
     # auth0 custom db authentication
     url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),
