@@ -57,7 +57,7 @@ def weeks_diff(start,end):
  remaining_days = calc%7
  return weeks,remaining_days
 
-def stats(request):
+def result_stats(request):
     from django.utils.dateparse import parse_date,parse_datetime
     from django.db.models import Sum,Avg
     start_date = parse_datetime(request.GET['start_date']+' 00:00')
