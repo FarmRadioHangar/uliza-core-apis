@@ -125,6 +125,7 @@ class Result(models.Model):
     custom = models.BooleanField(default=False)
 
     # Time track
+    last_updated_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

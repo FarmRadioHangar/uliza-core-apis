@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 import django_filters
 from rest_framework import filters
 
-from log_app.models import Project,Program,Log,PollSegment,Review,Result
+from log_app.models import Project,Program,Log,PollSegment,Review,Result,Contact
 from log_app.serializers import ResultSerializer
 from django.http import HttpResponse
 import datetime,math
@@ -44,6 +44,8 @@ def save_results(request,id):
     if result:
         result = result[0]
         result.value = int(request.POST['value'])
+        last_updated_by = Contact.objects.get(id=request.POST['last_updated_by'])
+        result.last_updated_by = last_updated_by
         result.save()
 
     return HttpResponse('Processed')
@@ -190,9 +192,14 @@ def stats(request):
     project_results = Result.objects.filter(project__id=project.id)
     targets = {}
 
+    from django.contrib.humanize.templatetags.humanize import naturalday
     for r in project_results:
-        targets[r.variable_identifier] = {'id':r.id,'target':int(r.target_value),'value':int(r.value)}
+        if r.last_updated_by:
+            last_updated_by = r.last_updated_by.first_name+' '+r.last_updated_by.last_name
+        else:
+            last_updated_by = None
 
+        targets[r.variable_identifier] = {'id':r.id,'target':int(r.target_value),'value':int(r.value),'last_updated_at':naturalday(r.last_updated_at),'last_updated_by':last_updated_by}
 
     if 'export' in request.GET:
         return response
