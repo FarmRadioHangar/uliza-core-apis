@@ -204,7 +204,7 @@ urlpatterns = patterns('',
     url(r'notifications$', NotificationGet.as_view()),
     url(r'notifications/(?P<id>\d+)$', NotificationEntity.as_view()),
     url(r'results$', ResultGet.as_view()),
-    url(r'results/stats$', 'log_app.views.vResults.stats', name='result_stats'),
+    url(r'results/stats$', 'log_app.views.vResults.result_stats', name='result_stats'),
     url(r'results/set_targets/(?P<project_id>\d+)$', 'log_app.views.vResults.set_targets', name='set_targets'),
     url(r'results/save_results/(?P<id>\d+)$', 'log_app.views.vResults.save_results', name='save_results'),
 
