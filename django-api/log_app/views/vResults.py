@@ -43,7 +43,7 @@ def save_results(request,id):
 
     if result:
         result = result[0]
-        result.value = int(request.POST['value'])
+        result.value = float(request.POST['value'])
         last_updated_by = Contact.objects.get(id=request.POST['last_updated_by'])
         result.last_updated_by = last_updated_by
         result.save()
@@ -199,7 +199,7 @@ def result_stats(request):
         else:
             last_updated_by = None
 
-        targets[r.variable_identifier] = {'id':r.id,'target':int(r.target_value),'value':int(r.value),'last_updated_at':naturalday(r.last_updated_at),'last_updated_by':last_updated_by}
+        targets[r.variable_identifier] = {'id':r.id,'target':r.target_value,'value':r.value,'last_updated_at':naturalday(r.last_updated_at),'last_updated_by':last_updated_by}
 
     if 'export' in request.GET:
         return response

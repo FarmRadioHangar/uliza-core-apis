@@ -119,8 +119,8 @@ class Result(models.Model):
     project = models.ForeignKey('Project')
     variable_identifier = models.CharField(max_length=50)
     description = models.TextField()
-    value = models.DecimalField(default=0,max_digits=20,decimal_places=0)
-    target_value = models.DecimalField(default=0,max_digits=20,decimal_places=0)
+    value = models.FloatField(default=0)
+    target_value = models.FloatField(default=0)
     update_history = models.TextField()
     custom = models.BooleanField(default=False)
 
@@ -796,6 +796,7 @@ class Notification(models.Model):
 class BroadcastLanguage(models.Model):
     name = models.CharField(max_length=40)
     code = models.CharField(max_length=20)
+    created_by = models.ForeignKey('Contact')
 
     def save(self,*args,**kwargs):
         if not self.id:
