@@ -1,5 +1,6 @@
 .docker
 api_core/settings.py
+log_app/migrations/*
 media
 start_server.sh
 .env
