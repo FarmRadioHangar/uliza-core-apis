@@ -97,10 +97,10 @@ def filename(instance, filename):
 
 
 class Project(models.Model):
-    code = models.CharField(max_length=100)
-    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=250)
+    name = models.CharField(max_length=250)
     country = models.ForeignKey('Country')
-    doner = models.CharField(max_length=50)
+    doner = models.CharField(max_length=250)
     focus = models.TextField()
     reference_links = models.TextField(null=True,blank=True)
     image = models.CharField(null=True, blank=True,max_length=100)
