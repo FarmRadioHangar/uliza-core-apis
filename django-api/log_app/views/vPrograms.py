@@ -29,7 +29,7 @@ class ProgramFilter(filters.FilterSet):
 
 	class Meta:
 		model = Program
-		fields = ['id','radio_station','end_date','start_date','radio_station__country','radio_station__country__name', 'project', 'access',
+		fields = ['id','radio_station','broadcast_language','end_date','start_date','radio_station__country','radio_station__country__name', 'project', 'access',
 				  'end_date__lt','end_date__gte','start_date__gte','project__end_date__gte','end_date__gt','start_date__lt','media_backup_status']
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -87,9 +87,10 @@ class ProgramEntity(generics.RetrieveUpdateAPIView):
 		from datetime  import timedelta
 		from django.utils.dateparse import parse_datetime
 
-		weeks = timedelta(weeks = int(self.request._data['weeks'])-1)
-		end_date = parse_datetime(self.request._data['start_date']) + weeks
-		serializer.save(end_date=end_date.strftime('%Y-%m-%d'))
+		if 'weeks' in self.request._data:
+			weeks = timedelta(weeks = int(self.request._data['weeks'])-1)
+			end_date = parse_datetime(self.request._data['start_date']) + weeks
+			serializer.save(end_date=end_date.strftime('%Y-%m-%d'))
 
 @api_view(['GET'])
 def to_archive(request):
@@ -391,7 +392,7 @@ def interactivity_export(request):
 	program_id_name = {}
 
 	for poll in poll_segments:
-		program_id_name[poll.program.id] = poll.program.name + 	"("+poll.program.start_date.strftime('%b %Y')+" - "+poll.program.end_date.strftime('%b %Y')+")"	
+		program_id_name[poll.program.id] = poll.program.name + 	"("+poll.program.start_date.strftime('%b %Y')+" - "+poll.program.end_date.strftime('%b %Y')+")"
 
 		if not poll.program.id in data:
 			data[poll.program.id] = {}

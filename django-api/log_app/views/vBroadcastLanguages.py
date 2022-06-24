@@ -14,7 +14,7 @@ class BroadcastLanguageGet(generics.ListCreateAPIView):
     serializer_class = BroadcastLanguageSerializer
     filter_fields = ['id']
 
-class BroadcastLanguageEntity(generics.RetrieveUpdateAPIView):
+class BroadcastLanguageEntity(generics.RetrieveUpdateDestroyAPIView):
     queryset = BroadcastLanguage.objects.all()
     model = BroadcastLanguage
     serializer_class = BroadcastLanguageSerializer
