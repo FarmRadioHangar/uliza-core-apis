@@ -5,6 +5,7 @@ from api_core.settings import GDRIVE_STORAGE,AZURE_CONTAINER,AZURE_ACCOUNT_KEY,A
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.core import validators
 from log_app.storage.azure_storage import AzureStorage
+from django.dispatch import receiver
 
 
 class PublicAzureStorage(AzureStorage):
@@ -115,7 +116,18 @@ class Project(models.Model):
     def __unicode__(self):
         return self.name
 
-class Result(models.Model):
+class Report(models.Model):
+    target = models.ForeignKey('Target')
+    value = models.FloatField(default=0)
+    report_date = models.DateField()
+    note = models.TextField(null=True,default=None,blank=True)
+    reported_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class Target(models.Model):
     project = models.ForeignKey('Project')
     variable_identifier = models.CharField(max_length=50)
     description = models.TextField()
@@ -128,6 +140,24 @@ class Result(models.Model):
     last_updated_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def update_value(self):
+        from django.db.models import Count, Min, Sum
+        data = Report.objects.filter(target=self).aggregate(Sum('value'))
+
+        if not data['value__sum']:
+            self.value =0
+        else:
+            self.value = data['value__sum']
+
+        self.save()
+
+
+from django.db.models.signals import post_save,post_delete
+@receiver(post_save, sender=Report)
+@receiver(post_delete, sender=Report)
+def update_target(sender, instance, **kwargs):
+    instance.target.update_value()
 
 
 languages = (

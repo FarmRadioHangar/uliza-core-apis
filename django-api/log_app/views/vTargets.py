@@ -6,21 +6,26 @@ from rest_framework.views import APIView
 import django_filters
 from rest_framework import filters
 
-from log_app.models import Project,Program,Log,PollSegment,Review,Result,Contact
-from log_app.serializers import ResultSerializer
+from log_app.models import Project,Program,Log,PollSegment,Review,Target,Contact,Report
+from log_app.serializers import TargetSerializer
 from django.http import HttpResponse
 import datetime,math
 
-class ResultGet(generics.ListCreateAPIView):
-    queryset = Result.objects.all()
-    model = Result
-    serializer_class = ResultSerializer
+class TargetGet(generics.ListCreateAPIView):
+    queryset = Target.objects.all()
+    model = Target
+    serializer_class = TargetSerializer
     filter_fields = ['id','project']
 
+class TargetEntity(generics.RetrieveUpdateAPIView):
+    queryset = Target.objects.all()
+    model = Target
+    serializer_class = TargetSerializer
+    lookup_field = 'id'
 
 def set_targets(request,project_id):
     data = request.POST
-    results = Result.objects.filter(project__id=project_id,custom=False)
+    results = Target.objects.filter(project__id=project_id,custom=False)
     previous_results = results.values_list('variable_identifier',flat=True)
 
     project = Project.objects.get(id = project_id)
@@ -29,24 +34,12 @@ def set_targets(request,project_id):
     # for each target check if previously saved & update
     for target in data.keys():
         if target in previous_results:
-            result = Result.objects.get(project__id=project_id,variable_identifier=target)
+            result = Target.objects.get(project__id=project_id,variable_identifier=target)
             result.target_value = data[target]
             result.save()
         else:
             if not data[target] == '':
-                Result.objects.create(project=project,variable_identifier=target,target_value=data[target])
-
-    return HttpResponse('Processed')
-
-def save_results(request,id):
-    result = Result.objects.filter(id=id)
-
-    if result:
-        result = result[0]
-        result.value = float(request.POST['value'])
-        last_updated_by = Contact.objects.get(id=request.POST['last_updated_by'])
-        result.last_updated_by = last_updated_by
-        result.save()
+                Target.objects.create(project=project,variable_identifier=target,target_value=data[target])
 
     return HttpResponse('Processed')
 
@@ -57,7 +50,7 @@ def weeks_diff(start,end):
  remaining_days = calc%7
  return weeks,remaining_days
 
-def result_stats(request):
+def target_stats(request):
     from django.utils.dateparse import parse_date,parse_datetime
     from django.db.models import Sum,Avg
     start_date = parse_datetime(request.GET['start_date']+' 00:00')
@@ -189,7 +182,7 @@ def result_stats(request):
     total_hours = math.floor(total_hours)
     percentage_reviews = math.floor(percentage_reviews)
 
-    project_results = Result.objects.filter(project__id=project.id)
+    project_results = Target.objects.filter(project__id=project.id)
     targets = {}
 
     from django.contrib.humanize.templatetags.humanize import naturalday

@@ -26,9 +26,17 @@ class RadioTypeSerializer(serializers.ModelSerializer):
 		model = RadioType
 		fields = "__all__"
 
-class ResultSerializer(serializers.ModelSerializer):
+class TargetSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Result
+		model = Target
+		fields = "__all__"
+
+class ReportSerializer(serializers.ModelSerializer):
+	reported_by__first_name = serializers.CharField(source='reported_by.first_name',read_only=True)
+	reported_by__last_name = serializers.CharField(source='reported_by.last_name',read_only=True)
+
+	class Meta:
+		model = Report
 		fields = "__all__"
 
 

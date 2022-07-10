@@ -23,7 +23,8 @@ from log_app.views.vPodEpisodes import *
 from log_app.views.vNotifications import *
 from log_app.views.vPodDistributionLog import *
 from log_app.views.vPollSegment import *
-from log_app.views.vResults import *
+from log_app.views.vTargets import *
+from log_app.views.vReports import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -160,6 +161,12 @@ pod_episodes = patterns('log_app.views.vPodEpisodes',
     url(r'$', PodEpisodeGet.as_view()),
 )
 
+targets = patterns('log_app.views.vTargets',
+    url(r'/stats$', 'target_stats', name='target_stats'),
+    url(r'/set_targets/(?P<project_id>\d+)$', 'set_targets', name='set_targets'),
+    url(r'$', TargetGet.as_view()),
+)
+
 pod_distribution_log = patterns('log_app.views.vPodDistributionLog',
     url(r'/last_entry/(?P<id>\d+)$','last_entry',name='last_entry'),
     url(r'/(?P<id>\d+)$', PodDistributionLogEntity.as_view()),
@@ -199,14 +206,13 @@ urlpatterns = patterns('',
     url(r'reviews', include(reviews, 'reviews')),
     url(r'podcasts', include(podcasts, 'podcasts')),
     url(r'pod_episodes', include(pod_episodes, 'pod_episodes')),
+    url(r'targets', include(targets,'targets')),
     url(r'pod_distribution_log', include(pod_distribution_log, 'pod_distribution_log')),
     url(r'pollsegment', include(poll_segment, 'poll_segment')),
+    url(r'reports/(?P<id>\d+)$', ReportEntity.as_view()),
+    url(r'reports$', ReportGet.as_view()),
     url(r'notifications$', NotificationGet.as_view()),
     url(r'notifications/(?P<id>\d+)$', NotificationEntity.as_view()),
-    url(r'results$', ResultGet.as_view()),
-    url(r'results/stats$', 'log_app.views.vResults.result_stats', name='result_stats'),
-    url(r'results/set_targets/(?P<project_id>\d+)$', 'log_app.views.vResults.set_targets', name='set_targets'),
-    url(r'results/save_results/(?P<id>\d+)$', 'log_app.views.vResults.save_results', name='save_results'),
 
     # auth0 custom db authentication
     url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),
