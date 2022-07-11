@@ -116,6 +116,7 @@ class Project(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class Report(models.Model):
     target = models.ForeignKey('Target')
     value = models.FloatField(default=0)
@@ -127,8 +128,37 @@ class Report(models.Model):
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+# * description
+# * measurement
+# * editable
+# * project_specific
+# * note
+# * lead
+class Indicator(models.Model):
+    order = models.IntegerField()
+    description = models.TextField()
+    description_fr = models.TextField(null=True,blank=True)
+    description_am = models.TextField(null=True,blank=True)
+    description_pt = models.TextField(null=True,blank=True)
+    note = models.TextField()
+    note_fr = models.TextField(null=True,blank=True)
+    note_am = models.TextField(null=True,blank=True)
+    note_pt = models.TextField(null=True,blank=True)
+    measurement = models.CharField(max_length=100)
+    measurement_am = models.CharField(max_length=100,null=True,blank=True)
+    measurement_fr = models.CharField(max_length=100,null=True,blank=True)
+    measurement_pt = models.CharField(max_length=100,null=True,blank=True)
+    project_specific = models.BooleanField(default=False)
+    manual_reporting = models.BooleanField(default=True)
+    grouping = models.IntegerField()
+
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class Target(models.Model):
     project = models.ForeignKey('Project')
+    indicator = models.ForeignKey('Indicator')
     variable_identifier = models.CharField(max_length=50)
     description = models.TextField()
     value = models.FloatField(default=0)
