@@ -25,6 +25,7 @@ from log_app.views.vPodDistributionLog import *
 from log_app.views.vPollSegment import *
 from log_app.views.vTargets import *
 from log_app.views.vReports import *
+from log_app.views.vIndicators import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -166,6 +167,10 @@ targets = patterns('log_app.views.vTargets',
     url(r'/set_targets/(?P<project_id>\d+)$', 'set_targets', name='set_targets'),
     url(r'$', TargetGet.as_view()),
 )
+indicators = patterns('log_app.views.vIndicators',
+    url(r'/(?P<id>\d+)$', IndicatorEntity.as_view()),
+    url(r'$', IndicatorGet.as_view()),
+)
 
 pod_distribution_log = patterns('log_app.views.vPodDistributionLog',
     url(r'/last_entry/(?P<id>\d+)$','last_entry',name='last_entry'),
@@ -207,6 +212,7 @@ urlpatterns = patterns('',
     url(r'podcasts', include(podcasts, 'podcasts')),
     url(r'pod_episodes', include(pod_episodes, 'pod_episodes')),
     url(r'targets', include(targets,'targets')),
+    url(r'indicators', include(indicators,'indicators')),
     url(r'pod_distribution_log', include(pod_distribution_log, 'pod_distribution_log')),
     url(r'pollsegment', include(poll_segment, 'poll_segment')),
     url(r'reports/(?P<id>\d+)$', ReportEntity.as_view()),
