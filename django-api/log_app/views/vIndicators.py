@@ -15,7 +15,7 @@ class IndicatorGet(generics.ListCreateAPIView):
     queryset = Indicator.objects.all()
     model = Indicator
     serializer_class = IndicatorSerializer
-    filter_fields = ['id']
+    filter_fields = ['id','grouping']
 
 class IndicatorEntity(generics.RetrieveUpdateDestroyAPIView):
     queryset = Indicator.objects.all()
