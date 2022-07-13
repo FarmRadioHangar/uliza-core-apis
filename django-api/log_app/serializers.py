@@ -30,9 +30,9 @@ class IndicatorSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Indicator
 		fields = "__all__"
-		
+
 class TargetSerializer(serializers.ModelSerializer):
-	indicator = IndicatorSerializer()
+	indicator__order = serializers.CharField(source='index.order',read_only=True)
 	class Meta:
 		model = Target
 		fields = "__all__"

@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 import django_filters
 from rest_framework import filters
 
-from log_app.models import Project,Program,Log,PollSegment,Review,Target,Contact,Report
+from log_app.models import Project,Program,Log,PollSegment,Review,Target,Contact,Report,Indicator
 from log_app.serializers import TargetSerializer
 from django.http import HttpResponse
 import datetime,math
@@ -25,21 +25,23 @@ class TargetEntity(generics.RetrieveUpdateAPIView):
 
 def set_targets(request,project_id):
     data = request.POST
-    results = Target.objects.filter(project__id=project_id,custom=False)
-    previous_results = results.values_list('variable_identifier',flat=True)
+    targets = Target.objects.filter(project__id=project_id,custom=False)
+    previous_targets = targets.values_list('indicator__id',flat=True)
 
     project = Project.objects.get(id = project_id)
 
 
     # for each target check if previously saved & update
     for target in data.keys():
-        if target in previous_results:
-            result = Target.objects.get(project__id=project_id,variable_identifier=target)
-            result.target_value = data[target]
-            result.save()
+        if target in previous_targets:
+            indicator = Indicator.objects.get(id=target)
+            t = Target.objects.get(project__id=project_id,indicator=indicator)
+            t.target_value = data[target]
+            t.save()
         else:
             if not data[target] == '':
-                Target.objects.create(project=project,variable_identifier=target,target_value=data[target])
+                indicator = Indicator.objects.get(id=target)
+                response = Target.objects.create(project=project,indicator=indicator,target_value=data[target])
 
     return HttpResponse('Processed')
 
@@ -182,21 +184,43 @@ def target_stats(request):
     total_hours = math.floor(total_hours)
     percentage_reviews = math.floor(percentage_reviews)
 
-    project_results = Target.objects.filter(project__id=project.id)
-    targets = {}
+    indicators = Indicator.objects.all().values()
+    # targets = Target.objects.filter(project__id=project.id)
+
+    results = []
 
     from django.contrib.humanize.templatetags.humanize import naturalday
-    for r in project_results:
-        if r.last_updated_by:
-            last_updated_by = r.last_updated_by.first_name+' '+r.last_updated_by.last_name
+    for i in indicators:
+        t = Target.objects.filter(indicator__id=i['id'],project__id=project.id)
+        i['editing'] = False
+        i['saving'] = False
+        i['created_at'] = ''
+
+        if t:
+            t = t[0]
+            if t.last_updated_by:
+                last_updated_by = t.last_updated_by.first_name+' '+t.last_updated_by.last_name
+            else:
+                last_updated_by = None
+
+            result  = {}
+            i['id'] = t.id
+            i['target'] = t.target_value
+
+            i['result'] = t.value
+            i['last_updated_at'] = naturalday(t.last_updated_at)
+            i['last_updated_by'] = last_updated_by
         else:
-            last_updated_by = None
+            i['target'] = -1
+            i['result'] = 0
+            i['id'] = None
+            i['last_updated_at'] = None
 
-        targets[r.variable_identifier] = {'id':r.id,'target':r.target_value,'value':r.value,'last_updated_at':naturalday(r.last_updated_at),'last_updated_by':last_updated_by}
 
-    if 'export' in request.GET:
-        return response
+        results.append(i)
 
+
+    import json
     return JsonResponse({'programs':total_number_of_programs,
 						'number_of_better_episodes':total_better_episodes,
 						'percentage_reviews':percentage_reviews,
@@ -211,5 +235,4 @@ def target_stats(request):
 						'network_stations':network_stations,
 						'episode_length_avg':episode_length_avg,
 						'average_respondents':average_respondents,
-                        'targets': targets},
-						safe=False)
+                        'results': results},safe=False)
