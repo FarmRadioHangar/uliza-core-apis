@@ -159,7 +159,7 @@ class Indicator(models.Model):
 class Target(models.Model):
     project = models.ForeignKey('Project')
     indicator = models.ForeignKey('Indicator')
-    variable_identifier = models.CharField(max_length=50)
+    variable_identifier = models.CharField(max_length=50,null=True,blank=True,default=None)
     description = models.TextField()
     value = models.FloatField(default=0)
     target_value = models.FloatField(default=0)
