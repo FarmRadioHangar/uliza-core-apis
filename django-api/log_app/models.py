@@ -150,7 +150,7 @@ class Indicator(models.Model):
     measurement_pt = models.CharField(max_length=100,null=True,blank=True)
     project_specific = models.BooleanField(default=False)
     manual_reporting = models.BooleanField(default=True)
-    reporting_source_id = models.CharField(max_length=50,null=True)
+    reporting_source_id = models.CharField(max_length=50,null=True,blank=True)
     grouping = models.IntegerField()
 
     last_updated_at = models.DateTimeField(auto_now=True)
