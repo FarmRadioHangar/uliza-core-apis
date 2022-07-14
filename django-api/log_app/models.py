@@ -156,6 +156,19 @@ class Indicator(models.Model):
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class Result(models.Model):
+    project = models.ForeignKey('Project')
+    variable_identifier = models.CharField(max_length=50)
+    description = models.TextField()
+    value = models.FloatField(default=0)
+    target_value = models.FloatField(default=0)
+    update_history = models.TextField()
+    custom = models.BooleanField(default=False)
+
+    # Time track
+    last_updated_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Target(models.Model):
     project = models.ForeignKey('Project')
