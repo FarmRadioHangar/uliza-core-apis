@@ -226,6 +226,7 @@ def target_stats(request):
 						'percentage_reviews':percentage_reviews,
 						'number_of_reviews':total_reviews,
 						'total_stations': total_stations,
+						'unknown': 'TBD',
 						'total_episodes':int(total_episodes),
 						'total_polls':total_polls,
 						'total_languages':total_languages,
