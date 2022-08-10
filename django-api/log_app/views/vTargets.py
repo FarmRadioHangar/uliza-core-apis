@@ -27,21 +27,29 @@ def set_targets(request,project_id):
     data = request.POST
     targets = Target.objects.filter(project__id=project_id,custom=False)
     previous_targets = targets.values_list('indicator__id',flat=True)
+    previous_targets = list(previous_targets)
 
     project = Project.objects.get(id = project_id)
 
 
     # for each target check if previously saved & update
     for target in data.keys():
-        if target in previous_targets:
+        if int(target) in previous_targets:
             indicator = Indicator.objects.get(id=target)
             t = Target.objects.get(project__id=project_id,indicator=indicator)
-            t.target_value = data[target]
-            t.save()
+
+            if not data[target] == '':
+                previous_targets.pop(previous_targets.index(int(target)))
+                t.target_value = data[target]
+                t.save()
         else:
             if not data[target] == '':
                 indicator = Indicator.objects.get(id=target)
                 response = Target.objects.create(project=project,indicator=indicator,target_value=data[target])
+
+    if previous_targets:
+        targets = Target.objects.filter(indicator__id__in=previous_targets,project__id = project_id)
+        targets.delete()
 
     return HttpResponse('Processed')
 
@@ -55,11 +63,19 @@ def weeks_diff(start,end):
 def target_stats(request):
     from django.utils.dateparse import parse_date,parse_datetime
     from django.db.models import Sum,Avg
-    start_date = parse_datetime(request.GET['start_date']+' 00:00')
-    end_date = parse_date(request.GET['end_date'])
 
     project = Project.objects.get(id=request.GET['project_id'])
-    programs = Program.objects.filter(project=project,end_date__gte = start_date,start_date__lte=end_date).exclude(project__country__exclude=True)
+    if 'start_date' in request.GET and 'end_date' in request.GET:
+        start_datetime = parse_datetime(request.GET['start_date']+' 00:00')
+        start_date = parse_date(request.GET['start_date'])
+        end_date = parse_date(request.GET['end_date'])
+        programs = Program.objects.filter(project=project,end_date__gte = start_datetime,start_date__lte=end_date).exclude(project__country__exclude=True)
+    else:
+        # I was born 08-04-1991
+        start_datetime = datetime.datetime(year=1991,month=4,day=8)
+        start_date = datetime.date(year=1991,month=4,day=8)
+        end_date = datetime.date(year=project.end_date.year+5,month=project.end_date.month,day=1)
+        programs = Program.objects.filter(project=project).exclude(project__country__exclude=True)
 
     total_episodes = 0
     total_hours = 0
@@ -85,11 +101,11 @@ def target_stats(request):
         end_week_number = program.weeks
         program.start_date = program.start_date.replace(tzinfo=None)
 
-        if program.start_date < start_date:
-            week_diff = weeks_diff(program.start_date,start_date)
+        if program.start_date < start_datetime:
+            week_diff = weeks_diff(program.start_date,start_datetime)
 
             start_week_number = week_diff[0]+1
-            if program.start_date.weekday() <= start_date.weekday():
+            if program.start_date.weekday() <= start_datetime.weekday():
                 start_week_number +=1
 
 
@@ -206,8 +222,16 @@ def target_stats(request):
             result  = {}
             i['id'] = t.id
             i['target'] = t.target_value
+            i['total_result'] = t.value
 
-            i['result'] = t.value
+            result = Report.objects.filter(target__id=t.id,report_date__gte=start_date,report_date__lte=end_date).aggregate(Sum('value'))
+            if not result['value__sum']:
+                i['requested_result'] = 0
+                i['result'] = 0
+            else:
+                i['requested_result'] = result['value__sum']
+                i['result'] = result['value__sum']
+
             i['last_updated_at'] = naturalday(t.last_updated_at)
             i['last_updated_by'] = last_updated_by
         else:
