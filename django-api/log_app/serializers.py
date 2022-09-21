@@ -7,6 +7,7 @@ class RadioStationSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class ProjectSerializer(serializers.ModelSerializer):
+	country__name = serializers.CharField(source='country.name',read_only=True)
 	class Meta:
 		model = Project
 		fields = "__all__"
