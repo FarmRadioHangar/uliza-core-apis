@@ -98,6 +98,7 @@ def filename(instance, filename):
 
 
 class Project(models.Model):
+    shortname = models.CharField(max_length=250,null=True,blank=True,default=None)
     code = models.CharField(max_length=250)
     name = models.CharField(max_length=250)
     country = models.ForeignKey('Country')
@@ -174,12 +175,9 @@ class Result(models.Model):
 class Target(models.Model):
     project = models.ForeignKey('Project')
     indicator = models.ForeignKey('Indicator')
-    variable_identifier = models.CharField(max_length=50,null=True,blank=True,default=None)
-    description = models.TextField()
     value = models.FloatField(default=0)
     target_value = models.FloatField(default=0)
-    update_history = models.TextField()
-    custom = models.BooleanField(default=False)
+    update_history = models.TextField(blank=True,default='')
 
     # Time track
     last_updated_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
