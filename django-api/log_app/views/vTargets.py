@@ -64,18 +64,21 @@ def target_stats(request):
     from django.utils.dateparse import parse_date,parse_datetime
     from django.db.models import Sum,Avg
 
-    project = Project.objects.get(id=request.GET['project_id'])
+    project = Project.objects.filter(id=request.GET['project_id'])
+    if request.GET['multi_country'] == 'true':
+        project = Project.objects.filter(code=project[0].code)
+
     if 'start_date' in request.GET and 'end_date' in request.GET:
         start_datetime = parse_datetime(request.GET['start_date']+' 00:00')
         start_date = parse_date(request.GET['start_date'])
         end_date = parse_date(request.GET['end_date'])
-        programs = Program.objects.filter(project=project,end_date__gte = start_datetime,start_date__lte=end_date).exclude(project__country__exclude=True)
+        programs = Program.objects.filter(project__in=project,end_date__gte = start_datetime,start_date__lte=end_date).exclude(project__country__exclude=True)
     else:
         # I was born 08-04-1991
         start_datetime = datetime.datetime(year=1991,month=4,day=8)
         start_date = datetime.date(year=1991,month=4,day=8)
-        end_date = datetime.date(year=project.end_date.year+5,month=project.end_date.month,day=1)
-        programs = Program.objects.filter(project=project).exclude(project__country__exclude=True)
+        end_date = datetime.date(year=project[0].end_date.year+5,month=project[0].end_date.month,day=1)
+        programs = Program.objects.filter(project__in=project).exclude(project__country__exclude=True)
 
     total_episodes = 0
     total_hours = 0
@@ -88,6 +91,7 @@ def target_stats(request):
     total_better_episodes = 0
     percentage_reviews = 0
     total_number_of_programs = 0
+    episode_length_avg = 0
     impact_stations = {}
     network_stations = {}
 
@@ -96,6 +100,7 @@ def target_stats(request):
 
     for program in programs:
         number_of_episodes = 0
+        episode_length_avg += program.duration
         start_week_number=1
         better_scores = 0
         end_week_number = program.weeks
@@ -144,7 +149,7 @@ def target_stats(request):
             total_number_of_programs += 1
             start_week_number = int(start_week_number)
             start_week_number = int(start_week_number)
-            better_scores = reviews.filter(numerical_score__gt=33)
+            better_scores = reviews.filter(numerical_score__gt=50)
             better_scores = len(better_scores)
             total_reviews += len(reviews)
             total_stations[program.radio_station.id] = program.radio_station.name
@@ -191,12 +196,10 @@ def target_stats(request):
     total_languages = len(total_languages)
     network_stations = len(network_stations)
     total_stations = len(total_stations)
-    if total_stations > 0:
-        episode_length_avg = total_hours/total_stations
-    else:
-        episode_length_avg = 0
 
-    episode_length_avg = math.floor(episode_length_avg)
+    if total_number_of_programs > 0:
+        episode_length_avg = episode_length_avg/total_number_of_programs
+
     total_hours = math.floor(total_hours)
     percentage_reviews = math.floor(percentage_reviews)
 
@@ -207,24 +210,23 @@ def target_stats(request):
 
     from django.contrib.humanize.templatetags.humanize import naturalday
     for i in indicators:
-        t = Target.objects.filter(indicator__id=i['id'],project__id=project.id)
+        t = Target.objects.filter(indicator__id=i['id'],project__in=project).order_by('last_updated_at')
         i['editing'] = False
         i['saving'] = False
         i['created_at'] = ''
 
         if t:
-            t = t[0]
-            if t.last_updated_by:
-                last_updated_by = t.last_updated_by.first_name+' '+t.last_updated_by.last_name
+            # t = t[0]
+            if t.last().last_updated_by:
+                last_updated_by = t.last().last_updated_by.first_name+' '+t.last_updated_by.last_name
             else:
                 last_updated_by = None
 
             result  = {}
-            i['id'] = t.id
-            i['target'] = t.target_value
-            i['total_result'] = t.value
+            i['target'] = t.aggregate(Sum('target_value'))['target_value__sum']
+            i['total_result'] = t.aggregate(Sum('value'))['value__sum']
 
-            result = Report.objects.filter(target__id=t.id,report_date__gte=start_date,report_date__lte=end_date).aggregate(Sum('value'))
+            result = Report.objects.filter(target__in=t,report_date__gte=start_date,report_date__lte=end_date).aggregate(Sum('value'))
             if not result['value__sum']:
                 i['requested_result'] = 0
                 i['result'] = 0
@@ -232,12 +234,12 @@ def target_stats(request):
                 i['requested_result'] = result['value__sum']
                 i['result'] = result['value__sum']
 
-            i['last_updated_at'] = naturalday(t.last_updated_at)
+            i['last_updated_at'] = naturalday(t.last().last_updated_at)
             i['last_updated_by'] = last_updated_by
         else:
             i['target'] = -1
             i['result'] = 0
-            i['id'] = None
+            i['target_id'] = None
             i['last_updated_at'] = None
 
 
