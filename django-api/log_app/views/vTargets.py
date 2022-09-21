@@ -15,7 +15,7 @@ class TargetGet(generics.ListCreateAPIView):
     queryset = Target.objects.all()
     model = Target
     serializer_class = TargetSerializer
-    filter_fields = ['id','project']
+    filter_fields = ['id','project','indicator','project__code']
 
 class TargetEntity(generics.RetrieveUpdateAPIView):
     queryset = Target.objects.all()
@@ -25,7 +25,7 @@ class TargetEntity(generics.RetrieveUpdateAPIView):
 
 def set_targets(request,project_id):
     data = request.POST
-    targets = Target.objects.filter(project__id=project_id,custom=False)
+    targets = Target.objects.filter(project__id=project_id)
     previous_targets = targets.values_list('indicator__id',flat=True)
     previous_targets = list(previous_targets)
 
