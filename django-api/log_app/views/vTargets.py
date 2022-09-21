@@ -36,7 +36,7 @@ def set_targets(request,project_id):
     for target in data.keys():
         if int(target) in previous_targets:
             indicator = Indicator.objects.get(id=target)
-            t = Target.objects.get(project__id=project_id,indicator=indicator)
+            t = Target.objects.filter(project__id=project_id,indicator=indicator).last()
 
             if not data[target] == '':
                 previous_targets.pop(previous_targets.index(int(target)))
