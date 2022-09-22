@@ -149,7 +149,7 @@ class Indicator(models.Model):
     measurement_am = models.CharField(max_length=100,null=True,blank=True)
     measurement_fr = models.CharField(max_length=100,null=True,blank=True)
     measurement_pt = models.CharField(max_length=100,null=True,blank=True)
-    project_specific = models.BooleanField(default=False)
+    project_tied = models.ForeignKey('project',null=True,blank=True,default=None)
     manual_reporting = models.BooleanField(default=True)
     reporting_source_id = models.CharField(max_length=50,null=True,blank=True)
     grouping = models.IntegerField()
