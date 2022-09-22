@@ -94,11 +94,13 @@ def target_stats(request):
     episode_length_avg = 0
     impact_stations = {}
     network_stations = {}
+    airings = 0
 
     weekdays = ( 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
 
 
     for program in programs:
+        airings +=1
         number_of_episodes = 0
         episode_length_avg += program.duration
         start_week_number=1
@@ -127,6 +129,7 @@ def target_stats(request):
         number_of_episodes = number_of_episodes - len(postponements)
 
         if program.repeat_start_time:
+            airings +=1
             duration = program.duration*2
         else:
             duration = program.duration
@@ -197,13 +200,20 @@ def target_stats(request):
     network_stations = len(network_stations)
     total_stations = len(total_stations)
 
+    if airings > 0:
+        airings = airings/len(programs)
+
     if total_number_of_programs > 0:
         episode_length_avg = episode_length_avg/total_number_of_programs
 
+    airings = math.floor(airings)
     total_hours = math.floor(total_hours)
     percentage_reviews = math.floor(percentage_reviews)
 
-    indicators = Indicator.objects.all().values()
+    indicators = Indicator.objects.exclude(grouping=6)
+    project_indicators = Indicator.objects.filter(project_tied=request.GET['project_id'])
+    indicators = indicators | project_indicators
+    indicators = indicators.values()
     # targets = Target.objects.filter(project__id=project.id)
 
     results = []
@@ -246,13 +256,13 @@ def target_stats(request):
         results.append(i)
 
 
-    import json
     return JsonResponse({'programs':total_number_of_programs,
 						'number_of_better_episodes':total_better_episodes,
 						'percentage_reviews':percentage_reviews,
 						'number_of_reviews':total_reviews,
 						'total_stations': total_stations,
 						'unknown': 'TBD',
+                        'airings': airings,
 						'total_episodes':int(total_episodes),
 						'total_polls':total_polls,
 						'total_languages':total_languages,
