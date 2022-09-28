@@ -648,11 +648,16 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated_at = models.DateTimeField(auto_now=True)
 
-    def calculate_score(self):
-        formats = Format.objects.filter(always_checked=True).values_list('id',flat=True)
-        checklists = Checklist.objects.filter(radio_format__in=formats).values_list('id','level')
-        checklists = list(checklists)
-        checklists+list(self.log.formats.values_list('checklist__id','checklist__level'))
+    def calculate_score(self,gender_responsive=False):
+        if gender_responsive:
+            checklists = Checklist.objects.filter(radio_format__name="Gender") | Checklist.objects.filter(gender_responsive = True)
+            checklists = list(checklists.values_list('id','level'))
+        else:
+            formats = Format.objects.filter(always_checked=True).values_list('id',flat=True)
+            checklists = Checklist.objects.filter(radio_format__in=formats).values_list('id','level')
+            checklists = list(checklists)
+            checklists+list(self.log.formats.values_list('checklist__id','checklist__level'))
+
 
         review_checklists = self.checklists.values_list('id','level')
         total = 0
@@ -673,6 +678,7 @@ class Review(models.Model):
 
         total_score = float(total_score)/total
         total_score = total_score*100
+        print total_score, self.log.id
 
         return total_score
 
