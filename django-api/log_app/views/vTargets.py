@@ -80,9 +80,9 @@ def target_stats(request):
         end_date = datetime.date(year=project[0].end_date.year+5,month=project[0].end_date.month,day=1)
         programs = Program.objects.filter(project__in=project).exclude(project__country__exclude=True)
 
-    total_episodes = 0
     total_hours = 0
     total_responses = 0
+    total_episodes_aired = 0
     average_respondents = 0
     total_polls = 0
     total_stations = {}
@@ -94,17 +94,22 @@ def target_stats(request):
     episode_length_avg = 0
     impact_stations = {}
     network_stations = {}
-    airings = 0
+    avg_number_of_broadcast = 0
 
     weekdays = ( 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
 
 
     for program in programs:
-        airings +=1
+        avg_number_of_broadcast +=1
+
+        # number of episodes represent the episode number in the the time interval chosen
         number_of_episodes = 0
+
+        # program_episodes_aired represent the # of episodes aired by this specific program
+        program_episodes_aired = program.weeks_aired()
         episode_length_avg += program.duration
         start_week_number=1
-        better_scores = 0
+        episodes_better_scored = 0
         end_week_number = program.weeks
         program.start_date = program.start_date.replace(tzinfo=None)
 
@@ -129,12 +134,14 @@ def target_stats(request):
         number_of_episodes = number_of_episodes - len(postponements)
 
         if program.repeat_start_time:
-            airings +=1
+            avg_number_of_broadcast +=1
             duration = program.duration*2
         else:
             duration = program.duration
 
-        duration_multiplier = number_of_episodes
+        if program_episodes_aired > number_of_episodes:
+            # cut the program episodes aired number to the number within the time interval
+            program_episodes_aired = number_of_episodes
 
         if number_of_episodes > 0:
             # todo there are times where there could be duplicate reviews for an episode
@@ -152,15 +159,16 @@ def target_stats(request):
             total_number_of_programs += 1
             start_week_number = int(start_week_number)
             start_week_number = int(start_week_number)
-            better_scores = reviews.filter(numerical_score__gt=50)
-            better_scores = len(better_scores)
+            episodes_better_scored = reviews.filter(numerical_score__gt=50)
+            episodes_better_scored = len(episodes_better_scored)
             total_reviews += len(reviews)
             total_stations[program.radio_station.id] = program.radio_station.name
 
             if program.broadcast_language:
                 total_languages[program.broadcast_language.id] = program.broadcast_language.name
 
-            total_episodes = total_episodes + number_of_episodes
+            # add the program_episode_aired to the total_episodes_aired
+            total_episodes_aired = total_episodes_aired + program_episodes_aired
 
             if program.implementation_type == 'impact':
                 impact_stations[program.radio_station.id] = program.radio_station.name
@@ -172,7 +180,7 @@ def target_stats(request):
                 if weekdays.index(program.repeat_week_day) <= program.start_date.weekday() or weekdays.index(program.repeat_week_day) > end_date.weekday():
                     total_hours = total_hours - duration/2
 
-            duration = duration*duration_multiplier
+            duration = duration*program_episodes_aired
             total_hours = total_hours + duration
 
             if not program.poll_program_id:
@@ -186,10 +194,14 @@ def target_stats(request):
                 if respondents['number_of_respondents__sum']:
                     average_respondents += respondents['number_of_respondents__sum']
 
-        total_better_episodes += better_scores
+        total_better_episodes += episodes_better_scored
 
-    if total_episodes > 0:
-        percentage_reviews = (float(total_reviews)/total_episodes)*100
+    # check the use of total_episodes_aired here
+    if total_episodes_aired > 0:
+        percentage_reviews = (float(total_reviews)/total_episodes_aired)*100
+
+    if total_better_episodes > 0:
+        total_better_episodes = (float(total_better_episodes)/total_episodes_aired)*100
 
     if total_polls > 0:
         average_respondents = math.ceil(average_respondents/total_polls)
@@ -200,13 +212,13 @@ def target_stats(request):
     network_stations = len(network_stations)
     total_stations = len(total_stations)
 
-    if airings > 0:
-        airings = airings/len(programs)
+    if avg_number_of_broadcast > 0:
+        avg_number_of_broadcast = avg_number_of_broadcast/len(programs)
 
     if total_number_of_programs > 0:
         episode_length_avg = episode_length_avg/total_number_of_programs
 
-    airings = math.floor(airings)
+    avg_number_of_broadcast = math.floor(avg_number_of_broadcast)
     total_hours = math.floor(total_hours)
     percentage_reviews = math.floor(percentage_reviews)
 
@@ -257,13 +269,13 @@ def target_stats(request):
 
 
     return JsonResponse({'programs':total_number_of_programs,
-						'number_of_better_episodes':total_better_episodes,
+						'percentage_better_episodes':total_better_episodes,
 						'percentage_reviews':percentage_reviews,
 						'number_of_reviews':total_reviews,
+                        'total_episodes_aired': int(total_episodes_aired),
 						'total_stations': total_stations,
 						'unknown': 'TBD',
-                        'airings': airings,
-						'total_episodes':int(total_episodes),
+                        'avg_number_of_broadcast': avg_number_of_broadcast,
 						'total_polls':total_polls,
 						'total_languages':total_languages,
 						'total_hours':total_hours,
