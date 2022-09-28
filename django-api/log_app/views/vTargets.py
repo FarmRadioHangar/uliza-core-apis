@@ -82,6 +82,7 @@ def target_stats(request):
 
     total_hours = 0
     total_responses = 0
+    percentage_better_gei = 0
     total_episodes_aired = 0
     average_respondents = 0
     total_polls = 0
@@ -145,7 +146,7 @@ def target_stats(request):
 
         if number_of_episodes > 0:
             # todo there are times where there could be duplicate reviews for an episode
-            reviews = Review.objects.filter(log__week__gte=start_week_number,log__week__lte=end_week_number,log__program=program)
+            reviews = Review.objects.filter(log__week__gte=start_week_number,log__week__lte=end_week_number,log__program=program).order_by('log__id')
             if 'export' in request.GET:
                 try:
                     if not program.public_name:
@@ -160,8 +161,19 @@ def target_stats(request):
             start_week_number = int(start_week_number)
             start_week_number = int(start_week_number)
             episodes_better_scored = reviews.filter(numerical_score__gt=50)
+
+
+            log_id = 0
+            # note for country level stats: some reviews are duplicates
+            for review in reviews:
+                if log_id == review.log.id:
+                    continue;
+                else:
+                    log_id = review.log.id
+                percentage_better_gei += review.calculate_score(True)
+                total_reviews += 1
+
             episodes_better_scored = len(episodes_better_scored)
-            total_reviews += len(reviews)
             total_stations[program.radio_station.id] = program.radio_station.name
 
             if program.broadcast_language:
@@ -199,12 +211,18 @@ def target_stats(request):
     # check the use of total_episodes_aired here
     if total_episodes_aired > 0:
         percentage_reviews = (float(total_reviews)/total_episodes_aired)*100
+        percentage_reviews = math.floor(percentage_reviews)
 
     if total_better_episodes > 0:
-        total_better_episodes = (float(total_better_episodes)/total_episodes_aired)*100
+        total_better_episodes = (float(total_better_episodes)/total_reviews)*100
+        total_better_episodes = math.floor(total_better_episodes)
+
+    if percentage_better_gei > 0:
+        percentage_better_gei = (float(percentage_better_gei)/total_reviews)
+        percentage_better_gei = math.floor(percentage_better_gei)
 
     if total_polls > 0:
-        average_respondents = math.ceil(average_respondents/total_polls)
+        average_respondents = math.floor(average_respondents/total_polls)
 
     total_hours = total_hours/60
     impact_stations = len(impact_stations)
@@ -270,6 +288,7 @@ def target_stats(request):
 
     return JsonResponse({'programs':total_number_of_programs,
 						'percentage_better_episodes':total_better_episodes,
+                        'percentage_better_gei': percentage_better_gei,
 						'percentage_reviews':percentage_reviews,
 						'number_of_reviews':total_reviews,
                         'total_episodes_aired': int(total_episodes_aired),
