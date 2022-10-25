@@ -136,6 +136,11 @@ class Report(models.Model):
 # * note
 # * lead
 class Indicator(models.Model):
+    reporting = (
+        ('manual','Manual'),
+        ('calculated','Calculated'),
+        ('system_generated','System generated'))
+
     order = models.IntegerField()
     description = models.TextField()
     description_fr = models.TextField(null=True,blank=True)
@@ -150,7 +155,7 @@ class Indicator(models.Model):
     measurement_fr = models.CharField(max_length=100,null=True,blank=True)
     measurement_pt = models.CharField(max_length=100,null=True,blank=True)
     project_tied = models.ForeignKey('project',null=True,blank=True,default=None)
-    manual_reporting = models.BooleanField(default=True)
+    reporting = models.CharField(max_length=20,default='manual',choices=reporting)
     reporting_source_id = models.CharField(max_length=50,null=True,blank=True)
     grouping = models.IntegerField()
     target_formula = models.TextField(null=True,blank=True)
