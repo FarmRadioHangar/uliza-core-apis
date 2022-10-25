@@ -91,7 +91,7 @@ def target_stats(request):
         programs = Program.objects.filter(project__in=project,end_date__gte = start_datetime,start_date__lte=end_date)
     else:
         # Me was born 08-04-1991
-        start_datetime = datetime.datetime.now()
+        start_datetime = datetime.datetime(1991,4,8,0,0,0)
         start_date = None
         end_date = datetime.date.today()
         # country and project filter to be done
