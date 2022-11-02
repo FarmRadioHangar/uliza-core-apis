@@ -33,19 +33,25 @@ def set_targets(request,project_id):
 
 
     # for each target check if previously saved & update
+    import json
     for target in data.keys():
+        payload = json.loads(data[target])
+
+        # update target
         if int(target) in previous_targets:
             indicator = Indicator.objects.get(id=target)
             t = Target.objects.filter(project__id=project_id,indicator=indicator).last()
 
-            if not data[target] == '':
+            if not payload['value'] == '':
                 previous_targets.pop(previous_targets.index(int(target)))
-                t.target_value = data[target]
+                t.target_value = payload['value']
+                t.note = payload['note']
                 t.save()
+        # create target
         else:
-            if not data[target] == '':
+            if not payload['value'] == '':
                 indicator = Indicator.objects.get(id=target)
-                response = Target.objects.create(project=project,indicator=indicator,target_value=data[target])
+                response = Target.objects.create(project=project,indicator=indicator,note=payload['note'],target_value=payload['value'])
 
     if previous_targets:
         targets = Target.objects.filter(indicator__id__in=previous_targets,project__id = project_id)

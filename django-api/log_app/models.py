@@ -168,7 +168,7 @@ class Target(models.Model):
     indicator = models.ForeignKey('Indicator')
     value = models.FloatField(default=0)
     target_value = models.FloatField(default=0)
-    update_history = models.TextField(blank=True,default='')
+    note = models.TextField(blank=True,default='')
 
     # Time track
     last_updated_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
