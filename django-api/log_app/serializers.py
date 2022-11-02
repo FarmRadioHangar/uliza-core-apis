@@ -34,6 +34,9 @@ class IndicatorSerializer(serializers.ModelSerializer):
 
 class TargetSerializer(serializers.ModelSerializer):
 	indicator__order = serializers.CharField(source='index.order',read_only=True)
+	project__code = serializers.CharField(source='project.code',read_only=True)
+	project__shortname = serializers.CharField(source='project.shortname',read_only=True)
+	country = serializers.CharField(source='project.country',read_only=True)
 	class Meta:
 		model = Target
 		fields = "__all__"
@@ -42,8 +45,6 @@ class TargetSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
 	reported_by__first_name = serializers.CharField(source='reported_by.first_name',read_only=True)
 	reported_by__last_name = serializers.CharField(source='reported_by.last_name',read_only=True)
-	project__code = serializers.CharField(source='target.project.code',read_only=True)
-	country = serializers.CharField(source='target.project.country',read_only=True)
 
 	class Meta:
 		model = Report
