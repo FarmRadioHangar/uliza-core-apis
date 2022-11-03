@@ -159,6 +159,7 @@ class Indicator(models.Model):
     reporting_source_id = models.CharField(max_length=50,null=True,blank=True)
     grouping = models.IntegerField()
     target_formula = models.TextField(null=True,blank=True)
+    aggregation = models.CharField(max_length=4,null=True,blank=True,default="sum")
 
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

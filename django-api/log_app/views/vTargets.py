@@ -295,18 +295,23 @@ def target_stats(request):
             else:
                 last_updated_by = None
 
+            if i['aggregation'] == 'sum':
+                calc = Sum
+            else:
+                calc = Avg
+
             result  = {}
-            i['target'] = t.aggregate(Sum('target_value'))['target_value__sum']
-            i['total_result'] = t.aggregate(Sum('value'))['value__sum']
+            i['target'] = t.aggregate(calc('target_value'))['target_value__'+i['aggregation']]
+            i['total_result'] = t.aggregate(calc('value'))['value__'+i['aggregation']]
 
             if start_date:
-                result = Report.objects.filter(target__in=t,report_date__gte=start_date,report_date__lte=end_date).aggregate(Sum('value'))
-                if not result['value__sum']:
+                result = Report.objects.filter(target__in=t,report_date__gte=start_date,report_date__lte=end_date).aggregate(calc('value'))
+                if not result['value__'+i['aggregation']]:
                     i['requested_result'] = 0
                     i['result'] = 0
                 else:
-                    i['requested_result'] = result['value__sum']
-                    i['result'] = result['value__sum']
+                    i['requested_result'] = result['value__'+i['aggregation']]
+                    i['result'] = result['value__'+i['aggregation']]
             else:
                 i['requested_result'] = i['total_result']
                 i['result'] = i['total_result']
