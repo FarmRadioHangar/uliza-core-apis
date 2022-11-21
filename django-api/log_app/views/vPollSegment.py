@@ -22,16 +22,24 @@ class PollSegmentGet(generics.ListCreateAPIView):
     model = PollSegment
     serializer_class = PollSegmentSerializer
     filter_backends = (filters.OrderingFilter,filters.DjangoFilterBackend)
-    filter_fields = ['id','program','episode_number']
+    filter_fields = ['id','program','episode_number','index']
     ordering_fields = ['id','index']
 
     def get_queryset(self):
         last_poll = self.request.GET.get('last')
+        highest_respondent = self.request.GET.get('highest_respondent')
         program = self.request.GET.get('program')
+        episode_number = self.request.GET.get('episode_number')
         if last_poll and program:
             instance = PollSegment.objects.filter(program=program).last()
             if instance:
                 queryset = PollSegment.objects.filter(id=instance.id)
+            else:
+                queryset = PollSegment.objects.none()
+        elif highest_respondent and program and episode_number:
+            instance = PollSegment.objects.filter(program=program,episode_number=episode_number).order_by('-number_of_respondents')
+            if instance:
+                queryset = instance.filter(id = instance[0].id)
             else:
                 queryset = PollSegment.objects.none()
         else:
