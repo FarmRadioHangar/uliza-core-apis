@@ -369,14 +369,14 @@ def interactivity(request):
 					stat = episode_respondent_stat[0]
 					episode_respondents = episode_respondents+json.loads(stat.unique_respondents_list)
 
-				# filter out the redundunet occurences
-				episode_respondents = set(itertools.chain(episode_respondents))
+					# filter out the redundunet occurences
+					episode_respondents = set(itertools.chain(episode_respondents))
 
-				# add episode respondents to all unique respondents list
-				unique_respondents = unique_respondents + list(episode_respondents)
+					# add episode respondents to all unique respondents list
+					unique_respondents = unique_respondents + list(episode_respondents)
 
-				episode_respondents = len(episode_respondents)
-				series[0].append(episode_respondents+stat.repeat_respondents_number)
+					episode_respondents = len(episode_respondents)
+					series[0].append(episode_respondents+stat.repeat_respondents_number)
 
 
 				# reset episode respondents list
@@ -404,8 +404,8 @@ def interactivity(request):
 		episode_respondents = len(episode_respondents)
 		series[0].append(episode_respondents+stat.repeat_respondents_number)
 		labels.append(label)
-
-	unique_respondents = set(itertools.chain(unique_respondents))
+		unique_respondents = set(itertools.chain(unique_respondents))
+		
 	unique_respondents = len(unique_respondents)
 
 	questions = len(poll_segments)
