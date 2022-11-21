@@ -377,6 +377,8 @@ def interactivity(request):
 
 					episode_respondents = len(episode_respondents)
 					series[0].append(episode_respondents+stat.repeat_respondents_number)
+				else:
+					series[0].append(None)
 
 
 				# reset episode respondents list
@@ -405,7 +407,9 @@ def interactivity(request):
 		series[0].append(episode_respondents+stat.repeat_respondents_number)
 		labels.append(label)
 		unique_respondents = set(itertools.chain(unique_respondents))
-		
+	else:
+		series[0].append(None)
+
 	unique_respondents = len(unique_respondents)
 
 	questions = len(poll_segments)
