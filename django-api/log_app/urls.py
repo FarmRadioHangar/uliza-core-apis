@@ -26,6 +26,7 @@ from log_app.views.vPollSegment import *
 from log_app.views.vTargets import *
 from log_app.views.vReports import *
 from log_app.views.vIndicators import *
+from log_app.views.vRespondentStat import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -42,6 +43,7 @@ programs = patterns('log_app.views.vPrograms',
     url(r'/stats$', stats),
     url(r'/interactivity$', interactivity),
     url(r'/interactivity_export$', interactivity_export),
+    url(r'/export_respondents$', export_respondents),
     url(r'/(?P<id>\d+)$', ProgramEntity.as_view()),
     url(r'/(?P<id>\d+)/download_media_zipped$', download_media_zipped),
     url(r'/(?P<id>\d+)/delete_all_media$', delete_all_media),
@@ -219,6 +221,8 @@ urlpatterns = patterns('',
     url(r'reports$', ReportGet.as_view()),
     url(r'notifications$', NotificationGet.as_view()),
     url(r'notifications/(?P<id>\d+)$', NotificationEntity.as_view()),
+    url(r'respondent_stat$', RespondentStatGet.as_view()),
+    url(r'respondent_stat/(?P<id>\d+)$', RespondentStatEntity.as_view()),
 
     # auth0 custom db authentication
     url(r'authenticate$','log_app.views.vAuth0User.authenticate',name='authenticate'),

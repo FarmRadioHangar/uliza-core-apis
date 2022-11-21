@@ -179,6 +179,11 @@ class NotificationSerializer(serializers.ModelSerializer):
 		model = Notification
 		fields = "__all__"
 
+class RespondentStatSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = RespondentStat
+		fields = "__all__"
+
 class PollSegmentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = PollSegment

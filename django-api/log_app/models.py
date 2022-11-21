@@ -452,6 +452,18 @@ class PollSegment(models.Model):
             self.save()
 
 
+class RespondentStat(models.Model):
+    program = models.ForeignKey('Program')
+    episode_number = models.IntegerField(default=1)
+
+    unique_respondents_list = models.TextField(null=True,blank=True)
+    repeat_respondents_number = models.IntegerField(default=0)
+    new_respondents_number = models.IntegerField(default=0)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class BroadcasterResource(models.Model):
     name = models.CharField(max_length=100)
     name_fr = models.CharField(max_length=100)
