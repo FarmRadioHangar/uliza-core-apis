@@ -10,6 +10,7 @@ from log_app.models import Indicator
 from log_app.serializers import IndicatorSerializer
 from django.http import HttpResponse
 import datetime,math
+from django_filters.rest_framework import DjangoFilterBackend
 
 class IndicatorGet(generics.ListCreateAPIView):
     queryset = Indicator.objects.all()
@@ -17,6 +18,7 @@ class IndicatorGet(generics.ListCreateAPIView):
     serializer_class = IndicatorSerializer
     ordering_fields = ('order','grouping')
     filter_fields = ['id','grouping','project_tied']
+    filter_backends = (filters.OrderingFilter,DjangoFilterBackend)
 
     def get_queryset(self):
         pt = self.request.GET.get('pt')
