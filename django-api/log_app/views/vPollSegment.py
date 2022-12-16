@@ -37,7 +37,7 @@ class PollSegmentGet(generics.ListCreateAPIView):
             else:
                 queryset = PollSegment.objects.none()
         elif highest_respondent and program and episode_number:
-            instance = PollSegment.objects.filter(program=program,episode_number=episode_number).order_by('-number_of_respondents')
+            instance = PollSegment.objects.filter(program=program,episode_number=episode_number).order_by('-number_of_responses')
             if instance:
                 queryset = instance.filter(id = instance[0].id)
             else:
