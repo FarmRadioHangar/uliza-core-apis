@@ -94,7 +94,7 @@ class RadioTransmission(models.Model):
 
 
 def filename(instance, filename):
-	return 'FRI-LOG-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
+	return 'FRI-LOG-'+str(instance.program.id)+'-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
 
 
 class Project(models.Model):
@@ -406,7 +406,8 @@ class PollSegment(models.Model):
     program = models.ForeignKey('Program')
     type = models.CharField(max_length=15,default="closed",choices=polling_types)
     survey_id = models.CharField(max_length=500,null=True,blank=True)
-    number_of_respondents = models.IntegerField(default=0)
+    nuliza_state_id = models.IntegerField(blank=True,null=True,default=None)
+    number_of_respondents = models.IntegerField(default=0,null=True)
     number_of_responses = models.IntegerField(default=0)
     result = models.TextField(null=True,blank=True)
 
