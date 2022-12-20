@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 import django_filters
 from rest_framework import filters
 
-from log_app.models import Project,Program,Log,PollSegment,Review,Target,Contact,Report,Indicator
+from log_app.models import Project,Program,Log,PollSegment,Review,Target,Contact,Report,Indicator,RespondentStat
 from log_app.serializers import TargetSerializer
 from django.http import HttpResponse
 import datetime,math
@@ -105,6 +105,7 @@ def target_stats(request):
 
     total_hours = 0
     total_responses = 0
+    total_respondents = 0
     percentage_better_gei = 0
     total_episodes_aired = 0
     average_respondents = 0
@@ -227,14 +228,16 @@ def target_stats(request):
 
             if not program.poll_program_id:
                 polls = PollSegment.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
+                polling_stats = RespondentStat.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
                 total_polls += len(polls)
                 responses = polls.aggregate(Sum('number_of_responses'))
-                respondents = polls.aggregate(Sum('number_of_respondents'))
+                respondents = polling_stats.aggregate(Sum('new_respondents_number'))
+
                 if responses['number_of_responses__sum']:
                     total_responses += responses['number_of_responses__sum']
 
-                if respondents['number_of_respondents__sum']:
-                    average_respondents += respondents['number_of_respondents__sum']
+                if respondents['new_respondents_number__sum']:
+                    total_respondents += respondents['new_respondents_number__sum']
 
         total_better_episodes += episodes_better_scored
 
@@ -251,8 +254,6 @@ def target_stats(request):
         percentage_better_gei = (float(percentage_better_gei)/total_reviews)
         percentage_better_gei = math.floor(percentage_better_gei)
 
-    if total_polls > 0:
-        average_respondents = math.floor(average_respondents/total_polls)
 
     total_hours = total_hours/60
     impact_stations = len(impact_stations)
@@ -341,8 +342,8 @@ def target_stats(request):
 						'total_languages':total_languages,
 						'total_hours':total_hours,
 						'total_responses':total_responses,
+						'total_respondents':total_respondents,
 						'impact_stations':impact_stations,
 						'network_stations':network_stations,
 						'episode_length_avg':episode_length_avg,
-						'average_respondents':average_respondents,
                         'results': results},safe=False)
