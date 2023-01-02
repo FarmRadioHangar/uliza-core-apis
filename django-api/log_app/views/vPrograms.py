@@ -480,17 +480,10 @@ def export_respondents(request):
 			respondent_list[stat.program.id] = []
 
 		unique_respondents = json.loads(stat.unique_respondents_list)
-		for new_respondents in unique_respondents:
-			respondent_list[stat.program.id].append({'phone':new_respondents,'episode':stat.episode_number})
-			# respondent_list[stat.program.id].append(new_respondents)
-
-	# for x in respondent_list[stat.program.id]:
-	# 	c = respondent_list[stat.program.id].count(x)
-	# 	if c > 1:
-	# 		print 'found',x
-	# 	else:
-	# 		print 'yes',c
-
-	respondent_list = [respondent_list,program_id_name]
+		for new_respondent in unique_respondents:
+			if new_respondent in respondent_list:
+				respondent_list[new_respondent].append(stat.program.name+' Ep-'+str(stat.episode_number))
+			else:
+				respondent_list[new_respondent] = [stat.program.name+' Ep-'+str(stat.episode_number)]
 
 	return JsonResponse(respondent_list,safe=False)
