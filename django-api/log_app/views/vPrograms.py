@@ -325,91 +325,103 @@ def interactivity(request):
 		# if a specific program is selected as a filter and if polls is linked to another program instance
 		if program.poll_program_id:
 			poll_segments = PollSegment.objects.filter(program__id=program.poll_program_id).order_by('episode_number')
-			respondent_stat = RespondentStat.objects.filter(program__id=program.poll_program_id).order_by('episode_number')
+			respondent_stat = RespondentStat.objects.filter(program__id=program.poll_program_id)
 		else:
 			poll_segments = PollSegment.objects.filter(program__id=request.GET['program']).order_by('episode_number')
-			respondent_stat = RespondentStat.objects.filter(program__id=request.GET['program']).order_by('episode_number')
+			respondent_stat = RespondentStat.objects.filter(program__id=request.GET['program'])
 	elif 'radio_station' in request.GET and not request.GET['radio_station'] == 'all':
 		from django.db.models import Q
 		programs = Program.objects.filter(radio_station=request.GET['radio_station'],project=request.GET['project']).exclude(poll_program_id=None).values_list('poll_program_id',flat=True)
-		poll_segments = PollSegment.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station'])).order_by('episode_number')
-		respondent_stat = RespondentStat.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station'])).order_by('episode_number')
+		poll_segments = PollSegment.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station'])).order_by('episode_number','program')
+		respondent_stat = RespondentStat.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station']))
 	else:
-		poll_segments = PollSegment.objects.filter(program__project=request.GET['project']).order_by('episode_number')
-		respondent_stat = RespondentStat.objects.filter(program__project=request.GET['project']).order_by('episode_number')
+		poll_segments = PollSegment.objects.filter(program__project=request.GET['project']).order_by('episode_number','program')
+		respondent_stat = RespondentStat.objects.filter(program__project=request.GET['project'])
 
 	series = [[],[],[]]
 	labels = []
 	total_responses = 0
 	unique_respondents = []
 	episodes = 0
-	programs = []
-	week = None
 	init_program = 0
-	episode_respondents = []
-	episode_responses = 0
 
-	import json,itertools
+	episode_respondents = []
+
+	episode_responses = 0
+	episode_repeat_respondent = 0
+
+	previous_program = poll_segments[0].program.id
+	week = poll_segments[0].episode_number
+	counter = 0
+	programs = []
+
+	import json
 	for poll in poll_segments:
 
 		# checks if the polling data is shared with other programs
-		if not poll.program.poll_program_id:
-			if not poll.program.id in programs:
-				episodes +=poll.program.weeks_aired()
-				programs.append(poll.program.id)
-
-			total_responses += poll.number_of_responses
-
-			# the unique respondent number for each week is calculated here
-			if week and not week == poll.episode_number:
-				series[1].append(episode_responses)
-
-				episode_respondent_stat = respondent_stat.filter(episode_number = week)
-				if episode_respondent_stat:
-					stat = episode_respondent_stat[0]
-					episode_respondents = episode_respondents+json.loads(stat.unique_respondents_list)
-
-					# filter out the redundunet occurences
-					episode_respondents = set(itertools.chain(episode_respondents))
-
-					# add episode respondents to all unique respondents list
-					unique_respondents = unique_respondents + list(episode_respondents)
-
-					episode_respondents = len(episode_respondents)
-					series[0].append(episode_respondents+stat.repeat_respondents_number)
-				else:
-					series[0].append(None)
+		# keeping count of the number of episodes with unique polling
 
 
-				# reset episode respondents list
-				episode_respondents = []
-				episode_responses = 0
+		# keeping count of the total # of the responses
+		total_responses += poll.number_of_responses
 
-				labels.append(label)
+		if not week == poll.episode_number:
 
-			label = 'Ep'+str(poll.episode_number)
-			week = poll.episode_number
-			episode_responses += poll.number_of_responses
+			series[1].append(episode_responses)
 
-			init_program = poll.program.id
+			stat = respondent_stat.filter(program=previous_program,episode_number = week).last()
+			counter = counter+1
+			if stat:
+				episode_respondents = episode_respondents+json.loads(stat.unique_respondents_list)
+				episode_repeat_respondent += stat.repeat_respondents_number
 
-	episode_respondent_stat = respondent_stat.filter(episode_number = week)
-	if episode_respondent_stat:
-		stat = episode_respondent_stat[0]
+				# add episode respondents to all unique respondents list
+				unique_respondents = unique_respondents + episode_respondents
+
+				episode_respondents = len(episode_respondents)+episode_repeat_respondent
+				series[0].append(episode_respondents)
+			else:
+				series[0].append(None)
+
+
+			# reset episode respondents list
+			episode_respondents = []
+			episode_responses = 0
+			episode_repeat_respondent = 0
+			previous_program = poll.program.id
+			episodes = episodes+1
+
+			labels.append(label)
+		elif not poll.program.id == previous_program:
+			stat = respondent_stat.filter(program=previous_program,episode_number=week).last()
+			previous_program = poll.program.id
+			episodes = episodes+1
+
+			if stat:
+				episode_respondents = episode_respondents+json.loads(stat.unique_respondents_list)
+				episode_repeat_respondent += stat.repeat_respondents_number
+
+		label = 'Ep'+str(poll.episode_number)
+		week = poll.episode_number
+		episode_responses += poll.number_of_responses
+
+	stat = respondent_stat.filter(program=poll.program,episode_number = week).last()
+	if stat:
+		series[1].append(episode_responses)
 		episode_respondents = episode_respondents+json.loads(stat.unique_respondents_list)
 
-	# Calculate the last iteration
-	if episode_respondents:
-		series[1].append(episode_responses)
-		episode_respondents = set(itertools.chain(episode_respondents))
-		unique_respondents = unique_respondents + list(episode_respondents)
-		episode_respondents = len(episode_respondents)
-		series[0].append(episode_respondents+stat.repeat_respondents_number)
+		# add episode respondents to all unique respondents list
+		unique_respondents = unique_respondents + episode_respondents
+		episode_repeat_respondent += stat.repeat_respondents_number
+		episode_respondents = len(episode_respondents)+episode_repeat_respondent
+
+		series[0].append(episode_respondents)
 		labels.append(label)
-		unique_respondents = set(itertools.chain(unique_respondents))
+		episodes = episodes+1
 	else:
 		series[0].append(None)
 
+	unique_respondents = set(unique_respondents)
 	unique_respondents = len(unique_respondents)
 
 	questions = len(poll_segments)
@@ -454,33 +466,32 @@ def interactivity_export(request):
 	return JsonResponse(data,safe=False)
 
 def export_respondents(request):
-	# For testing export only episode 11
 	if 'program' in request.GET and not request.GET['program'] == 'all':
 		program = Program.objects.get(id=request.GET['program'])
 
 		# if a specific program is selected as a filter and if polls is linked to another program instance
 		if program.poll_program_id:
-			respondent_stat = RespondentStat.objects.filter(program__id=program.poll_program_id).order_by('program','episode_number')
+			respondent_stat = RespondentStat.objects.filter(program__id=program.poll_program_id).order_by('episode_number','program')
 		else:
-			respondent_stat = RespondentStat.objects.filter(program__id=request.GET['program']).order_by('program','episode_number')
+			respondent_stat = RespondentStat.objects.filter(program__id=request.GET['program']).order_by('episode_number','program')
 	elif 'radio_station' in request.GET and not request.GET['radio_station'] == 'all':
 		from django.db.models import Q
 		programs = Program.objects.filter(radio_station=request.GET['radio_station'],project=request.GET['project']).exclude(poll_program_id=None).values_list('poll_program_id',flat=True)
-		respondent_stat = RespondentStat.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station'])).order_by('program','episode_number')
+		respondent_stat = RespondentStat.objects.filter(Q(program__id__in=programs)|Q(program__project=request.GET['project'],program__radio_station=request.GET['radio_station'])).order_by('episode_number','program')
 	else:
-		respondent_stat = RespondentStat.objects.filter(program__project=request.GET['project']).order_by('program','episode_number')
+		respondent_stat = RespondentStat.objects.filter(program__project=request.GET['project']).order_by('episode_number','program')
 
 	respondent_list = {}
 	program_id_name = {}
 	import json
+	prev_respondent_stat = None
+	
 	for stat in respondent_stat:
 		program_id_name[stat.program.id] = stat.program.name
 
-		if not stat.program.id in respondent_list:
-			respondent_list[stat.program.id] = []
-
 		unique_respondents = json.loads(stat.unique_respondents_list)
 		for new_respondent in unique_respondents:
+
 			if new_respondent in respondent_list:
 				respondent_list[new_respondent].append(stat.program.name+' Ep-'+str(stat.episode_number))
 			else:
