@@ -105,7 +105,7 @@ def target_stats(request):
 
     total_hours = 0
     total_responses = 0
-    total_respondents = 0
+    total_respondents = []
     percentage_better_gei = 0
     total_episodes_aired = 0
     average_respondents = 0
@@ -123,11 +123,12 @@ def target_stats(request):
 
     weekdays = ( 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
 
-    import csv
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="Uliza-Log-export'
-    writer = csv.writer(response)
-    writer.writerow(['Radio series code','Public name','Radio station name','Project name','Country','Episodes aired','Episodes reviewed','Airtime (mins)','start date','end_date'])
+    import json
+    # import csv
+    # response = HttpResponse(content_type='text/csv')
+    # response['Content-Disposition'] = 'attachment; filename="Uliza-Log-export'
+    # writer = csv.writer(response)
+    # writer.writerow(['Radio series code','Public name','Radio station name','Project name','Country','Episodes aired','Episodes reviewed','Airtime (mins)','start date','end_date'])
 
     for program in programs:
         avg_number_of_broadcast +=1
@@ -231,13 +232,12 @@ def target_stats(request):
                 polling_stats = RespondentStat.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
                 total_polls += len(polls)
                 responses = polls.aggregate(Sum('number_of_responses'))
-                respondents = polling_stats.aggregate(Sum('new_respondents_number'))
 
                 if responses['number_of_responses__sum']:
                     total_responses += responses['number_of_responses__sum']
 
-                if respondents['new_respondents_number__sum']:
-                    total_respondents += respondents['new_respondents_number__sum']
+                for poll in polling_stats:
+                    total_respondents = total_respondents + json.loads(poll.unique_respondents_list)
 
         total_better_episodes += episodes_better_scored
 
@@ -276,6 +276,8 @@ def target_stats(request):
     indicators = indicators | project_indicators
     indicators = indicators.values()
     # targets = Target.objects.filter(project__id=project.id)
+    total_respondents = set(total_respondents)
+    total_respondents = len(total_respondents)
 
     results = {}
 
