@@ -264,12 +264,18 @@ def target_stats(request):
     total_stations = len(total_stations)
 
     if avg_number_of_broadcast > 0:
-        avg_number_of_broadcast = avg_number_of_broadcast/len(programs)
+        avg_number_of_broadcast = float(avg_number_of_broadcast)/len(programs)
+        avg_number_of_broadcast = round(avg_number_of_broadcast,1)
+
+        check_trailing_zero = str(avg_number_of_broadcast)
+        check_trailing_zero = check_trailing_zero[len(check_trailing_zero)-1]
+        if check_trailing_zero == '0':
+            avg_number_of_broadcast = round(avg_number_of_broadcast)
 
     if total_number_of_programs > 0:
         episode_length_avg = episode_length_avg/total_number_of_programs
 
-    avg_number_of_broadcast = math.floor(avg_number_of_broadcast)
+    avg_number_of_broadcast = round(avg_number_of_broadcast,1)
     total_hours = math.floor(total_hours)
     percentage_reviews = math.floor(percentage_reviews)
 
