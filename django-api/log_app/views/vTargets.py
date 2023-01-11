@@ -191,7 +191,9 @@ def target_stats(request):
                     continue;
                 else:
                     log_id = review.log.id
-                percentage_better_gei += review.calculate_score(True)
+                if review.calculate_score(True) > 50:
+                    percentage_better_gei += 1
+
                 total_reviews += 1
 
             episodes_better_scored = len(episodes_better_scored)
@@ -251,7 +253,7 @@ def target_stats(request):
         total_better_episodes = math.floor(total_better_episodes)
 
     if percentage_better_gei > 0:
-        percentage_better_gei = (float(percentage_better_gei)/total_reviews)
+        percentage_better_gei = (float(percentage_better_gei)/total_reviews)*100
         percentage_better_gei = math.floor(percentage_better_gei)
 
 
