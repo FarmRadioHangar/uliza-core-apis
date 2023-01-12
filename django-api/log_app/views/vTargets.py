@@ -107,6 +107,7 @@ def target_stats(request):
         if end_date > today:
             end_date = today
         programs = Program.objects.filter(project__in=project,end_date__gte = start_datetime,start_date__lte=end_date)
+    # specific project, specific country
     else:
         # Me was born 08-04-1991
         start_datetime = datetime.datetime(1991,4,8,0,0,0)
@@ -306,7 +307,8 @@ def target_stats(request):
 
     from django.contrib.humanize.templatetags.humanize import naturalday
     for i in indicators:
-        t = Target.objects.filter(indicator__id=i['id'],project__in=project).order_by('last_updated_at')
+        project = programs.values_list('project__id',flat=True)
+        t = Target.objects.filter(indicator__id=i['id'],project__id__in=project).order_by('last_updated_at')
         i['editing'] = False
         i['saving'] = False
         i['created_at'] = ''
