@@ -152,7 +152,7 @@ def target_stats(request):
         # program_episodes_aired represent the # of episodes aired by this specific program
         program_episodes_aired = program.weeks_aired()
         episode_length_avg += program.duration
-        start_week_number=1
+        start_week_number=0
         episodes_better_scored = 0
         end_week_number = program.weeks
         program.start_date = program.start_date.replace(tzinfo=None)
