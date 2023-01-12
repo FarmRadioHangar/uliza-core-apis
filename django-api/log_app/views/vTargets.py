@@ -307,8 +307,7 @@ def target_stats(request):
 
     from django.contrib.humanize.templatetags.humanize import naturalday
     for i in indicators:
-        project = programs.values_list('project__id',flat=True)
-        t = Target.objects.filter(indicator__id=i['id'],project__id__in=project).order_by('last_updated_at')
+        t = Target.objects.filter(indicator__id=i['id']).order_by('last_updated_at')
         i['editing'] = False
         i['saving'] = False
         i['created_at'] = ''
