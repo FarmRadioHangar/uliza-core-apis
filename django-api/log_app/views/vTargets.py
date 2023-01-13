@@ -15,7 +15,7 @@ class TargetGet(generics.ListCreateAPIView):
     queryset = Target.objects.all()
     model = Target
     serializer_class = TargetSerializer
-    filter_fields = ['id','project','indicator','project__code']
+    filter_fields = ['id','project','indicator','project__code','country']
 
     def get_queryset(self):
         project_list = self.request.GET.get('project__id__in')
