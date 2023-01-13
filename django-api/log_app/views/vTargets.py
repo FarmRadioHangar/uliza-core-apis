@@ -308,8 +308,12 @@ def target_stats(request):
 		return response
 
     from django.contrib.humanize.templatetags.humanize import naturalday
-    for i in indicators:
+    if programs:
         project = programs.values_list('project__id',flat=True)
+    else:
+        project = project.values_list('id',flat=True)
+
+    for i in indicators:
         t = Target.objects.filter(indicator__id=i['id'],project__id__in=project).order_by('last_updated_at')
         i['editing'] = False
         i['saving'] = False
