@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 from log_app.models import Project,Program,Log,PollSegment,Review,Target,Contact,Report,Indicator,RespondentStat
@@ -15,7 +16,8 @@ class TargetGet(generics.ListCreateAPIView):
     queryset = Target.objects.all()
     model = Target
     serializer_class = TargetSerializer
-    filter_fields = ['id','project','indicator','project__code','country']
+    filter_backends = (filters.OrderingFilter, DjangoFilterBackend,)
+    filter_fields = ['id','project','indicator','project__code','project__country']
 
     def get_queryset(self):
         project_list = self.request.GET.get('project__id__in')

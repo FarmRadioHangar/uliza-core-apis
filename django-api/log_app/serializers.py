@@ -37,6 +37,8 @@ class TargetSerializer(serializers.ModelSerializer):
 	project__code = serializers.CharField(source='project.code',read_only=True)
 	project__shortname = serializers.CharField(source='project.shortname',read_only=True)
 	country = serializers.CharField(source='project.country',read_only=True)
+	project__country = serializers.CharField(source='project.country.id',read_only=True)
+
 	class Meta:
 		model = Target
 		fields = "__all__"
