@@ -86,18 +86,21 @@ def target_stats(request):
 
     # Project filter
     if not request.GET['project_id'] == '0':
+        # (1) specific country & project
         project = Project.objects.filter(id=request.GET['project_id'])
 
+        # (2) multi-project countries
         if request.GET['country'] == 'multi_country':
             project = Project.objects.filter(code=project[0].code,country__exclude=False)
     else:
-        # Country filter
+        # (3) all country, all project
         if request.GET['country'] == 'all':
             project = Project.objects.filter(country__exclude=False)
+        # (4) specific country, all projects
         elif not request.GET['country'] == 'multi_country':
             project = Project.objects.filter(country__id = request.GET['country'],country__exclude=False)
         else:
-            project = Project.objects.filter(country__exclude=False)
+            return HttpResponse('Error: the inputs are invalid')
 
 
     if 'start_date' in request.GET and 'end_date' in request.GET:
@@ -308,10 +311,8 @@ def target_stats(request):
 		return response
 
     from django.contrib.humanize.templatetags.humanize import naturalday
-    if programs:
-        project = programs.values_list('project__id',flat=True)
-    else:
-        project = project.values_list('id',flat=True)
+    
+    project = project.values_list('id',flat=True)
 
     for i in indicators:
         t = Target.objects.filter(indicator__id=i['id'],project__id__in=project).order_by('last_updated_at')
