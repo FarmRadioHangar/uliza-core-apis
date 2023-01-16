@@ -154,29 +154,27 @@ def target_stats(request):
         # number of episodes represent the episode number in the the time interval chosen
         number_of_episodes = 0
 
-        # program_episodes_aired represent the # of episodes aired by this specific program
-        program_episodes_aired = program.weeks_aired()
         episode_length_avg += program.duration
         start_week_number=0
         episodes_better_scored = 0
         end_week_number = program.weeks
         program.start_date = program.start_date.replace(tzinfo=None)
 
-        if program.start_date <= start_datetime:
+        if program.start_date < start_datetime:
             week_diff = weeks_diff(program.start_date,start_datetime)
 
-            start_week_number = week_diff[0]+1
-            if program.start_date.weekday() <= start_datetime.weekday():
+            start_week_number = week_diff[0]
+            if program.start_date.weekday() < start_datetime.weekday():
                 start_week_number +=1
 
 
-        if program.end_date >= end_date:
+        if program.end_date > end_date:
             week_diff = weeks_diff(end_date,program.end_date)
             end_week_number = week_diff[0]
             end_week_number = program.weeks-end_week_number
 
-            if end_date.weekday()>= program.start_date.weekday():
-                end_week_number +=1
+            if end_date.weekday() < program.start_date.weekday():
+                end_week_number -=1
 
         number_of_episodes = end_week_number - start_week_number
         postponements = Log.objects.filter(program=program,postpone=True,week__gte=start_week_number,week__lte=end_week_number)
@@ -187,10 +185,6 @@ def target_stats(request):
             duration = program.duration*2
         else:
             duration = program.duration
-
-        if program_episodes_aired > number_of_episodes:
-            # cut the program episodes aired number to the number within the time interval
-            program_episodes_aired = number_of_episodes
 
         if number_of_episodes > 0:
             # todo there are times where there could be duplicate reviews for an episode
@@ -221,7 +215,7 @@ def target_stats(request):
                 total_languages[program.broadcast_language.id] = program.broadcast_language.name
 
             # add the program_episode_aired to the total_episodes_aired
-            total_episodes_aired = total_episodes_aired + program_episodes_aired
+            total_episodes_aired = total_episodes_aired + number_of_episodes
 
             if program.implementation_type == 'impact':
                 impact_stations[program.radio_station.id] = program.radio_station.name
@@ -233,7 +227,7 @@ def target_stats(request):
                 if weekdays.index(program.repeat_week_day) <= program.start_date.weekday() or weekdays.index(program.repeat_week_day) > end_date.weekday():
                     total_hours = total_hours - duration/2
 
-            duration = duration*program_episodes_aired
+            duration = duration*number_of_episodes
             total_hours = total_hours + duration
 
             if 'export' in request.GET:
@@ -311,7 +305,7 @@ def target_stats(request):
 		return response
 
     from django.contrib.humanize.templatetags.humanize import naturalday
-    
+
     project = project.values_list('id',flat=True)
 
     for i in indicators:

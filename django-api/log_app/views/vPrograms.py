@@ -217,7 +217,7 @@ def stats(request):
 
 	for program in programs:
 		number_of_episodes = 0
-		start_week_number=1
+		start_week_number=0
 		better_scores = 0
 		end_week_number = program.weeks
 		program.start_date = program.start_date.replace(tzinfo=None)
@@ -225,8 +225,8 @@ def stats(request):
 		if program.start_date < start_date:
 			week_diff = weeks_diff(program.start_date,start_date)
 
-			start_week_number = week_diff[0]+1
-			if program.start_date.weekday() <= start_date.weekday():
+			start_week_number = week_diff[0]
+			if program.start_date.weekday() < start_date.weekday():
 				start_week_number +=1
 
 
@@ -235,8 +235,8 @@ def stats(request):
 			end_week_number = week_diff[0]
 			end_week_number = program.weeks-end_week_number
 
-			if end_date.weekday()>= program.start_date.weekday():
-				end_week_number +=1
+			if end_date.weekday() < program.start_date.weekday():
+				end_week_number -=1
 
 		number_of_episodes = end_week_number - start_week_number
 		postponements = Log.objects.filter(program=program,postpone=True,week__gte=start_week_number,week__lte=end_week_number)
@@ -246,8 +246,6 @@ def stats(request):
 			duration = program.duration*2
 		else:
 			duration = program.duration
-
-		duration_multiplier = number_of_episodes
 
 		if number_of_episodes > 0:
 			# todo there are times where there could be duplicate reviews for an episode
@@ -273,12 +271,11 @@ def stats(request):
 
 			# total_hours will get into negative
 			if program.repeat_start_time and program.repeat_week_day:
-				if weekdays.index(program.repeat_week_day) <= program.start_date.weekday() or weekdays.index(program.repeat_week_day) > end_date.weekday():
+				if weekdays.index(program.repeat_week_day) < program.start_date.weekday() or weekdays.index(program.repeat_week_day) > end_date.weekday():
 					total_hours = total_hours - duration/2
 
-			duration = duration*duration_multiplier
+			duration = duration*number_of_episodes
 			total_hours = total_hours + duration
-
 
 			if not program.poll_program_id:
 				polls = PollSegment.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
@@ -485,7 +482,7 @@ def export_respondents(request):
 	program_id_name = {}
 	import json
 	prev_respondent_stat = None
-	
+
 	for stat in respondent_stat:
 		program_id_name[stat.program.id] = stat.program.name
 
