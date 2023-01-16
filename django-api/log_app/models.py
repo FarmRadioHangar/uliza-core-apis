@@ -881,6 +881,10 @@ class BroadcastLanguage(models.Model):
     name = models.CharField(max_length=40)
     code = models.CharField(max_length=20)
     created_by = models.ForeignKey('Contact')
+    
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self,*args,**kwargs):
         if not self.id:
