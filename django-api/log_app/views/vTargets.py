@@ -116,7 +116,7 @@ def target_stats(request):
     else:
         # Me was born 08-04-1991
         start_datetime = datetime.datetime(1991,4,8,0,0,0)
-        start_date = None
+        start_date = datetime.date(1991,4,8)
         end_date = datetime.date.today()
         # country and projects filter to be done
         programs = Program.objects.filter(project__in=projects)
@@ -309,7 +309,7 @@ def target_stats(request):
 
     from django.contrib.humanize.templatetags.humanize import naturalday
 
-    projects = projects.exclude(id__in=project_ids)
+    projects = projects.filter(end_date__gte = start_date,start_date__lte=end_date).exclude(id__in=project_ids)
     projects = list(projects.values_list('id',flat=True))
     project_ids = project_ids + projects
 
