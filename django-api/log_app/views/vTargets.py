@@ -87,18 +87,18 @@ def target_stats(request):
     # Project filter
     if not request.GET['project_id'] == '0':
         # (1) specific country & project
-        project = Project.objects.filter(id=request.GET['project_id'])
+        projects = Project.objects.filter(id=request.GET['project_id'])
 
-        # (2) multi-project countries
+        # (2) multi-projects countries
         if request.GET['country'] == 'multi_country':
-            project = Project.objects.filter(code=project[0].code,country__exclude=False)
+            projects = Project.objects.filter(code=projects[0].code,country__exclude=False)
     else:
-        # (3) all country, all project
+        # (3) all country, all projects
         if request.GET['country'] == 'all':
-            project = Project.objects.filter(country__exclude=False)
+            projects = Project.objects.filter(country__exclude=False)
         # (4) specific country, all projects
         elif not request.GET['country'] == 'multi_country':
-            project = Project.objects.filter(country__id = request.GET['country'],country__exclude=False)
+            projects = Project.objects.filter(country__id = request.GET['country'],country__exclude=False)
         else:
             return HttpResponse('Error: the inputs are invalid')
 
@@ -111,15 +111,15 @@ def target_stats(request):
 
         if end_date > today:
             end_date = today
-        programs = Program.objects.filter(project__in=project,end_date__gte = start_datetime,start_date__lte=end_date)
-    # specific project, specific country
+        programs = Program.objects.filter(project__in=projects,end_date__gte = start_datetime,start_date__lte=end_date)
+    # specific projects, specific country
     else:
         # Me was born 08-04-1991
         start_datetime = datetime.datetime(1991,4,8,0,0,0)
         start_date = None
         end_date = datetime.date.today()
-        # country and project filter to be done
-        programs = Program.objects.filter(project__in=project)
+        # country and projects filter to be done
+        programs = Program.objects.filter(project__in=projects)
 
     total_hours = 0
     total_responses = 0
@@ -147,12 +147,16 @@ def target_stats(request):
     # response['Content-Disposition'] = 'attachment; filename="Uliza-Log-export'
     # writer = csv.writer(response)
     # writer.writerow(['Radio series code','Public name','Radio station name','Project name','Country','Episodes aired','Episodes reviewed','Airtime (mins)','start date','end_date'])
+    project_ids = []
 
     for program in programs:
         avg_number_of_broadcast +=1
 
         # number of episodes represent the episode number in the the time interval chosen
         number_of_episodes = 0
+
+        if program.id in project_ids:
+            project_ids.append(program.project.id)
 
         episode_length_avg += program.duration
         start_week_number=0
@@ -191,7 +195,6 @@ def target_stats(request):
             reviews = Review.objects.filter(log__week__gte=start_week_number,log__week__lte=end_week_number,log__program=program).order_by('log__id')
 
             total_number_of_programs += 1
-            start_week_number = int(start_week_number)
             start_week_number = int(start_week_number)
             episodes_better_scored = reviews.filter(numerical_score__gt=50)
 
@@ -306,10 +309,12 @@ def target_stats(request):
 
     from django.contrib.humanize.templatetags.humanize import naturalday
 
-    project = project.values_list('id',flat=True)
+    projects = projects.exclude(id__in=project_ids)
+    projects = list(projects.values_list('id',flat=True))
+    project_ids = project_ids + projects
 
     for i in indicators:
-        t = Target.objects.filter(indicator__id=i['id'],project__id__in=project).order_by('last_updated_at')
+        t = Target.objects.filter(indicator__id=i['id'],project__id__in=project_ids).order_by('last_updated_at')
         i['editing'] = False
         i['saving'] = False
         i['created_at'] = ''
