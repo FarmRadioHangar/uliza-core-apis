@@ -128,6 +128,7 @@ def target_stats(request):
     total_episodes_aired = 0
     average_respondents = 0
     total_polls = 0
+    total_poll_questions = 0
     total_stations = {}
     total_languages = {}
     total_reviews = 0
@@ -247,8 +248,10 @@ def target_stats(request):
             if not program.poll_program_id:
                 polls = PollSegment.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
                 polling_stats = RespondentStat.objects.filter(program=program,episode_number__gte=start_week_number,episode_number__lte=end_week_number)
-                total_polls += len(polls)
+
+                total_poll_questions += len(polls)
                 responses = polls.aggregate(Sum('number_of_responses'))
+                total_polls += polls.values('episode_number').distinct().count()
 
                 if responses['number_of_responses__sum']:
                     total_responses += responses['number_of_responses__sum']
@@ -369,6 +372,7 @@ def target_stats(request):
 						'unknown': 'TBD',
                         'avg_number_of_broadcast': avg_number_of_broadcast,
 						'total_polls':total_polls,
+						'total_poll_questions':total_poll_questions,
 						'total_languages':total_languages,
 						'total_hours':total_hours,
 						'total_responses':total_responses,
