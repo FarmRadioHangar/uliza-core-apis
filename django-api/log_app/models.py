@@ -90,8 +90,9 @@ class RadioTransmission(models.Model):
     gain = models.CharField(null=True, blank=True,max_length=80)
     height = models.CharField(null=True, blank=True,max_length=80)
     power = models.CharField(null=True, blank=True,max_length=80)
-    coordinates = models.CharField(null=True, blank=True,max_length=120)
-
+    longitude = models.CharField(null=True,blank=True,max_length=100)
+    latitude = models.CharField(null=True,blank=True,max_length=100)
+    mapping_data = models.BooleanField(default=False)
 
 def filename(instance, filename):
 	return 'FRI-LOG-'+str(instance.program.id)+'-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
@@ -881,7 +882,7 @@ class BroadcastLanguage(models.Model):
     name = models.CharField(max_length=40)
     code = models.CharField(max_length=20)
     created_by = models.ForeignKey('Contact')
-    
+
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

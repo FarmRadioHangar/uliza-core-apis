@@ -262,7 +262,6 @@ def stats(request):
 
 			total_number_of_programs += 1
 			start_week_number = int(start_week_number)
-			start_week_number = int(start_week_number)
 			better_scores = reviews.filter(numerical_score__gt=33)
 			better_scores = len(better_scores)
 			total_reviews += len(reviews)

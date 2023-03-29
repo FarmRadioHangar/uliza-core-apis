@@ -13,7 +13,7 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
     model = RadioTransmission
     many = True
     serializer_class = RadioTransmissionSerializer
-    filter_fields = ['radio_station']
+    filter_fields = ['radio_station','radio_station__country']
 
     def create(self, request, *args, **kwargs):
         transmissions = request.data.getlist('frequency')
@@ -26,7 +26,8 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
     				     'gain': request.data.getlist('gain')[index],
     					 'height': request.data.getlist('height')[index],
     				     'power': request.data.getlist('power')[index],
-                         'coordinates': request.data.getlist('coordinates')[index]})
+                         'longitude': request.data.getlist('longitude')[index],
+                         'latitude': request.data.getlist('latitude')[index]})
 
             serializer = self.get_serializer(data=data[index])
             serializer.is_valid(raise_exception=True)
@@ -69,7 +70,8 @@ class RadioTransmissionEntity(generics.RetrieveUpdateDestroyAPIView):
                         'gain': request.data['gain'][index],
                         'height': request.data['height'][index],
                         'power': request.data['power'][index],
-                        'coordinates': request.data['coordinates'][index]},
+                        'longitude': request.data['longitude'][index],
+                        'latitude': request.data['latitude'][index]},
 
                 serializer = self.get_serializer(instance,data=form_data[0],partial=True)
                 serializer.is_valid(raise_exception=True)

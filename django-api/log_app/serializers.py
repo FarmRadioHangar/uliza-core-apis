@@ -107,6 +107,8 @@ class ContactSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class RadioTransmissionSerializer(serializers.ModelSerializer):
+	radio_station__country = serializers.IntegerField(source='radio_station.country.id',read_only=True)
+	radio_station__name = serializers.CharField(source='radio_station.name',read_only=True)
 	class Meta:
 		model = RadioTransmission
 		fields = "__all__"
