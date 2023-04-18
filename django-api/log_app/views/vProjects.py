@@ -41,6 +41,18 @@ class ProjectGet(generics.ListCreateAPIView):
 	fields=['id']
 	search_fields = ('name','doner','country__name')
 
+	def get_queryset(self):
+		pk_list = self.request.GET.get('ids')
+
+		if pk_list:
+			pk_list = pk_list.split(',')
+			queryset = Project.objects.filter(pk__in=pk_list)
+		else:
+			queryset = Project.objects.all()
+
+		return queryset
+
+
 class ProjectEntity(generics.RetrieveUpdateAPIView):
 	queryset = Project.objects.all()
 	model = Project
