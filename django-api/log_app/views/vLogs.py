@@ -157,9 +157,7 @@ class LogGet(generics.ListCreateAPIView):
 		pk_list = self.request.GET.get('program__in')
 		if pk_list:
 			pk_list = pk_list.split(',')
-			logs = queryset.filter(program__in=pk_list)
-		else:
-			logs = queryset
+			queryset = queryset.filter(program__in=pk_list)
 
 		pk_list = self.request.GET.get('project__in')
 		project_search = self.request.GET.get('project__search')
