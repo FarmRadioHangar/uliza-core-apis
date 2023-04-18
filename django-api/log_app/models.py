@@ -259,7 +259,7 @@ class Contact(models.Model):
     roles = (
         ('unknown', 'Unknown'),
         ('staff', 'Staff'),
-        ('consultant', 'Consultant'),
+        ('contributor', 'Contributor'),
         ('broadcaster', 'Broadcaster'),
         ('gender_specialist', 'Gender Specialist'),
         ('knowledge_partner', 'Knowledge Partner'),
