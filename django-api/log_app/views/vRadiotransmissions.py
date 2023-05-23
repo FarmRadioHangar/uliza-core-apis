@@ -26,6 +26,7 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
     				     'gain': request.data.getlist('gain')[index],
     					 'height': request.data.getlist('height')[index],
     				     'power': request.data.getlist('power')[index],
+    				     # 'mapping_data': request.data.getlist('mapping_data')[index],
                          'longitude': request.data.getlist('longitude')[index],
                          'latitude': request.data.getlist('latitude')[index]})
 
@@ -69,6 +70,7 @@ class RadioTransmissionEntity(generics.RetrieveUpdateDestroyAPIView):
                         'radio_station': request.data['radio_station'][index],
                         'gain': request.data['gain'][index],
                         'height': request.data['height'][index],
+                        'mapping_data': request.data['mapping_data'][index],
                         'power': request.data['power'][index],
                         'longitude': request.data['longitude'][index],
                         'latitude': request.data['latitude'][index]},
@@ -76,6 +78,7 @@ class RadioTransmissionEntity(generics.RetrieveUpdateDestroyAPIView):
                 serializer = self.get_serializer(instance,data=form_data[0],partial=True)
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
+                index = index +1
         else:
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
