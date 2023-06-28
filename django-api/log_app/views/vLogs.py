@@ -102,6 +102,8 @@ class ProgramLogFeed(Feed):
     def item_enclosure_url(self, item):
         if item.recording_backup:
             return 'https://'+self.domain+item.recording_backup.url
+        elif item.blob_media_storage:
+            return item.blob_media_storage.url
         else:
             return ''
 
@@ -115,6 +117,8 @@ class ProgramLogFeed(Feed):
     def item_link(self, item):
         if item.recording_backup:
             return 'https://'+self.domain+item.recording_backup.url
+        elif item.blob_media_storage:
+            return item.blob_media_storage.url
         else:
             return ''
 
