@@ -125,6 +125,7 @@ class Report(models.Model):
     report_date = models.DateField()
     note = models.TextField(null=True,default=None,blank=True)
     reported_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
+    estimate = models.BooleanField(default=False)
 
     # Time track
     last_updated_at = models.DateTimeField(auto_now=True)

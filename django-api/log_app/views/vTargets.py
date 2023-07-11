@@ -339,7 +339,9 @@ def target_stats(request):
             i['total_result'] = t.aggregate(calc('value'))['value__'+i['aggregation']]
 
             if start_date:
-                result = Report.objects.filter(target__in=t,report_date__gte=start_date,report_date__lte=end_date).aggregate(calc('value'))
+                result = Report.objects.filter(target__in=t,report_date__gte=start_date,report_date__lte=end_date).aggregate(calc('value'),Sum('estimate'))
+                i['estimate'] = result['estimate__sum']
+                
                 if not result['value__'+i['aggregation']]:
                     i['requested_result'] = 0
                     i['result'] = 0
