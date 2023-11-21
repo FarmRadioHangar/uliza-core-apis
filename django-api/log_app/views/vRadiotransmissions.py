@@ -13,7 +13,8 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
     model = RadioTransmission
     many = True
     serializer_class = RadioTransmissionSerializer
-    filter_fields = ['radio_station','radio_station__country']
+    ordering_fields = ('id')
+    filter_fields = ['id','radio_station','radio_station__country']
 
     def create(self, request, *args, **kwargs):
         transmissions = request.data.getlist('frequency')
