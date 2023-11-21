@@ -27,6 +27,7 @@ from log_app.views.vTargets import *
 from log_app.views.vReports import *
 from log_app.views.vIndicators import *
 from log_app.views.vRespondentStat import *
+from log_app.views.vMapRequests import *
 
 radio_stations = patterns('log_app.views.vRadiostations',
     url(r'/(?P<id>\d+)/projects$', radio_station_projects),
@@ -37,6 +38,11 @@ radio_stations = patterns('log_app.views.vRadiostations',
 radio_transmission = patterns('log_app.views.vRadiotransmissions',
     url(r'/(?P<id>\d+)$', RadioTransmissionEntity.as_view()),
     url(r'$', RadioTransmissionGet.as_view()),
+)
+
+map_request = patterns('log_app.views.vMapRequests',
+    url(r'/(?P<id>\d+)$', MapRequestEntity.as_view()),
+    url(r'$', MapRequestGet.as_view()),
 )
 
 programs = patterns('log_app.views.vPrograms',
@@ -201,6 +207,7 @@ urlpatterns = patterns('',
     url(r'countries', include(countries, 'countries')),
     url(r'group_accounts', include(group_accounts, 'group_accounts')),
     url(r'radio_transmission', include(radio_transmission, 'radio_transmission')),
+    url(r'map_request', include(map_request, 'map_request')),
     url(r'knowledge_partners', include(knowledge_partners, 'knowledge_partners')),
     url(r'logs', include(logs, 'logs')),
     url(r'presenters', include(presenters, 'presenters')),

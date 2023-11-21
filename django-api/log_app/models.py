@@ -94,6 +94,17 @@ class RadioTransmission(models.Model):
     latitude = models.CharField(null=True,blank=True,max_length=100)
     mapping_data = models.BooleanField(default=False)
 
+mapping_status = (('queued','Queued'),('running','Running'),('complete','Complete'),('stopped','Stopped'),('pending','Pending'))
+class MapRequest(models.Model):
+    emitters = models.ManyToManyField('RadioTransmission')
+    request_by = models.ForeignKey('Contact',null=True,blank=True,default=None)
+    geo_json_file = models.URLField(max_length=400,null=True,blank=True)
+    status = models.CharField(max_length=15,default='stopped',choices=mapping_status)
+
+    # Time track
+    last_updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 def filename(instance, filename):
 	return 'FRI-LOG-'+str(instance.program.id)+'-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
 

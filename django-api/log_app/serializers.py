@@ -113,6 +113,11 @@ class RadioTransmissionSerializer(serializers.ModelSerializer):
 		model = RadioTransmission
 		fields = "__all__"
 
+class MapRequestSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = MapRequest
+		fields = "__all__"
+
 class Auth0UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Auth0User
