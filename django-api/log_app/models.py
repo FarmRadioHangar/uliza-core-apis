@@ -94,7 +94,7 @@ class RadioTransmission(models.Model):
     latitude = models.CharField(null=True,blank=True,max_length=100)
     mapping_data = models.BooleanField(default=False)
 
-mapping_status = (('queued','Queued'),('running','Running'),('complete','Complete'),('stopped','Stopped'),('pending','Pending'))
+mapping_status = (('processing','Processing'),('done','Done'),('stopped','Stopped'),('pending','Pending'))
 class MapRequest(models.Model):
     emitters = models.ManyToManyField('RadioTransmission')
     request_by = models.ForeignKey('Contact',null=True,blank=True,default=None)

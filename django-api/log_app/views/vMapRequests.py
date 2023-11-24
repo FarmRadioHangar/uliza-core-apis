@@ -14,7 +14,7 @@ class MapRequestGet(generics.ListCreateAPIView):
     model = MapRequest
     serializer_class = MapRequestSerializer
     filter_backends = (filters.OrderingFilter, DjangoFilterBackend,)
-    filter_fields = ['id','emitters']
+    filter_fields = ['id','emitters','status']
     ordering_fields = ('id')
 
 class MapRequestEntity(generics.RetrieveUpdateAPIView):
