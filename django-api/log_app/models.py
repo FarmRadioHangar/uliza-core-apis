@@ -105,6 +105,15 @@ class MapRequest(models.Model):
     last_updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self,*args,**kwargs):
+        if self.id:
+            mreq = MapRequest.objects.get(id=self.id)
+
+            if not mreq.status == self.status:
+                if self.status == 'done':
+                    Notification.objects.create(url_model="radiostations:index",sent_to=self.request_by,content="Map request id - "+str(self.id),heading="Map ready")
+        return super(MapRequest,self).save(*args, **kwargs)
+
 def filename(instance, filename):
 	return 'FRI-LOG-'+str(instance.program.id)+'-'+str(instance.program.name)+'-'+str(instance.week)+'.mp3'
 
