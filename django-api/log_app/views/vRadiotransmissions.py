@@ -22,7 +22,10 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
         if project:
             stations = Program.objects.filter(project = project).values_list('radio_station',flat=True).distinct()
             queryset = RadioTransmission.objects.filter(radio_station__in=stations)
-            return queryset
+        else:
+            queryset = RadioTransmission.objects.all()
+
+        return queryset
 
     def create(self, request, *args, **kwargs):
         transmissions = request.data.getlist('frequency')
