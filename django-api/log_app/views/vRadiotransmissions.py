@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
-from log_app.models import RadioTransmission,RadioStation
+from log_app.models import RadioTransmission,RadioStation,Program
 from log_app.serializers import RadioTransmissionSerializer
 
 class RadioTransmissionGet(generics.ListCreateAPIView):
@@ -15,6 +15,14 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
     serializer_class = RadioTransmissionSerializer
     ordering_fields = ('id')
     filter_fields = ['id','radio_station','radio_station__country']
+
+    def get_queryset(self):
+        project = self.request.GET.get('project')
+
+        if project:
+            stations = Program.objects.filter(project = project).values_list('radio_station',flat=True).distinct()
+            queryset = RadioTransmission.objects.filter(radio_station__in=stations)
+            return queryset
 
     def create(self, request, *args, **kwargs):
         transmissions = request.data.getlist('frequency')
