@@ -180,6 +180,9 @@ def target_stats(request):
 
             if end_date.weekday() < program.start_date.weekday():
                 end_week_number -=1
+        elif program.end_date <= end_date:
+            week_diff = weeks_diff(program.start_date.date(),program.end_date)
+            end_week_number = week_diff[0]+1
 
         number_of_episodes = end_week_number - start_week_number
         postponements = Log.objects.filter(program=program,postpone=True,week__gte=start_week_number,week__lte=end_week_number)
@@ -341,7 +344,7 @@ def target_stats(request):
             if start_date:
                 result = Report.objects.filter(target__in=t,report_date__gte=start_date,report_date__lte=end_date).aggregate(calc('value'),Sum('estimate'))
                 i['estimate'] = result['estimate__sum']
-                
+
                 if not result['value__'+i['aggregation']]:
                     i['requested_result'] = 0
                     i['result'] = 0

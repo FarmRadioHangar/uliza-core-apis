@@ -82,15 +82,6 @@ class ProgramEntity(generics.RetrieveUpdateAPIView):
 	serializer_class = ProgramSerializer
 	lookup_field = 'id'
 
-	def perform_update(self, serializer):
-		# Set end_date by looking at the number weeks and adding it to the start_date
-		from datetime  import timedelta
-		from django.utils.dateparse import parse_datetime
-
-		if 'weeks' in self.request._data:
-			weeks = timedelta(weeks = int(self.request._data['weeks'])-1)
-			end_date = parse_datetime(self.request._data['start_date']) + weeks
-			serializer.save(end_date=end_date.strftime('%Y-%m-%d'))
 
 @api_view(['GET'])
 def to_archive(request):
