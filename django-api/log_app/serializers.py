@@ -114,6 +114,14 @@ class RadioTransmissionSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class MapRequestSerializer(serializers.ModelSerializer):
+	stations = serializers.SerializerMethodField()
+	request_by__first_name = serializers.CharField(source='request_by.first_name',read_only=True)
+	request_by__last_name = serializers.CharField(source='request_by.last_name',read_only=True)
+
+	def get_stations(self,instance):
+		# id_list = []
+		return instance.emitters.values_list('radio_station__name',flat=True).distinct()
+
 	class Meta:
 		model = MapRequest
 		fields = "__all__"
