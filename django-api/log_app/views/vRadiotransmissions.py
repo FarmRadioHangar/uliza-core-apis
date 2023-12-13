@@ -18,11 +18,16 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
 
     def get_queryset(self):
         project = self.request.GET.get('project')
+        stations = self.request.GET.get('stations')
         pk_list = self.request.GET.get('ids')
 
         if project:
-            stations = Program.objects.filter(project = project).values_list('radio_station',flat=True).distinct()
+            pk_list = project.split(',')
+            stations = Program.objects.filter(project__in = project).values_list('radio_station',flat=True).distinct()
             queryset = RadioTransmission.objects.filter(radio_station__in=stations)
+        elif stations:
+            pk_list = stations.split(',')
+            queryset = RadioTransmission.objects.filter(radio_station__in=pk_list)
         elif pk_list:
             pk_list = pk_list.split(',')
             queryset = RadioTransmission.objects.filter(id__in=pk_list)
