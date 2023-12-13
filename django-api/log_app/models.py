@@ -111,7 +111,7 @@ class MapRequest(models.Model):
 
             if not mreq.status == self.status:
                 if self.status == 'done':
-                    Notification.objects.create(url_model="radiostations:index",sent_to=self.request_by,content="Map request id - "+str(self.id),heading="Map ready")
+                    Notification.objects.create(url_model="maps:index",sent_to=self.request_by,content="Map request id - "+str(self.id),heading="Map ready")
         return super(MapRequest,self).save(*args, **kwargs)
 
 def filename(instance, filename):
