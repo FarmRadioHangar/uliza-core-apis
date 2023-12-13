@@ -23,7 +23,7 @@ class RadioTransmissionGet(generics.ListCreateAPIView):
 
         if project:
             pk_list = project.split(',')
-            stations = Program.objects.filter(project__in = project).values_list('radio_station',flat=True).distinct()
+            stations = Program.objects.filter(project__id__in = pk_list).values_list('radio_station',flat=True).distinct()
             queryset = RadioTransmission.objects.filter(radio_station__in=stations)
         elif stations:
             pk_list = stations.split(',')
