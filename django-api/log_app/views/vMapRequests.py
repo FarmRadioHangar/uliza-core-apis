@@ -28,7 +28,7 @@ class MapRequestGet(generics.ListCreateAPIView):
 
         return queryset
 
-class MapRequestEntity(generics.RetrieveUpdateAPIView):
+class MapRequestEntity(generics.RetrieveUpdateDestroyAPIView):
     queryset = MapRequest.objects.all()
     model = MapRequest
     serializer_class = MapRequestSerializer
