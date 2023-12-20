@@ -84,6 +84,21 @@ class RadioStation(models.Model):
     def __unicode__(self):
         return self.name
 
+    def save(self,*args,**kwargs):
+        content = None
+        if not self.id:
+            contacts = Contact.objects.filter(is_admin=True)
+            heading = 'New radio station'
+            content = self.name
+
+        response =super(RadioStation,self).save(*args, **kwargs)
+
+        if content:
+            for contact in contacts:
+                Notification.objects.create(url_model='radiostations:view',link=self.id,sent_to=contact,content=content,heading=heading)
+
+        return response
+
 class RadioTransmission(models.Model):
     radio_station = models.ForeignKey('RadioStation')
     frequency = models.CharField(null=True, blank=True,max_length=80)
